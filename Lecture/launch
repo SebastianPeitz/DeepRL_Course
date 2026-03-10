@@ -1,0 +1,4 @@
+cd /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Lecture
+decker --server &
+sleep 10s 
+open -a /Applications/Google\ Chrome.app http://localhost:8888/index.html
