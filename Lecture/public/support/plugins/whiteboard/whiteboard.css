@@ -1,0 +1,201 @@
+/* Vertically center slides (override Reveal's mechanism, see whiteboard.js) */
+.reveal .slides section.center .decker {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.reveal .slides section.center .alignment {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* adjust Reveal slide container when we need a scrollbar */
+.reveal .slides.needScrollbar {
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  /* enable scrolling */
+  pointer-events: auto;
+
+  /* enable touch navigation */
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: auto;
+}
+
+/* the animation for indicating additional pages on the bottom */
+@keyframes pulseBorder {
+  from {
+    border-bottom: 5px dotted var(--background-color);
+  }
+  to {
+    border-bottom: 5px dotted var(--icon-active-color);
+  }
+}
+
+/* activate pulsing border indiciator */
+.reveal .slides.pulseBorder {
+  animation-name: pulseBorder;
+  animation-iteration-count: 6;
+  animation-timing-function: ease;
+  animation-direction: alternate;
+  animation-duration: 0.5s;
+  border-bottom: 5px dotted var(--background-color);
+}
+
+/* have to show overflow when in Reveal's overview mode */
+.reveal.overview .slides {
+  overflow: visible;
+}
+
+/* animate scroll down */
+.reveal .slides.animateScroll {
+  scroll-behavior: smooth;
+}
+
+/* style for SVG whiteboard pages */
+.reveal svg.whiteboard {
+  border: none;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 255;
+}
+
+/* children of SVG (strokes, grid) should not get pointer events */
+.reveal svg.whiteboard * {
+  pointer-events: none;
+}
+
+/* default style for strokes (up to color and width) */
+.reveal svg.whiteboard > path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.reveal svg.whiteboard > path.laser {
+  stroke-width: 3px !important;
+  stroke: red !important;
+  filter: drop-shadow(0 0 3px red) !important;
+  transition: opacity 0.5s linear 2s;
+}
+
+/* container for whiteboard tools */
+#whiteboardButtons {
+  padding: 2px;
+  margin: 0;
+  z-index: 256;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html.print-pdf #whiteboardButtons {
+  display: none;
+}
+
+#whiteboardButtons.active.showMenu {
+  background-color: var(--menu-background-color);
+  border: 1px solid var(--icon-active-color);
+}
+
+/* toggle whiteboard buttons with .whiteboardActive on container */
+/* buttons are not shown... */
+#whiteboardButtons > button {
+  display: none;
+  cursor: pointer;
+}
+
+#whiteboardButtons.active.showMenu > button {
+  display: inline-block;
+}
+
+#whiteboardButtons:not(.active) > #whiteboardButton {
+  display: inline-block;
+}
+
+#whiteboardButtons.active:not(.showMenu) > button[aria-checked="true"] {
+  display: inline-block;
+  background: transparent;
+  box-shadow: inset 0px 0px 2px 1px rgb(from currentColor r g b / 0.3);
+}
+
+/* container for color picker */
+#whiteboardColorPicker {
+  position: absolute;
+  top: 50%;
+  right: auto;
+  left: 2.5em;
+  bottom: auto;
+  padding: 5px;
+  margin: 0;
+  z-index: 40;
+  border-radius: calc(var(--icon-size) * 0.5);
+  border: 1px solid var(--icon-active-color);
+  background-color: var(--menu-background-color);
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(8, 1fr);
+  visibility: hidden;
+  transform: translateY(-50%);
+}
+
+#whiteboardColorPicker.active {
+  visibility: visible;
+}
+
+#whiteboardColorPicker button.whiteboard {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  /*  color: var(--shade6); */
+  background: transparent;
+  width: calc(var(--icon-size) * 2);
+  height: calc(var(--icon-size) * 2);
+}
+
+/* MacOS only shows scrollbars when they are used.
+   This prevents dragging them with the Wacom pen (w/o using the mouse).
+   The following setting show the scrollbar when the whiteboard is active.
+   Only works on WebKit browswers (Chrome, Safari), not on Firefox. */
+.reveal .slides.whiteboard-active::-webkit-scrollbar {
+  width: 9px;
+}
+.reveal .slides.whiteboard-active::-webkit-scrollbar-track {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.1);
+}
+.reveal .slides.whiteboard-active::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.reveal .slides.whiteboard-active::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* prevent accidential text selection through whiteboard
+   (still don't understand when/why/how this happens) */
+.reveal .slides.whiteboard-active {
+  user-select: none;
+}
+
+:root.hide-annotations svg.whiteboard {
+  display: none !important; /* Whiteboard SVGs get a manual "display: block;" added to them by the plugin. */
+}

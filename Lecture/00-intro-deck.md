@@ -38,7 +38,7 @@ feedback:
 ::: columns-5-5
 
 ::: fragment
-![Task: pick up pens and place them upright. [Source: John Freidah/MIT Department of Mechanical Engineering]](images/robot_pickplace.jpeg){ height=400px }
+![Task: pick up pens and place them upright. [[Source](https://news.mit.edu/2024/new-model-offers-robots-precise-pick-place-solutions-0809: John Freidah/MIT Department of Mechanical Engineering)]](images/robot_pickplace.jpeg){ height=400px }
 :::
 
 ::: small
@@ -124,7 +124,7 @@ find a policy that maximizes the **sum of future rewards**!
 ::: columns-2-5-3
 
 <!-- ::: fragment -->
-![Chess board](images/chess_animation.gif){ height=300px }
+![Chess board [[Source](https://commons.wikimedia.org/wiki/File:Through_the_Looking-Glass_chess_game.gif)]](images/chess.gif){ height=300px }
 <!-- ::: -->
 
 ::: small
@@ -142,7 +142,7 @@ find a policy that maximizes the **sum of future rewards**!
 :::
 
 ::: fragment
-![AlphaGo](images/alphago.jpg){ height=250px }
+![AlphaGo [@Silver2016go] [[Source](https://www.bbc.com/news/technology-35785875)]](images/alphago.jpg){ height=250px }
 :::
 
 :::
@@ -155,7 +155,7 @@ find a policy that maximizes the **sum of future rewards**!
 ::: columns-3-7
 
 <!-- ::: fragment -->
-![Pendulum](images/pendulum.gif){ height=250px }
+![Pendulum [[Source](https://gymnasium.farama.org/environments/classic_control/pendulum/)]](images/pendulum.gif){ height=250px }
 <!-- ::: -->
 
 ::: small
@@ -179,7 +179,7 @@ find a policy that maximizes the **sum of future rewards**!
 ::: columns-2-2-6
 
 <!-- ::: fragment -->
-![Humanoid](images/humanoid.gif){ height=300px }
+![Humanoid [[Source](https://gymnasium.farama.org/environments/mujoco/humanoid/)]](images/humanoid.gif){ height=300px }
 <!-- ::: -->
 
 ::: fragment
@@ -207,11 +207,11 @@ find a policy that maximizes the **sum of future rewards**!
 ::: columns-2-2-6
 
 <!-- ::: fragment -->
-![Atari: Donkey Kong](images/atari_donkeykong.gif){ height=400px }
+![Atari: Donkey Kong [[Source](https://ale.farama.org/environments/donkey_kong/)]](images/atari_donkeykong.gif){ height=400px }
 <!-- ::: -->
 
 ::: fragment
-![Atari: Demon Attack](images/atari_demon.gif){ height=400px }
+![Atari: Demon Attack [[Source](https://ale.farama.org/environments/demon_attack/)]](images/atari_demon.gif){ height=400px }
 :::
 
 ::: small
@@ -231,11 +231,10 @@ find a policy that maximizes the **sum of future rewards**!
 # Reinforcement learning in robotics
 
 ::: columns-2-2
-![Boston Dynamics "Atlas"](images/atlas-gymnastics-boston-dynamics.gif){ height=400px }
+![Boston Dynamics "Atlas" [[Source](https://techcrunch.com/wp-content/uploads/2019/09/atlas-gymnastics-boston-dynamics.gif)]](images/atlas-gymnastics-boston-dynamics.gif){ height=400px }
 
-![OpenAI Rubik's Cube](images/openai-hand.gif){ height=400px }
-:::
-[Source: [https://www.imgeorgiev.com/2024-03-15-stochastic-rl/e](https://www.imgeorgiev.com/2024-03-15-stochastic-rl/)]{.footer}
+![OpenAI Rubik's Cube [[Source](https://www.imgeorgiev.com/2024-03-15-stochastic-rl/)]](images/openai-hand.gif){ height=400px }
+::: 
 
 # The key difference to supervised learning
 
