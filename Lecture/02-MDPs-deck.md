@@ -35,11 +35,11 @@ find a policy that maximizes the **sum of future rewards**!
 All the pieces of our RL framework are generally subject to some ***randomness***
 
 ::: incremental
-- the **policy** $\pi(a|s)$ is random (or, more precisely, a conditional probability)
+- the **policy** $\pi\agivenb{a}{s}$ is random (or, more precisely, a conditional probability)
   - given a state $s$, $\pi$ denotes the probabilities of all the actions $a$ we might take
   - if $\Ac$ is finite, then $\pi$ is a *distribution* over $\set{a_1,a_2,\ldots,a_{\abs{\Ac}}}$
   - if $\Ac$ is infinite (e.g., $a\in[0,1]$), then $\pi$ is the probability density function over $\Ac$
-- the **state transition** $p(s'|s,a)$ is also random
+- the **state transition** $p\agivenb{s'}{s,a}$ is also random
 - the **state observation** $o$ might be subject to noise
 - the **reward** inherits this randomness, even if we were to define it deterministically
 :::
@@ -141,8 +141,8 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 In the literature, we often also find *capital letters* for state, action and reward to properly account for the probabilistic nature
 
 ::: incremental
-- $p\agivenb{S_t=s'}{S_{t-1}=s, A_{t-1}=a}$ is the correct formulation for our short form $p\agivenb{s'}{s,a}$
-- $\pi\agivenb{A_t=a}{S_t=s}$ is the correct formulation for our short form $\pi\agivenb{a}{s}$
+- $p\agivenb{S_{t+1}=s'}{S_{t}=s, A_{t}=a}$ is the precise formulation for our short form $p\agivenb{s'}{s,a}$
+- $\pi\agivenb{A_t=a}{S_t=s}$ is the precise formulation for our short form $\pi\agivenb{a}{s}$
 <!-- - $V^\pi(s) = \ExpCsub{\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} }{S_t=s}{\pi}$ -->
 :::
 

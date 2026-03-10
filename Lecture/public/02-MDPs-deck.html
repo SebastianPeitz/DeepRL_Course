@@ -1024,13 +1024,13 @@ Processes</title>
 <p>All the pieces of our RL framework are generally subject to some <strong><em>randomness</em></strong></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">the <strong>policy</strong> <span class="math inline">\(\pi(a|s)\)</span> is random (or, more precisely, a conditional probability)
+<li class="fragment">the <strong>policy</strong> <span class="math inline">\(\pi\agivenb{a}{s}\)</span> is random (or, more precisely, a conditional probability)
 <ul class="incremental">
 <li class="fragment">given a state <span class="math inline">\(s\)</span>, <span class="math inline">\(\pi\)</span> denotes the probabilities of all the actions <span class="math inline">\(a\)</span> we might take</li>
 <li class="fragment">if <span class="math inline">\(\Ac\)</span> is finite, then <span class="math inline">\(\pi\)</span> is a <em>distribution</em> over <span class="math inline">\(\set{a_1,a_2,\ldots,a_{\abs{\Ac}}}\)</span></li>
 <li class="fragment">if <span class="math inline">\(\Ac\)</span> is infinite (e.g., <span class="math inline">\(a\in[0,1]\)</span>), then <span class="math inline">\(\pi\)</span> is the probability density function over <span class="math inline">\(\Ac\)</span></li>
 </ul></li>
-<li class="fragment">the <strong>state transition</strong> <span class="math inline">\(p(s&#39;|s,a)\)</span> is also random</li>
+<li class="fragment">the <strong>state transition</strong> <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span> is also random</li>
 <li class="fragment">the <strong>state observation</strong> <span class="math inline">\(o\)</span> might be subject to noise</li>
 <li class="fragment">the <strong>reward</strong> inherits this randomness, even if we were to define it deterministically</li>
 </ul>
@@ -1174,8 +1174,8 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <p>In the literature, we often also find <em>capital letters</em> for state, action and reward to properly account for the probabilistic nature</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(p\agivenb{S_t=s&#39;}{S_{t-1}=s, A_{t-1}=a}\)</span> is the correct formulation for our short form <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span></li>
-<li class="fragment"><span class="math inline">\(\pi\agivenb{A_t=a}{S_t=s}\)</span> is the correct formulation for our short form <span class="math inline">\(\pi\agivenb{a}{s}\)</span> <!-- - $V^\pi(s) = \ExpCsub{\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} }{S_t=s}{\pi}$ --></li>
+<li class="fragment"><span class="math inline">\(p\agivenb{S_{t+1}=s&#39;}{S_{t}=s, A_{t}=a}\)</span> is the precise formulation for our short form <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span></li>
+<li class="fragment"><span class="math inline">\(\pi\agivenb{A_t=a}{S_t=s}\)</span> is the precise formulation for our short form <span class="math inline">\(\pi\agivenb{a}{s}\)</span> <!-- - $V^\pi(s) = \ExpCsub{\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} }{S_t=s}{\pi}$ --></li>
 </ul>
 </div>
 </div>

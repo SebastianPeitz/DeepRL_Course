@@ -40,6 +40,6 @@ templates:
 |   **1** | **Basics**                                                |                                    |
 |         | Multi-armed bandits                                       |  [slides:](01-multi-armed-bandits) |
 |         | Markov Decision Processes                                 |                 [slides:](02-MDPs) |
-|   **N** | **Notation**                                              |                                    |
-|         | Notation                                                  |             [slides:](0N-Notation) |
+|         | **Notation**                                              |                                    |
+|         | Notation                                                  |             [slides:](99-notation) |
 <!-- |   **∞** | **Ende**                                                  |           [slides:](34-conclusion) | -->

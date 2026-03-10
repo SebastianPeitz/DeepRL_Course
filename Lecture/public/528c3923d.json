@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "10.03.2026 13:16"
+        "10.03.2026 15:44"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -210,10 +210,10 @@
             },
             {
                 "id": false,
-                "src": "0N-notation-deck.md",
+                "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
-                "url": "0N-notation-deck.html"
+                "url": "99-notation-deck.html"
             }
         ],
         "by-date": [
@@ -240,10 +240,10 @@
             },
             {
                 "id": false,
-                "src": "0N-notation-deck.md",
+                "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
-                "url": "0N-notation-deck.html"
+                "url": "99-notation-deck.html"
             }
         ],
         "by-id": [
@@ -270,10 +270,10 @@
             },
             {
                 "id": false,
-                "src": "0N-notation-deck.md",
+                "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
-                "url": "0N-notation-deck.html"
+                "url": "99-notation-deck.html"
             }
         ],
         "by-title": [
@@ -300,10 +300,10 @@
             },
             {
                 "id": false,
-                "src": "0N-notation-deck.md",
+                "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
-                "url": "0N-notation-deck.html"
+                "url": "99-notation-deck.html"
             }
         ],
         "by-url": [
@@ -330,10 +330,10 @@
             },
             {
                 "id": false,
-                "src": "0N-notation-deck.md",
+                "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
-                "url": "0N-notation-deck.html"
+                "url": "99-notation-deck.html"
             }
         ]
     },

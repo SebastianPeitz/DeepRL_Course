@@ -18,12 +18,12 @@ feedback:
 - Outputs are elements of some set $\Oc$, obtained by possibly implicit measurements of given state-action pairs, $o_t = h(s_t,a_t)$, where $h : \Sc \times \Ac \rightarrow \Oc$.
 
 # Random variables
--  Random variables with distribution (discrete case) or density (continuous case) $q$ are declared by writing $x \sim q$. E.g., $s' \sim p(\cdot | s,a)$ or $a \sim \pi(\cdot |s)$.
+-  Random variables with distribution (discrete case) or density (continuous case) $q$ are declared by writing $x \sim q$. E.g., $s' \sim p\agivenb{\cdot}{s,a}$ or $a \sim \pi\agivenb{\cdot}{s}$.
 -  Trajectories are sequences of state-action pairs $$
             \tau = (\tau_0, \tau_1,\dots) = ((s_0,a_0) , (s_1,a_1),\dots).
         $$
-        If the trajectory is sampled according to some policy $\pi$, i.e., $s_{t+1} \sim p(\cdot |s_t,a_t), a_t \sim \pi(\cdot |s_t)$ for $t \geq 1$, we get a new distribution/density, denoted by $p^\pi(\tau|s_0)$ which is conditioned on the initial state $s_0$.
-        So $\tau \sim p^\pi(\cdot | s_0)$ denotes a random trajectory starting from $s_0$.
+        If the trajectory is sampled according to some policy $\pi$ (i.e., $s_{t+1} \sim p\agivenb{\cdot}{s_t,a_t}$ and $a_t \sim \pi\agivenb{\cdot}{s_t}$ for $t \geq 1$), we get a new distribution/density, denoted by $p^\pi\agivenb{\tau}{s_0}$ which is conditioned on the initial state $s_0$.
+        So $\tau \sim p^\pi\agivenb{\cdot}{s_0}$ denotes a random trajectory starting from $s_0$.
 -  Instead of using index notation, one can also use $(s,a),(s',a'),(s'',a''),\dots$ to denote the start of a trajectory.
 
 # Expectation and variance

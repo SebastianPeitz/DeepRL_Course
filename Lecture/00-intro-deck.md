@@ -38,7 +38,7 @@ feedback:
 ::: columns-5-5
 
 ::: fragment
-![Task: pick up pens and place them upright. [[Source](https://news.mit.edu/2024/new-model-offers-robots-precise-pick-place-solutions-0809: John Freidah/MIT Department of Mechanical Engineering)]](images/robot_pickplace.jpeg){ height=400px }
+![Task: pick up pens and place them upright [[Source](https://news.mit.edu/2024/new-model-offers-robots-precise-pick-place-solutions-0809: John Freidah/MIT Department of Mechanical Engineering)]](images/robot_pickplace.jpeg){ height=400px }
 :::
 
 ::: small
@@ -258,7 +258,7 @@ $$ (x_k,y_k)\sim p(\Dc). $$
   - time really matters (sequential, non i.i.d. data)
   - agents actions affect the subsequent data it receives
 
-![Reinforcement learning](images/RL_SuttonBarto.png){ height=150px }
+![Reinforcement learning [@Sutton1998]](images/RL_SuttonBarto.png){ height=150px }
 :::
 :::
 
@@ -399,13 +399,17 @@ By the end of the course, we will
 # Literature
 
 ## Reinforcement learning
-- "Reinforcement learning: an introduction" [@Sutton1998] [[PDF](http://incompleteideas.net/book/RLbook2020.pdf)]
+- [Reinforcement learning: an introduction](http://incompleteideas.net/book/RLbook2020.pdf) [@Sutton1998] 
+- [David Silver's RL lecture](https://www.davidsilver.uk/teaching/) [@Silver2015RL]
 
 ## Mathematical basics
 - Linear Algebra: [Stanford CS229 review material](https://cs229.stanford.edu/summer2020/cs229-linalg.pdf)
 - Probability:
   - [Stanford CS229 review material](https://cs229.stanford.edu/section/cs229-prob.pdf)
   - [Introduction to Probability lecture notes](https://www.vfu.bg/en/e-Learning/Math--Bertsekas_Tsitsiklis_Introduction_to_probability.pdf) by Dimitri Bertsekas
+
+## Programming
+- Berkeley's CS285 pyTorch course ([Google Colab](https://colab.research.google.com/drive/12nQiv6aZHXNuCfAAuTjJenDWKQbIt2Mz))
 
 # References
 
