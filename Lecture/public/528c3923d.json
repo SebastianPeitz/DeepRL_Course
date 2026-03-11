@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "10.03.2026 15:44"
+        "11.03.2026 10:59"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -210,6 +210,111 @@
             },
             {
                 "id": false,
+                "src": "03-dynamic-programming-deck.md",
+                "subtitle": "Dynamic Programming",
+                "title": "Deep Reinforcement Learning",
+                "url": "03-dynamic-programming-deck.html"
+            },
+            {
+                "id": false,
+                "src": "04-monte-carlo-deck.md",
+                "subtitle": "Monte Carlo Methods",
+                "title": "Deep Reinforcement Learning",
+                "url": "04-monte-carlo-deck.html"
+            },
+            {
+                "id": false,
+                "src": "05-td-learning-deck.md",
+                "subtitle": "Temporal Difference Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-value-policy-iteration-deck.md",
+                "subtitle": "Value Iteration & Policy Iteration",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-value-policy-iteration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "07-q-learning-deck.md",
+                "subtitle": "Q Learning & Deep Q Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "07-q-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "08-policy-gradients-deck.md",
+                "subtitle": "Policy Gradients",
+                "title": "Deep Reinforcement Learning",
+                "url": "08-policy-gradients-deck.html"
+            },
+            {
+                "id": false,
+                "src": "09-actor-critic-deck.md",
+                "subtitle": "Actor-Critic Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "09-actor-critic-deck.html"
+            },
+            {
+                "id": false,
+                "src": "10-advanced-algorithms-deck.md",
+                "subtitle": "Advanced Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "10-advanced-algorithms-deck.html"
+            },
+            {
+                "id": false,
+                "src": "11-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "11-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "12-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "12-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "13-exploration-deck.md",
+                "subtitle": "Exploration",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-exploration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-offline-RL-deck.md",
+                "subtitle": "Offline Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-offline-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-transfer-learning-deck.md",
+                "subtitle": "Transfer Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "15-transfer-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "16-multi-agent-RL-deck.md",
+                "subtitle": "Multi-Agent Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-multi-agent-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-behavior-cloning-deck.md",
+                "subtitle": "Behavior Cloning",
+                "title": "Deep Reinforcement Learning",
+                "url": "17-behavior-cloning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
@@ -237,6 +342,111 @@
                 "subtitle": "Markov Decision Processes",
                 "title": "Deep Reinforcement Learning",
                 "url": "02-MDPs-deck.html"
+            },
+            {
+                "id": false,
+                "src": "03-dynamic-programming-deck.md",
+                "subtitle": "Dynamic Programming",
+                "title": "Deep Reinforcement Learning",
+                "url": "03-dynamic-programming-deck.html"
+            },
+            {
+                "id": false,
+                "src": "04-monte-carlo-deck.md",
+                "subtitle": "Monte Carlo Methods",
+                "title": "Deep Reinforcement Learning",
+                "url": "04-monte-carlo-deck.html"
+            },
+            {
+                "id": false,
+                "src": "05-td-learning-deck.md",
+                "subtitle": "Temporal Difference Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-value-policy-iteration-deck.md",
+                "subtitle": "Value Iteration & Policy Iteration",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-value-policy-iteration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "07-q-learning-deck.md",
+                "subtitle": "Q Learning & Deep Q Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "07-q-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "08-policy-gradients-deck.md",
+                "subtitle": "Policy Gradients",
+                "title": "Deep Reinforcement Learning",
+                "url": "08-policy-gradients-deck.html"
+            },
+            {
+                "id": false,
+                "src": "09-actor-critic-deck.md",
+                "subtitle": "Actor-Critic Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "09-actor-critic-deck.html"
+            },
+            {
+                "id": false,
+                "src": "10-advanced-algorithms-deck.md",
+                "subtitle": "Advanced Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "10-advanced-algorithms-deck.html"
+            },
+            {
+                "id": false,
+                "src": "11-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "11-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "12-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "12-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "13-exploration-deck.md",
+                "subtitle": "Exploration",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-exploration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-offline-RL-deck.md",
+                "subtitle": "Offline Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-offline-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-transfer-learning-deck.md",
+                "subtitle": "Transfer Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "15-transfer-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "16-multi-agent-RL-deck.md",
+                "subtitle": "Multi-Agent Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-multi-agent-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-behavior-cloning-deck.md",
+                "subtitle": "Behavior Cloning",
+                "title": "Deep Reinforcement Learning",
+                "url": "17-behavior-cloning-deck.html"
             },
             {
                 "id": false,
@@ -270,6 +480,111 @@
             },
             {
                 "id": false,
+                "src": "03-dynamic-programming-deck.md",
+                "subtitle": "Dynamic Programming",
+                "title": "Deep Reinforcement Learning",
+                "url": "03-dynamic-programming-deck.html"
+            },
+            {
+                "id": false,
+                "src": "04-monte-carlo-deck.md",
+                "subtitle": "Monte Carlo Methods",
+                "title": "Deep Reinforcement Learning",
+                "url": "04-monte-carlo-deck.html"
+            },
+            {
+                "id": false,
+                "src": "05-td-learning-deck.md",
+                "subtitle": "Temporal Difference Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-value-policy-iteration-deck.md",
+                "subtitle": "Value Iteration & Policy Iteration",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-value-policy-iteration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "07-q-learning-deck.md",
+                "subtitle": "Q Learning & Deep Q Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "07-q-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "08-policy-gradients-deck.md",
+                "subtitle": "Policy Gradients",
+                "title": "Deep Reinforcement Learning",
+                "url": "08-policy-gradients-deck.html"
+            },
+            {
+                "id": false,
+                "src": "09-actor-critic-deck.md",
+                "subtitle": "Actor-Critic Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "09-actor-critic-deck.html"
+            },
+            {
+                "id": false,
+                "src": "10-advanced-algorithms-deck.md",
+                "subtitle": "Advanced Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "10-advanced-algorithms-deck.html"
+            },
+            {
+                "id": false,
+                "src": "11-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "11-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "12-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "12-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "13-exploration-deck.md",
+                "subtitle": "Exploration",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-exploration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-offline-RL-deck.md",
+                "subtitle": "Offline Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-offline-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-transfer-learning-deck.md",
+                "subtitle": "Transfer Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "15-transfer-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "16-multi-agent-RL-deck.md",
+                "subtitle": "Multi-Agent Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-multi-agent-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-behavior-cloning-deck.md",
+                "subtitle": "Behavior Cloning",
+                "title": "Deep Reinforcement Learning",
+                "url": "17-behavior-cloning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
@@ -300,6 +615,111 @@
             },
             {
                 "id": false,
+                "src": "03-dynamic-programming-deck.md",
+                "subtitle": "Dynamic Programming",
+                "title": "Deep Reinforcement Learning",
+                "url": "03-dynamic-programming-deck.html"
+            },
+            {
+                "id": false,
+                "src": "04-monte-carlo-deck.md",
+                "subtitle": "Monte Carlo Methods",
+                "title": "Deep Reinforcement Learning",
+                "url": "04-monte-carlo-deck.html"
+            },
+            {
+                "id": false,
+                "src": "05-td-learning-deck.md",
+                "subtitle": "Temporal Difference Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-value-policy-iteration-deck.md",
+                "subtitle": "Value Iteration & Policy Iteration",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-value-policy-iteration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "07-q-learning-deck.md",
+                "subtitle": "Q Learning & Deep Q Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "07-q-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "08-policy-gradients-deck.md",
+                "subtitle": "Policy Gradients",
+                "title": "Deep Reinforcement Learning",
+                "url": "08-policy-gradients-deck.html"
+            },
+            {
+                "id": false,
+                "src": "09-actor-critic-deck.md",
+                "subtitle": "Actor-Critic Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "09-actor-critic-deck.html"
+            },
+            {
+                "id": false,
+                "src": "10-advanced-algorithms-deck.md",
+                "subtitle": "Advanced Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "10-advanced-algorithms-deck.html"
+            },
+            {
+                "id": false,
+                "src": "11-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "11-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "12-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "12-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "13-exploration-deck.md",
+                "subtitle": "Exploration",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-exploration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-offline-RL-deck.md",
+                "subtitle": "Offline Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-offline-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-transfer-learning-deck.md",
+                "subtitle": "Transfer Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "15-transfer-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "16-multi-agent-RL-deck.md",
+                "subtitle": "Multi-Agent Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-multi-agent-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-behavior-cloning-deck.md",
+                "subtitle": "Behavior Cloning",
+                "title": "Deep Reinforcement Learning",
+                "url": "17-behavior-cloning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "99-notation-deck.md",
                 "subtitle": "Notation",
                 "title": "Deep Reinforcement Learning",
@@ -327,6 +747,111 @@
                 "subtitle": "Markov Decision Processes",
                 "title": "Deep Reinforcement Learning",
                 "url": "02-MDPs-deck.html"
+            },
+            {
+                "id": false,
+                "src": "03-dynamic-programming-deck.md",
+                "subtitle": "Dynamic Programming",
+                "title": "Deep Reinforcement Learning",
+                "url": "03-dynamic-programming-deck.html"
+            },
+            {
+                "id": false,
+                "src": "04-monte-carlo-deck.md",
+                "subtitle": "Monte Carlo Methods",
+                "title": "Deep Reinforcement Learning",
+                "url": "04-monte-carlo-deck.html"
+            },
+            {
+                "id": false,
+                "src": "05-td-learning-deck.md",
+                "subtitle": "Temporal Difference Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-value-policy-iteration-deck.md",
+                "subtitle": "Value Iteration & Policy Iteration",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-value-policy-iteration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "07-q-learning-deck.md",
+                "subtitle": "Q Learning & Deep Q Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "07-q-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "08-policy-gradients-deck.md",
+                "subtitle": "Policy Gradients",
+                "title": "Deep Reinforcement Learning",
+                "url": "08-policy-gradients-deck.html"
+            },
+            {
+                "id": false,
+                "src": "09-actor-critic-deck.md",
+                "subtitle": "Actor-Critic Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "09-actor-critic-deck.html"
+            },
+            {
+                "id": false,
+                "src": "10-advanced-algorithms-deck.md",
+                "subtitle": "Advanced Algorithms",
+                "title": "Deep Reinforcement Learning",
+                "url": "10-advanced-algorithms-deck.html"
+            },
+            {
+                "id": false,
+                "src": "11-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "11-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "12-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "12-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "13-exploration-deck.md",
+                "subtitle": "Exploration",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-exploration-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-offline-RL-deck.md",
+                "subtitle": "Offline Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-offline-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-transfer-learning-deck.md",
+                "subtitle": "Transfer Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "15-transfer-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "16-multi-agent-RL-deck.md",
+                "subtitle": "Multi-Agent Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-multi-agent-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-behavior-cloning-deck.md",
+                "subtitle": "Behavior Cloning",
+                "title": "Deep Reinforcement Learning",
+                "url": "17-behavior-cloning-deck.html"
             },
             {
                 "id": false,
