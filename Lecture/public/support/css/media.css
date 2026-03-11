@@ -1,0 +1,322 @@
+/* Media elements */
+div.media {
+  display: flex;
+  justify-content: center;
+}
+
+/* TODO: Check the old class vocabulary for alignment. */
+div.media[data-align="left"] {
+  justify-content: flex-start;
+}
+
+div.media[data-align="right"] {
+  justify-content: flex-end;
+}
+
+/* Figures can not be used in inline context, using spans instead. */
+span.figure,
+figure {
+  width: 100%;
+}
+
+/* Figcaptions can not be used in inline context, using spans instead. */
+span.figcaption,
+figcaption {
+  font-size: 80%;
+  font-style: italic;
+  text-align: center;
+
+  background-color: var(--c4);
+}
+
+/* Inline media blocks are rendered as spans, but use a block context inside. */
+span.media {
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+/* Figure spans behave like a block. */
+span.figure {
+  display: block;
+}
+
+/* Figcaption spans behave like a block. */
+span.figcaption {
+  display: block;
+}
+
+/* Get rid of the annoying bottom gap. */
+img,
+iframe,
+video,
+object,
+canvas,
+svg,
+pre {
+  vertical-align: bottom;
+}
+
+/* Default sizes for inline media elements without intrinsic aspect ratio. */
+span.figure > :is(span.pre, object, iframe) {
+  width: 200px;
+  height: 100px;
+}
+
+/* Default sizes for block media elements without intrinsic aspect ratio. */
+figure > :is(object, iframe) {
+  width: 100%;
+  height: 400px;
+  max-width: 100%;
+}
+
+/* Default width. Always try to fill the frame. */
+figure > :is(pre, img, video, div.sourceCode) {
+  width: 100%;
+  margin: 0;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Default width for embedded SVG. */
+.svg.embedded svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Line blocks */
+figure.lineblock > div.lineblock {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5em;
+  justify-items: center;
+}
+
+/* Fullscreen iframes */
+
+div.fs-container {
+  margin: auto;
+  border: 0px;
+  padding: 0px;
+  position: relative;
+}
+
+div.fs-container:fullscreen {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: white;
+  padding: 20px;
+}
+
+/* needed for mobile Safari */
+*:-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+div.fs-container > iframe {
+  box-sizing: border-box;
+}
+
+div.fs-container:fullscreen > iframe {
+  border: none;
+}
+
+button.fs-button {
+  z-index: 100;
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+  outline: none;
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  opacity: 0.5;
+  color: var(--icon-inactive-color);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+div.fs-container:hover > button.fs-button {
+  opacity: 0.75;
+}
+
+div.fs-container > button.fs-button:hover {
+  opacity: 1;
+  color: var(--icon-active-color);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.reveal div.fs-container > button.fs-button:focus {
+  opacity: 1;
+  color: var(--icon-active-color);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.fs-container:has(iframe:not([src])[data-src]) {
+  position: relative;
+  &::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    rotate: -30deg;
+    font-size: 2em;
+    color: var(--shade2);
+    text-align: center;
+  }
+}
+
+/* alt text for PDF export of non-loaded content */
+.fs-container:has(iframe:not([src])[data-src])::before {
+  content: "Embedded Content";
+}
+[lang="de"] .fs-container:has(iframe:not([src])[data-src])::before {
+  content: "Eingebetteter Inhalt";
+}
+.fs-container:has(iframe:not([src])[data-src$="mview.html"])::before,
+.fs-container:has(iframe:not([src])[data-src$="model-viewer.html"])::before {
+  content: "3D Model";
+}
+[lang="de"]
+  .fs-container:has(iframe:not([src])[data-src$="mview.html"])::before,
+[lang="de"]
+  .fs-container:has(iframe:not([src])[data-src$="model-viewer.html"])::before {
+  content: "3D-Model";
+}
+.fs-container:has(iframe:not([src])[data-src$="geogebra.html"])::before {
+  content: "Geogebra Demo";
+}
+[lang="de"]
+  .fs-container:has(iframe:not([src])[data-src$="geogebra.html"])::before {
+  content: "Geogebra-Demo";
+}
+.fs-container:has(iframe:not([src])[data-src^="demos/"])::before {
+  content: "Embedded Demo";
+}
+[lang="de"] .fs-container:has(iframe:not([src])[data-src^="demos/"])::before {
+  content: "Eingebette Demo";
+}
+
+/* this prevents responsive charts from continuously resizing */
+div.chart-container > canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+div.chart-container {
+  overflow: hidden;
+}
+
+/* container for left/right comparison of two images */
+.image-compare {
+  --boundary-color: var(--base02);
+
+  display: grid;
+  cursor: grab;
+  width: fit-content;
+  margin: auto;
+  border: 1px solid var(--boundary-color);
+  touch-action: none;
+
+  & > p {
+    display: contents;
+  }
+
+  .media {
+    grid-area: 1/1;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .media figure,
+  .media .figure {
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    height: fit-content;
+
+    img {
+      max-width: unset;
+    }
+
+    /* caption overlay */
+    .figcaption,
+    figcaption {
+      display: block;
+      min-width: max-content;
+      position: absolute;
+      margin: 0;
+      padding: 0.2em 0.4em;
+      background: var(--base06);
+      color: var(--base01);
+      font-style: normal;
+    }
+  }
+
+  .media:first-child {
+    justify-self: start;
+    width: 50%;
+
+    /* separating vertical line */
+    &:before {
+      content: " ";
+      position: absolute;
+      left: 100%;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--base00);
+      border-left: 1px solid var(--boundary-color);
+      border-right: 1px solid var(--boundary-color);
+    }
+
+    /* left-right handle */
+    &:after {
+      content: "\f07e";
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      font-weight: 900;
+      font-family: "Font Awesome 7 Free";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      translate: calc(50% + 3px) -50%;
+      font-size: 0.4em;
+      width: 2em;
+      height: 2em;
+      line-height: 2;
+      margin: auto;
+      text-align: center;
+      vertical-align: middle;
+      background: var(--background-color);
+      border: 1px solid var(--boundary-color);
+      border-radius: 100%;
+    }
+
+    .figcaption,
+    figcaption {
+      bottom: 0;
+      left: 0;
+      border-top-right-radius: 0.3em;
+    }
+  }
+
+  .media:last-child {
+    z-index: -1;
+    .figcaption,
+    figcaption {
+      bottom: 0;
+      right: 0;
+      border-top-left-radius: 0.3em;
+    }
+  }
+}
