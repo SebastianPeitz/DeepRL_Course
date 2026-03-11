@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "10.03.2026 15:46"
+        "11.03.2026 10:09"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -184,7 +184,7 @@
         "shade7": "#1d1f21"
     },
     "date": "Summer term 2026",
-    "decker-meta-url": "497e0ed21.json",
+    "decker-meta-url": "918be67ae.json",
     "dictionary": {
         "de": {
             "exam": {
@@ -530,7 +530,7 @@
     },
     "feedback": {
         "base-url": "https://decker.cs.tu-dortmund.de/feedback",
-        "deck-id": "deeprl-intro"
+        "deck-id": "deeprl-advanced-algorithms"
     },
     "includeTULogo": true,
     "index": {
@@ -734,7 +734,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Introduction",
+    "subtitle": "Advanced Algorithms",
     "supportPath": "support",
     "template": {
         "deck": {
