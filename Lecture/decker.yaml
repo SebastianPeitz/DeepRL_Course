@@ -7,6 +7,8 @@ logos:        [ assets/inf-logo.svg ]
 
 resource-pack: "exe:tudo"
 
+colorscheme: light
+
 template:
   deck:
     css:
