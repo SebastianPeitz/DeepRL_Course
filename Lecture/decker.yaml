@@ -43,8 +43,8 @@ whiteboard:
 zoom:
   trigger: "tripleClick"
 
-feedback:
-  base-url: https://decker.cs.tu-dortmund.de/feedback
+# feedback:
+#   base-url: https://decker.cs.tu-dortmund.de/feedback
 
 # polling:
 #   server: wss://decker.cs.tu-dortmund.de/quizzer/quiz
@@ -90,6 +90,7 @@ math:
     C: '{\mathbb{C}}'
     Ac: '{\mathcal{A}}'
     Dc: '{\mathcal{D}}'
+    Nc: '{\mathcal{N}}'
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
@@ -101,6 +102,7 @@ math:
     ExpC: ['{\mathbb{E}\left[ #1  \mid #2 \right]}', 2]
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1  \mid #2 \right]}', 3]
     Var: '{\mathbb{E}}'
+    Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
     # i: '{\mathrm{i}\mkern1mu}'
     # eps: '{\varepsilon}'
     dx: '{\,\mathrm{d}x}'

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "13.03.2026 13:25"
+        "23.03.2026 22:36"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -530,7 +530,6 @@
         }
     },
     "feedback": {
-        "base-url": "https://decker.cs.tu-dortmund.de/feedback",
         "deck-id": "deeprl-multi-armed-bandits"
     },
     "includeTULogo": true,
@@ -579,6 +578,11 @@
                 1.0
             ],
             "N": "{\\mathbb{N}}",
+            "Nc": "{\\mathcal{N}}",
+            "Normal": [
+                "{\\Nc\\left({#1},{#2}\\right)}",
+                2.0
+            ],
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
             "R": "{\\mathbb{R}}",

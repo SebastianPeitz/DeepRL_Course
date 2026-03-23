@@ -132,6 +132,16 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 :::
 :::
 
+# Multi-armed bandit notation revisited
+::: small
+::: incremental
+- Let us assume that we have a slot machine and we repeatedly can choose between $k$ different actions
+- After each choice $A_t$ you receive a numerical reward $R_t$ chosen from a stationary probability distribution
+- Objective: maximize the **value**: $$ q(a) = \ExpC{R_t}{A_t=a} $$
+- We have to rely on estimates $Q_t(a)$ which we can iteratively update based on past experience
+:::
+:::
+
 # The RL components in extensive notation
 ::: columns-3-7
 

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "12.03.2026 08:05"
+        "23.03.2026 21:48"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -530,7 +530,6 @@
         }
     },
     "feedback": {
-        "base-url": "https://decker.cs.tu-dortmund.de/feedback",
         "deck-id": "deeprl-transfer-learning"
     },
     "includeTULogo": true,
@@ -579,6 +578,11 @@
                 1.0
             ],
             "N": "{\\mathbb{N}}",
+            "Nc": "{\\mathcal{N}}",
+            "Normal": [
+                "{\\Nc\\left({#1},{#2}\\right)}",
+                2.0
+            ],
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
             "R": "{\\mathbb{R}}",
