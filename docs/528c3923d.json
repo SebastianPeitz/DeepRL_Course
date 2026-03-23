@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "11.03.2026 11:14"
+        "23.03.2026 21:48"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -41,6 +41,7 @@
             }
         }
     },
+    "colorscheme": "light",
     "csl": "./chicago-author-date.csl",
     "css-dark-color-declarations": [
         "--shade7: #ffffff;",
@@ -1205,9 +1206,6 @@
             "help": ""
         }
     },
-    "feedback": {
-        "base-url": "https://decker.cs.tu-dortmund.de/feedback"
-    },
     "includeTULogo": true,
     "index": {
         "links": [
@@ -1254,6 +1252,11 @@
                 1.0
             ],
             "N": "{\\mathbb{N}}",
+            "Nc": "{\\mathcal{N}}",
+            "Normal": [
+                "{\\Nc\\left({#1},{#2}\\right)}",
+                2.0
+            ],
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
             "R": "{\\mathbb{R}}",

@@ -218,8 +218,8 @@
 <ul>
 <li>Random variables with distribution (discrete case) or density (continuous case) <span class="math inline">\(q\)</span> are declared by writing <span class="math inline">\(x \sim q\)</span>. E.g., <span class="math inline">\(s&#39; \sim p\agivenb{\cdot}{s,a}\)</span> or <span class="math inline">\(a \sim \pi\agivenb{\cdot}{s}\)</span>.</li>
 <li>Trajectories are sequences of state-action pairs <span class="math display">\[
-         \tau = (\tau_0, \tau_1,\dots) = ((s_0,a_0) , (s_1,a_1),\dots).
-     \]</span> If the trajectory is sampled according to some policy <span class="math inline">\(\pi\)</span> (i.e., <span class="math inline">\(s_{t+1} \sim p\agivenb{\cdot}{s_t,a_t}\)</span> and <span class="math inline">\(a_t \sim \pi\agivenb{\cdot}{s_t}\)</span> for <span class="math inline">\(t \geq 1\)</span>), we get a new distribution/density, denoted by <span class="math inline">\(p^\pi\agivenb{\tau}{s_0}\)</span> which is conditioned on the initial state <span class="math inline">\(s_0\)</span>. So <span class="math inline">\(\tau \sim p^\pi\agivenb{\cdot}{s_0}\)</span> denotes a random trajectory starting from <span class="math inline">\(s_0\)</span>.</li>
+          \tau = (\tau_0, \tau_1,\dots) = ((s_0,a_0) , (s_1,a_1),\dots).
+      \]</span> If the trajectory is sampled according to some policy <span class="math inline">\(\pi\)</span> (i.e., <span class="math inline">\(s_{t+1} \sim p\agivenb{\cdot}{s_t,a_t}\)</span> and <span class="math inline">\(a_t \sim \pi\agivenb{\cdot}{s_t}\)</span> for <span class="math inline">\(t \geq 1\)</span>), we get a new distribution/density, denoted by <span class="math inline">\(p^\pi\agivenb{\tau}{s_0}\)</span> which is conditioned on the initial state <span class="math inline">\(s_0\)</span>. So <span class="math inline">\(\tau \sim p^\pi\agivenb{\cdot}{s_0}\)</span> denotes a random trajectory starting from <span class="math inline">\(s_0\)</span>.</li>
 <li>Instead of using index notation, one can also use <span class="math inline">\((s,a),(s&#39;,a&#39;),(s&#39;&#39;,a&#39;&#39;),\dots\)</span> to denote the start of a trajectory.</li>
 </ul>
 </div>
@@ -237,13 +237,13 @@
 <div class="box block">
 <ul>
 <li>Expectations are denoted as <span class="math display">\[
-         \E_{x \sim q} [f(x)] = \underbrace{\E_x[f(x)]}_{\text{if distr. clear}} = \underbrace{\E[f(x)]}_{\text{if R.V. clear}} = \begin{cases} 
-             \sum_{x \in \Xc} q(x) f(x) &amp;\text{discrete} \\
-             \int_{\Xc} q(x) f(x) dx   &amp;\text{continuous}
-         \end{cases}
-     \]</span> Similarly, the variance is defined by <span class="math display">\[
-         \Var_{x \sim q}[f(x)] = \Var_x[f(x)] = \Var[f(x)] =  \E_x[(f(x)-\E_{x&#39;}[f(x&#39;)])^2].
-     \]</span></li>
+          \E_{x \sim q} [f(x)] = \underbrace{\E_x[f(x)]}_{\text{if distr. clear}} = \underbrace{\E[f(x)]}_{\text{if R.V. clear}} = \begin{cases} 
+              \sum_{x \in \Xc} q(x) f(x) &amp;\text{discrete} \\
+              \int_{\Xc} q(x) f(x) dx   &amp;\text{continuous}
+          \end{cases}
+      \]</span> Similarly, the variance is defined by <span class="math display">\[
+          \Var_{x \sim q}[f(x)] = \Var_x[f(x)] = \Var[f(x)] =  \E_x[(f(x)-\E_{x&#39;}[f(x&#39;)])^2].
+      \]</span></li>
 </ul>
 </div>
 </div>
@@ -260,10 +260,10 @@
 <div class="box block">
 <ul>
 <li>The state-value function is defined as <span class="math display">\[
-         V^\pi(s_0) := \E \left[ \sum_{t=0}^\infty \gamma^t r(s_t,a_t) \right], \quad\text{where}\quad s_{t+1} \sim p(\cdot |s_t,a_t), a_{t} \sim \pi(\cdot |s_t).
-     \]</span> alternatively, we can write <span class="math display">\[
-         V^\pi(s_0) = \E_{\tau \sim p^\pi(\cdot | s_0)}\left[\sum_{t=0}^\infty \gamma^t r(\tau_t)\right].
-     \]</span></li>
+          V^\pi(s_0) := \E \left[ \sum_{t=0}^\infty \gamma^t r(s_t,a_t) \right], \quad\text{where}\quad s_{t+1} \sim p(\cdot |s_t,a_t), a_{t} \sim \pi(\cdot |s_t).
+      \]</span> alternatively, we can write <span class="math display">\[
+          V^\pi(s_0) = \E_{\tau \sim p^\pi(\cdot | s_0)}\left[\sum_{t=0}^\infty \gamma^t r(\tau_t)\right].
+      \]</span></li>
 <li>The state-action value function can be defined as <span class="math display">\[
   Q^\pi(s,a)  = \E_{s&#39; \sim p(\cdot |s,a)}[ r(s,a) + \gamma V^\pi(s&#39;)].
 \]</span></li>
@@ -287,9 +287,9 @@
   Q^\pi(s,a) &amp;= \E_{s&#39; \sim p(\cdot |s,a), a&#39; \sim \pi(\cdot |s&#39;)}[ r(s,a) + \gamma Q(s&#39;,a&#39;)] &amp;&amp;= \E_{s&#39;,a&#39;}[r(s,a) + \gamma Q(s&#39;,a&#39;)].
 \end{align*}\]</span></li>
 <li>Optimal value functions are denoted by <span class="math inline">\(V^*\)</span> or <span class="math inline">\(Q^*\)</span>. They satisfy the Bellman optimality equations <span class="math display">\[\begin{align*}
-        V^*(s) &amp;= \max_{a \in \Ac}  \E_{s&#39;}[r(s,a)+\gamma V^*(s&#39;)]  \\
-        Q^*(s,a) &amp;= \E_{s&#39;}[ r(s,a) + \gamma \max_{a&#39; \in \Ac} Q^*(s&#39;,a&#39;)].
-     \end{align*}\]</span> An optimal policy is denoted by <span class="math inline">\(\pi^*\)</span>, satisfying <span class="math inline">\(V^* = V^{\pi^*}\)</span>.</li>
+         V^*(s) &amp;= \max_{a \in \Ac}  \E_{s&#39;}[r(s,a)+\gamma V^*(s&#39;)]  \\
+         Q^*(s,a) &amp;= \E_{s&#39;}[ r(s,a) + \gamma \max_{a&#39; \in \Ac} Q^*(s&#39;,a&#39;)].
+      \end{align*}\]</span> An optimal policy is denoted by <span class="math inline">\(\pi^*\)</span>, satisfying <span class="math inline">\(V^* = V^{\pi^*}\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -306,6 +306,7 @@
 <div class="box block">
 <ul>
 <li>Trainable parameters are denoted by <span class="math inline">\(\theta, \psi, \phi\)</span>. Dependence on <span class="math inline">\(\theta\)</span> for function approximators is denoted via subscript notation, i.e., <span class="math inline">\(V^\pi_\theta\)</span>, <span class="math inline">\(Q^\pi_\theta\)</span>, <span class="math inline">\(\pi_\theta\)</span>, etc. Differentiation w.r.t. a parameter is denoted by <span class="math inline">\(\nabla_\theta (\cdot )\)</span>.</li>
+<li>Objective functions (for instance in the policy gradient algorithm) are denoted by <span class="math inline">\(J\)</span>.</li>
 <li>Sequences of value function (approximations) are denoted by <span class="math inline">\(V_0,V_1,V_2,\dots\)</span> when one has, for example, <span class="math inline">\(V_n \rightarrow V^\pi\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>. (So iterator is in subscript notation.) Similarly, sequences of trainable parameters are denoted by <span class="math inline">\(\theta_0, \theta_1,\theta_2,\dots\)</span>.</li>
 <li>Datasets are denoted by <span class="math inline">\(\Dc\)</span>, containing either states, state-action pairs, or other content gathered while sampling from an MDP.</li>
 </ul>
