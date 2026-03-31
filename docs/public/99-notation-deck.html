@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Prof. Dr. Sebastian Peitz">
+  <title> Deep Reinforcement Learning:  Notation</title>
+
+  <!-- PWA stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="support/pwa/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#84b819" />
+  <link rel="manifest" href="support/pwa/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <link rel="shortcut icon" href="support/assets/favicon.ico">
+
+  <script type="module">
+    /* Store JSON encoded Pandoc meta data in a global variable. */
+    import initializeDecker from "./support/js/decker.js";
+    initializeDecker("61829c65a.json");
+  </script>
+
+    <!-- Default values for CSS variables can live here. They can be overridden by
+    meta data values. -->
+    <link rel="stylesheet" href="support/css/variables.css">
+
+    <!-- Transfer meta data values from keys `palette.colors` and `css-variables`
+    into a style sheet. Default values can come from `variables.css`. -->
+    <style class="css-declarations">
+      :root {
+                --shade7: #1d1f21;
+                --shade6: #282a2e;
+                --shade5: #4d4d4c;
+                --shade4: #969896;
+                --shade3: #8e908c;
+                --shade2: #d6d6d6;
+                --shade1: #eeeeee;
+                --shade0: #ffffff;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #8959a8;
+                --base0D: #2a9ddf;
+                --base0C: #3e999f;
+                --base0B: #84b819;
+                --base0A: #eab700;
+                --base09: #f5871f;
+                --base08: #c82829;
+                --base07: #1d1f21;
+                --base06: #282a2e;
+                --base05: #4d4d4c;
+                --base04: #969896;
+                --base03: #8e908c;
+                --base02: #d6d6d6;
+                --base01: #eeeeee;
+                --base00: #ffffff;
+                --accent7: #a3685a;
+                --accent6: #8959a8;
+                --accent5: #2a9ddf;
+                --accent4: #3e999f;
+                --accent3: #84b819;
+                --accent2: #eab700;
+                --accent1: #f5871f;
+                --accent0: #c82829;
+            }
+      :root.dark {
+                --shade7: #ffffff;
+                --shade6: #e0e0e0;
+                --shade5: #c5c8c6;
+                --shade4: #b4b7b4;
+                --shade3: #969896;
+                --shade2: #373b41;
+                --shade1: #282a2e;
+                --shade0: #1d1f21;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #b294bb;
+                --base0D: #81a2be;
+                --base0C: #8abeb7;
+                --base0B: #7da72a;
+                --base0A: #f0c674;
+                --base09: #de935f;
+                --base08: #cc6666;
+                --base07: #ffffff;
+                --base06: #e0e0e0;
+                --base05: #c5c8c6;
+                --base04: #b4b7b4;
+                --base03: #969896;
+                --base02: #373b41;
+                --base01: #282a2e;
+                --base00: #1d1f21;
+                --accent7: #a3685a;
+                --accent6: #b294bb;
+                --accent5: #81a2be;
+                --accent4: #8abeb7;
+                --accent3: #7da72a;
+                --accent2: #f0c674;
+                --accent1: #de935f;
+                --accent0: #cc6666;
+            }
+      :root {
+            }
+    </style>
+
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reset.css">
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reveal.css">
+    <link rel="stylesheet" href="support/components/components.css">
+    <link rel="stylesheet" href="support/plugins/decker/ui-anchors.css">
+    <link rel="stylesheet" href="support/plugins/whiteboard/whiteboard.css">
+    <link rel="stylesheet" href="support/plugins/menu/menu.css">
+    <link rel="stylesheet" href="support/plugins/feedback/feedback.css">
+    <link rel="stylesheet" href="support/vendor/videojs/video-js.min.css">
+    <link rel="stylesheet" href="support/plugins/explain/explain.css">
+      <link rel="stylesheet" href="support/plugins/quiz-wue/quiz-wue.css">
+    <link rel="stylesheet" href="support/plugins/quizzer/quizzer.css">
+    <link rel="stylesheet" href="support/css/deck.css">
+    <link rel="stylesheet" href="support/css/tudo-deck.css">
+      <link rel="stylesheet" href="support/fonts/lato.css">
+      <link rel="stylesheet" href="support/plugins/handout/handout.css">
+        <link rel="stylesheet" href="styles/mafi-deck.css">
+    
+</head>
+
+<body >
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title-slide">
+  <div class="decker">
+    <div class="alignment">
+      <header class="background-on-accent">
+        <h1 class="title">
+        <span class="title-title">Deep Reinforcement Learning</span>
+        </h1>
+        <h2 class="subtitle">
+        <span class="title-subtitle">Notation</span>
+        </h2>
+      </header>
+
+      
+            
+            <div class="author">
+                
+              <p>
+                Prof. Dr. Sebastian Peitz
+              </p>
+              </div>
+      
+            <div class="affiliation">
+              <p>
+                Chair of Safe Autonomous Systems, TU Dortmund
+              </p>
+              </div>
+      
+              <div class="date">Summer term 2026</div>
+      
+      
+      <div class="logos">
+                <div class="logo">
+          <img src="./support/assets/tu-logo-light.svg" alt="Logo der TU Dortmund">
+        </div>
+                                    <div class="logo">
+            <img class="title-image" src="assets/inf-logo.svg" alt="Logo">
+
+          </div>
+                          </div>
+            <a class="decker-link" href="https://github.com/decker-edu/decker/">🚀 by Decker</a>
+          </div>
+  </div>
+</section>            
+<section id="letter-styles" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Letter styles</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Sets are written in caligraphic upper-case, <span class="math inline">\(\Ac, \Sc, \Oc,\dots\)</span>.</li>
+<li>States, actions, or other elements of sets are written as lower-case letters, <span class="math inline">\(s,a,o,\dots\)</span>.</li>
+<li>The letter <span class="math inline">\(t\)</span> is reserved for an iterator along a trajectories temporal dimension, its maximal value is given by <span class="math inline">\(T\)</span>. Trajectories start at <span class="math inline">\(t = 0\)</span>.</li>
+<li>We reserve <span class="math inline">\(i,j,k,n,m\)</span> to label iterators, maximal values achieved by them are denoted by the corresponding upper-case letter, i.e., <span class="math inline">\(I,J,K,N,M\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mdps" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>MDPs</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>An MDP is a tuple <span class="math inline">\((\Sc, \Ac, p, r, \gamma)\)</span>. It is consists of a set of states <span class="math inline">\(\Sc\)</span> and actions <span class="math inline">\(\Ac\)</span>. The transition distribution (discrete case) or density (continuous case) is denoted by <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span>. Finally, we have a reward function <span class="math inline">\(r :  \Sc \times \Ac \rightarrow \R\)</span> and a discount factor <span class="math inline">\(\gamma \in [0,1]\)</span>.</li>
+<li>For a given MDP, a policy <span class="math inline">\(\pi\agivenb{a}{s}\)</span> is either a distribution (discrete case) or a density (continuous case) over actions.</li>
+<li>Outputs are elements of some set <span class="math inline">\(\Oc\)</span>, obtained by possibly implicit measurements of given state-action pairs, <span class="math inline">\(o_t = h(s_t,a_t)\)</span>, where <span class="math inline">\(h : \Sc \times \Ac \rightarrow \Oc\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-variables" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Random variables</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Random variables with distribution (discrete case) or density (continuous case) <span class="math inline">\(q\)</span> are declared by writing <span class="math inline">\(x \sim q\)</span>. E.g., <span class="math inline">\(s&#39; \sim p\agivenb{\cdot}{s,a}\)</span> or <span class="math inline">\(a \sim \pi\agivenb{\cdot}{s}\)</span>.</li>
+<li>Trajectories are sequences of state-action pairs <span class="math display">\[
+          \tau = (\tau_0, \tau_1,\dots) = ((s_0,a_0) , (s_1,a_1),\dots).
+      \]</span> If the trajectory is sampled according to some policy <span class="math inline">\(\pi\)</span> (i.e., <span class="math inline">\(s_{t+1} \sim p\agivenb{\cdot}{s_t,a_t}\)</span> and <span class="math inline">\(a_t \sim \pi\agivenb{\cdot}{s_t}\)</span> for <span class="math inline">\(t \geq 1\)</span>), we get a new distribution/density, denoted by <span class="math inline">\(p^\pi\agivenb{\tau}{s_0}\)</span> which is conditioned on the initial state <span class="math inline">\(s_0\)</span>. So <span class="math inline">\(\tau \sim p^\pi\agivenb{\cdot}{s_0}\)</span> denotes a random trajectory starting from <span class="math inline">\(s_0\)</span>.</li>
+<li>Instead of using index notation, one can also use <span class="math inline">\((s,a),(s&#39;,a&#39;),(s&#39;&#39;,a&#39;&#39;),\dots\)</span> to denote the start of a trajectory.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="expectation-and-variance" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Expectation and variance</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Expectations are denoted as <span class="math display">\[
+          \E_{x \sim q} [f(x)] = \underbrace{\E_x[f(x)]}_{\text{if distr. clear}} = \underbrace{\E[f(x)]}_{\text{if R.V. clear}} = \begin{cases} 
+              \sum_{x \in \Xc} q(x) f(x) &amp;\text{discrete} \\
+              \int_{\Xc} q(x) f(x) dx   &amp;\text{continuous}
+          \end{cases}
+      \]</span> Similarly, the variance is defined by <span class="math display">\[
+          \Var_{x \sim q}[f(x)] = \Var_x[f(x)] = \Var[f(x)] =  \E_x[(f(x)-\E_{x&#39;}[f(x&#39;)])^2].
+      \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="state-value-and-state-action-value" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>State value and state-action value</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>The state-value function is defined as <span class="math display">\[
+          V^\pi(s_0) := \E \left[ \sum_{t=0}^\infty \gamma^t r(s_t,a_t) \right], \quad\text{where}\quad s_{t+1} \sim p(\cdot |s_t,a_t), a_{t} \sim \pi(\cdot |s_t).
+      \]</span> alternatively, we can write <span class="math display">\[
+          V^\pi(s_0) = \E_{\tau \sim p^\pi(\cdot | s_0)}\left[\sum_{t=0}^\infty \gamma^t r(\tau_t)\right].
+      \]</span></li>
+<li>The state-action value function can be defined as <span class="math display">\[
+  Q^\pi(s,a)  = \E_{s&#39; \sim p(\cdot |s,a)}[ r(s,a) + \gamma V^\pi(s&#39;)].
+\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bellman-equations" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Bellman equations</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>We have the Bellman equations <span class="math display">\[\begin{align*}
+  V^\pi(s) &amp;= \E_{a \sim \pi(\cdot | s), s&#39; \sim p(\cdot | s, a)}[ r(s,a) + \gamma V^\pi(s&#39;) ] &amp;&amp;=\E_{a,s&#39;}[r(s,a)+\gamma V^\pi(s&#39;)], \\ 
+  Q^\pi(s,a) &amp;= \E_{s&#39; \sim p(\cdot |s,a), a&#39; \sim \pi(\cdot |s&#39;)}[ r(s,a) + \gamma Q(s&#39;,a&#39;)] &amp;&amp;= \E_{s&#39;,a&#39;}[r(s,a) + \gamma Q(s&#39;,a&#39;)].
+\end{align*}\]</span></li>
+<li>Optimal value functions are denoted by <span class="math inline">\(V^*\)</span> or <span class="math inline">\(Q^*\)</span>. They satisfy the Bellman optimality equations <span class="math display">\[\begin{align*}
+         V^*(s) &amp;= \max_{a \in \Ac}  \E_{s&#39;}[r(s,a)+\gamma V^*(s&#39;)]  \\
+         Q^*(s,a) &amp;= \E_{s&#39;}[ r(s,a) + \gamma \max_{a&#39; \in \Ac} Q^*(s&#39;,a&#39;)].
+      \end{align*}\]</span> An optimal policy is denoted by <span class="math inline">\(\pi^*\)</span>, satisfying <span class="math inline">\(V^* = V^{\pi^*}\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trainable-parameters-and-function-approximation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Trainable parameters and function approximation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Trainable parameters are denoted by <span class="math inline">\(\theta, \psi, \phi\)</span>. Dependence on <span class="math inline">\(\theta\)</span> for function approximators is denoted via subscript notation, i.e., <span class="math inline">\(V^\pi_\theta\)</span>, <span class="math inline">\(Q^\pi_\theta\)</span>, <span class="math inline">\(\pi_\theta\)</span>, etc. Differentiation w.r.t. a parameter is denoted by <span class="math inline">\(\nabla_\theta (\cdot )\)</span>.</li>
+<li>Objective functions (for instance in the policy gradient algorithm) are denoted by <span class="math inline">\(J\)</span>.</li>
+<li>Sequences of value function (approximations) are denoted by <span class="math inline">\(V_0,V_1,V_2,\dots\)</span> when one has, for example, <span class="math inline">\(V_n \rightarrow V^\pi\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>. (So iterator is in subscript notation.) Similarly, sequences of trainable parameters are denoted by <span class="math inline">\(\theta_0, \theta_1,\theta_2,\dots\)</span>.</li>
+<li>Datasets are denoted by <span class="math inline">\(\Dc\)</span>, containing either states, state-action pairs, or other content gathered while sampling from an MDP.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<code class="sourceCode markdown" style="display:none;"></code>
+
+    </div>
+  </div>
+  
+  <script src="support/vendor/videojs/video.min.js"></script>
+  <script src="support/vendor/chartjs/chart.umd.js"></script>
+  <script src="support/plugins/quizzer/wordcloud2.js"></script>
+  <script src="support/plugins/quizzer/d3-sankey.min.js"></script>
+  <script type="module" src="support/components/custom-dialog.js"></script>
+  <script type="module" src="./support/js/color-scheme.js"></script>
+
+<script type="module">
+  // import Reveal and all plugins
+  import Reveal from './support/vendor/reveal/dist/reveal.esm.js';
+  import deckerPlugin from './support/plugins/decker/decker.js';
+  import uiAnchorsPlugin from './support/plugins/decker/ui-anchors.js'
+  import mathPlugin from './support/plugins/math/math.js';
+  import whiteboardPlugin from './support/plugins/whiteboard/whiteboard.js';
+  import sagePlugin from './support/plugins/sage/sage.js';
+  import searchPlugin from './support/plugins/search/search.js';
+  import zoomPlugin from './support/plugins/zoom/zoom.js';
+  import printPlugin from './support/plugins/print/print.js';
+  import jinglesPlugin from './support/plugins/jingles/jingles.js';
+  import quizPlugin from './support/plugins/quiz/quiz.js';
+  import quizWuePlugin from './support/plugins/quiz-wue/quiz-wue.js';
+  import quizzerPlugin from './support/plugins/quizzer/quizzer.js'
+  import explainPlugin from './support/plugins/explain/explain.js';
+  import chartsPlugin from './support/plugins/charts/charts.js';
+  import menuPlugin from './support/plugins/menu/menu.js';
+  import feedbackPlugin from './support/plugins/feedback/feedback.js';
+  import notesPlugin from './support/vendor/reveal/plugin/notes/notes.esm.js';
+      import a11yPlugin from './support/plugins/a11y/a11y.js';
+  import handoutPlugin from './support/plugins/handout/handout.js';
+  import chattyPlugin from './support/plugins/chatty/chatty.js';
+
+  let revealConfig = { 
+    // reveal configuration (see https://revealjs.com/config/)
+    ...Decker.meta.reveal,
+
+    // plugin configuration
+    math: { mathjax: String.raw`support/vendor/mathjax/`, ...Decker.meta.math },
+    chart: Decker.meta.chart,
+    menu: Decker.meta.menu,
+    explain: Decker.meta.explain,
+    feedback: Decker.meta.feedback || Decker.meta["decker-engine"],
+    jingles: Decker.meta.jingles,
+    whiteboard: Decker.meta.whiteboard,
+    
+    // list of plugins
+    plugins: [
+      deckerPlugin,
+      uiAnchorsPlugin,
+      sagePlugin,
+      mathPlugin,
+      chartsPlugin,
+      whiteboardPlugin,
+      searchPlugin,
+      zoomPlugin,
+      printPlugin,
+      jinglesPlugin,
+      quizPlugin,
+      quizWuePlugin,
+      quizzerPlugin,
+      explainPlugin,
+      menuPlugin,
+      chattyPlugin,
+      feedbackPlugin,
+      notesPlugin,
+              a11yPlugin,
+      handoutPlugin
+    ]
+  };
+
+  Reveal.initialize(revealConfig);
+</script>
+  
+
+</body>
+</html>

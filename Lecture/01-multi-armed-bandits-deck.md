@@ -10,7 +10,7 @@ feedback:
 ::: platzhalter
 
 ::: columns-7-3
-![Google Maps (go [here](https://maps.app.goo.gl/ixKDSXT6bwzfa6Y9A) for the live version; do you get the same numbers?)](images/MapsDortmund.png){ width=900px }
+![Google Maps (go [here](https://maps.app.goo.gl/ixKDSXT6bwzfa6Y9A) for the live version; do you get the same numbers?)](images/01-multi-armed-bandits/MapsDortmund.png){ width=900px }
 
 ::: small
 ::: incremental
@@ -44,7 +44,7 @@ feedback:
 :::
 :::
 
-![A multi-armed bandit [@Ferreira2024mab]](images/multi-armed-bandit.png){ height=150px }
+![A multi-armed bandit [@Ferreira2024mab]](images/01-multi-armed-bandits/multi-armed-bandit.png){ height=150px }
 :::
 
 ::: footer
@@ -84,7 +84,7 @@ $$a_t=\arg\max_a Q_t(a)$$
 ::: small
 ::: incremental
 - Let's study a large number of randomly generated $k$-armed bandit problems (here: $k = 10$)
-- For each bandit problem the action values $q(a)$, $a = 1, \ldots, 10$, are selected to a normal distribution: $$ q(a) \sim \Normal{1}{0} $$
+- For each bandit problem the action values $q(a)$, $a = 1, \ldots, 10$, are selected to a normal distribution: $$ q(a) \sim \Normal{0}{1} $$
 - The corresponding reward is a random variable as well: $$ r_t \sim \Normal{q(a_t)}{1} $$
 - One **run**: perform $T=1000$ steps. For each time step, report the average reward received until then.
 - **Statistics**: repeat the above experiment $2000$ times
@@ -122,12 +122,13 @@ What is $\epsilon$'s job? [$\Rightarrow$ the **exploration**]{.fragment}
 
 ![](images/01-multi-armed-bandits/mab-actions.svg){ .embed width=800px }
 
+::: small
 ::: incremental
-- Too little (or no) exploitation is harmful
-- Too much exploitation is also harmful
+- Too little (or no) exploration is harmful
+- Too much exploration is also harmful
 - Should we think about a **schedule** in terms of the exploration?
 :::
-
+:::
 
 # A simple bandit algorithm
 
@@ -161,7 +162,7 @@ Caption: A simple version of the $\epsilon$ greedy bandit
 ::: small
 
 Calculating $Q(a)$ anew every time appears to be expensive. [For a single action, consider that we have received a sequence of rewards $r_1,\ldots,r_{t-1}$ so far:]{.fragment}
-$$ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}$$
+[$$ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}$$]{ .fragment }
 [Wouldn't it be easier if we could just updated incrementally?]{ .fragment } [$\Rightarrow$ let's try]{ .fragment }
 
 [$$
@@ -174,11 +175,11 @@ Q_{t+1} &=& \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t + \sum_{
 $$]{ .math-incremental }
 
 ::: fragment
-The expression *[ Target - OldEstimate ]* is an error estimate, used to steer us closer to the **target**
+The expression *[ Target - OldEstimate ]* is an **error estimate**, used to steer us closer to the **target**
 :::
 
 ::: fragment
-We will see a formulate of the type $$ NewEstimate \leftarrow OldEstimate + StepSize \; [ Target - OldEstimate ] $$ frequently from now on!
+We will see a formulae of the type $$ NewEstimate \leftarrow OldEstimate + StepSize \; [ Target - OldEstimate ] $$ frequently from now on!
 :::
 
 :::
@@ -213,14 +214,14 @@ $$]{ .math-incremental }
 
 
 # Bias in the selection of initial values
-<!-- ::: small -->
+::: small
 ::: incremental
 - All methods up to now are *biased* in the sense that they depend on the (arbitrarily selected) initial guesses $Q_1(a)$
 - Can we use this to our advantage and increase exploration?
 - Let us choose overly **optimistic initial values**!
 - For $q(a) \sim \Normal{1}{0}$, an initial guess of $Q_1(a)$ is certainly unrealistically high.
 :::
-<!-- ::: -->
+:::
 
 ::: fragment
 ![](images/01-multi-armed-bandits/mab-actions-opt.svg){ .embed width=800px }
@@ -228,9 +229,10 @@ $$]{ .math-incremental }
 
 # What we have not discussed
 
+::: small
 Two topics (and also many more) topics that we have not discussed:
 
-::: small
+
 ::: incremental
 - Bandits with **upper confidence bounds** (**UCCB**):
   - Along with the estimate for $Q_t$, we assign an upper confidence bound based on the number of times $N_t$ we have selected this action. 

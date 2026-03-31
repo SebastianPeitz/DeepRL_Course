@@ -94,13 +94,13 @@ math:
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
-    agivenb: ['{\left( #1  \mid #2 \right)}', 2]
-    pC: ['{p\left( #1  \mid #2 \right)}', 2]
-    policy: ['{\pi\left( #1  \mid #2 \right)}', 2]
+    agivenb: ['{\left( #1  \middle|#2 \right)}', 2]
+    pC: ['{p\left( #1  \middle|#2 \right)}', 2]
+    policy: ['{\pi\left( #1  \middle|#2 \right)}', 2]
     Exp: ['{\mathbb{E}\left[ #1 \right]}', 1]
     Expsub: ['{\mathbb{E}_{#2}\left[ #1 \right]}', 2]
-    ExpC: ['{\mathbb{E}\left[ #1  \mid #2 \right]}', 2]
-    ExpCsub: ['{\mathbb{E}_{#3}\left[ #1  \mid #2 \right]}', 3]
+    ExpC: ['{\mathbb{E}\left[ #1 \middle| #2 \right]}', 2]
+    ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
     Var: '{\mathbb{E}}'
     Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
     # i: '{\mathrm{i}\mkern1mu}'
