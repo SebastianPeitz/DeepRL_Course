@@ -172,10 +172,45 @@ Processes</title>
           </div>
   </div>
 </section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>What is reinforcement learning?</li>
+<li>Some remarks on stochasticity</li>
+<li>What are MDPs?</li>
+<li>Finite Markov chains</li>
+<li>Finite Markov reward processes
+<ul>
+<li>Value function &amp; Bellman equation</li>
+</ul></li>
+<li>Markov decision processes
+<ul>
+<li>State-value functions and action-value functions</li>
+</ul></li>
+<li>Optimal policies and value functions</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="what-is-reinforcement-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>What is reinforcement learning?</h1>
+</div>
+</div>
+</section>
+<section id="section" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1></h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -1308,6 +1343,13 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 </div>
 </section>
 <section id="finite-markov-chains" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Finite Markov chains</h1>
+</div>
+</div>
+</section>
+<section id="finite-markov-chains-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>Finite Markov chains</h1>
@@ -3097,10 +3139,10 @@ Exemplary value function for different golf ball locations (<span class="citatio
 </div>
 </div>
 </section>
-<section id="the-bellmann-equation-for-mrps-1" class="slide level1">
+<section id="the-bellman-equation-for-mrps-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>The Bellmann equation for MRPs (1)</h1>
+<h1>The Bellman equation for MRPs (1)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -3108,7 +3150,7 @@ Exemplary value function for different golf ball locations (<span class="citatio
 <p><em>Challenge</em>: How to calculate all state values in closed form?</p>
 </div>
 <div class="fragment">
-<p><em>Solution</em>: The <strong>Bellmann equation</strong>.</p>
+<p><em>Solution</em>: The <strong>Bellman equation</strong>.</p>
 </div>
 <p><span class="math-incremental"><span class="math display">\[
 \begin{align*}
@@ -3126,10 +3168,10 @@ V(s_t) &amp;= \ExpC{g_t}{s_t} \\
 </div>
 </div>
 </section>
-<section id="the-bellmann-equation-for-mrps-2" class="slide level1">
+<section id="the-bellman-equation-for-mrps-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>The Bellmann equation for MRPs (2)</h1>
+<h1>The Bellman equation for MRPs (2)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -3152,10 +3194,10 @@ V_\Sc &amp;= \hat r_\Sc + \gamma P V_\Sc \\
 </div>
 </div>
 </section>
-<section id="solving-the-bellmann-equation" class="slide level1">
+<section id="solving-the-bellman-equation" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Solving the Bellmann equation</h1>
+<h1>Solving the Bellman equation</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -4973,13 +5015,13 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 <div class="area">
 <div class="box block">
 <div class="definition">
-<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[ V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}. \]</span></p>
+<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}\]</span></p>
 </div>
 <div class="fragment">
 <div class="definition">
-<p>The <strong>action-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span>, taking action <span class="math inline">\(a\)</span> and then following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[
+<p>The <strong>action-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span>, taking action <span class="math inline">\(a\)</span> and then following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}
 Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s,a_t=a}{\pi}.
-\]</span></p>
+\label{eq:action-value-function}\end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -4988,10 +5030,10 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 </div>
 </div>
 </section>
-<section id="bellmann-expectation-equation-1" class="slide level1">
+<section id="bellman-expectation-equation-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Bellmann expectation equation (1)</h1>
+<h1>Bellman expectation equation (1)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -5005,16 +5047,16 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 </div>
 </div>
 </section>
-<section id="bellmann-expectation-equation-2" class="slide level1">
+<section id="bellman-expectation-equation-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Bellmann expectation equation (2)</h1>
+<h1>Bellman expectation equation (2)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t+1}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
 <div class="fragment">
-<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmannQ} \end{equation}\]</span></p>
+<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmanQ} \end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -5079,7 +5121,7 @@ p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp;
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Using the Bellmann expectation from <span class="math inline">\(\eqref{eq:BellmannQ}\)</span>, the action values can be calculated directly:  </p>
+<p>Using the Bellman expectation from <span class="math inline">\(\eqref{eq:BellmanQ}\)</span>, the action values can be calculated directly:  </p>
 <div class="media">
 <figure class="image" style="height:auto;width:1000px;">
 <img src="images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg" style="height:auto;width:100%;" alt="images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg" />
@@ -5098,6 +5140,247 @@ p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp;
 </div>
 </div>
 </section>
+<section id="optimal-value-functions-in-mdps" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Optimal value functions in MDPs</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="definition">
+<p>The <strong>optimal state-value function</strong> of an MDP is the maximum state-value function over all policies: <span class="math display">\[
+  V^*(s) = \max_\pi V^\pi(s) \qquad \forall s\in\Sc.
+\]</span></p>
+</div>
+<div class="fragment">
+<div class="definition">
+<p>The <strong>optimal state-action function</strong> of an MDP is the maximum action-value function over all policies: <span class="math display">\[
+  Q^*(s,a) = \max_\pi Q^\pi(s,a) \qquad \forall s\in\Sc, a\in\Ac(s).
+\]</span></p>
+</div>
+</div>
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">They denote the best possible performance for a given MDP.</li>
+<li class="fragment">A (finite) MDP can be easily solved in an optimal way if <span class="math inline">\(Q^*(s,a)\)</span> is known.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimal-policy-for-an-mdp" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Optimal policy for an MDP</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>Define a partial ordering over polices <span class="math display">\[\pi\geq\pi&#39;\qquad \text{if} \qquad V^\pi(s) \geq V^{\pi&#39;}(s)\quad\forall s\in\Sc.\]</span></p>
+<div class="small">
+<div class="fragment">
+<div id="theorem-optimal-policies-in-mdps" class="definition">
+<h3>Theorem: Optimal policies in MDPs</h3>
+<p>For any finite MDP</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">there exists an optimal policy <span class="math inline">\(\pi^* \geq \pi\)</span> that is better or equal to all other policies,</li>
+<li class="fragment">all optimal policies achieve the same optimal state-value function <span class="math inline">\(V^*(s)=V^{\pi^*}(s)\)</span>,</li>
+<li class="fragment">all optimal policies achieve the same optimal action-value function <span class="math inline">\(Q^*(s,a)=Q^{\pi^*}(s,a)\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bellman-optimality-equation-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Bellman optimality equation (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="theorem-bellmans-principle-of-optimality-bellman1954" class="definition">
+<h3>Theorem: Bellman’s principle of optimality <span class="citation">(<a href="#ref-Bellman1954">Bellman 1954</a>)</span></h3>
+<p>An optimal policy has the property that whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Any policy (i.e., also the optimal one) must satisfy the self-consistency condition given by the Bellman expectation equation.</li>
+<li class="fragment">An optimal policy must deliver the maximum expected return being in a given state: <span class="math-incremental"><span class="math display">\[
+\begin{align*}
+V^*(s_t) &amp;= \max_a Q^{\pi^*}(s_t,a) \\
+&amp;= \max_a\ExpCsub{g_t}{s_t, a}{\pi^*} \\
+&amp;= \max_a\ExpCsub{r_{t+1} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
+&amp;= \max_a\ExpCsub{r_{t+1} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
+\end{align*}
+\]</span></span></li>
+<li class="fragment">for a finite MDP: <span class="math display">\[
+V^*(s_t) = \max_a \Exp{p\agivenb{r}{s_t,a}}‚ + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimal-police-for-wood-cutting-mdp-state-value-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Optimal police for wood cutting MDP: state value (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="small">
+<p>Start with <span class="math inline">\(V(s=4)\)</span> and continue backwards <span class="math-incremental"><span class="math display">\[
+\begin{align*}
+V^*(4) &amp;= 0 \\
+V^*(3) &amp;= \max \begin{cases} 1 + \gamma \left[ (1-\alpha) V^*(3) + \alpha V^*(4) \right] \\ 3 + \gamma V^*(4) \end{cases} \\
+&amp;= \max \begin{cases} 1 + \gamma \left[ (1-\alpha) V^*(3)\right] \\ 3 \end{cases} \\
+V^*(2) &amp;= \max \begin{cases} 0 + \gamma \left[ (1-\alpha) V^*(3) + \alpha V^*(4) \right] \\ 2 + \gamma V^*(4) \end{cases} \\
+&amp;= \max \begin{cases} \gamma \left[ (1-\alpha) V^*(3) \right] \\ 2 \end{cases} \\
+V^*(1) &amp;= \max \begin{cases}\gamma \left[ (1-\alpha) V^*(2) \right] \\ 1 \end{cases} \\
+\end{align*}
+\]</span></span></p>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:500px;">
+<img src="images/02-MDPs/MDP-example1.svg" style="height:auto;width:100%;" alt="images/02-MDPs/MDP-example1.svg" />
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimal-police-for-wood-cutting-mdp-state-value-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Optimal police for wood cutting MDP: state value (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Possible solutions:
+<ul>
+<li>numerical optimization approach (e.g., simplex method, gradient descent,…)</li>
+<li>manual case-by-case equation solving (dynamic programming, next lecture)</li>
+</ul></li>
+</ul>
+<div class="media">
+<figure class="image" style="height:auto;width:700px;">
+<img src="images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value.svg" style="height:auto;width:100%;" aria-label="\gamma = 0.8, \alpha = 0.2" alt="images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value.svg" />
+<figcaption>
+<span class="math inline">\(\gamma = 0.8\)</span>, <span class="math inline">\(\alpha = 0.2\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimal-police-for-wood-cutting-mdp-state-value-3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Optimal police for wood cutting MDP: state value (3)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Possible solutions:
+<ul>
+<li>numerical optimization approach (e.g., simplex method, gradient descent,…)</li>
+<li>manual case-by-case equation solving (dynamic programming, next lecture)</li>
+</ul></li>
+</ul>
+<div class="media">
+<figure class="image" style="height:auto;width:700px;">
+<img src="images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value_Gamma09.svg" style="height:auto;width:100%;" aria-label="\gamma = 0.9, \alpha = 0.2" alt="images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value_Gamma09.svg" />
+<figcaption>
+<span class="math inline">\(\gamma = 0.9\)</span>, <span class="math inline">\(\alpha = 0.2\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenges-of-direct-calculation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Challenges of direct calculation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Possible only for small action and state-space MDPs
+<ul class="incremental">
+<li class="fragment">“Solving” Backgammon with <span class="math inline">\(\approx 10^20\)</span> states?</li>
+</ul></li>
+<li class="fragment">Another issue: total environment knowledge required</li>
+</ul>
+</div>
+<div class="fragment">
+<h2 id="central-issues-that-rl-addresses">Central issues that RL addresses</h2>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Approximate solutions of complex decision problems.</li>
+<li class="fragment">Learning of such approximations based on data retrieved from environment interactions <span class="math inline">\(\dots\)</span>
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(\dots\)</span> potentially without any a priori model knowledge.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-what-we-have-learned" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary / what we have learned</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Differentiate finite Markov process models with or w/o rewards and actions.</li>
+<li>Interpret such stochastic processes as simplified abstractions of real-world problems.</li>
+<li>Understand the importance of value functions to describe the agent’s performance.</li>
+<li>Formulate value-function equation systems by the Bellman principle.</li>
+<li>Recognize optimal policies.</li>
+<li>Set up nonlinear equation systems for retrieving optimal policies by the Bellman principle.</li>
+<li>Solve for different value functions in MRP/MDP by brute force optimization.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="references" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -5106,6 +5389,9 @@ p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp;
 <div class="area">
 <div class="box block">
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Bellman1954" class="csl-entry">
+Bellman, Richard. 1954. <span>“The Theory of Dynamic Programming.”</span> <em>Bulletin of the American Mathematical Society</em> 60 (6). American Mathematical Society (AMS): 503–15. doi:<a href="https://doi.org/10.1090/s0002-9904-1954-09848-8">10.1090/s0002-9904-1954-09848-8</a>.
+</div>
 <div id="ref-Sutton1998" class="csl-entry">
 Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.
 </div>

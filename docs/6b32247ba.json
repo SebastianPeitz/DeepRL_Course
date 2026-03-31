@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "30.03.2026 20:15"
+        "31.03.2026 17:53"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -1259,6 +1259,8 @@
             ],
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
+            "Qpi": "{Q^\\pi}",
+            "Qstar": "{Q^*}",
             "R": "{\\mathbb{R}}",
             "Re": [
                 "{\\mathrm{Re}\\!\\left( #1 \\right)}",
@@ -1266,6 +1268,8 @@
             ],
             "Sc": "{\\mathcal{S}}",
             "Var": "{\\mathbb{E}}",
+            "Vpi": "{V^\\pi}",
+            "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
             "Z": "{\\mathbb{Z}}",
             "abs": [
@@ -1373,12 +1377,6 @@
         },
         "url": "https://quiz.jetzt/"
     },
-    "quotes": [
-        {
-            "author": "Paul Erdös",
-            "quote": "Man lernt Mathematik nicht, man gewöhnt sich nur daran."
-        }
-    ],
     "resource-pack": "exe:tudo",
     "reveal": {
         "backgroundTransition": "none",

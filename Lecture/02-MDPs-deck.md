@@ -4,8 +4,20 @@ feedback:
   deck-id:  'deeprl-MDPs'
 ...
 
+# Content
+- What is reinforcement learning?
+- Some remarks on stochasticity
+- What are MDPs?
+- Finite Markov chains
+- Finite Markov reward processes
+  - Value function \& Bellman equation
+- Markov decision processes
+  - State-value functions and action-value functions
+- Optimal policies and value functions
+
 # What is reinforcement learning?
 
+# 
 ::: columns-4-6
 ![](images/00-introduction/RL_illustration.svg){ .embed width=600px }
 
@@ -215,6 +227,8 @@ Table: Classification of Markov models
 
 # Finite Markov chains
 
+# Finite Markov chains
+
 ::: columns-8-3
 ::: platzhalter
 ::: {.definition}
@@ -408,14 +422,14 @@ The **state-value function** $V(s)$ (or simply **value function**) of an MRP is 
 ![Exemplary value function for different golf ball locations (@Sutton1998)](images/02-MDPs/Value-golf.png){ width=500px }
 :::
 
-# The Bellmann equation for MRPs (1)
+# The Bellman equation for MRPs (1)
 
 ::: fragment
 *Challenge*: How to calculate all state values in closed form?
 :::
 
 ::: fragment
-*Solution*: The **Bellmann equation**.
+*Solution*: The **Bellman equation**.
 :::
 
 [$$
@@ -429,7 +443,7 @@ V(s_t) &= \ExpC{g_t}{s_t} \\
 \end{align*}
 $$]{ .math-incremental }
 
-# The Bellmann equation for MRPs (2)
+# The Bellman equation for MRPs (2)
 
 Assuming a known expected reward $\hat r$ for every state $s\in\Sc$,
 $$ \hat r_\Sc = \begin{bmatrix} \ExpC{r}{s_1} & \ldots & \ExpC{r}{s_n} \end{bmatrix}^\top = \begin{bmatrix} \hat r_1 & \ldots & \hat r_n \end{bmatrix}^\top, $$
@@ -449,7 +463,7 @@ V_\Sc &= \hat r_\Sc + \gamma P V_\Sc \\
 \end{align*}
 $$]{ .math-incremental }
 
-# Solving the Bellmann equation
+# Solving the Bellman equation
 
 [$$
 \begin{align*}
@@ -566,19 +580,19 @@ $$ r^\pi = \sum_{a\in\Ac} \pi\agivenb{a}{s} p\agivenb{r}{s,a} $$
 
 ::: {.definition}
 The **state-value function** of an MDP is the expected return starting in $s$ following policy $\pi$:
-$$ V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}. $$
+$$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}$$
 :::
 
 ::: fragment
 ::: {.definition}
 The **action-value function** of an MDP is the expected return starting in $s$, taking action $a$ and then following policy $\pi$:
-$$
+$$\begin{equation}
 Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s,a_t=a}{\pi}.
-$$
+\label{eq:action-value-function}\end{equation}$$
 :::
 :::
 
-# Bellmann expectation equation (1)
+# Bellman expectation equation (1)
 
 Analog to MRPs, the state value of an MDP can be decomposed into a Bellman notation:
 $$ V^\pi(s_t) = \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. $$
@@ -588,14 +602,14 @@ In finite MDPs, the state value can be directly linked to the action value:
 $$ V^\pi(s_t)\sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).$$
 :::
 
-# Bellmann expectation equation (2)
+# Bellman expectation equation (2)
 
 Likewise, the action value of an MDP can be decomposed into a Bellman notation:
 $$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t+1}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. $$
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
-$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmannQ} \end{equation}$$
+$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmanQ} \end{equation}$$
 :::
 
 # Bellman expectation equation \& forest tree example (1)
@@ -629,7 +643,7 @@ $$p^\pi\agivenb{s'}{s} = \begin{bmatrix} 0 & \frac{1-\alpha}{2} & 0 & \frac{1+\a
 
 # Bellman expectation equation \& forest tree example (3)
 
-Using the Bellmann expectation from \eqref{eq:BellmannQ}, the action values can be calculated directly:
+Using the Bellman expectation from \eqref{eq:BellmanQ}, the action values can be calculated directly:
 \ 
 
 ![](images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg){ width=1000px }
@@ -641,7 +655,143 @@ Using the Bellmann expectation from \eqref{eq:BellmannQ}, the action values can 
 
 ------------------------------------------------------------------------------
 
+# Optimal value functions in MDPs
+::: {.definition}
+The **optimal state-value function** of an MDP is the maximum state-value function over all policies:
+$$
+  V^*(s) = \max_\pi V^\pi(s) \qquad \forall s\in\Sc.
+$$
+:::
 
+::: fragment
+
+::: {.definition}
+The **optimal state-action function** of an MDP is the maximum action-value function over all policies:
+$$
+  Q^*(s,a) = \max_\pi Q^\pi(s,a) \qquad \forall s\in\Sc, a\in\Ac(s).
+$$
+:::
+:::
+
+::: small
+::: incremental
+- They denote the best possible performance for a given MDP.
+- A (finite) MDP can be easily solved in an optimal way if $Q^*(s,a)$ is known.
+:::
+:::
+
+# Optimal policy for an MDP
+Define a partial ordering over polices
+$$\pi\geq\pi'\qquad \text{if} \qquad V^\pi(s) \geq V^{\pi'}(s)\quad\forall s\in\Sc.$$
+
+::: small
+::: fragment
+::: {.definition}
+### Theorem: Optimal policies in MDPs
+
+For any finite MDP
+
+::: incremental
+- there exists an optimal policy $\pi^* \geq \pi$ that is better or equal to all other policies,
+- all optimal policies achieve the same optimal state-value function $V^*(s)=V^{\pi^*}(s)$,
+- all optimal policies achieve the same optimal action-value function $Q^*(s,a)=Q^{\pi^*}(s,a)$.
+:::
+:::
+:::
+:::
+
+# Bellman optimality equation (1)
+
+::: small
+::: {.definition}
+### Theorem: Bellman's principle of optimality [@Bellman1954]
+
+An optimal policy has the property that whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision.
+:::
+
+
+::: incremental
+- Any policy (i.e., also the optimal one) must satisfy the self-consistency condition given by the Bellman expectation equation.
+- An optimal policy must deliver the maximum expected return being in a given state:
+[$$
+\begin{align*}
+V^*(s_t) &= \max_a Q^{\pi^*}(s_t,a) \\
+&= \max_a\ExpCsub{g_t}{s_t, a}{\pi^*} \\
+&= \max_a\ExpCsub{r_{t+1} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
+&= \max_a\ExpCsub{r_{t+1} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
+\end{align*}
+$$]{ .math-incremental }
+- for a finite MDP:
+$$
+V^*(s_t) = \max_a \Exp{p\agivenb{r}{s_t,a}}‚ + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+$$
+:::
+:::
+
+# Optimal police for wood cutting MDP: state value (1)
+
+::: columns-7-3
+::: small
+Start with $V(s=4)$ and continue backwards
+[$$
+\begin{align*}
+V^*(4) &= 0 \\
+V^*(3) &= \max \begin{cases} 1 + \gamma \left[ (1-\alpha) V^*(3) + \alpha V^*(4) \right] \\ 3 + \gamma V^*(4) \end{cases} \\
+&= \max \begin{cases} 1 + \gamma \left[ (1-\alpha) V^*(3)\right] \\ 3 \end{cases} \\
+V^*(2) &= \max \begin{cases} 0 + \gamma \left[ (1-\alpha) V^*(3) + \alpha V^*(4) \right] \\ 2 + \gamma V^*(4) \end{cases} \\
+&= \max \begin{cases} \gamma \left[ (1-\alpha) V^*(3) \right] \\ 2 \end{cases} \\
+V^*(1) &= \max \begin{cases}\gamma \left[ (1-\alpha) V^*(2) \right] \\ 1 \end{cases} \\
+\end{align*}
+$$]{ .math-incremental }
+:::
+
+![](images/02-MDPs/MDP-example1.svg){ width=500px }
+
+:::
+
+# Optimal police for wood cutting MDP: state value (2)
+
+- Possible solutions:
+  - numerical optimization approach (e.g., simplex method, gradient descent,...)
+  - manual case-by-case equation solving (dynamic programming, next lecture)
+
+![$\gamma = 0.8$, $\alpha = 0.2$](images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value.svg){ width=700px }
+
+# Optimal police for wood cutting MDP: state value (3)
+
+- Possible solutions:
+  - numerical optimization approach (e.g., simplex method, gradient descent,...)
+  - manual case-by-case equation solving (dynamic programming, next lecture)
+
+![$\gamma = 0.9$, $\alpha = 0.2$](images/02-MDPs/Forest_Markov_Decision_Process_Optimal_State_Value_Gamma09.svg){ width=700px }
+
+# Challenges of direct calculation
+
+::: incremental 
+- Possible only for small action and state-space MDPs
+  - "Solving" Backgammon with $\approx 10^20$ states?
+- Another issue: total environment knowledge required
+:::
+
+::: fragment
+## Central issues that RL addresses
+:::
+
+::: incremental
+- Approximate solutions of complex decision problems.
+- Learning of such approximations based on data retrieved from environment interactions $\dots$
+  - $\dots$ potentially without any a priori model knowledge.
+:::
+
+# Summary / what we have learned
+
+- Differentiate finite Markov process models with or w/o rewards and actions.
+- Interpret such stochastic processes as simplified abstractions of real-world problems.
+- Understand the importance of value functions to describe the agent’s performance.
+- Formulate value-function equation systems by the Bellman principle.
+- Recognize optimal policies.
+- Set up nonlinear equation systems for retrieving optimal policies by the Bellman principle.
+- Solve for different value functions in MRP/MDP by brute force optimization.
 
 # References
 

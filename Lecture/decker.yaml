@@ -103,51 +103,22 @@ math:
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
     Var: '{\mathbb{E}}'
     Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
-    # i: '{\mathrm{i}\mkern1mu}'
-    # eps: '{\varepsilon}'
+ 
+    Vpi: '{V^\pi}'
+    Qpi: '{Q^\pi}'
+    Vstar: '{V^*}'
+    Qstar: '{Q^*}'
+
     dx: '{\,\mathrm{d}x}'
     dt: '{\,\mathrm{d}t}'
-    # dtau: '{\,\mathrm{d}\tau}'
-    # dy: '{\,\mathrm{d}y}'
-    # du: '{\,\mathrm{d}u}'
-    # dg: '{\,\mathrm{d}g}'
-    # gilt: '{\,:\;}'
-    # folgt: '{\;\Rightarrow\;}'
-    # image: '{\mathrm{Im}}'
-    # laplace: '{\Delta}'
-    # grad: '{\nabla}'
-    # hess: ['{\nabla^2{#1}}', 1]
-    # xit: ['{\vec{x}^{(#1)}}', 1]
-    # dit: ['{\vec{d}^{(#1)}}', 1]
-    # ait: ['{\alpha^{(#1)}}', 1]
-    # T: '^{\mathsf{T}}'
-    # and: '{\;\wedge\;}'
-    # or: '{\;\vee\;}'
-    # with: '{\;\mathrel{|}\;}'
-    # With: '{\;\mathrel{\bigg|}\;}'
+
     abs: ['\left\vert #1 \right\vert', 1]
     norm: ['\left\Vert #1 \right\Vert', 1]
-    # det: ['\left\vert #1 \right\vert', 1]
-    # vec: ['{\mathbf{#1}}', 1]
-    # mat: ['{\mathbf{#1}}', 1]
-    # func: ['\mathrm{#1}', 1]
-    # matrix: ['\begin{pmatrix} #1 \end{pmatrix}', 1]
-    # vector: ['\begin{pmatrix} #1 \end{pmatrix}', 1]
-    # of: ['{\left( #1 \right)}', 1]
-    # ceil: ['{\left\lceil #1 \right\rceil}', 1]
-    # floor: ['{\left\lfloor #1 \right\rfloor}', 1]
+
     set: ['{\left\{ #1 \right\}}', 1]
-    # liminf: ['{\lim\limits_{#1 \to \infty}\,}', 1]
-    # limto: ['{\lim\limits_{#1 \to #2}\,}', 2]
-    # llimto: ['{\lim\limits_{#1 \nearrow #2}\,}', 2]
-    # rlimto: ['{\lim\limits_{#1 \searrow #2}\,}', 2]
+
     diff: ['{\frac{\mathrm{d} #1}{\mathrm{d} #2}}', 2]
     ndiff: ['{\frac{\mathrm{d}^{#3} #1}{\mathrm{d} {#2}^{#3}}}', 3]
     pdiff: ['{\frac{\partial #1}{\partial #2}}', 2]
     Re: ['{\mathrm{Re}\!\left( #1 \right)}', 1]
     Im: ['{\mathrm{Im}\!\left( #1 \right)}', 1]
-    # O: ['\mathcal{O}\left( #1 \right)', 1]
-
-quotes:
-  - quote: "Man lernt Mathematik nicht, man gewöhnt sich nur daran."
-    author: "Paul Erdös"
