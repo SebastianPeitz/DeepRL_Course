@@ -49,11 +49,11 @@ find a policy that maximizes the **sum of future rewards**!
 All the pieces of our RL framework are generally subject to some ***randomness***
 
 ::: incremental
-- the **policy** $\pi\agivenb{a}{s}$ is random (or, more precisely, a conditional probability)
+- the **policy** $\pias$ is random (or, more precisely, a conditional probability)
   - given a state $s$, $\pi$ denotes the probabilities of all the actions $a$ we might take
   - if $\Ac$ is finite, then $\pi$ is a *distribution* over $\set{a_1,a_2,\ldots,a_{\abs{\Ac}}}$
   - if $\Ac$ is infinite (e.g., $a\in[0,1]$), then $\pi$ is the probability density function over $\Ac$
-- the **state transition** $p\agivenb{s'}{s,a}$ is also random
+- the **state transition** $\psprimesa$ is also random
 - the **state observation** $o$ might be subject to noise
 - the **reward** inherits this randomness, even if we were to define it deterministically
 :::
@@ -156,7 +156,7 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 ::: incremental
 - Let us assume that we have a slot machine and we repeatedly can choose between $k$ different actions.
 - After each choice $A_t$ you receive a numerical reward $R_t$ chosen from a stationary probability distribution.
-- Objective: maximize the **value**: $$ q(a) = \ExpC{R_t}{A_t=a} $$.
+- Objective: maximize the **value**: $$ Q(a) = \ExpC{R_t}{A_t=a} $$.
 - We have to rely on estimates $Q_t(a)$ which we can iteratively update based on past experience.
 :::
 :::
@@ -170,9 +170,8 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 In the literature, we often also find *capital letters* for state, action and reward to properly account for the probabilistic nature
 
 ::: incremental
-- $p\agivenb{S_{t+1}=s'}{S_{t}=s, A_{t}=a}$ is the precise formulation for our short form $p\agivenb{s'}{s,a}$.
-- $\pi\agivenb{A_t=a}{S_t=s}$ is the precise formulation for our short form $\pi\agivenb{a}{s}$.
-<!-- - $V^\pi(s) = \ExpCsub{\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} }{S_t=s}{\pi}$ -->
+- $p\agivenb{S_{t+1}=s'}{S_{t}=s, A_{t}=a}$ is the precise formulation for our short form $\psprimesa$.
+- $\pi\agivenb{A_t=a}{S_t=s}$ is the precise formulation for our short form $\pias$.
 :::
 
 :::
@@ -379,11 +378,11 @@ In this example, the reward is deterministic, but in general, it is a random var
 The **return** $g_t$ is the *discounted sum of future rewards*, starting from step $t$.
 
 ::: fragment
-- For *episodic tasks* ($T<\infty$), this is the finite series $$ g_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots  + \gamma^T r_{T+1}= \sum_{k=0}^T \gamma^k r_{t+k+1} .$$
+- For *episodic tasks* ($T<\infty$), this is the finite series $$ g_t = r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots  + \gamma^T r_{T+1}= \sum_{k=0}^T \gamma^k r_{t+k} .$$
 :::
 
 ::: fragment
-- For *continuing tasks*, we get $$ g_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1} .$$
+- For *continuing tasks*, we get $$ g_t = r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k} .$$
 :::
 :::
 
@@ -435,11 +434,11 @@ The **state-value function** $V(s)$ (or simply **value function**) of an MRP is 
 [$$
 \begin{align*}
 V(s_t) &= \ExpC{g_t}{s_t} \\
-       &= \ExpC{r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots}{s_t} \\
-       &= \ExpC{r_{t+1} + \gamma \left(r_{t+2} + \gamma r_{t+3} + \ldots\right)}{s_t} \\
-       &= \ExpC{r_{t+1} + \gamma g_{t+1}}{s_t} \\
-       &= \ExpC{r_{t+1} + \gamma V(s_{t+1})}{s_t} \\
-       &= \ExpC{r_{t+1}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
+       &= \ExpC{r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots}{s_t} \\
+       &= \ExpC{r_{t} + \gamma \left(r_{t+1} + \gamma r_{t+1} + \ldots\right)}{s_t} \\
+       &= \ExpC{r_{t} + \gamma g_{t+1}}{s_t} \\
+       &= \ExpC{r_{t} + \gamma V(s_{t+1})}{s_t} \\
+       &= \ExpC{r_{t}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
 \end{align*}
 $$]{ .math-incremental }
 
@@ -517,7 +516,7 @@ A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \textcolor{red}
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
 - [$\Ac$ is a finite set of discrete-time **actions** $a_t\in\Ac$]{style="color: red;"},
-- $\textcolor{red}{p\agivenb{s'}{s,a}}$ is the **state transition probability**,
+- $\textcolor{red}{\psprimesa}$ is the **state transition probability**,
 - $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t+1} \sim p\agivenb{r}{s_t,a_t}}$),
 - $\gamma\in[0,1]$ is a **discount factor**.
 
@@ -570,24 +569,24 @@ Given a finite MDP $⟨\Sc, \Ac, p, r, \gamma⟩$ and a policy $\pi$:
 
 ::: incremental
 - The state sequence $s_t, s_{t+1}, \ldots$ is a *Markov chain* $\left(\Sc, p^\pi\right)$ since the state transition probability only depends on the state:
-$$ p^\pi\agivenb{s'}{s} = \sum_{a\in\Ac} \pi\agivenb{a}{s} p\agivenb{s'}{s,a} $$
+$$ p^\pi\agivenb{s'}{s} = \sum_{a\in\Ac} \pias \psprimesa $$
 - Consequently, the sequence $(s_t,r_t),(s_{t+1},r_{t+1}),\ldots$ of states and rewards is a *Markov
 reward process* $\left(\Sc, p^\pi, r^\pi, \gamma\right)$:
-$$ r^\pi = \sum_{a\in\Ac} \pi\agivenb{a}{s} p\agivenb{r}{s,a} $$
+$$ r^\pi = \sum_{a\in\Ac} \pias p\agivenb{r}{s,a} $$
 :::
 
 # State-value functions and action-value functions of MDPs
 
 ::: {.definition}
 The **state-value function** of an MDP is the expected return starting in $s$ following policy $\pi$:
-$$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}$$
+$$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}$$
 :::
 
 ::: fragment
 ::: {.definition}
 The **action-value function** of an MDP is the expected return starting in $s$, taking action $a$ and then following policy $\pi$:
 $$\begin{equation}
-Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s,a_t=a}{\pi}.
+Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi}.
 \label{eq:action-value-function}\end{equation}$$
 :::
 :::
@@ -605,7 +604,7 @@ $$ V^\pi(s_t)\sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).$$
 # Bellman expectation equation (2)
 
 Likewise, the action value of an MDP can be decomposed into a Bellman notation:
-$$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t+1}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. $$
+$$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. $$
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
@@ -717,8 +716,8 @@ An optimal policy has the property that whatever the initial state and initial d
 \begin{align*}
 V^*(s_t) &= \max_a Q^{\pi^*}(s_t,a) \\
 &= \max_a\ExpCsub{g_t}{s_t, a}{\pi^*} \\
-&= \max_a\ExpCsub{r_{t+1} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
-&= \max_a\ExpCsub{r_{t+1} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
+&= \max_a\ExpCsub{r_{t} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
+&= \max_a\ExpCsub{r_{t} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
 \end{align*}
 $$]{ .math-incremental }
 - for a finite MDP:

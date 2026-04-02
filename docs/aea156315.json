@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "31.03.2026 19:31"
+        "02.04.2026 14:45"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -603,9 +603,10 @@
                 1.0
             ],
             "agivenb": [
-                "{\\left( #1  \\middle|#2 \\right)}",
+                "{\\left( #1  \\middle| #2 \\right)}",
                 2.0
             ],
+            "aprime": "{a^{\\prime}}",
             "diff": [
                 "{\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}}",
                 2.0
@@ -628,14 +629,19 @@
                 "{\\frac{\\partial #1}{\\partial #2}}",
                 2.0
             ],
+            "pias": "{\\pi\\left( a  \\middle| s \\right)}",
+            "piprime": "{\\pi^{\\prime}}",
             "policy": [
                 "{\\pi\\left( #1  \\middle|#2 \\right)}",
                 2.0
             ],
+            "psprimesa": "{p\\left( s^{\\prime} \\middle| s, a \\right)}",
+            "pstplusstat": "{p\\left( s_{t+1} \\middle| s_t, a_t \\right)}",
             "set": [
                 "{\\left\\{ #1 \\right\\}}",
                 1.0
-            ]
+            ],
+            "sprime": "{s^{\\prime}}"
         },
         "scale": 1.0
     },

@@ -94,7 +94,13 @@ math:
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
-    agivenb: ['{\left( #1  \middle|#2 \right)}', 2]
+    aprime: '{a^{\prime}}'
+    sprime: '{s^{\prime}}'
+    piprime: '{\pi^{\prime}}'
+    agivenb: ['{\left( #1  \middle| #2 \right)}', 2]
+    pias: '{\pi\left( a  \middle| s \right)}'
+    psprimesa: '{p\left( s^{\prime} \middle| s, a \right)}'
+    pstplusstat: '{p\left( s_{t+1} \middle| s_t, a_t \right)}'
     pC: ['{p\left( #1  \middle|#2 \right)}', 2]
     policy: ['{\pi\left( #1  \middle|#2 \right)}', 2]
     Exp: ['{\mathbb{E}\left[ #1 \right]}', 1]

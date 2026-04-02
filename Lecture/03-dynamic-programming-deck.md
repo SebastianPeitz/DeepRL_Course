@@ -41,7 +41,7 @@ $$
 \begin{eqnarray}
 g_t &=& r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
 V^\pi(s_t) &=& \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
-V^\pi(s_t) &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:BellmannV}
+V^\pi(s_t) &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:BellmanV}
 \end{eqnarray}
 $$
 :::
@@ -66,8 +66,8 @@ An optimal policy has the property that whatever the initial state and initial d
 From this, we derived the *Bellman optimality equation* [@Bellman1954]:
 $$
 \begin{align}
-V^*(s) &= \max_a \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &= \max_a \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:BellmanVstar}
+V^*(s) &= \max_{a\in\Ac} \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
+ &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:BellmanVstar}
 \end{align}
 $$
 
@@ -75,8 +75,8 @@ $$
 Similarly, we can derive an optimal Q-function:
 $$
 \begin{align}
-Q^*(s,a) &= \ExpC{r_{t+1}+\gamma \max_{a'} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
- &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a'} Q^*(s_{t+1}, a') \right].  \label{eq:BellmanQstar}
+Q^*(s,a) &= \ExpC{r_{t+1}+\gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
+ &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:BellmanQstar}
 \end{align}
 $$
 :::
@@ -143,21 +143,21 @@ $$
 Let's start with the *prediction problem*: [For a given policy $\pi$, how do we compute $V^\pi$?]{.fragment}
 
 ::: fragment
-Let's revisit \eqref{eq:BellmannV}:
+Let's revisit \eqref{eq:BellmanV}:
 
 $$
 \begin{equation}
-V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s')}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pi\agivenb{a}{s} \sum_{s'\in\Sc} p\agivenb{s'}{s,a} \left[ r + \gamma V^\pi(s') \right]} \label{eq:BellmannV2}
+V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s')}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V^\pi(s') \right]} \label{eq:BellmanV2}
 \end{equation}
 $$
 :::
 
 ::: incremental
-- If the dynamics $p$ are known, \eqref{eq:BellmannV2} is a system of $\abs{S}$ linear equations in $\abs{S}$ unknowns (the $V^\pi(s)$, $s \in \Sc$) [$\Rightarrow$ Solution is straightforward, if tedious.]{.fragment}
+- If the dynamics $p$ are known, \eqref{eq:BellmanV2} is a system of $\abs{S}$ linear equations in $\abs{S}$ unknowns (the $V^\pi(s)$, $s \in \Sc$) [$\Rightarrow$ Solution is straightforward, if tedious.]{.fragment}
 - Iterative solution method: 
   - Consider a sequence of approximate value functions $V_0, V_1, V_2, \ldots$
   - Choose $V_0$ arbitrarily (except that the terminal state, if any, must be given value 0).
-  - Each successive approximation is obtained by using the Bellman equation \eqref{eq:BellmannV2} as an update rule.
+  - Each successive approximation is obtained by using the Bellman equation \eqref{eq:BellmanV2} as an update rule.
 :::
 
 ::: footer
@@ -167,9 +167,9 @@ termination is guaranteed from all states under the policy $\pi$.
 
 # Iterative policy evaluation
 
-Use the Bellman equation \eqref{eq:BellmannV2} as an update rule:
+Use the Bellman equation \eqref{eq:BellmanV2} as an update rule:
 $$\begin{equation}
-V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pi\agivenb{a}{s} \sum_{s'\in\Sc} p\agivenb{s'}{s,a} \left[ r + \gamma V_{\textcolor{red}{k}}(s') \right] \label{eq:IterativePolicyEvaluation}
+V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s') \right] \label{eq:IterativePolicyEvaluation}
 \end{equation}$$
 
 ::: incremental
@@ -193,12 +193,14 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 *Input*: policy $\pi$\
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(terminal) = 0$, $\Delta = \infty$\
-While ($\Delta > \theta$):\
-$\quad$ for $s \in \Sc$:\
-$\quad\quad$ $v = V(s)$\
-$\quad\quad$ $V(s) = \sum_{a\in\Ac} \pi\agivenb{a}{s} \sum_{s'\in\Sc} p\agivenb{s'}{s,a} \left[ r + \gamma V(s') \right]$\
-$\quad\quad$ $\Delta = \max(\Delta, \abs{v-V(s)})$
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(terminal) = 0$\
+**while** (True):\
+$\quad$ $\Delta=0$\
+$\quad$ **for** $s \in \Sc$:\
+$\quad\quad$ $V_{\mathsf{old}}(s) = V(s)$\
+$\quad\quad$ $V(s) = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
+$\quad$ **if** $\Delta < \theta$ **then** break
 :::
 :::
 
@@ -227,6 +229,119 @@ Value function for different iterates $k$:
 
 ------------------------------------------------------------------------------
 
+# Now that we can learn a policy, how do we improve it?
+
+::: columns-8-2
+::: platzhalter
+::: incremental
+- Assume that we have used the policy evaluation algorithm to estimate $V^\pi$.
+- How can this help us for finding a better behavior?
+- Choose the next action freely (that is, $a \neq \pi(s)$)
+:::
+:::fragment
+$$\begin{align*}
+Q^\pi(s,a) &= \ExpCsub{r + \gamma V^\pi(s')}{s,a}{\pi} \\ &= \sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right] .
+\end{align*}$$
+:::
+:::
+
+![](images/03-dynamic-programming/Gridworld4by4_3.svg){ .embed width=400 }
+:::
+
+:::fragment
+$\Rightarrow$ If $Q^\pi(s,a)>V^\pi(s)$, then choosing $a$ over $\pi(s)$ in state $s$ yields a better policy.
+:::
+:::fragment
+$\Rightarrow$ This is a special instance of the **policy improvement theorem**.
+:::
+
+
+::: footer
+We're here using some arguments for deterministic policies (i.e., $a=\pi(s)$), but the arguments also hold in the probabilistic setting.
+:::
+
+# The policy improvement theorem
+::: small
+::: definition
+**Theorem:** Let $\pi$ and $\pi'$ be any pair of deterministic policies such that, for all $s \in \Sc$,
+$$
+\sum_{a\in\Ac} \pi'\agivenb{a}{s} Q^\pi(s,a) \geq V^\pi(s).
+$$
+Then $V^{\pi'}(s) \geq V^\pi(s)$ for all $s \in \Sc$.
+:::
+
+::: fragment
+**Proof:**
+$$
+\begin{equation}
+V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \fragment{= \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t}\sum_{s_{t+1}\in\Sc} \pstplusstat \left[r_t + \gamma V^\pi(s_{t+1})\right] } \fragment{= \ExpCsub{r_t+\gamma V^\pi(s_{t+1})}{s_t}{\pi'}}\label{eq:policy_improvement_theorem_1}
+\end{equation}
+$$
+:::
+
+::: fragment
+Since this holds for all $s\in\Sc$, we can apply the same procedure at $s_{t+1}$ $\Rightarrow$
+$V^\pi(s_{t+1}) \leq \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi'}.$
+:::
+
+::: fragment
+$$
+\text{Substitute into \eqref{eq:policy_improvement_theorem_1}:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t+\gamma \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi'}}{s_t}{\pi'}\qquad\qquad\qquad~~
+$$
+:::
+
+::: fragment
+Using the linearity of expectations and the law of total expectation ($\Exp{\ExpC{x}{y}} = \Exp{x}$):
+$$
+V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi'}.
+$$
+:::
+
+::: fragment
+$$
+\text{Repeat infinitely often:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \gamma^3 r_{t+3} + \ldots}{s_t}{\pi'} \fragment{=V^{\pi'}(s_t) \qquad \square}
+$$
+:::
+
+:::
+
+# Greedy policy improvement
+::: small
+::: incremental
+- Given a policy $\pi$ and its value function $V^\pi$, we can easily evaluate a change in the policy at a single state. 
+- Natural extension: at each state, select the action that appears best according to $Q^\pi(s, a)$. 
+- In other words, to consider the new **greedy policy** $\pi'$, given by
+$$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a) 
+\fragment{= \arg\max_{a\in\Ac}\ExpCsub{r+\gamma V^\pi(s')}{s,a}{\pi}}
+\fragment{= \arg\max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right],} $$
+[with ties broken arbitrarily.]{.fragment}
+- Improving on a policy by making it greedy with respect to the value function $V^\pi$ is called **policy improvement**.
+:::
+
+[**When do we stop?**]{.fragment}
+
+::: incremental
+- Suppose $\pi'$ is as good as $\pi$, but not better. That is, $\pi'(s) = \pi(s)$ for all $s\in\Sc$.
+- Then $\pi'$ satisfies the Bellman optimality condition \eqref{eq:BellmanVstar}:
+[$$V^{\pi^\prime}(s) = \max_{a\in\Ac}\ExpCsub{r+\gamma V^{\pi^\prime}(s')}{s,a}{\pi}
+\fragment{= \max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^{\pi^\prime}(s')\right],} $$]{.fragment}
+:::
+
+::: fragment
+::: definition
+**Conclusion**: Policy improvement yields a strictly better policy, unless $\pi$ is already optimal!
+:::
+:::
+
+:::
+
+# Example: $4\times 4$ gridworld [@Sutton1998]
+
+![](images/03-dynamic-programming/Gridworld4by4_4.svg){ .embed }
+
+::: fragment
+**Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:::
 
 ------------------------------------------------------------------------------
 
@@ -234,6 +349,117 @@ Value function for different iterates $k$:
 
 ------------------------------------------------------------------------------
 
+# Policy iteration (1)
+
+::: small
+::: incremental
+- Assume our policy $\pi$ has been improved using $V^\pi$ to yield a better policy $\pi'$ 
+- We can compute $V^{\pi^\prime}$ and improve it again to yield an even better $\pi''$. 
+- We thus obtain a sequence of monotonically improving policies and value functions:
+[$$ \pi_0 \stackrel{E}{\longrightarrow} V^{\pi_0} \stackrel{I}{\longrightarrow} \pi_1 \stackrel{E}{\longrightarrow} V^{\pi_1} \ldots \stackrel{I}{\longrightarrow} \pi^* \stackrel{E}{\longrightarrow} V^*=V^{\pi^*}, $$
+where $\stackrel{E}{\longrightarrow}$ denotes a policy evaluation and $\stackrel{I}{\longrightarrow}$ denotes a policy improvement.]{.fragment}
+- Each policy is guaranteed to be a strict improvement over the previous one (unless it is already optimal). 
+- Finite MDPs have a finite number of deterministic policies: convergence to $\pi^*$ and $V^*$ in a finite number of iterations.
+:::
+
+::: fragment
+::: definition
+This way of finding an optimal policy is called **policy iteration**.
+:::
+:::
+
+[**Note**: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value
+function changes little from one policy to the next).]{.fragment}
+:::
+
+# Policy iteration (2)
+::: small
+::: {.definition}
+### Algorithm: Policy Iteration for estimating $\pi \approx \pi^*$
+
+::: incremental
+1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(terminal) = 0$, small threshold $\theta > 0$\
+
+<!-- ::: columns-5-5 -->
+2. **Policy evaluation**:\
+**while** (True):\
+$\quad$ $\Delta = 0$\
+$\quad$ **for** $s \in \Sc$:\
+$\quad\quad$ $V_{\mathsf{old}} = V(s)$\
+$\quad\quad$ $V(s) = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})$\
+$\quad$ **if** $\Delta < \theta$ **then** break
+
+3. **Policy improvement**:\
+$flag_{\mathsf{stable}} = true$\
+**for** $s \in \Sc$:\
+$\quad$ $\pi_{\mathsf{old}}(s) = \pi(s)$\
+$\quad$ $\pi(s) = \arg\max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right]$\
+$\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $flag_{\mathsf{stable}} = false$\
+**if** $flag_{\mathsf{stable}} = true$ **then** return $V\approx V^*$ and $\pi \approx \pi^*$ **else** go back to **2. Policy evaluation**
+:::
+:::
+:::
+
+# Value iteration (1)
+
+::: incremental
+- What's the main drawback of policy iteration?\
+[$\Rightarrow$ it's expensive to solve the policy evaluation loop in each iteration (nested loops!)]{.fragment}
+- Do we have to wait until convergence of $V_k$ to $V^\pi$ every time?\
+[$\Rightarrow$ the gridworld example suggested no!]{.fragment}
+:::
+
+::: fragment
+![](images/03-dynamic-programming/Gridworld4by4_4.svg){ width=1000px }
+:::
+
+::: incremental
+- **Value iteration**: truncate the policy evaluation after **one** step!
+:::
+
+# Value iteration (2)
+::: small
+Let's look at our earlier derivation of the policy evaluation procedure:
+
+$$\begin{equation}
+V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s')}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right] \tag{\ref{eq:IterativePolicyEvaluation}}
+\end{equation}$$
+
+::: fragment
+Now, we change this to directly update the value function using the maximizing action (policy improvement step):
+$$\begin{equation}
+V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s')}{s,a} = \textcolor{red}{\max_{a\in\Ac}}\sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right]
+\end{equation}$$
+:::
+
+::: fragment
+Let's compare this to the Bellman equation:
+\begin{align}
+V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa\left[ r + \gamma V^*(s') \right].  \tag{\ref{eq:BellmanVstar}}
+\end{align}
+:::
+
+[$\Rightarrow$ We have simply turned \eqref{eq:BellmanVstar} into an iterative procedure!]{.fragment}
+
+[$\Rightarrow$ Value iteration can be shown to converge for arbitrary $V_0$]{.fragment}
+:::
+
+# Value iteration (3)
+::: {.definition}
+### Algorithm: Value iteration for estimating $\pi\approx \pi^*$
+
+*Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
+
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(terminal) = 0$\
+**while** ($\Delta > \theta$):\
+$\quad$ $\Delta=0$\
+$\quad$ **for** $s \in \Sc$:\
+$\quad\quad$ $V_{\mathsf{old}}(s) = V(s)$\
+$\quad\quad$ $V(s) = \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
+$\quad$ **if** $\Delta < \theta$ **then** break
+:::
 
 ------------------------------------------------------------------------------
 

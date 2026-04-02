@@ -1066,13 +1066,13 @@ Processes</title>
 <p>All the pieces of our RL framework are generally subject to some <strong><em>randomness</em></strong></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">the <strong>policy</strong> <span class="math inline">\(\pi\agivenb{a}{s}\)</span> is random (or, more precisely, a conditional probability)
+<li class="fragment">the <strong>policy</strong> <span class="math inline">\(\pias\)</span> is random (or, more precisely, a conditional probability)
 <ul class="incremental">
 <li class="fragment">given a state <span class="math inline">\(s\)</span>, <span class="math inline">\(\pi\)</span> denotes the probabilities of all the actions <span class="math inline">\(a\)</span> we might take</li>
 <li class="fragment">if <span class="math inline">\(\Ac\)</span> is finite, then <span class="math inline">\(\pi\)</span> is a <em>distribution</em> over <span class="math inline">\(\set{a_1,a_2,\ldots,a_{\abs{\Ac}}}\)</span></li>
 <li class="fragment">if <span class="math inline">\(\Ac\)</span> is infinite (e.g., <span class="math inline">\(a\in[0,1]\)</span>), then <span class="math inline">\(\pi\)</span> is the probability density function over <span class="math inline">\(\Ac\)</span></li>
 </ul></li>
-<li class="fragment">the <strong>state transition</strong> <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span> is also random</li>
+<li class="fragment">the <strong>state transition</strong> <span class="math inline">\(\psprimesa\)</span> is also random</li>
 <li class="fragment">the <strong>state observation</strong> <span class="math inline">\(o\)</span> might be subject to noise</li>
 <li class="fragment">the <strong>reward</strong> inherits this randomness, even if we were to define it deterministically</li>
 </ul>
@@ -1204,7 +1204,7 @@ Processes</title>
 <ul class="incremental">
 <li class="fragment">Let us assume that we have a slot machine and we repeatedly can choose between <span class="math inline">\(k\)</span> different actions.</li>
 <li class="fragment">After each choice <span class="math inline">\(A_t\)</span> you receive a numerical reward <span class="math inline">\(R_t\)</span> chosen from a stationary probability distribution.</li>
-<li class="fragment">Objective: maximize the <strong>value</strong>: <span class="math display">\[ q(a) = \ExpC{R_t}{A_t=a} \]</span>.</li>
+<li class="fragment">Objective: maximize the <strong>value</strong>: <span class="math display">\[ Q(a) = \ExpC{R_t}{A_t=a} \]</span>.</li>
 <li class="fragment">We have to rely on estimates <span class="math inline">\(Q_t(a)\)</span> which we can iteratively update based on past experience.</li>
 </ul>
 </div>
@@ -1235,8 +1235,8 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <p>In the literature, we often also find <em>capital letters</em> for state, action and reward to properly account for the probabilistic nature</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(p\agivenb{S_{t+1}=s&#39;}{S_{t}=s, A_{t}=a}\)</span> is the precise formulation for our short form <span class="math inline">\(p\agivenb{s&#39;}{s,a}\)</span>.</li>
-<li class="fragment"><span class="math inline">\(\pi\agivenb{A_t=a}{S_t=s}\)</span> is the precise formulation for our short form <span class="math inline">\(\pi\agivenb{a}{s}\)</span>. <!-- - $V^\pi(s) = \ExpCsub{\sum_{k=0}^{\infty} \gamma^k R_{t+k+1} }{S_t=s}{\pi}$ --></li>
+<li class="fragment"><span class="math inline">\(p\agivenb{S_{t+1}=s&#39;}{S_{t}=s, A_{t}=a}\)</span> is the precise formulation for our short form <span class="math inline">\(\psprimesa\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\pi\agivenb{A_t=a}{S_t=s}\)</span> is the precise formulation for our short form <span class="math inline">\(\pias\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -3059,12 +3059,12 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <p>The <strong>return</strong> <span class="math inline">\(g_t\)</span> is the <em>discounted sum of future rewards</em>, starting from step <span class="math inline">\(t\)</span>.</p>
 <div class="fragment">
 <ul>
-<li>For <em>episodic tasks</em> (<span class="math inline">\(T&lt;\infty\)</span>), this is the finite series <span class="math display">\[ g_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots  + \gamma^T r_{T+1}= \sum_{k=0}^T \gamma^k r_{t+k+1} .\]</span></li>
+<li>For <em>episodic tasks</em> (<span class="math inline">\(T&lt;\infty\)</span>), this is the finite series <span class="math display">\[ g_t = r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots  + \gamma^T r_{T+1}= \sum_{k=0}^T \gamma^k r_{t+k} .\]</span></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>For <em>continuing tasks</em>, we get <span class="math display">\[ g_t = r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1} .\]</span></li>
+<li>For <em>continuing tasks</em>, we get <span class="math display">\[ g_t = r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k} .\]</span></li>
 </ul>
 </div>
 </div>
@@ -3155,11 +3155,11 @@ Exemplary value function for different golf ball locations (<span class="citatio
 <p><span class="math-incremental"><span class="math display">\[
 \begin{align*}
 V(s_t) &amp;= \ExpC{g_t}{s_t} \\
-       &amp;= \ExpC{r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots}{s_t} \\
-       &amp;= \ExpC{r_{t+1} + \gamma \left(r_{t+2} + \gamma r_{t+3} + \ldots\right)}{s_t} \\
-       &amp;= \ExpC{r_{t+1} + \gamma g_{t+1}}{s_t} \\
-       &amp;= \ExpC{r_{t+1} + \gamma V(s_{t+1})}{s_t} \\
-       &amp;= \ExpC{r_{t+1}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
+       &amp;= \ExpC{r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots}{s_t} \\
+       &amp;= \ExpC{r_{t} + \gamma \left(r_{t+1} + \gamma r_{t+1} + \ldots\right)}{s_t} \\
+       &amp;= \ExpC{r_{t} + \gamma g_{t+1}}{s_t} \\
+       &amp;= \ExpC{r_{t} + \gamma V(s_{t+1})}{s_t} \\
+       &amp;= \ExpC{r_{t}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
 \end{align*}
 \]</span></span></p>
 </div>
@@ -4903,7 +4903,7 @@ V_\Sc &amp;= \hat r_\Sc + \gamma P V_\Sc \\
 <ul>
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
 <li><span style="color: red;"><span class="math inline">\(\Ac\)</span> is a finite set of discrete-time <strong>actions</strong> <span class="math inline">\(a_t\in\Ac\)</span></span>,</li>
-<li><span class="math inline">\(\textcolor{red}{p\agivenb{s&#39;}{s,a}}\)</span> is the <strong>state transition probability</strong>,</li>
+<li><span class="math inline">\(\textcolor{red}{\psprimesa}\)</span> is the <strong>state transition probability</strong>,</li>
 <li><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(\textcolor{red}{r_{t+1} \sim p\agivenb{r}{s_t,a_t}}\)</span>),</li>
 <li><span class="math inline">\(\gamma\in[0,1]\)</span> is a <strong>discount factor</strong>.</li>
 </ul>
@@ -4997,8 +4997,8 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 <p>Given a finite MDP <span class="math inline">\(⟨\Sc, \Ac, p, r, \gamma⟩\)</span> and a policy <span class="math inline">\(\pi\)</span>:</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The state sequence <span class="math inline">\(s_t, s_{t+1}, \ldots\)</span> is a <em>Markov chain</em> <span class="math inline">\(\left(\Sc, p^\pi\right)\)</span> since the state transition probability only depends on the state: <span class="math display">\[ p^\pi\agivenb{s&#39;}{s} = \sum_{a\in\Ac} \pi\agivenb{a}{s} p\agivenb{s&#39;}{s,a} \]</span></li>
-<li class="fragment">Consequently, the sequence <span class="math inline">\((s_t,r_t),(s_{t+1},r_{t+1}),\ldots\)</span> of states and rewards is a <em>Markov reward process</em> <span class="math inline">\(\left(\Sc, p^\pi, r^\pi, \gamma\right)\)</span>: <span class="math display">\[ r^\pi = \sum_{a\in\Ac} \pi\agivenb{a}{s} p\agivenb{r}{s,a} \]</span></li>
+<li class="fragment">The state sequence <span class="math inline">\(s_t, s_{t+1}, \ldots\)</span> is a <em>Markov chain</em> <span class="math inline">\(\left(\Sc, p^\pi\right)\)</span> since the state transition probability only depends on the state: <span class="math display">\[ p^\pi\agivenb{s&#39;}{s} = \sum_{a\in\Ac} \pias \psprimesa \]</span></li>
+<li class="fragment">Consequently, the sequence <span class="math inline">\((s_t,r_t),(s_{t+1},r_{t+1}),\ldots\)</span> of states and rewards is a <em>Markov reward process</em> <span class="math inline">\(\left(\Sc, p^\pi, r^\pi, \gamma\right)\)</span>: <span class="math display">\[ r^\pi = \sum_{a\in\Ac} \pias p\agivenb{r}{s,a} \]</span></li>
 </ul>
 </div>
 </div>
@@ -5015,12 +5015,12 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 <div class="area">
 <div class="box block">
 <div class="definition">
-<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}\]</span></p>
+<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}\]</span></p>
 </div>
 <div class="fragment">
 <div class="definition">
 <p>The <strong>action-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span>, taking action <span class="math inline">\(a\)</span> and then following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}
-Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}}{s_t=s,a_t=a}{\pi}.
+Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi}.
 \label{eq:action-value-function}\end{equation}\]</span></p>
 </div>
 </div>
@@ -5054,7 +5054,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t+1}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
+<p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
 <div class="fragment">
 <p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmanQ} \end{equation}\]</span></p>
 </div>
@@ -5221,8 +5221,8 @@ p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp;
 \begin{align*}
 V^*(s_t) &amp;= \max_a Q^{\pi^*}(s_t,a) \\
 &amp;= \max_a\ExpCsub{g_t}{s_t, a}{\pi^*} \\
-&amp;= \max_a\ExpCsub{r_{t+1} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
-&amp;= \max_a\ExpCsub{r_{t+1} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
+&amp;= \max_a\ExpCsub{r_{t} + \gamma g_{t+1}}{s_t, a}{\pi^*} \\
+&amp;= \max_a\ExpCsub{r_{t} + \gamma V^*(s_{t+1})}{s_t, a}{\pi^*}
 \end{align*}
 \]</span></span></li>
 <li class="fragment">for a finite MDP: <span class="math display">\[
