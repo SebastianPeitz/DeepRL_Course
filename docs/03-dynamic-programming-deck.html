@@ -734,8 +734,8 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <div class="box block">
 <p>A more memory-efficient version (that tends to converge faster): <span class="fragment">in-place updates!</span></p>
 <div class="fragment">
-<div id="algorithm-in-place-iterative-policy-evaluation-for-estimating-vapprox-vpi" class="definition">
-<h3>Algorithm: In-place iterative Policy Evaluation for estimating <span class="math inline">\(V\approx V^\pi\)</span></h3>
+<div id="algorithm-in-place-iterative-policy-evaluation-for-estimating-vapprox-vpi." class="definition">
+<h3>Algorithm: In-place iterative Policy Evaluation for estimating <span class="math inline">\(V\approx V^\pi\)</span>.</h3>
 <p><em>Input</em>: policy <span class="math inline">\(\pi\)</span><br />
 <em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
 <p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span><br />
@@ -3550,8 +3550,8 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <div class="area">
 <div class="box block">
 <div class="small">
-<div id="algorithm-policy-iteration-for-estimating-pi-approx-pi" class="definition">
-<h3>Algorithm: Policy Iteration for estimating <span class="math inline">\(\pi \approx \pi^*\)</span></h3>
+<div id="algorithm-policy-iteration-for-estimating-pi-approx-pi." class="definition">
+<h3>Algorithm: Policy Iteration for estimating <span class="math inline">\(\pi \approx \pi^*\)</span>.</h3>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
 <li class="fragment"><strong>Initialization</strong>: <span class="math inline">\(V(s)\in\R\)</span> and <span class="math inline">\(\pi(s)\in\Ac\)</span> arbitrarily for all <span class="math inline">\(s\in\Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span>, small threshold <span class="math inline">\(\theta &gt; 0\)</span><br />
@@ -3655,8 +3655,8 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div id="algorithm-value-iteration-for-estimating-piapprox-pi" class="definition">
-<h3>Algorithm: Value iteration for estimating <span class="math inline">\(\pi\approx \pi^*\)</span></h3>
+<div id="algorithm-value-iteration-for-estimating-piapprox-pi." class="definition">
+<h3>Algorithm: Value iteration for estimating <span class="math inline">\(\pi\approx \pi^*\)</span>.</h3>
 <p><em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
 <p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span><br />
 <strong>while</strong> (<span class="math inline">\(\Delta &gt; \theta\)</span>):<br />

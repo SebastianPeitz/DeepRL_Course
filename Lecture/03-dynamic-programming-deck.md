@@ -188,7 +188,7 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 
 :::fragment
 ::: {.definition}
-### Algorithm: In-place iterative Policy Evaluation for estimating $V\approx V^\pi$
+### Algorithm: In-place iterative Policy Evaluation for estimating $V\approx V^\pi$.
 
 *Input*: policy $\pi$\
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
@@ -381,7 +381,7 @@ function changes little from one policy to the next).
 # Policy iteration (2)
 ::: small
 ::: {.definition}
-### Algorithm: Policy Iteration for estimating $\pi \approx \pi^*$
+### Algorithm: Policy Iteration for estimating $\pi \approx \pi^*$.
 
 ::: incremental
 1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(terminal) = 0$, small threshold $\theta > 0$\
@@ -453,7 +453,7 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\i
 
 # Value iteration (3)
 ::: {.definition}
-### Algorithm: Value iteration for estimating $\pi\approx \pi^*$
+### Algorithm: Value iteration for estimating $\pi\approx \pi^*$.
 
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
