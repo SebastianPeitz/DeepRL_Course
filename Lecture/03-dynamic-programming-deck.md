@@ -340,7 +340,9 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 ![](images/03-dynamic-programming/Gridworld4by4_4.svg){ .embed }
 
 ::: fragment
+::: footer
 **Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:::
 :::
 
 ------------------------------------------------------------------------------
@@ -367,9 +369,13 @@ where $\stackrel{E}{\longrightarrow}$ denotes a policy evaluation and $\stackrel
 This way of finding an optimal policy is called **policy iteration**.
 :::
 :::
+:::
 
-[**Note**: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value
-function changes little from one policy to the next).]{.fragment}
+::: fragment
+::: footer
+**Note**: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value
+function changes little from one policy to the next).
+:::
 :::
 
 # Policy iteration (2)
@@ -391,12 +397,12 @@ $\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})$\
 $\quad$ **if** $\Delta < \theta$ **then** break
 
 3. **Policy improvement**:\
-$flag_{\mathsf{stable}} = true$\
+$\mathsf{flag}_{\mathsf{stable}} = true$\
 **for** $s \in \Sc$:\
 $\quad$ $\pi_{\mathsf{old}}(s) = \pi(s)$\
 $\quad$ $\pi(s) = \arg\max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right]$\
-$\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $flag_{\mathsf{stable}} = false$\
-**if** $flag_{\mathsf{stable}} = true$ **then** return $V\approx V^*$ and $\pi \approx \pi^*$ **else** go back to **2. Policy evaluation**
+$\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $\mathsf{flag}_{\mathsf{stable}} = false$\
+**if** $\mathsf{flag}_{\mathsf{stable}} = true$ **then** return $V\approx V^*$ and $\pi \approx \pi^*$ **else** go back to **2. Policy evaluation**
 :::
 :::
 :::
@@ -461,12 +467,6 @@ $\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
 $\quad$ **if** $\Delta < \theta$ **then** break
 :::
 
-------------------------------------------------------------------------------
-
-# Asynchronous DP
-
-------------------------------------------------------------------------------
-
 
 ------------------------------------------------------------------------------
 
@@ -474,8 +474,49 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 
 ------------------------------------------------------------------------------
 
+# Generalized policy iteration (GPI)
+
+::: small
+::: incremental
+- Almost all RL algorithms can be summarized under the GPI framework.
+- Back-and-forth between two interacting processes:
+  - making the value function consistent with the current policy (policy evaluation) $\Rightarrow$ $V^\pi$,  
+  - greedy policy w.r.t. the current value function (policy improvement) $\Rightarrow$ $\pi = \text{greedy}(V)$.
+- Convergence towards Bellman optimality
+  - value function stabilizes when it's consistent with the current policy,
+  - the policy stabilizes when it is greedy w.r.t. the current value function.
+  - stabilization when a policy has been found that is greedy w.r.t. its own evaluation function.
+:::
+:::
+
+::: fragment
+![Generalized Policy Iteration (GPI) [@Sutton1998]](images/03-dynamic-programming/SuttonBarto_GPI.svg){ .embed width=800px }
+:::
+
+------------------------------------------------------------------------------
+
 # Summary / what you have learned
 
+------------------------------------------------------------------------------
+
+# Summary / what you have learned
+
+::: small
+::: incremental
+- **Dynamic Programming**
+  - is a useful technique for solving decision making problems
+  - is based on Bellman's optimality principle
+  - is limited in problem size (**curse of dimensionality**)
+- **Policy evaluation** \& **policy improvement** are iterative procedures to 
+  - approximate the value function $V^\pi$ for a given policy $\pi$
+  - make a greedy upgrade for the policy $\pi$ given a value function $V$
+- **Policy iteration** describes the procedure of alternating between policy evaluation and improvement to find an optimal policy $\pi^*$  
+- **Value iteration** is an improved version where we intertwine policy evaluation \& improvement more closely
+- **Generalized Policy Iteration** (**GPI**) 
+  - is the general framework describing various versions of the above iterative process.
+  - Almost all RL algorithms can be interpreted as versions of GPI.
+:::
+:::
 # References
 
 ::: { #refs }
