@@ -220,7 +220,7 @@ $$]{.math-incremental}
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
 - $\ell(s,a)$: an empty list of returns for all $s \in \Sc$, $a\in\Ac$
 
-**for** $j = 1, 2, \ldots, J$ episodes:\
+**for** $j = 1, 2, \ldots, J$ episodes *[(or until $\pi$ converges)]{style="color: red;"}*:\
 $\quad$ $g = 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
@@ -237,6 +237,56 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 - It is clear that this algorithm cannot converge to a suboptimal policy
 - Stability is only achieved when both $\pi$ and $Q$ are optimal
 :::
+:::
+:::
+
+
+
+# Incremental implementation
+::: small
+::: incremental
+- The previous algorithm (as well as all other before where we have used averaging) is computationally inefficient!
+- Instead, it is better to update the estimate for $Q$ (or $V$) incrementally.
+- The sample mean $\mu_1, \mu_2, \ldots$ of an arbitrary sequence $g_1, g_2, \ldots$ is:
+$$
+\mu_J = \frac{1}{J}\sum_{j=1}^J g_j \fragment{= \frac{1}{J} \left[g_J + \sum_{j=1}^{J-1} g_j\right]} \fragment{= \frac{1}{J} \left[g_J + (J-1)\mu_{J-1}\right]} \fragment{= \mu_{J-1} + \frac{1}{J} \left[g_J -\mu_{J-1}\right].}
+$$
+- In terms of the averaging function from the algorithm before, this means that we can update $Q(s_t,a_t)$ incrementally (with $n(s_t,a_t)$ being the number of occurrences of the tuple $(s_t,a_t)$):
+$$
+Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
+$$
+:::
+:::
+
+::: fragment
+::: footer
+:bulb: if a problem is **non-stationary**, we can use a step size $\alpha\in(0,1]$ as in the multi-armed bandit setting: 
+$Q(s_t,a_t) = Q(s_t,a_t) + \alpha \left[g - Q(s_t,a_t)\right]$.
+:::
+:::
+
+# Monte Carlo control (4) -- incremental implementation
+::: small
+::: {.definition}
+### Algorithm: Monte Carlo ES (Exploring Starts) for estimating $\pi \approx \pi^*$.
+
+**initialize**
+
+- $\pi(s)$ arbitrarily for $s \in \Sc$
+- $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
+- [$n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits]{style="color: red;"} $\qquad$(~~an empty list of returns $\ell$~~)
+
+**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+$\quad$ $g = 0$\
+$\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
+$\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
+$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
+$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad\quad$ $g = \gamma g + r_t$\
+$\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
+$\quad\quad\quad$ [$n(s_t) = n(s_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
+$\quad\quad\quad$ [$Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: red;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
+$\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
 :::
 
@@ -343,29 +393,57 @@ Table: Key differences at a glance:
 # $\epsilon$-greedy as an on-policy alternative (2)
 ::: small
 ::: {.definition}
-### Algorithm: On-policy first-visit MC control (for $\epsilon$-soft policies).
+### Algorithm: $\epsilon$-greedy on-policy first-visit MC control.
 
-**parameter:** small $\epsilon>0$ 
+<!-- **parameter:** small $\epsilon>0$  -->
 
 **initialize**
 
-- Arbitrary $\epsilon$-soft policy $\pi$
+- $\pi(s)$ arbitrarily for $s \in \Sc$
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
-- $\ell(s,a)$: an empty list of returns for all $s \in \Sc$, $a\in\Ac$
+- $n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits
 
-<!-- **for** $j = 1, 2, \ldots, J$ episodes:\
+**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g = 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
-$\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
-$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
+$\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_j}$ starting at $(s_0, a_0)$ and following $\pi$\
 $\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g+ r_t$\
+$\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
-$\quad\quad\quad$ $Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))$\
-$\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
+$\quad\quad\quad$ $n(s_t) = n(s_t) + 1$\
+$\quad\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: red;"}\
+$\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}
 :::
 :::
+
+# $\epsilon$-greedy policy improvement
+
+::: small
+::: definition
+### Theorem: Policy improvement for $\epsilon$-greedy policies
+
+Given an MDP, an $\epsilon$-greedy policy $\pi'$ w.r.t. $Q^\pi$ is an improvemnt over the $\epsilon$-soft policy $\pi$, i.e., $V^{\pi^\prime} > V^\pi$ for all $s\in\Sc$.
+:::
+
+**Small proof**:
+[$$
+\begin{align*}
+V^{\pi^\prime}(s)=Q^\pi(s,\pi'(s)) &= \sum_{a\in\Ac} \pi'\agivenb{a}{s} Q^\pi(s,a) \\
+&= \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + (1-\epsilon) \max_{a\in\Ac} Q^\pi(s,a)\\
+&\geq \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + (1-\epsilon) \left( \sum_{a\in\Ac} \frac{\pias-\frac{\epsilon}{\abs{\Ac}}}{1-\epsilon} Q^\pi(s,a)\right)\\
+\textit{(Last term: weighted }&\text{average over all actions. It thus has to be smaller than the max operation.)}\\
+&=\frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) - \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + \sum_{a\in\Ac} \pias Q^\pi(s,a)\\
+&= V^\pi(s).
+\end{align*}
+$$]{.math-incremental}
+
+:::
+
+# Example: Gridworld
+
+TBD
+
 
 ------------------------------------------------------------------------------
 
@@ -373,11 +451,180 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
 
 ------------------------------------------------------------------------------
 
-# Off-policy Monte Carlo control
+# Off-policy learning background
+
+::: small
+All learning control methods face a dilemma: 
+
+::: incremental
+- They seek to learn action values conditional on subsequent optimal behavior, 
+- but they need to behave non-optimally in order to explore all actions. 
+- The previous $\epsilon$-greedy approaches were only a compromise: learning action values for *near-optimal* policies.
+:::
+
+\
+
+::: fragment
+**The off-policy learning idea:**
+:::
+
+::: incremental
+- Use two policies: 
+  - **Behavior policy** $b\agivenb{a}{s}$: exploratory, used to generate behavior.
+  - **Target policy** $\pias$: learns from that experience to become the optimal policy.
+- Use cases:
+  - Learn from observing humans or other agents/controllers.
+  - Re-use experience generated from old policies ($\pi_0,\pi_1,\ldots$).
+  - Learn about multiple policies while following one policy.
+:::
+
+:::
+
+# Off-policy prediction problem statement
+
+::: small
+::: definition
+### MC off-policy prediction problem statement.
+
+- Both policies are considered fixed (that's the *prediction* assumption).
+- Estimate $V^\pi$ or $Q^\pi$ while following $b\agivenb{a}{s}$.
+:::
+
+\
+
+::: fragment
+**Requirement:**
+:::
+
+::: incremental
+- **Coverage**: every action taken under $\pi$ must be (at least occasionally) taken under $b$ as well.
+$$ \pias > 0 \quad\Rightarrow\quad b\agivenb{a}{s}>0 \qquad \forall s\in\Sc, a\in\Ac. $$
+- Consequence:
+  - In any state where $b\neq \pi$, $b$ has to be a stochastic policy.
+  - Nevertheless, $\pi$ may be either stochastic or deterministic.
+:::
+:::
+
+# Importance sampling (1)
+::: small
+::: definition
+### Example
+
+::: columns-8-3
+::: incremental
+- We’re trying to calculate the average height of people in a city, but only have access to a guest list for a professional basketball convention. 
+- Taking the average of this sample will likely lead to a too large value.
+- Importance sampling: mathematical *correction* to use data from one distribution to estimate properties of another distribution.
+:::
+
+![](images/04-Monte-Carlo/Basketball_YaoMing.svg){ width=250px }
+:::
+:::
+
+::: fragment
+**The central concept**: re-weighting
+:::
+
+::: incremental
+- We want to know the expected value under a target distribution $\pi(s)$, but only have samples from another distribution $b(s)$.
+- We calculate the **importance weight**:
+$$w = \frac{\pi(s)}{b(s)}$$
+- If a sample is common in $\pi$ but rare in $b$, we give it a high weight (it is *important*).
+- If a sample is rare in $\pi$ but common in $b$, we give it a low weight.
+:::
+
+[**Caveat:** if $\rho$ is large (distinctly different policies) the estimate’s variance is large (i.e., *uncertain* for small numbers of samples).]{.fragment}
+:::
 
 
+# Importance sampling (2)
+::: small
+Given a starting state $s_t$, the probability of the subsequent state–action trajectory $(a_t, s_{t+1},a_{t+1}, \ldots ,s_T)$ under a policy $\pi$ is
+[$$
+\begin{align*}
+p\agivenb{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &= \pi\agivenb{a_t}{s_t}p\agivenb{s_{t+1}}{s_t,a_t}\fragment{\pi\agivenb{a_{t+1}}{s_{t+1}}p\agivenb{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots p\agivenb{s_{T}}{s_{T-1},a_{T-1}}}\\
+&= \prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}.
+\end{align*}
+$$]{.math-incremental}
 
+::: fragment
+::: definition
+### Importance sampling ratio
+The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step $k$ to $T$ is
+$$
+\rho_{k:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+$$
+:::
+:::
 
+::: fragment
+:bulb: Although the trajectory probabilities depend on the MDP’s transition probabilities $p$ (which are generally unknown), the importance sampling ratio ends up depending only on the two policies and the sequence, not on the MDP.
+:::
+:::
+
+# Importance sampling for MC prediction
+
+::: small
+::: incremental
+- We wish to estimate the expected returns $g_t$ under the target policy $\pi$, but we only have $g_t$ due to the behavior policy $b$. 
+- These returns have the wrong expectation: $$\ExpC{g_t}{s_t=s} = V^b(s).$$ 
+- Importance sampling: $$\ExpC{\rho_{k:T}\, g_t}{s_t=s} = V^\pi(s).$$
+:::
+
+::: fragment
+::: definition
+### State-value estimation via Monte Carlo importance sampling
+
+Estimating the state value $V^\pi$ following a behavior policy $b$ using (ordinary) importance sampling (OIS) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
+$$ 
+\begin{equation}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \label{eq:OIS}
+\begin{equation}
+$$
+*Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
+:::
+:::
+
+:::
+
+# Weighted importance sampling
+
+::: small
+::: incremental
+- The first-visit version of OIS can be shown to be unbiased [@Sutton1998], meaning that the expectation of \eqref{eq:OIS} is always $V^\pi$.
+- On the other hand, it can be extreme 
+:::
+
+::: definition
+### State-value estimation via Monte Carlo importance sampling
+
+Estimating the state value $V^\pi$ following a behavior policy $b$ using (ordinary) importance sampling (OIS) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
+$$ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. $$
+*Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
+:::
+
+- weighting
+- incremental implementation
+- Off-policy MC control, for estimating $\pi$
+ :::
+
+<!-- # Off-policy Monte Carlo control
+
+Just put everything together:
+
+::: incremental
+- MC-based control utilizing GPI.
+- Off-policy learning based on importance sampling (or variants like *weighted importance sampling* [@Sutton1998]).
+:::
+
+[Requirement for off-policy MC-based control:]{.fragment}
+
+::: incremental
+- **Coverage**: behavior policy $b$ has nonzero probability of selecting actions that might be taken by the target policy $\pi$.
+- Consequence: behavior policy $b$ is soft (e.g., $\epsilon$-soft).
+::: -->
 
 
 

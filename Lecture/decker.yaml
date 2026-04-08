@@ -109,7 +109,7 @@ math:
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
     Var: '{\mathbb{E}}'
     Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
- 
+
     Vpi: '{V^\pi}'
     Qpi: '{Q^\pi}'
     Vstar: '{V^*}'
