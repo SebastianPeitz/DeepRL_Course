@@ -278,7 +278,7 @@ Q^\pi(s,a) &= \ExpCsub{r + \gamma V^\pi(s')}{s,a}{\pi} \\ &= \sum_{s'\in\Sc} \ps
 :::
 :::
 
-![](images/03-dynamic-programming/Gridworld4by4_3.svg){ .embed width=400 }
+![](images/03-dynamic-programming/GridWorld-PolicyUpdate.svg){ .embed width=400 }
 :::
 
 :::fragment
