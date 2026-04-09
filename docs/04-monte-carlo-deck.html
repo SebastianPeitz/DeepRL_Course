@@ -381,9 +381,9 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <li><span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span></li>
 <li><span class="math inline">\(\ell(s)\)</span>: an empty list of returns for all <span class="math inline">\(s \in \Sc\)</span></li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_t \notin \{s_0,\ldots,s_{t-1}\}\)</span>: <span class="math inline">\(\qquad\)</span> (<span style="color: red;"><em>that’s the first-visit condition</em></span>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
@@ -393,6 +393,36 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </div>
 <div class="definition fragment">
 <p><strong>Convergence?</strong> <span class="fragment">Yes, for every state <span class="math inline">\(s\in\Sc\)</span> that is visited infinitely often (<span class="math inline">\(\rightarrow\)</span> exploration!)</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mc-prediction-every-visit-version" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>MC prediction (every-visit version)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="algorithm-first-visit-mc-prediction-for-estimating-v-approx-vpi.-1" class="definition">
+<h3>Algorithm: First-visit MC prediction for estimating <span class="math inline">\(V \approx V^\pi\)</span>.</h3>
+<p><strong>initialize</strong></p>
+<ul>
+<li><span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span></li>
+<li><span class="math inline">\(\ell(s)\)</span>: an empty list of returns for all <span class="math inline">\(s \in \Sc\)</span></li>
+</ul>
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g+ r_t\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}\)</span> <span class="math inline">\(\qquad\)</span> (<span style="color: red;"><em>only difference to first-visit</em></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s_t) = \mathsf{average}(\ell(s_t))\)</span></p>
 </div>
 </div>
 </div>
@@ -435,7 +465,33 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>TBD</p>
+<p>TBD <!-- ::: small
+::: columns-6-2-2
+::: platzhalter
+We have a small robot in a gridworld that wants to recharge.
+
+[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
+[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
+[$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
+[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
+[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
+:::
+
+![Gridworld](images/04-Monte-Carlo/GridWorld.png){ width=150px }
+
+[
+  ![Random policy](images/04-Monte-Carlo/GridWorld-RandomPolicy.png){ width=150px}
+]{ .fragment data-fragment-index=3 }
+
+:::
+
+[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
+[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
+
+\
+
+![First-visit MC prediction](images/04-Monte-Carlo/GridWorld-MC-prediction.svg){ .embed }
+::: --></p>
 </div>
 </div>
 </div>
@@ -584,10 +640,10 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 <li><span class="math inline">\(\ell(s,a)\)</span>: an empty list of returns for all <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em><span style="color: red;">(or until <span class="math inline">\(\pi\)</span> converges)</span></em>:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em><span style="color: red;">(or until <span class="math inline">\(\pi\)</span> converges)</span></em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
@@ -621,7 +677,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <li class="fragment">The previous algorithm (as well as all other before where we have used averaging) is computationally inefficient!</li>
 <li class="fragment">Instead, it is better to update the estimate for <span class="math inline">\(Q\)</span> (or <span class="math inline">\(V\)</span>) incrementally.</li>
 <li class="fragment">The sample mean <span class="math inline">\(\mu_1, \mu_2, \ldots\)</span> of an arbitrary sequence <span class="math inline">\(g_1, g_2, \ldots\)</span> is: <span class="math display">\[
-\mu_J = \frac{1}{J}\sum_{j=1}^J g_j \fragment{= \frac{1}{J} \left[g_J + \sum_{j=1}^{J-1} g_j\right]} \fragment{= \frac{1}{J} \left[g_J + (J-1)\mu_{J-1}\right]} \fragment{= \mu_{J-1} + \frac{1}{J} \left[g_J -\mu_{J-1}\right].}
+\mu_K = \frac{1}{K}\sum_{k=1}^K g_k \fragment{= \frac{1}{K} \left[g_K + \sum_{k=1}^{K-1} g_k\right]} \fragment{= \frac{1}{K} \left[g_K + (K-1)\mu_{K-1}\right]} \fragment{= \mu_{K-1} + \frac{1}{K} \left[g_K -\mu_{K-1}\right].}
 \]</span></li>
 <li class="fragment">In terms of the averaging function from the algorithm before, this means that we can update <span class="math inline">\(Q(s_t,a_t)\)</span> incrementally (with <span class="math inline">\(n(s_t,a_t)\)</span> being the number of occurrences of the tuple <span class="math inline">\((s_t,a_t)\)</span>): <span class="math display">\[
 Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
@@ -656,10 +712,10 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 <li><span style="color: red;"><span class="math inline">\(n(s,a)=0 ~ \forall ~ s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>: a list of state-action visits</span> <span class="math inline">\(\qquad\)</span>(<del>an empty list of returns <span class="math inline">\(\ell\)</span></del>)</li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(n(s_t) = n(s_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
@@ -732,7 +788,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <p><br />
 </p>
 <p><span class="fragment"><strong>Question</strong>: Which class does the <em>Monte Carlo ES</em> algorithm belong to?</span></p>
-<p><span class="fragment"><strong>Answer</strong>: It is on-policy!</span> <span class="fragment">Each time we update our policy (the counter <span class="math inline">\(j\)</span> for the episodes), we collect the returns anew, following the current policy <span class="math inline">\(\pi\)</span>.</span></p>
+<p><span class="fragment"><strong>Answer</strong>: It is on-policy!</span> <span class="fragment">Each time we update our policy (the counter <span class="math inline">\(k\)</span> for the episodes), we collect the returns anew, following the current policy <span class="math inline">\(\pi\)</span>.</span></p>
 </div>
 <div class="fragment">
 <div class="footer">
@@ -1754,11 +1810,11 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 <li><span class="math inline">\(n(s,a)=0 ~ \forall ~ s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>: a list of state-action visits</li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=1}^{T_j}\)</span> starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=1}^{T_k}\)</span> starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t) = n(s_t) + 1\)</span><br />
@@ -2071,10 +2127,10 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathca
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_j\)</span> at iteration <span class="math inline">\(j\)</span>:</span> <span class="fragment"><span class="math display">\[ 
-V_j = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
-\]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_j\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_j\)</span> of the weights given to the first <span class="math inline">\(j\)</span>$ returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_j\)</span> is then:</span> <span class="fragment"><span class="math display">\[ 
-V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and} \qquad c_{j+1} = c_j + w_{j+1},} 
+<p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_k\)</span> at iteration <span class="math inline">\(k\)</span>:</span> <span class="fragment"><span class="math display">\[ 
+V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
+\]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_k\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_k\)</span> of the weights given to the first <span class="math inline">\(k\)</span>$ returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_k\)</span> is then:</span> <span class="fragment"><span class="math display">\[ 
+V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and} \qquad c_{k+1} = c_k + w_{k+1},} 
 \]</span></span> <span class="fragment">with <span class="math inline">\(c_0=0\)</span>.</span></p>
 </div>
 </div>
@@ -2099,10 +2155,10 @@ V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily</li>
 <li><span class="math inline">\(c(s,a)=0\)</span></li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span>, <span class="math inline">\(w=1\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_j}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) = c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
@@ -2144,10 +2200,10 @@ V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and
 <li><span class="math inline">\(c(s,a)=0\)</span></li>
 <li><span class="math inline">\(\pi(s)=\arg\max_{a\in\Ac}Q(s,a)\)</span> (with ties broken consistently)</li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span>, <span class="math inline">\(w=1\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_j}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) = c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />

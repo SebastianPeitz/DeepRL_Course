@@ -79,11 +79,11 @@ $$ V(s) = \ExpC{g_t}{s_t = s}=\ExpC{ \sum_{k=0}^T \gamma^k r_{t+k}}{s_t = s} .$$
 - $V(s)$ arbitrarily for $s \in \Sc$
 - $\ell(s)$: an empty list of returns for all $s \in \Sc$
 
-**for** $j = 1, 2, \ldots, J$ episodes:\
+**for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ $g = 0$\
 $\quad$ Generate a sequence following $\pi$:
-$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g+ r_t$\
 $\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$: $\qquad$ ([*that's the first-visit condition*]{style="color: red;"})\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
@@ -96,6 +96,28 @@ $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 **Convergence?** [Yes, for every state $s\in\Sc$ that is visited infinitely often ($\rightarrow$ exploration!)]{.fragment}
 :::
 
+:::
+
+# MC prediction (every-visit version)
+::: small
+::: {.definition}
+### Algorithm: First-visit MC prediction for estimating $V \approx V^\pi$.
+
+**initialize**
+
+- $V(s)$ arbitrarily for $s \in \Sc$
+- $\ell(s)$: an empty list of returns for all $s \in \Sc$
+
+**for** $k = 1, 2, \ldots, K$ episodes:\
+$\quad$ $g = 0$\
+$\quad$ Generate a sequence following $\pi$:
+$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad\quad$ $g = \gamma g+ r_t$\
+$\quad\quad$  $\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}$ $\qquad$ ([*only difference to first-visit*]{style="color: red;"})\
+$\quad\quad$ Append $g$ to $\ell(s_t)$\
+$\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
+:::
 :::
 
 # Advantages of MC methods
@@ -112,6 +134,33 @@ $\Rightarrow$ we are not bootstrapping, i.e., building estimates based on other 
 # Example: Gridworld
 
 TBD
+<!-- ::: small
+::: columns-6-2-2
+::: platzhalter
+We have a small robot in a gridworld that wants to recharge.
+
+[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
+[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
+[$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
+[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
+[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
+:::
+
+![Gridworld](images/04-Monte-Carlo/GridWorld.png){ width=150px }
+
+[
+  ![Random policy](images/04-Monte-Carlo/GridWorld-RandomPolicy.png){ width=150px}
+]{ .fragment data-fragment-index=3 }
+
+:::
+
+[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
+[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
+
+\
+
+![First-visit MC prediction](images/04-Monte-Carlo/GridWorld-MC-prediction.svg){ .embed }
+::: -->
 
 ------------------------------------------------------------------------------
 
@@ -221,12 +270,12 @@ $$]{.math-incremental}
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
 - $\ell(s,a)$: an empty list of returns for all $s \in \Sc$, $a\in\Ac$
 
-**for** $j = 1, 2, \ldots, J$ episodes *[(or until $\pi$ converges)]{style="color: red;"}*:\
+**for** $k = 1, 2, \ldots, K$ episodes *[(or until $\pi$ converges)]{style="color: red;"}*:\
 $\quad$ $g = 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
-$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g+ r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
@@ -250,7 +299,7 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 - Instead, it is better to update the estimate for $Q$ (or $V$) incrementally.
 - The sample mean $\mu_1, \mu_2, \ldots$ of an arbitrary sequence $g_1, g_2, \ldots$ is:
 $$
-\mu_J = \frac{1}{J}\sum_{j=1}^J g_j \fragment{= \frac{1}{J} \left[g_J + \sum_{j=1}^{J-1} g_j\right]} \fragment{= \frac{1}{J} \left[g_J + (J-1)\mu_{J-1}\right]} \fragment{= \mu_{J-1} + \frac{1}{J} \left[g_J -\mu_{J-1}\right].}
+\mu_K = \frac{1}{K}\sum_{k=1}^K g_k \fragment{= \frac{1}{K} \left[g_K + \sum_{k=1}^{K-1} g_k\right]} \fragment{= \frac{1}{K} \left[g_K + (K-1)\mu_{K-1}\right]} \fragment{= \mu_{K-1} + \frac{1}{K} \left[g_K -\mu_{K-1}\right].}
 $$
 - In terms of the averaging function from the algorithm before, this means that we can update $Q(s_t,a_t)$ incrementally (with $n(s_t,a_t)$ being the number of occurrences of the tuple $(s_t,a_t)$):
 $$
@@ -277,12 +326,12 @@ $Q(s_t,a_t) = Q(s_t,a_t) + \alpha \left[g - Q(s_t,a_t)\right]$.
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
 - [$n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits]{style="color: red;"} $\qquad$(~~an empty list of returns $\ell$~~)
 
-**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+**for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g = 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
-$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ [$n(s_t) = n(s_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
@@ -334,7 +383,7 @@ TBD
 [**Question**: Which class does the *Monte Carlo ES* algorithm belong to?]{.fragment}
 
 [**Answer**: It is on-policy!]{.fragment}
-[Each time we update our policy (the counter $j$ for the episodes), we collect the returns anew, following the current policy $\pi$.]{.fragment}
+[Each time we update our policy (the counter $k$ for the episodes), we collect the returns anew, following the current policy $\pi$.]{.fragment}
 
 :::
 
@@ -404,11 +453,11 @@ Table: Key differences at a glance:
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
 - $n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits
 
-**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+**for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g = 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
-$\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_j}$ starting at $(s_0, a_0)$ and following $\pi$\
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_k}$ starting at $(s_0, a_0)$ and following $\pi$\
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ $n(s_t) = n(s_t) + 1$\
@@ -629,14 +678,14 @@ Main differences between the two (first-visit) versions:
 
 # WIS: incremental implementation
 ::: small 
-If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in \eqref{eq:WIS}. [Let's do this exemplary for the value function $V_j$ at iteration $j$:]{.fragment}
+If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in \eqref{eq:WIS}. [Let's do this exemplary for the value function $V_k$ at iteration $k$:]{.fragment}
 [$$ 
-V_j = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
+V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
 $$]{.fragment}
-[In addition to keeping track of $V_j$, we must maintain for each state the cumulative sum $c_j$ of the weights given
-to the first $j$$ returns.]{.fragment} [The update rule for $V_j$ is then:]{.fragment}
+[In addition to keeping track of $V_k$, we must maintain for each state the cumulative sum $c_k$ of the weights given
+to the first $k$$ returns.]{.fragment} [The update rule for $V_k$ is then:]{.fragment}
 [$$ 
-V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and} \qquad c_{j+1} = c_j + w_{j+1},} 
+V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and} \qquad c_{k+1} = c_k + w_{k+1},} 
 $$]{.fragment}
 [with $c_0=0$.]{.fragment}
 
@@ -656,10 +705,10 @@ $$]{.fragment}
 - $Q(s,a)$ arbitrarily
 - $c(s,a)=0$
 
-**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+**for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g = 0$, $w=1$\
-$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_j}$ following a *soft policy* $b$\
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
@@ -694,10 +743,10 @@ We now have our final algorithm that includes everything we have learned so far
 - $c(s,a)=0$
 - $\pi(s)=\arg\max_{a\in\Ac}Q(s,a)$ (with ties broken consistently)
 
-**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+**for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g = 0$, $w=1$\
-$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_j}$ following a *soft policy* $b$\
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
+$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\

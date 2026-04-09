@@ -189,7 +189,7 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 
 :::fragment
 ::: {.definition}
-### Algorithm: In-place iterative Policy Evaluation for estimating $V\approx V^\pi$.
+### Algorithm: In-place iterative policy evaluation for estimating $V\approx V^\pi$.
 
 *Input*: policy $\pi$\
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
@@ -205,7 +205,39 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 :::
 :::
 
-# Example: $4\times 4$ gridworld [@Sutton1998]
+# Example: Gridworld
+
+::: small
+::: columns-6-2-2
+::: platzhalter
+We have a small robot in a gridworld that wants to recharge.
+
+[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
+[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
+[$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
+[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
+[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
+:::
+
+![Gridworld](images/03-dynamic-programming/GridWorld.png){ width=150px }
+
+[
+  ![Random policy](images/03-dynamic-programming/GridWorld-RandomPolicy.png){ width=150px}
+]{ .fragment data-fragment-index=3 }
+
+:::
+
+[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
+[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
+
+\
+
+::: fragment
+![In-place iterative policy evaluation](images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg){ .embed }
+:::
+:::
+
+<!-- # Example: $4\times 4$ gridworld [@Sutton1998]
 
 ::: columns-7-3
 ::: incremental
@@ -222,7 +254,7 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 ::: fragment
 Value function for different iterates $k$:
 ![](images/03-dynamic-programming/Gridworld4by4_2.svg){ .embed width=1280px }
-:::
+::: -->
 
 ------------------------------------------------------------------------------
 
@@ -336,7 +368,17 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 
 :::
 
-# Example: $4\times 4$ gridworld [@Sutton1998]
+# Example: Gridworld 
+
+![](images/03-dynamic-programming/GridWorld-PolicyImprovement.svg){ .embed }
+
+::: fragment
+::: footer
+**Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:::
+:::
+
+<!-- # Example: $4\times 4$ gridworld [@Sutton1998]
 
 ![](images/03-dynamic-programming/Gridworld4by4_4.svg){ .embed }
 
@@ -344,7 +386,7 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 ::: footer
 **Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
 :::
-:::
+::: -->
 
 ------------------------------------------------------------------------------
 
@@ -418,7 +460,7 @@ $\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $\mathsf{flag}_{\mat
 :::
 
 ::: fragment
-![](images/03-dynamic-programming/Gridworld4by4_4.svg){ width=1000px }
+![](images/03-dynamic-programming/GridWorld-PolicyImprovement.svg){ width=900px }
 :::
 
 ::: incremental
@@ -511,7 +553,7 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 - **Policy evaluation** \& **policy improvement** are iterative procedures to 
   - approximate the value function $V^\pi$ for a given policy $\pi$
   - make a greedy upgrade for the policy $\pi$ given a value function $V$
-- **Policy iteration** describes the procedure of alternating between policy evaluation and improvement to find an optimal policy $\pi^*$  
+- **Policy iteration** alternates between policy evaluation and improvement to find an optimal policy $\pi^*$  
 - **Value iteration** is an improved version where we intertwine policy evaluation \& improvement more closely
 - **Generalized Policy Iteration** (**GPI**) 
   - is the general framework describing various versions of the above iterative process.
