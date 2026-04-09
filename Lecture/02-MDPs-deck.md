@@ -1,5 +1,6 @@
 ---
 subtitle:    Markov Decision Processes
+chapter:     2
 feedback:
   deck-id:  'deeprl-MDPs'
 ...

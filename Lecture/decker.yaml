@@ -21,6 +21,11 @@ template:
       - 'scripts/mafi-page.js'
       - 'scripts/mafi-menu.js'
 
+# pandoc:
+#   filters:
+#     after:
+#       - theorem-numbering.lua
+
 live-captions: false
 lang: en
 

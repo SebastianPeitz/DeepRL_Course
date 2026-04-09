@@ -1,5 +1,6 @@
 ---
 subtitle:    Monte Carlo Methods
+chapter:     4
 feedback:
   deck-id:  'deeprl-monte-carlo'
 ...
@@ -575,13 +576,13 @@ $$
 
 ::: fragment
 ::: definition
-### State-value estimation via Monte Carlo importance sampling
+### OIS: State-value estimation via Monte Carlo ordinary importance sampling
 
-Estimating the state value $V^\pi$ following a behavior policy $b$ using (ordinary) importance sampling (OIS) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
+Estimating the state value $V^\pi$ following a behavior policy $b$ using **ordinary importance sampling** (**OIS**) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
 $$ 
 \begin{equation}
-V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \label{eq:OIS}
-\begin{equation}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:OIS}
+\end{equation}
 $$
 *Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
 :::
@@ -593,40 +594,119 @@ $$
 
 ::: small
 ::: incremental
-- The first-visit version of OIS can be shown to be unbiased [@Sutton1998], meaning that the expectation of \eqref{eq:OIS} is always $V^\pi$.
-- On the other hand, it can be extreme 
+- OIS can be shown to be unbiased [@Sutton1998], meaning that the expectation of \eqref{eq:OIS} is always $V^\pi$.
+- On the other hand, it can be extreme.
 :::
+
+::: fragment
+::: definition
+### WIS: State-value estimation via Monte Carlo importance sampling
+
+Estimating the state value $V^\pi$ following $b$ using **weighted importance sampling** (**WIS**) results in a slightly different scaling:
+$$ 
+\begin{equation}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:WIS}
+\end{equation}
+$$
+:::
+:::
+
+::: fragment 
+Main differences between the two (first-visit) versions:
+:::
+
+::: incremental
+- Bias:
+  - \eqref{eq:OIS} is unbiased.
+  - \eqref{eq:WIS} is biased (though it converges asymptotically to zero). 
+- Variance:
+  - The variance of \eqref{eq:OIS} is in general unbounded (the variance of the ratios can be unbounded). 
+  - For \eqref{eq:WIS}, the largest weight on any single return is one. 
+  - Assuming bounded returns, the variance of \eqref{eq:WIS} converges to zero even if the variance of the ratios themselves is infinite [@Precup2001]
+  - In practice, \eqref{eq:WIS} has dramatically lower variance and is strongly preferred.
+:::
+:::
+
+# WIS: incremental implementation
+::: small 
+If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in \eqref{eq:WIS}. [Let's do this exemplary for the value function $V_j$ at iteration $j$:]{.fragment}
+[$$ 
+V_j = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
+$$]{.fragment}
+[In addition to keeping track of $V_j$, we must maintain for each state the cumulative sum $c_j$ of the weights given
+to the first $j$$ returns.]{.fragment} [The update rule for $V_j$ is then:]{.fragment}
+[$$ 
+V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and} \qquad c_{j+1} = c_j + w_{j+1},} 
+$$]{.fragment}
+[with $c_0=0$.]{.fragment}
+
+:::
+
+
+
+# Off-policy Monte Carlo control (1)
+
+::: small
+::: columns-7-4
+::: definition
+### Algorithm: Off-policy MC prediction (policy evaluation) for $Q\approx Q^*$.
+
+**initialize** (for all $s \in \Sc$, $a\in\Ac$)
+
+- $Q(s,a)$ arbitrarily
+- $c(s,a)=0$
+
+**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+$\quad$ $g = 0$, $w=1$\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_j}$ following a *soft policy* $b$\
+$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad\quad$ $g = \gamma g + r_t$\
+$\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
+$\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad$ $w = w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
+:::
+
+::: platzhalter
+[**Variation**: On-policy]{.fragment}
+
+::: incremental
+- $b=\pi$ .
+- $\frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1$.
+- $w=1$.
+- $c(s,a)$ becomves the counter for the number of visits (i.e., $n(s,a)$).
+:::
+:::
+
+:::
+:::
+
+# Off-policy Monte Carlo control (2)
+
+::: small
+We now have our final algorithm that includes everything we have learned so far
 
 ::: definition
-### State-value estimation via Monte Carlo importance sampling
+### Algorithm: Off-policy MC control for estimating $Q\approx Q^*$ and $\pi\approx\pi^*$.
 
-Estimating the state value $V^\pi$ following a behavior policy $b$ using (ordinary) importance sampling (OIS) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
-$$ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. $$
-*Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
+**initialize** (for all $s \in \Sc$, $a\in\Ac$)
+
+- $Q(s,a)$ arbitrarily
+- $c(s,a)=0$
+- $\pi(s)=\arg\max_{a\in\Ac}Q(s,a)$ (with ties broken consistently)
+
+**for** $j = 1, 2, \ldots, J$ episodes *(or until $\pi$ converges)*:\
+$\quad$ $g = 0$, $w=1$\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_j}$ following a *soft policy* $b$\
+$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
+$\quad\quad$ $g = \gamma g + r_t$\
+$\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
+$\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t,a)$ (with ties broken consistently)\
+$\quad\quad$ **if** $\pi(s_t)\neq a_t$:\
+$\quad\quad\quad$ Exit inner loop and proceed to next episode\
+$\quad\quad$ $w = w \frac{1}{b\agivenb{a_t}{s_t}}$
 :::
-
-- weighting
-- incremental implementation
-- Off-policy MC control, for estimating $\pi$
- :::
-
-<!-- # Off-policy Monte Carlo control
-
-Just put everything together:
-
-::: incremental
-- MC-based control utilizing GPI.
-- Off-policy learning based on importance sampling (or variants like *weighted importance sampling* [@Sutton1998]).
 :::
-
-[Requirement for off-policy MC-based control:]{.fragment}
-
-::: incremental
-- **Coverage**: behavior policy $b$ has nonzero probability of selecting actions that might be taken by the target policy $\pi$.
-- Consequence: behavior policy $b$ is soft (e.g., $\epsilon$-soft).
-::: -->
-
-
 
 ------------------------------------------------------------------------------
 
@@ -635,6 +715,22 @@ Just put everything together:
 ------------------------------------------------------------------------------
 
 # Summary / what you have learned
+
+::: small
+::: incremental
+- MC methods allow **model-free learning of value functions and optimal policies** from experience (i.e., sampled episodes).
+- Using full episodes, MC is largely **based on averaging returns**.
+- MC-based control **reuses generalized policy iteration (GPI)**, i.e., mixing policy evaluation and improvement.
+- Maintaining **sufficient exploration is important**:
+  - *Exploring starts*: not feasible in all applications but simple.
+  - *On-policy $\epsilon$-greedy learning*: trade-off between exploitation and exploration cannot be resolved easily.
+  - *Off-policy learning*: agent learns about a (possibly deterministic) target policy from an exploratory, soft behavior policy.
+- **Importance sampling** transforms expectations from the behavior to the target policy.
+  - This estimation task comes with a bias-variance-dilemma.
+  - Slow learning can result from ineffective experience usage in MC methods.
+:::
+
+:::
 
 # References
 

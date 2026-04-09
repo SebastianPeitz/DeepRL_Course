@@ -1,5 +1,6 @@
 ---
 subtitle:    Multi-armed bandits
+chapter:     1
 feedback:
   deck-id:  'deeprl-multi-armed-bandits'
 ...

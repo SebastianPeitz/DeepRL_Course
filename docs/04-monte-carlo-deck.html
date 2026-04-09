@@ -584,7 +584,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 <li><span class="math inline">\(\ell(s,a)\)</span>: an empty list of returns for all <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
 </ul>
-<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes:<br />
+<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em><span style="color: red;">(or until <span class="math inline">\(\pi\)</span> converges)</span></em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
 <span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
@@ -600,6 +600,71 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <li class="fragment">Stability is only achieved when both <span class="math inline">\(\pi\)</span> and <span class="math inline">\(Q\)</span> are optimal</li>
 </ul>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="incremental-implementation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Incremental implementation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The previous algorithm (as well as all other before where we have used averaging) is computationally inefficient!</li>
+<li class="fragment">Instead, it is better to update the estimate for <span class="math inline">\(Q\)</span> (or <span class="math inline">\(V\)</span>) incrementally.</li>
+<li class="fragment">The sample mean <span class="math inline">\(\mu_1, \mu_2, \ldots\)</span> of an arbitrary sequence <span class="math inline">\(g_1, g_2, \ldots\)</span> is: <span class="math display">\[
+\mu_J = \frac{1}{J}\sum_{j=1}^J g_j \fragment{= \frac{1}{J} \left[g_J + \sum_{j=1}^{J-1} g_j\right]} \fragment{= \frac{1}{J} \left[g_J + (J-1)\mu_{J-1}\right]} \fragment{= \mu_{J-1} + \frac{1}{J} \left[g_J -\mu_{J-1}\right].}
+\]</span></li>
+<li class="fragment">In terms of the averaging function from the algorithm before, this means that we can update <span class="math inline">\(Q(s_t,a_t)\)</span> incrementally (with <span class="math inline">\(n(s_t,a_t)\)</span> being the number of occurrences of the tuple <span class="math inline">\((s_t,a_t)\)</span>): <span class="math display">\[
+Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
+\]</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> if a problem is <strong>non-stationary</strong>, we can use a step size <span class="math inline">\(\alpha\in(0,1]\)</span> as in the multi-armed bandit setting: <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \alpha \left[g - Q(s_t,a_t)\right]\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="monte-carlo-control-4-incremental-implementation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Monte Carlo control (4) – incremental implementation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="algorithm-monte-carlo-es-exploring-starts-for-estimating-pi-approx-pi.-1" class="definition">
+<h3>Algorithm: Monte Carlo ES (Exploring Starts) for estimating <span class="math inline">\(\pi \approx \pi^*\)</span>.</h3>
+<p><strong>initialize</strong></p>
+<ul>
+<li><span class="math inline">\(\pi(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span></li>
+<li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
+<li><span style="color: red;"><span class="math inline">\(n(s,a)=0 ~ \forall ~ s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>: a list of state-action visits</span> <span class="math inline">\(\qquad\)</span>(<del>an empty list of returns <span class="math inline">\(\ell\)</span></del>)</li>
+</ul>
+<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
+<span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(n(s_t) = n(s_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span></span><span class="math inline">\(\qquad\quad\)</span> (<del>averaging over the list of returns </del>)<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
 </div>
 </div>
 </div>
@@ -1680,28 +1745,71 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <div class="area">
 <div class="box block">
 <div class="small">
-<div id="algorithm-on-policy-first-visit-mc-control-for-epsilon-soft-policies." class="definition">
-<h3>Algorithm: On-policy first-visit MC control (for <span class="math inline">\(\epsilon\)</span>-soft policies).</h3>
-<p><strong>parameter:</strong> small <span class="math inline">\(\epsilon&gt;0\)</span></p>
+<div id="algorithm-epsilon-greedy-on-policy-first-visit-mc-control." class="definition">
+<h3>Algorithm: <span class="math inline">\(\epsilon\)</span>-greedy on-policy first-visit MC control.</h3>
+<!-- **parameter:** small $\epsilon>0$  -->
 <p><strong>initialize</strong></p>
 <ul>
-<li>Arbitrary <span class="math inline">\(\epsilon\)</span>-soft policy <span class="math inline">\(\pi\)</span></li>
+<li><span class="math inline">\(\pi(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span></li>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
-<li><span class="math inline">\(\ell(s,a)\)</span>: an empty list of returns for all <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span></li>
+<li><span class="math inline">\(n(s,a)=0 ~ \forall ~ s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>: a list of state-action visits</li>
 </ul>
-<!-- **for** $j = 1, 2, \ldots, J$ episodes:\
-$\quad$ $g = 0$\
-$\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
-$\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
-$$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_j-1},a_{T_j-1},r_{T_j-1}))$$
-$\quad$ **for** $t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g+ r_t$\
-$\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
-$\quad\quad\quad$ $Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))$\
-$\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
+<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span><br />
+<span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate a sequence <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=1}^{T_j}\)</span> starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t) = n(s_t) + 1\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, &amp; a = \tilde{a} \\ \epsilon/\abs{\Ac}, &amp; a \neq \tilde{a} \end{cases}\)</span></span></p>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="epsilon-greedy-policy-improvement" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1><span class="math inline">\(\epsilon\)</span>-greedy policy improvement</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="theorem-policy-improvement-for-epsilon-greedy-policies" class="definition">
+<h3>Theorem: Policy improvement for <span class="math inline">\(\epsilon\)</span>-greedy policies</h3>
+<p>Given an MDP, an <span class="math inline">\(\epsilon\)</span>-greedy policy <span class="math inline">\(\pi&#39;\)</span> w.r.t. <span class="math inline">\(Q^\pi\)</span> is an improvemnt over the <span class="math inline">\(\epsilon\)</span>-soft policy <span class="math inline">\(\pi\)</span>, i.e., <span class="math inline">\(V^{\pi^\prime} &gt; V^\pi\)</span> for all <span class="math inline">\(s\in\Sc\)</span>.</p>
+</div>
+<p><strong>Small proof</strong>: <span class="math-incremental"><span class="math display">\[
+\begin{align*}
+V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}{s} Q^\pi(s,a) \\
+&amp;= \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + (1-\epsilon) \max_{a\in\Ac} Q^\pi(s,a)\\
+&amp;\geq \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + (1-\epsilon) \left( \sum_{a\in\Ac} \frac{\pias-\frac{\epsilon}{\abs{\Ac}}}{1-\epsilon} Q^\pi(s,a)\right)\\
+\textit{(Last term: weighted }&amp;\text{average over all actions. It thus has to be smaller than the max operation.)}\\
+&amp;=\frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) - \frac{\epsilon}{\abs{\Ac}}\left(\sum_{a\in\Ac} Q^\pi(s,a)\right) + \sum_{a\in\Ac} \pias Q^\pi(s,a)\\
+&amp;= V^\pi(s).
+\end{align*}
+\]</span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-gridworld-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Gridworld</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>TBD</p>
 </div>
 </div>
 </div>
@@ -1715,10 +1823,343 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
 </div>
 </div>
 </section>
+<section id="off-policy-learning-background" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Off-policy learning background</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>All learning control methods face a dilemma:</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">They seek to learn action values conditional on subsequent optimal behavior,</li>
+<li class="fragment">but they need to behave non-optimally in order to explore all actions.</li>
+<li class="fragment">The previous <span class="math inline">\(\epsilon\)</span>-greedy approaches were only a compromise: learning action values for <em>near-optimal</em> policies.</li>
+</ul>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<p><strong>The off-policy learning idea:</strong></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Use two policies:
+<ul class="incremental">
+<li class="fragment"><strong>Behavior policy</strong> <span class="math inline">\(b\agivenb{a}{s}\)</span>: exploratory, used to generate behavior.</li>
+<li class="fragment"><strong>Target policy</strong> <span class="math inline">\(\pias\)</span>: learns from that experience to become the optimal policy.</li>
+</ul></li>
+<li class="fragment">Use cases:
+<ul class="incremental">
+<li class="fragment">Learn from observing humans or other agents/controllers.</li>
+<li class="fragment">Re-use experience generated from old policies (<span class="math inline">\(\pi_0,\pi_1,\ldots\)</span>).</li>
+<li class="fragment">Learn about multiple policies while following one policy.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="off-policy-prediction-problem-statement" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Off-policy prediction problem statement</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="mc-off-policy-prediction-problem-statement." class="definition">
+<h3>MC off-policy prediction problem statement.</h3>
+<ul>
+<li>Both policies are considered fixed (that’s the <em>prediction</em> assumption).</li>
+<li>Estimate <span class="math inline">\(V^\pi\)</span> or <span class="math inline">\(Q^\pi\)</span> while following <span class="math inline">\(b\agivenb{a}{s}\)</span>.</li>
+</ul>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<p><strong>Requirement:</strong></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Coverage</strong>: every action taken under <span class="math inline">\(\pi\)</span> must be (at least occasionally) taken under <span class="math inline">\(b\)</span> as well. <span class="math display">\[ \pias &gt; 0 \quad\Rightarrow\quad b\agivenb{a}{s}&gt;0 \qquad \forall s\in\Sc, a\in\Ac. \]</span></li>
+<li class="fragment">Consequence:
+<ul class="incremental">
+<li class="fragment">In any state where <span class="math inline">\(b\neq \pi\)</span>, <span class="math inline">\(b\)</span> has to be a stochastic policy.</li>
+<li class="fragment">Nevertheless, <span class="math inline">\(\pi\)</span> may be either stochastic or deterministic.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="importance-sampling-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Importance sampling (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="example" class="definition">
+<h3>Example</h3>
+<div class="grid-layout" style="grid-template-columns: 8fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We’re trying to calculate the average height of people in a city, but only have access to a guest list for a professional basketball convention.</li>
+<li class="fragment">Taking the average of this sample will likely lead to a too large value.</li>
+<li class="fragment">Importance sampling: mathematical <em>correction</em> to use data from one distribution to estimate properties of another distribution.</li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:250px;">
+<img src="images/04-Monte-Carlo/Basketball_YaoMing.svg" style="height:auto;width:100%;" alt="images/04-Monte-Carlo/Basketball_YaoMing.svg" />
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>The central concept</strong>: re-weighting</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We want to know the expected value under a target distribution <span class="math inline">\(\pi(s)\)</span>, but only have samples from another distribution <span class="math inline">\(b(s)\)</span>.</li>
+<li class="fragment">We calculate the <strong>importance weight</strong>: <span class="math display">\[w = \frac{\pi(s)}{b(s)}\]</span></li>
+<li class="fragment">If a sample is common in <span class="math inline">\(\pi\)</span> but rare in <span class="math inline">\(b\)</span>, we give it a high weight (it is <em>important</em>).</li>
+<li class="fragment">If a sample is rare in <span class="math inline">\(\pi\)</span> but common in <span class="math inline">\(b\)</span>, we give it a low weight.</li>
+</ul>
+</div>
+<p><span class="fragment"><strong>Caveat:</strong> if <span class="math inline">\(\rho\)</span> is large (distinctly different policies) the estimate’s variance is large (i.e., <em>uncertain</em> for small numbers of samples).</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="importance-sampling-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Importance sampling (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>Given a starting state <span class="math inline">\(s_t\)</span>, the probability of the subsequent state–action trajectory <span class="math inline">\((a_t, s_{t+1},a_{t+1}, \ldots ,s_T)\)</span> under a policy <span class="math inline">\(\pi\)</span> is <span class="math-incremental"><span class="math display">\[
+\begin{align*}
+p\agivenb{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &amp;= \pi\agivenb{a_t}{s_t}p\agivenb{s_{t+1}}{s_t,a_t}\fragment{\pi\agivenb{a_{t+1}}{s_{t+1}}p\agivenb{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots p\agivenb{s_{T}}{s_{T-1},a_{T-1}}}\\
+&amp;= \prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}.
+\end{align*}
+\]</span></span></p>
+<div class="fragment">
+<div id="importance-sampling-ratio" class="definition">
+<h3>Importance sampling ratio</h3>
+<p>The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step <span class="math inline">\(k\)</span> to <span class="math inline">\(T\)</span> is <span class="math display">\[
+\rho_{k:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<p><span class="emoji" data-emoji="bulb">💡</span> Although the trajectory probabilities depend on the MDP’s transition probabilities <span class="math inline">\(p\)</span> (which are generally unknown), the importance sampling ratio ends up depending only on the two policies and the sequence, not on the MDP.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="importance-sampling-for-mc-prediction" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Importance sampling for MC prediction</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We wish to estimate the expected returns <span class="math inline">\(g_t\)</span> under the target policy <span class="math inline">\(\pi\)</span>, but we only have <span class="math inline">\(g_t\)</span> due to the behavior policy <span class="math inline">\(b\)</span>.</li>
+<li class="fragment">These returns have the wrong expectation: <span class="math display">\[\ExpC{g_t}{s_t=s} = V^b(s).\]</span></li>
+<li class="fragment">Importance sampling: <span class="math display">\[\ExpC{\rho_{k:T}\, g_t}{s_t=s} = V^\pi(s).\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="ois-state-value-estimation-via-monte-carlo-ordinary-importance-sampling" class="definition">
+<h3>OIS: State-value estimation via Monte Carlo ordinary importance sampling</h3>
+<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following a behavior policy <span class="math inline">\(b\)</span> using <strong>ordinary importance sampling</strong> (<strong>OIS</strong>) results in scaling and averaging the sampled returns by the importance sampling ratio per episode: <span class="math display">\[ 
+\begin{equation}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:OIS}
+\end{equation}
+\]</span> <em>Here <span class="math inline">\(\mathcal{T}(s)\)</span> is the set of all time steps in which <span class="math inline">\(s\)</span> is visited, and $T(t) is the termination of the episode starting at <span class="math inline">\(t\)</span>.</em></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="weighted-importance-sampling" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Weighted importance sampling</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">OIS can be shown to be unbiased <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>, meaning that the expectation of <span class="math inline">\(\eqref{eq:OIS}\)</span> is always <span class="math inline">\(V^\pi\)</span>.</li>
+<li class="fragment">On the other hand, it can be extreme.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="wis-state-value-estimation-via-monte-carlo-importance-sampling" class="definition">
+<h3>WIS: State-value estimation via Monte Carlo importance sampling</h3>
+<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following <span class="math inline">\(b\)</span> using <strong>weighted importance sampling</strong> (<strong>WIS</strong>) results in a slightly different scaling: <span class="math display">\[ 
+\begin{equation}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:WIS}
+\end{equation}
+\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<p>Main differences between the two (first-visit) versions:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Bias:
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(\eqref{eq:OIS}\)</span> is unbiased.</li>
+<li class="fragment"><span class="math inline">\(\eqref{eq:WIS}\)</span> is biased (though it converges asymptotically to zero).</li>
+</ul></li>
+<li class="fragment">Variance:
+<ul class="incremental">
+<li class="fragment">The variance of <span class="math inline">\(\eqref{eq:OIS}\)</span> is in general unbounded (the variance of the ratios can be unbounded).</li>
+<li class="fragment">For <span class="math inline">\(\eqref{eq:WIS}\)</span>, the largest weight on any single return is one.</li>
+<li class="fragment">Assuming bounded returns, the variance of <span class="math inline">\(\eqref{eq:WIS}\)</span> converges to zero even if the variance of the ratios themselves is infinite <span class="citation">(<a href="#ref-Precup2001">Precup, Sutton, and Dasgupta 2001</a>)</span></li>
+<li class="fragment">In practice, <span class="math inline">\(\eqref{eq:WIS}\)</span> has dramatically lower variance and is strongly preferred.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wis-incremental-implementation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>WIS: incremental implementation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_j\)</span> at iteration <span class="math inline">\(j\)</span>:</span> <span class="fragment"><span class="math display">\[ 
+V_j = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
+\]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_j\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_j\)</span> of the weights given to the first <span class="math inline">\(j\)</span>$ returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_j\)</span> is then:</span> <span class="fragment"><span class="math display">\[ 
+V_{j+1} = V_j + \frac{w_j}{c_j}\left[g_j - V_j\right] \qquad \fragment{\text{and} \qquad c_{j+1} = c_j + w_{j+1},} 
+\]</span></span> <span class="fragment">with <span class="math inline">\(c_0=0\)</span>.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="off-policy-monte-carlo-control-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Off-policy Monte Carlo control</h1>
+<h1>Off-policy Monte Carlo control (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 4fr;">
+<div id="algorithm-off-policy-mc-prediction-policy-evaluation-for-qapprox-q." class="definition">
+<h3>Algorithm: Off-policy MC prediction (policy evaluation) for <span class="math inline">\(Q\approx Q^*\)</span>.</h3>
+<p><strong>initialize</strong> (for all <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>)</p>
+<ul>
+<li><span class="math inline">\(Q(s,a)\)</span> arbitrarily</li>
+<li><span class="math inline">\(c(s,a)=0\)</span></li>
+</ul>
+<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span>, <span class="math inline">\(w=1\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_j}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) = c(s_t,a_t) + w\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w = w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}\)</span></p>
+</div>
+<div class="platzhalter">
+<p><span class="fragment"><strong>Variation</strong>: On-policy</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(b=\pi\)</span> .</li>
+<li class="fragment"><span class="math inline">\(\frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(w=1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(c(s,a)\)</span> becomves the counter for the number of visits (i.e., <span class="math inline">\(n(s,a)\)</span>).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="off-policy-monte-carlo-control-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Off-policy Monte Carlo control (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>We now have our final algorithm that includes everything we have learned so far</p>
+<div id="algorithm-off-policy-mc-control-for-estimating-qapprox-q-and-piapproxpi." class="definition">
+<h3>Algorithm: Off-policy MC control for estimating <span class="math inline">\(Q\approx Q^*\)</span> and <span class="math inline">\(\pi\approx\pi^*\)</span>.</h3>
+<p><strong>initialize</strong> (for all <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(a\in\Ac\)</span>)</p>
+<ul>
+<li><span class="math inline">\(Q(s,a)\)</span> arbitrarily</li>
+<li><span class="math inline">\(c(s,a)=0\)</span></li>
+<li><span class="math inline">\(\pi(s)=\arg\max_{a\in\Ac}Q(s,a)\)</span> (with ties broken consistently)</li>
+</ul>
+<p><strong>for</strong> <span class="math inline">\(j = 1, 2, \ldots, J\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(g = 0\)</span>, <span class="math inline">\(w=1\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_j}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_j-1,T_j-2,T_j-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) = c(s_t,a_t) + w\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t,a)\)</span> (with ties broken consistently)<br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\pi(s_t)\neq a_t\)</span>:<br />
+<span class="math inline">\(\quad\quad\quad\)</span> Exit inner loop and proceed to next episode<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w = w \frac{1}{b\agivenb{a_t}{s_t}}\)</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -1733,6 +2174,32 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
 <div class="decker">
 <div class="alignment">
 <h1>Summary / what you have learned</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">MC methods allow <strong>model-free learning of value functions and optimal policies</strong> from experience (i.e., sampled episodes).</li>
+<li class="fragment">Using full episodes, MC is largely <strong>based on averaging returns</strong>.</li>
+<li class="fragment">MC-based control <strong>reuses generalized policy iteration (GPI)</strong>, i.e., mixing policy evaluation and improvement.</li>
+<li class="fragment">Maintaining <strong>sufficient exploration is important</strong>:
+<ul class="incremental">
+<li class="fragment"><em>Exploring starts</em>: not feasible in all applications but simple.</li>
+<li class="fragment"><em>On-policy <span class="math inline">\(\epsilon\)</span>-greedy learning</em>: trade-off between exploitation and exploration cannot be resolved easily.</li>
+<li class="fragment"><em>Off-policy learning</em>: agent learns about a (possibly deterministic) target policy from an exploratory, soft behavior policy.</li>
+</ul></li>
+<li class="fragment"><strong>Importance sampling</strong> transforms expectations from the behavior to the target policy.
+<ul class="incremental">
+<li class="fragment">This estimation task comes with a bias-variance-dilemma.</li>
+<li class="fragment">Slow learning can result from ineffective experience usage in MC methods.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -1744,6 +2211,9 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$ -->
 <div class="area">
 <div class="box block">
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Precup2001" class="csl-entry">
+Precup, Doina, Richard S Sutton, and Sanjoy Dasgupta. 2001. <span>“Off-Policy Temporal-Difference Learning with Function Approximation.”</span> In <em>ICML</em>, 417–24.
+</div>
 <div id="ref-Sutton1998" class="csl-entry">
 Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.
 </div>

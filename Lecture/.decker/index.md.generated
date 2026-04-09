@@ -1,0 +1,73 @@
+
+---
+title: Generated Index
+subtitle: /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/Lecture
+---
+``` {.javascript .run}
+import("./" + Decker.meta.supportPath + "/fuzzySearch/search.js")
+    .then((module) => {
+      anchor.classList.add("search");
+      anchor.innerHTML = `
+        <p>
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input class="search" placeholder="In Folien suchen" type="text">
+        </p>
+        <table class="search">
+        <thead><tr><th>Wort</th><th>Foliensatz</th><th>Folie</th><th>Treffer</th></tr></thead>
+        <tbody></tbody>
+        </table>
+      `;
+      module.default(anchor, 0.6);
+    });
+```
+# Slide decks
+
+## public:
+-    [00-intro-deck.html <i class='fab fa-html5'></i>](00-intro-deck.html) [<i class='fas fa-file-pdf'></i>](00-intro-deck.pdf)
+-    [01-multi-armed-bandits-deck.html <i class='fab fa-html5'></i>](01-multi-armed-bandits-deck.html) [<i class='fas fa-file-pdf'></i>](01-multi-armed-bandits-deck.pdf)
+-    [02-MDPs-deck.html <i class='fab fa-html5'></i>](02-MDPs-deck.html) [<i class='fas fa-file-pdf'></i>](02-MDPs-deck.pdf)
+-    [03-dynamic-programming-deck.html <i class='fab fa-html5'></i>](03-dynamic-programming-deck.html) [<i class='fas fa-file-pdf'></i>](03-dynamic-programming-deck.pdf)
+-    [04-monte-carlo-deck.html <i class='fab fa-html5'></i>](04-monte-carlo-deck.html) [<i class='fas fa-file-pdf'></i>](04-monte-carlo-deck.pdf)
+-    [05-td-learning-deck.html <i class='fab fa-html5'></i>](05-td-learning-deck.html) [<i class='fas fa-file-pdf'></i>](05-td-learning-deck.pdf)
+-    [06-value-policy-iteration-deck.html <i class='fab fa-html5'></i>](06-value-policy-iteration-deck.html) [<i class='fas fa-file-pdf'></i>](06-value-policy-iteration-deck.pdf)
+-    [07-q-learning-deck.html <i class='fab fa-html5'></i>](07-q-learning-deck.html) [<i class='fas fa-file-pdf'></i>](07-q-learning-deck.pdf)
+-    [08-policy-gradients-deck.html <i class='fab fa-html5'></i>](08-policy-gradients-deck.html) [<i class='fas fa-file-pdf'></i>](08-policy-gradients-deck.pdf)
+-    [09-actor-critic-deck.html <i class='fab fa-html5'></i>](09-actor-critic-deck.html) [<i class='fas fa-file-pdf'></i>](09-actor-critic-deck.pdf)
+-    [10-advanced-algorithms-deck.html <i class='fab fa-html5'></i>](10-advanced-algorithms-deck.html) [<i class='fas fa-file-pdf'></i>](10-advanced-algorithms-deck.pdf)
+-    [11-planning-control-deck.html <i class='fab fa-html5'></i>](11-planning-control-deck.html) [<i class='fas fa-file-pdf'></i>](11-planning-control-deck.pdf)
+-    [12-model-based-RL-deck.html <i class='fab fa-html5'></i>](12-model-based-RL-deck.html) [<i class='fas fa-file-pdf'></i>](12-model-based-RL-deck.pdf)
+-    [13-exploration-deck.html <i class='fab fa-html5'></i>](13-exploration-deck.html) [<i class='fas fa-file-pdf'></i>](13-exploration-deck.pdf)
+-    [14-offline-RL-deck.html <i class='fab fa-html5'></i>](14-offline-RL-deck.html) [<i class='fas fa-file-pdf'></i>](14-offline-RL-deck.pdf)
+-    [15-transfer-learning-deck.html <i class='fab fa-html5'></i>](15-transfer-learning-deck.html) [<i class='fas fa-file-pdf'></i>](15-transfer-learning-deck.pdf)
+-    [16-multi-agent-RL-deck.html <i class='fab fa-html5'></i>](16-multi-agent-RL-deck.html) [<i class='fas fa-file-pdf'></i>](16-multi-agent-RL-deck.pdf)
+-    [17-behavior-cloning-deck.html <i class='fab fa-html5'></i>](17-behavior-cloning-deck.html) [<i class='fas fa-file-pdf'></i>](17-behavior-cloning-deck.pdf)
+-    [99-notation-deck.html <i class='fab fa-html5'></i>](99-notation-deck.html) [<i class='fas fa-file-pdf'></i>](99-notation-deck.pdf)
+
+# Handouts
+
+## public:
+-    [00-intro-handout.html <i class='fab fa-html5'></i>](00-intro-handout.html)
+-    [01-multi-armed-bandits-handout.html <i class='fab fa-html5'></i>](01-multi-armed-bandits-handout.html)
+-    [02-MDPs-handout.html <i class='fab fa-html5'></i>](02-MDPs-handout.html)
+-    [03-dynamic-programming-handout.html <i class='fab fa-html5'></i>](03-dynamic-programming-handout.html)
+-    [04-monte-carlo-handout.html <i class='fab fa-html5'></i>](04-monte-carlo-handout.html)
+-    [05-td-learning-handout.html <i class='fab fa-html5'></i>](05-td-learning-handout.html)
+-    [06-value-policy-iteration-handout.html <i class='fab fa-html5'></i>](06-value-policy-iteration-handout.html)
+-    [07-q-learning-handout.html <i class='fab fa-html5'></i>](07-q-learning-handout.html)
+-    [08-policy-gradients-handout.html <i class='fab fa-html5'></i>](08-policy-gradients-handout.html)
+-    [09-actor-critic-handout.html <i class='fab fa-html5'></i>](09-actor-critic-handout.html)
+-    [10-advanced-algorithms-handout.html <i class='fab fa-html5'></i>](10-advanced-algorithms-handout.html)
+-    [11-planning-control-handout.html <i class='fab fa-html5'></i>](11-planning-control-handout.html)
+-    [12-model-based-RL-handout.html <i class='fab fa-html5'></i>](12-model-based-RL-handout.html)
+-    [13-exploration-handout.html <i class='fab fa-html5'></i>](13-exploration-handout.html)
+-    [14-offline-RL-handout.html <i class='fab fa-html5'></i>](14-offline-RL-handout.html)
+-    [15-transfer-learning-handout.html <i class='fab fa-html5'></i>](15-transfer-learning-handout.html)
+-    [16-multi-agent-RL-handout.html <i class='fab fa-html5'></i>](16-multi-agent-RL-handout.html)
+-    [17-behavior-cloning-handout.html <i class='fab fa-html5'></i>](17-behavior-cloning-handout.html)
+-    [99-notation-handout.html <i class='fab fa-html5'></i>](99-notation-handout.html)
+
+# Supporting Documents
+
+# Questions
+
+        

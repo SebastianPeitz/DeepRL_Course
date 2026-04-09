@@ -1,5 +1,6 @@
 ---
 subtitle:    Dynamic Programming
+chapter:     3
 feedback:
   deck-id:  'deeprl-dynamic-programming'
 ...
