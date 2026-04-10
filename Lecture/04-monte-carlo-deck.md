@@ -156,7 +156,7 @@ We have a small robot in a gridworld that wants to recharge.
 
 **If we know the model** (i.e., $p$), we can use the *iterative policy evaluation* algorithm:
 
-![In-place iterative policy evaluation](images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg){ width=1000px }
+![DP: In-place iterative policy evaluation](images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg){ width=1000px }
 :::
 
 # Example: Gridworld

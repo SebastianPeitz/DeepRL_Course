@@ -653,6 +653,67 @@ Q^*(s,a) &amp;= \ExpC{r_{t+1}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s
 </div>
 </div>
 </section>
+<section id="the-two-central-tasks-in-rl" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The two central tasks in RL</h1>
+</div>
+</div>
+</section>
+<section id="the-two-central-tasks-in-rl-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The two central tasks in RL</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>In all chapters, we will distinguish between <strong>two core learning tasks in reinforcement learning</strong>:</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>The prediction problem</strong> (<em>evaluation</em>)</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">For a fixed policy <span class="math inline">\(\pi\)</span>, we want to <strong>estimate the Value function</strong> <span class="math inline">\(V^\pi(s)\)</span> (or the Q function <span class="math inline">\(Q^\pi(s,a)\)</span>)</li>
+<li class="fragment">The methods vary strongly in terms of the knowledge we have, e.g.,
+<ul class="incremental">
+<li class="fragment">We know <span class="math inline">\(p\)</span>: Dynamic programming.</li>
+<li class="fragment">We don’t know <span class="math inline">\(p\)</span>: Learning from experience (Monte Carlo, temporal difference learning, …).</li>
+<li class="fragment">Many variations and combinations exist!</li>
+</ul></li>
+</ul>
+</div>
+<div class="incremental">
+<ol class="incremental" start="2" style="list-style-type: decimal">
+<li class="fragment"><strong>The control problem</strong> (<em>improvement</em>)</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">We want to <strong>improve our policy</strong> <span class="math inline">\(\pi\)</span> towards the optimal <span class="math inline">\(\pi^*\)</span> that maximizes the value function.</li>
+<li class="fragment">This usually requires a back-and-forth between 1. and 2. (known as <em>generalized policy iteration (GPI)</em>).
+<ul class="incremental">
+<li class="fragment">Given our estimate of <span class="math inline">\(V^\pi\)</span> / <span class="math inline">\(Q^\pi\)</span>, we improve the policy: <span class="math inline">\(\pi&#39; &gt; \pi\)</span>.</li>
+<li class="fragment">This invalidates <span class="math inline">\(V^\pi\)</span> / <span class="math inline">\(Q^\pi\)</span> <span class="math inline">\(\Rightarrow\)</span> update estimates: <span class="math inline">\(V^{\pi^\prime}\)</span> / <span class="math inline">\(Q^{\pi^\prime}\)</span>.</li>
+<li class="fragment">We then further improve <span class="math inline">\(\pi&#39;&#39;&gt;\pi&#39;\)</span>, and so on.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:600px;">
+<img src="images/03-dynamic-programming/SuttonBarto_GPI.svg" style="height:auto;width:100%;" aria-label="Generalized Policy Iteration (GPI) (Sutton and Barto 1998)" alt="images/03-dynamic-programming/SuttonBarto_GPI.svg" />
+<figcaption>
+Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="policy-evaluation" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -747,6 +808,49 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>if</strong> <span class="math inline">\(\Delta &lt; \theta\)</span> <strong>then</strong> break</p>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-remark-on-bootstrapping" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>A remark on <em>bootstrapping</em></h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>Many of you will know bootstrapping from <strong>supervised learning</strong>:</p>
+<div class="fragment">
+<div id="bootstrapping-in-supervised-learning" class="definition">
+<h3>Bootstrapping in <em>supervised learning</em></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We have a training dataset <span class="math inline">\(\Dc\)</span> comprised of <span class="math inline">\(N\)</span> input-output tuples <span class="math inline">\(\Dc = \{(x_i,y_i)\}_{i=1}^N\)</span>.</li>
+<li class="fragment">We would like to improve our model by training on multiple datasets, but we don’t have more data.</li>
+<li class="fragment">To this end, we create an <em>ensemble</em> of <span class="math inline">\(M\)</span> datasets <span class="math inline">\(\{\tilde{\Dc}_j\}_{j=1}^M\)</span> by drawing <span class="math inline">\(N\)</span> samples i.i.d.<span class="math inline">\(^*\)</span> from <span class="math inline">\(\Dc\)</span> <em>with replacement</em> <span class="math display">\[ (\tilde{x}_{j,1}, \tilde{y}_{j,1}), (\tilde{x}_{j,2}, \tilde{y}_{j,2}), \ldots, (\tilde{x}_{j,N}, \tilde{y}_{j,N}) \sim \Dc. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<p><span class="fragment">In <strong>reinforcement learning</strong>, bootstrapping has a different meaning:</span></p>
+<div class="fragment">
+<div id="bootstrapping-in-reinforcement-learning" class="definition">
+<h3>Bootstrapping in <em>reinforcement learning</em></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">In order to update an essimate of a function of interest (say, <span class="math inline">\(\textcolor{red}{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
+<li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><span class="math inline">\(^*\)</span> i.i.d. = independent and identically distributed.</p>
 </div>
 </div>
 </div>
@@ -1198,24 +1302,6 @@ In-place iterative policy evaluation
 </div>
 </div>
 </div>
-<!-- # Example: $4\times 4$ gridworld [@Sutton1998]
-
-::: columns-7-3
-::: incremental
-- All fields get $r=-1$, except for the terminal gray fields, where $r=0$.
-- $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ ("leaving" $\Rightarrow$ no movement).
-- $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top \forall s\in\set{1,\ldots,14}$.
-:::
-
-![](images/03-dynamic-programming/Gridworld4by4_1.png){ width=400px }
-:::
-
-\
-
-::: fragment
-Value function for different iterates $k$:
-![](images/03-dynamic-programming/Gridworld4by4_2.svg){ .embed width=1280px }
-::: -->
 </div>
 </div>
 </div>

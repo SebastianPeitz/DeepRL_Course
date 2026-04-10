@@ -297,17 +297,17 @@ By the end of the course, we will
 :::
 
 ::: fragment
-- **Reinforcement learning basics**
+- **Basics & tabular methods**
   - Markov Decision Processes (MDPs)
   - Dynamic Programming
   - Monte Carlo Methods
-  - Temporal Difference Learning
-  - Value iteration & Policy iteration
+  - Temporal Difference Learning \& Q learning
 :::
 
 ::: fragment
-- **Modern RL methods**
-  - (Deep) Q learning
+- **Deep-learning-based methods**
+  - Brief introduction to deep learning
+  - Deep Q learning
   - Actor-Critic algorithms
   - Advanced algorithms
 :::
@@ -370,7 +370,7 @@ By the end of the course, we will
   - the tasks are pass/fail
   - we will take them into consideration in the final exam by dedicating several questions to your submissions
   - this way, they will account for $\approx \frac{1}{3}$ of your final grade
-- usage of ChatGPT etc.
+- usage of ChatGPT, Gemini, Claude, etc.
   - is allowed 😊
   - will hurt you in the exam if you don't know what you did 😢
 :::

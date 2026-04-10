@@ -135,6 +135,39 @@ $$
 
 ------------------------------------------------------------------------------
 
+# The two central tasks in RL
+
+------------------------------------------------------------------------------
+
+# The two central tasks in RL
+::: small
+In all chapters, we will distinguish between **two core learning tasks in reinforcement learning**:
+
+::: columns-5-5
+::: incremental
+1. **The prediction problem** (*evaluation*)
+  - For a fixed policy $\pi$, we want to **estimate the Value function** $V^\pi(s)$ (or the Q function $Q^\pi(s,a)$)
+  - The methods vary strongly in terms of the knowledge we have, e.g.,
+    - We know $p$: Dynamic programming.
+    - We don't know $p$: Learning from experience (Monte Carlo, temporal difference learning, ...).
+    - Many variations and combinations exist!
+:::
+
+::: incremental
+2. **The control problem** (*improvement*)
+  - We want to **improve our policy** $\pi$ towards the optimal $\pi^*$ that maximizes the value function.
+  - This usually requires a back-and-forth between 1. and 2. (known as *generalized policy iteration (GPI)*).
+    - Given our estimate of $V^\pi$ / $Q^\pi$, we improve the policy: $\pi' > \pi$.
+    - This invalidates $V^\pi$ / $Q^\pi$ $\Rightarrow$ update estimates: $V^{\pi^\prime}$ / $Q^{\pi^\prime}$.
+    - We then further improve $\pi''>\pi'$, and so on.
+:::
+:::
+
+![Generalized Policy Iteration (GPI) [@Sutton1998]](images/03-dynamic-programming/SuttonBarto_GPI.svg){ width=600px }
+:::
+
+------------------------------------------------------------------------------
+
 # Policy evaluation
 
 ------------------------------------------------------------------------------
@@ -205,6 +238,44 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 :::
 :::
 
+# A remark on *bootstrapping*
+
+::: small
+Many of you will know bootstrapping from **supervised learning**:
+
+::: fragment
+::: definition
+### Bootstrapping in *supervised learning*
+
+::: incremental
+- We have a training dataset $\Dc$ comprised of $N$ input-output tuples $\Dc = \{(x_i,y_i)\}_{i=1}^N$.
+- We would like to improve our model by training on multiple datasets, but we don't have more data.
+- To this end, we create an *ensemble* of $M$ datasets $\{\tilde{\Dc}_j\}_{j=1}^M$ by drawing $N$ samples i.i.d.$^*$ from $\Dc$ *with replacement*
+$$ (\tilde{x}_{j,1}, \tilde{y}_{j,1}), (\tilde{x}_{j,2}, \tilde{y}_{j,2}), \ldots, (\tilde{x}_{j,N}, \tilde{y}_{j,N}) \sim \Dc. $$
+:::
+:::
+:::
+
+[In **reinforcement learning**, bootstrapping has a different meaning:]{.fragment}
+
+::: fragment
+::: definition
+### Bootstrapping in *reinforcement learning*
+
+::: incremental
+- In order to update an essimate of a function of interest (say, $\textcolor{red}{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
+- We have seen this just a minute ago! [In the (iterative) policy evaluation algorithm, we have
+$$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
+]{.fragment}
+:::
+:::
+:::
+:::
+
+::: footer
+$^*$ i.i.d. = independent and identically distributed.
+:::
+
 # Example: Gridworld
 
 ::: small
@@ -236,25 +307,6 @@ We have a small robot in a gridworld that wants to recharge.
 ![In-place iterative policy evaluation](images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg){ .embed }
 :::
 :::
-
-<!-- # Example: $4\times 4$ gridworld [@Sutton1998]
-
-::: columns-7-3
-::: incremental
-- All fields get $r=-1$, except for the terminal gray fields, where $r=0$.
-- $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ ("leaving" $\Rightarrow$ no movement).
-- $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top \forall s\in\set{1,\ldots,14}$.
-:::
-
-![](images/03-dynamic-programming/Gridworld4by4_1.png){ width=400px }
-:::
-
-\
-
-::: fragment
-Value function for different iterates $k$:
-![](images/03-dynamic-programming/Gridworld4by4_2.svg){ .embed width=1280px }
-::: -->
 
 ------------------------------------------------------------------------------
 
