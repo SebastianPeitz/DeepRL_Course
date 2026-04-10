@@ -131,36 +131,38 @@ $\Rightarrow$ we are not bootstrapping, i.e., building estimates based on other 
 3. As a consequence, we can estimate parts of the value function that are of particular interest.
 :::
 
-# Example: Gridworld
+# Example: Gridworld (same as in the DP lecture)
 
-TBD
-<!-- ::: small
+::: small
 ::: columns-6-2-2
 ::: platzhalter
 We have a small robot in a gridworld that wants to recharge.
 
-[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
-[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
-[$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
-[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
-[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
+- Initial state $s_0$: a random valid field.
+- Goal: reach the battery ($r=1$, otherwise $r=0$).
+- $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).
+- $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
+- Discount: $\gamma = 0.8$.
 :::
 
-![Gridworld](images/04-Monte-Carlo/GridWorld.png){ width=150px }
+![Gridworld](images/03-dynamic-programming/GridWorld.png){ width=150px }
 
-[
-  ![Random policy](images/04-Monte-Carlo/GridWorld-RandomPolicy.png){ width=150px}
-]{ .fragment data-fragment-index=3 }
+![Random policy](images/03-dynamic-programming/GridWorld-RandomPolicy.png){ width=150px}
 
 :::
 
-[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
-[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
+- Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.
+- Optimal strategy: Move towards the battery as quickly as possible.
 
-\
+**If we know the model** (i.e., $p$), we can use the *iterative policy evaluation* algorithm:
 
-![First-visit MC prediction](images/04-Monte-Carlo/GridWorld-MC-prediction.svg){ .embed }
-::: -->
+![In-place iterative policy evaluation](images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg){ width=1000px }
+:::
+
+# Example: Gridworld
+Now: Every-visit MC prediction of $V^\pi$, for $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
+
+![](images/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
 
 ------------------------------------------------------------------------------
 
@@ -342,7 +344,16 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 
 # Example: Gridworld
 
-TBD
+Let's apply the Monte Carlo Exploring Starts algorithm to two gridworlds of different sizes:
+
+::: columns-5-5
+![](images/04-Monte-Carlo/GridWorld-MC-control.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
+
+::: fragment
+![](images/04-Monte-Carlo/GridWorld-MC-control-large.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
+:::
+
+:::
 
 ------------------------------------------------------------------------------
 

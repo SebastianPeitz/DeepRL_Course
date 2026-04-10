@@ -458,6 +458,62 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </div>
 </div>
 </section>
+<section id="example-gridworld-same-as-in-the-dp-lecture" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Gridworld (same as in the DP lecture)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 2fr 2fr;">
+<div class="platzhalter">
+<p>We have a small robot in a gridworld that wants to recharge.</p>
+<ul>
+<li>Initial state <span class="math inline">\(s_0\)</span>: a random valid field.</li>
+<li>Goal: reach the battery (<span class="math inline">\(r=1\)</span>, otherwise <span class="math inline">\(r=0\)</span>).</li>
+<li><span class="math inline">\(\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}\)</span> (<em>leaving</em> or <em>invalid field</em> <span class="math inline">\(\Rightarrow\)</span> no movement).</li>
+<li><span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</li>
+<li>Discount: <span class="math inline">\(\gamma = 0.8\)</span>.</li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:150px;">
+<img src="images/03-dynamic-programming/GridWorld.png" style="height:auto;width:100%;" aria-label="Gridworld" alt="images/03-dynamic-programming/GridWorld.png" />
+<figcaption>
+Gridworld
+</figcaption>
+</figure>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:150px;">
+<img src="images/03-dynamic-programming/GridWorld-RandomPolicy.png" style="height:auto;width:100%;" aria-label="Random policy" alt="images/03-dynamic-programming/GridWorld-RandomPolicy.png" />
+<figcaption>
+Random policy
+</figcaption>
+</figure>
+</div>
+</div>
+<ul>
+<li>Terminal state: If the robot hits the battery, it receives <span class="math inline">\(r=1\)</span> (potentially discounted) and the episode ends.</li>
+<li>Optimal strategy: Move towards the battery as quickly as possible.</li>
+</ul>
+<p><strong>If we know the model</strong> (i.e., <span class="math inline">\(p\)</span>), we can use the <em>iterative policy evaluation</em> algorithm:</p>
+<div class="media">
+<figure class="image" style="height:auto;width:1000px;">
+<img src="images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg" style="height:auto;width:100%;" aria-label="In-place iterative policy evaluation" alt="images/03-dynamic-programming/GridWorld-PolicyEvaluation.svg" />
+<figcaption>
+In-place iterative policy evaluation
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="example-gridworld" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -465,33 +521,14 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>TBD <!-- ::: small
-::: columns-6-2-2
-::: platzhalter
-We have a small robot in a gridworld that wants to recharge.
+<p>Now: Every-visit MC prediction of <span class="math inline">\(V^\pi\)</span>, for <span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</p>
+<div class="media">
+<figure class="video" style="height:auto;width:auto;">
+<video aria-label="Every-visit MC prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="images/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4">
 
-[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
-[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
-[$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
-[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
-[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
-:::
-
-![Gridworld](images/04-Monte-Carlo/GridWorld.png){ width=150px }
-
-[
-  ![Random policy](images/04-Monte-Carlo/GridWorld-RandomPolicy.png){ width=150px}
-]{ .fragment data-fragment-index=3 }
-
-:::
-
-[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
-[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
-
-\
-
-![First-visit MC prediction](images/04-Monte-Carlo/GridWorld-MC-prediction.svg){ .embed }
-::: --></p>
+</video>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -736,7 +773,25 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>TBD</p>
+<p>Let’s apply the Monte Carlo Exploring Starts algorithm to two gridworlds of different sizes:</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="media">
+<figure class="video" style="height:auto;width:auto;">
+<video aria-label="Every-visit MC prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="images/04-Monte-Carlo/GridWorld-MC-control.mp4">
+
+</video>
+</figure>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="video" style="height:auto;width:auto;">
+<video aria-label="Every-visit MC prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="images/04-Monte-Carlo/GridWorld-MC-control-large.mp4">
+
+</video>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

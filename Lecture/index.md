@@ -36,28 +36,28 @@ templates:
 | Chapter | Topic                                                     |                            Material |
 | :-----: | --------------------------------------------------------- | ----------------------------------: |
 |   **0** | **Introduction**                                          |                                     |
-|         | Introduction & Organization                               |                 [slides:](00-intro) |
-|   **1** | **Basics**                                                |                                     |
+|         | Introduction & organization                               |                 [slides:](00-intro) |
+|   **1** | **Basics \& tabular methods**                             |                                     |
 |         | Multi-armed bandits                                       |   [slides:](01-multi-armed-bandits) |
-|         | Markov Decision Processes                                 |                  [slides:](02-MDPs) |
-|         | Dynamic Programming                                       |   [slides:](03-dynamic-programming) |
-|         | Monte Carlo Methods                                       |           [slides:](04-monte-carlo) |
-|         | Temporal Difference Learning                              |           [slides:](05-td-learning) |
-|         | Value Iteration \& Policy Iteration                       |[slides:](06-value-policy-iteration) |
-|   **2** | **Actor-Critic Methods**                                  |                                     |
-|         | Q Learning \& Deep Q Learning                             |            [slides:](07-q-learning) |
-|         | Policy Gradients                                          |      [slides:](08-policy-gradients) |
-|         | Actor-Critic Algorithms                                   |          [slides:](09-actor-critic) |
-|         | Advanced Algorithms                                       |   [slides:](10-advanced-algorithms) |
+|         | Markov decision processes                                 |                  [slides:](02-MDPs) |
+|         | Dynamic programming                                       |   [slides:](03-dynamic-programming) |
+|         | Monte Carlo methods                                       |           [slides:](04-monte-carlo) |
+|         | Temporal difference learning \& Q learning                |           [slides:](05-td-learning) |
+|   **2** | **Deep-learning-based methods**                           |                                     |
+|         | Brief introduction to deep learning                       |         [slides:](06-deep-learning) |
+|         | Deep Q learning                                           |            [slides:](07-q-learning) |
+|         | Policy gradients                                          |      [slides:](08-policy-gradients) |
+|         | Actor-critic algorithms                                   |          [slides:](09-actor-critic) |
+|         | Advanced algorithms                                       |   [slides:](10-advanced-algorithms) |
 |   **3** | **Model-Based Control**                                   |                                     |
-|         | Planning \& Optimal Control                               |      [slides:](11-planning-control) |
-|         | Model-based Reinforcement Learning                        |        [slides:](12-model-based-RL) |
+|         | Planning \& optimal control                               |      [slides:](11-planning-control) |
+|         | Model-based reinforcement learning                        |        [slides:](12-model-based-RL) |
 |         | Exploration                                               |            [slides:](13-explotaion) |
 |   **4** | **Advanced Topics**                                       |                                     |
-|         | Offline Reinforcement Learning                            |            [slides:](14-offline-RL) |
-|         | Transfer Learning                                         |     [slides:](15-transfer-learning) |
-|         | Multi-Agent Reinforcement Learning                        |        [slides:](16-multi-agent-RL) |
-|         | Behavior Cloning                                          |      [slides:](17-behavior-cloning) |
+|         | Offline reinforcement learning                            |            [slides:](14-offline-RL) |
+|         | Transfer learning                                         |     [slides:](15-transfer-learning) |
+|         | Multi-agent reinforcement learning                        |        [slides:](16-multi-agent-RL) |
+|         | Behavior cloning                                          |      [slides:](17-behavior-cloning) |
 |   **∞** | **Notation**                                              |                                     |
 |         | Notation                                                  |              [slides:](99-notation) |
 <!-- |   **∞** | **Ende**                                                  |           [slides:](34-conclusion) | -->

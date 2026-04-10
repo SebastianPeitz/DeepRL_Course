@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "09.04.2026 10:13"
+        "10.04.2026 10:20"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -226,21 +226,14 @@
             {
                 "id": false,
                 "src": "05-td-learning-deck.md",
-                "subtitle": "Temporal Difference Learning",
+                "subtitle": "Temporal Difference Learning & Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "06-value-policy-iteration-deck.md",
-                "subtitle": "Value Iteration & Policy Iteration",
-                "title": "Deep Reinforcement Learning",
-                "url": "06-value-policy-iteration-deck.html"
-            },
-            {
-                "id": false,
                 "src": "07-q-learning-deck.md",
-                "subtitle": "Q Learning & Deep Q Learning",
+                "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "07-q-learning-deck.html"
             },
@@ -361,21 +354,14 @@
             {
                 "id": false,
                 "src": "05-td-learning-deck.md",
-                "subtitle": "Temporal Difference Learning",
+                "subtitle": "Temporal Difference Learning & Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "06-value-policy-iteration-deck.md",
-                "subtitle": "Value Iteration & Policy Iteration",
-                "title": "Deep Reinforcement Learning",
-                "url": "06-value-policy-iteration-deck.html"
-            },
-            {
-                "id": false,
                 "src": "07-q-learning-deck.md",
-                "subtitle": "Q Learning & Deep Q Learning",
+                "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "07-q-learning-deck.html"
             },
@@ -496,21 +482,14 @@
             {
                 "id": false,
                 "src": "05-td-learning-deck.md",
-                "subtitle": "Temporal Difference Learning",
+                "subtitle": "Temporal Difference Learning & Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "06-value-policy-iteration-deck.md",
-                "subtitle": "Value Iteration & Policy Iteration",
-                "title": "Deep Reinforcement Learning",
-                "url": "06-value-policy-iteration-deck.html"
-            },
-            {
-                "id": false,
                 "src": "07-q-learning-deck.md",
-                "subtitle": "Q Learning & Deep Q Learning",
+                "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "07-q-learning-deck.html"
             },
@@ -631,21 +610,14 @@
             {
                 "id": false,
                 "src": "05-td-learning-deck.md",
-                "subtitle": "Temporal Difference Learning",
+                "subtitle": "Temporal Difference Learning & Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "06-value-policy-iteration-deck.md",
-                "subtitle": "Value Iteration & Policy Iteration",
-                "title": "Deep Reinforcement Learning",
-                "url": "06-value-policy-iteration-deck.html"
-            },
-            {
-                "id": false,
                 "src": "07-q-learning-deck.md",
-                "subtitle": "Q Learning & Deep Q Learning",
+                "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "07-q-learning-deck.html"
             },
@@ -766,21 +738,14 @@
             {
                 "id": false,
                 "src": "05-td-learning-deck.md",
-                "subtitle": "Temporal Difference Learning",
+                "subtitle": "Temporal Difference Learning & Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "06-value-policy-iteration-deck.md",
-                "subtitle": "Value Iteration & Policy Iteration",
-                "title": "Deep Reinforcement Learning",
-                "url": "06-value-policy-iteration-deck.html"
-            },
-            {
-                "id": false,
                 "src": "07-q-learning-deck.md",
-                "subtitle": "Q Learning & Deep Q Learning",
+                "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "07-q-learning-deck.html"
             },
