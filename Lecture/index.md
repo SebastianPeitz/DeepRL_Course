@@ -44,20 +44,20 @@ templates:
 |         | Monte Carlo methods                                       |           [slides:](04-monte-carlo) |
 |         | Temporal difference learning \& Q learning                |           [slides:](05-td-learning) |
 |   **2** | **Deep-learning-based methods**                           |                                     |
-|         | Brief introduction to deep learning                       |         [slides:](06-deep-learning) |
-|         | Deep Q learning                                           |            [slides:](07-q-learning) |
-|         | Policy gradients                                          |      [slides:](08-policy-gradients) |
-|         | Actor-critic algorithms                                   |          [slides:](09-actor-critic) |
-|         | Advanced algorithms                                       |   [slides:](10-advanced-algorithms) |
+|         | Brief introduction to deep learning                       |        | <!--  [slides:](06-deep-learning) | -->
+|         | Deep Q learning                                           |        | <!--     [slides:](07-q-learning) | -->
+|         | Policy gradients                                          |        | <!-- [slides:](08-policy-gradients) | -->
+|         | Actor-critic algorithms                                   |        | <!--   [slides:](09-actor-critic) | -->
+|         | Advanced algorithms                                       |        | <!-- [slides:](10-advanced-algorithms) | -->
 |   **3** | **Model-Based Control**                                   |                                     |
-|         | Planning \& optimal control                               |      [slides:](11-planning-control) |
-|         | Model-based reinforcement learning                        |        [slides:](12-model-based-RL) |
-|         | Exploration                                               |            [slides:](13-explotaion) |
+|         | Planning \& optimal control                               |        | <!-- [slides:](11-planning-control) | -->
+|         | Model-based reinforcement learning                        |        | <!-- [slides:](12-model-based-RL) | -->
+|         | Exploration                                               |        | <!--     [slides:](13-explotaion) | -->
 |   **4** | **Advanced Topics**                                       |                                     |
-|         | Offline reinforcement learning                            |            [slides:](14-offline-RL) |
-|         | Transfer learning                                         |     [slides:](15-transfer-learning) |
-|         | Multi-agent reinforcement learning                        |        [slides:](16-multi-agent-RL) |
-|         | Behavior cloning                                          |      [slides:](17-behavior-cloning) |
+|         | Offline reinforcement learning                            |        | <!--     [slides:](14-offline-RL) | -->
+|         | Transfer learning                                         |        | <!-- [slides:](15-transfer-learning) | -->
+|         | Multi-agent reinforcement learning                        |        | <!-- [slides:](16-multi-agent-RL) | -->
+|         | Behavior cloning                                          |        | <!-- [slides:](17-behavior-cloning) | -->
 |   **∞** | **Notation**                                              |                                     |
 |         | Notation                                                  |              [slides:](99-notation) |
-<!-- |   **∞** | **Ende**                                                  |           [slides:](34-conclusion) | -->
+

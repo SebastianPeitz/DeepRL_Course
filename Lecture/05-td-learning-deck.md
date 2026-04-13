@@ -4,6 +4,22 @@ chapter:     5
 feedback:
   deck-id:  'deeprl-td-learning'
 ...
+------------------------------------------------------------------------------
+
+# Content
+
+------------------------------------------------------------------------------
+
+# Content
+
+- Monte Carlo simulation
+- MC prediction
+- MC esitmation of action values
+- MC control
+- On- and off-policy learning
+- Off-policy MC control
+- Summary
+
 
 # Content
 - Recall GPI
