@@ -236,6 +236,20 @@ find a policy that maximizes the **sum of future rewards**!
 ![OpenAI Rubik's Cube [[Source](https://www.imgeorgiev.com/2024-03-15-stochastic-rl/)]](images/00-introduction/openai-hand.gif){ height=400px }
 ::: 
 
+# The two central tasks in RL
+
+In all chapters, we will distinguish between **two core learning tasks in reinforcement learning**:
+
+::: incremental
+1. **The prediction problem** (*evaluation*)
+  - For a fixed policy $\pi$, we want to **estimate the quality of a state $s$** (i.e., its **value**).
+2. **The control problem** (*improvement*)
+  - We want to **improve our policy** $\pi$ towards the optimal $\pi^*$ that maximizes the value.
+  - This usually requires a back-and-forth between 1. and 2.
+    - Given our estimate of the value, we improve the policy: $\pi' > \pi$.
+    - We then need to reiterate the values given the new policy $\pi'$ and so on.
+:::
+
 # The key difference to supervised learning
 
 ::: columns-3-1

@@ -175,10 +175,19 @@
 <div class="decker">
 <div class="alignment">
 <h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <ul>
+<li>What is Dynamic Programming (DP)?</li>
+<li>The two central tasks in RL</li>
 <li>Policy evaluation</li>
 <li>Policy improvement</li>
 <li>Policy iteration</li>
@@ -193,6 +202,13 @@
 </div>
 </section>
 <section id="what-is-dynamic-programming-dp" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>What is Dynamic Programming (DP)?</h1>
+</div>
+</div>
+</section>
+<section id="what-is-dynamic-programming-dp-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>What is Dynamic Programming (DP)?</h1>
@@ -842,7 +858,7 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <h3>Bootstrapping in <em>reinforcement learning</em></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">In order to update an essimate of a function of interest (say, <span class="math inline">\(\textcolor{red}{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
+<li class="fragment">In order to update an estimate of a function of interest (say, <span class="math inline">\(\textcolor{red}{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
 <li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></span></li>
 </ul>
 </div>
@@ -4127,7 +4143,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 </div>
 <div class="fragment">
 <div class="footer">
-<p><strong>Note:</strong> in the stochastic setting, each maximizing action can be given a non-zero probability in <span class="math inline">\(\pias\)</span>. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> in the stochastic setting, each maximizing action can be given a non-zero probability in <span class="math inline">\(\pias\)</span>. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.</p>
 </div>
 </div>
 <!-- # Example: $4\times 4$ gridworld [@Sutton1998]
@@ -4136,7 +4152,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 
 ::: fragment
 ::: footer
-**Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:bulb: in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
 :::
 ::: -->
 </div>
@@ -4177,7 +4193,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 </div>
 <div class="fragment">
 <div class="footer">
-<p><strong>Note</strong>: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value function changes little from one policy to the next).</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value function changes little from one policy to the next).</p>
 </div>
 </div>
 </div>
@@ -5691,21 +5707,20 @@ Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1
 <ul class="incremental">
 <li class="fragment"><strong>Dynamic Programming</strong>
 <ul class="incremental">
-<li class="fragment">is a useful technique for solving decision making problems</li>
-<li class="fragment">is based on Bellman’s optimality principle</li>
-<li class="fragment">is limited in problem size (<strong>curse of dimensionality</strong>)</li>
+<li class="fragment">is a useful technique for solving decision making problems,</li>
+<li class="fragment">is based on Bellman’s optimality principle,</li>
+<li class="fragment">is limited in problem size (<strong>curse of dimensionality</strong>).</li>
 </ul></li>
 <li class="fragment"><strong>Policy evaluation</strong> &amp; <strong>policy improvement</strong> are iterative procedures to
 <ul class="incremental">
-<li class="fragment">approximate the value function <span class="math inline">\(V^\pi\)</span> for a given policy <span class="math inline">\(\pi\)</span></li>
-<li class="fragment">make a greedy upgrade for the policy <span class="math inline">\(\pi\)</span> given a value function <span class="math inline">\(V\)</span></li>
+<li class="fragment">approximate the value function <span class="math inline">\(V^\pi\)</span> for a given policy <span class="math inline">\(\pi\)</span>,</li>
+<li class="fragment">make a greedy upgrade for the policy <span class="math inline">\(\pi\)</span> given a value function <span class="math inline">\(V\)</span>.</li>
 </ul></li>
-<li class="fragment"><strong>Policy iteration</strong> alternates between policy evaluation and improvement to find an optimal policy <span class="math inline">\(\pi^*\)</span><br />
-</li>
-<li class="fragment"><strong>Value iteration</strong> is an improved version where we intertwine policy evaluation &amp; improvement more closely</li>
+<li class="fragment"><strong>Policy iteration</strong> alternates between policy evaluation and improvement to find an optimal policy <span class="math inline">\(\pi^*\)</span>.</li>
+<li class="fragment"><strong>Value iteration</strong> is an improved version where we intertwine policy evaluation &amp; improvement more closely.</li>
 <li class="fragment"><strong>Generalized Policy Iteration</strong> (<strong>GPI</strong>)
 <ul class="incremental">
-<li class="fragment">is the general framework describing various versions of the above iterative process.</li>
+<li class="fragment">is the general framework describing various versions of the above iterative process,</li>
 <li class="fragment">Almost all RL algorithms can be interpreted as versions of GPI.</li>
 </ul></li>
 </ul>

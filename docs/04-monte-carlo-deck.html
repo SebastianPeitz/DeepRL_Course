@@ -171,6 +171,35 @@
           </div>
   </div>
 </section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Monte Carlo simulation</li>
+<li>MC prediction</li>
+<li>MC esitmation of action values</li>
+<li>MC control</li>
+<li>On- and off-policy learning</li>
+<li>Off-policy MC control</li>
+<li>Summary</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="monte-carlo-simulation" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -1913,6 +1942,53 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 </div>
 </div>
 </section>
+<section id="greedy-in-the-limit-with-infinite-exploration-glie" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Greedy in the limit with infinite exploration (GLIE)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="definition-greedy-in-the-limit-with-infinite-exploration-glie" class="definition">
+<h3>Definition: Greedy in the limit with infinite exploration (GLIE)</h3>
+<p>A learning policy <span class="math inline">\(\pi\)</span> is called GLIE if it satisfies the following two properties:</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">If a state is visited infinitely often, then each action is chosen infinitely often: <span class="math display">\[ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = 1 \quad \forall~s\in\Sc,a\in\Ac. \]</span></li>
+<li class="fragment">In the limit (<span class="math inline">\(i\rightarrow\infty\)</span>) the learning policy is greedy with respect to the learned action value: <span class="math display">\[ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = \pi(s) = \arg\max_{a\in\Ac} Q^\pi(s,a)\quad \forall s\in\Sc. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="glie-monte-carlo-control" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>GLIE Monte Carlo control</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="theorem-optimal-decision-using-mc-control-with-epsilon-greedy" class="definition">
+<h3>Theorem: Optimal decision using MC-control with <span class="math inline">\(\epsilon\)</span>-greedy</h3>
+<p>MC-based control using <span class="math inline">\(\epsilon\)</span>-greedy exploration is GLIE, if <span class="math inline">\(\epsilon\)</span> is decreased at rate <span class="math display">\[ \epsilon_k=\frac{1}{k}, \]</span> with <span class="math inline">\(k\)</span> being the increasing episode index. In this case, <span class="math display">\[ Q^\pi(s,a)=Q^*(s,a). \]</span></p>
+</div>
+<p><span class="fragment">Remarks:</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Limited feasibility: infinite number of episodes required.</li>
+<li class="fragment"><span class="math inline">\(\epsilon\)</span>-greedy is an undirected and unmonitored random exploration strategy. Can that be the most efficient way of learning?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="example-gridworld-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -2184,7 +2260,7 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathca
 <div class="small">
 <p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_k\)</span> at iteration <span class="math inline">\(k\)</span>:</span> <span class="fragment"><span class="math display">\[ 
 V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
-\]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_k\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_k\)</span> of the weights given to the first <span class="math inline">\(k\)</span>$ returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_k\)</span> is then:</span> <span class="fragment"><span class="math display">\[ 
+\]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_k\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_k\)</span> of the weights given to the first <span class="math inline">\(k\)</span> returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_k\)</span> is then: <span class="math display">\[ 
 V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and} \qquad c_{k+1} = c_k + w_{k+1},} 
 \]</span></span> <span class="fragment">with <span class="math inline">\(c_0=0\)</span>.</span></p>
 </div>

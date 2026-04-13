@@ -5,14 +5,28 @@ feedback:
   deck-id:  'deeprl-dynamic-programming'
 ...
 
+------------------------------------------------------------------------------
 
 # Content
+
+------------------------------------------------------------------------------
+
+# Content
+
+- What is Dynamic Programming (DP)?
+- The two central tasks in RL
 - Policy evaluation
 - Policy improvement
 - Policy iteration
 - Value iteration
 - Asynchronous DP
 - Generalized policy iteration
+
+------------------------------------------------------------------------------
+
+# What is Dynamic Programming (DP)?
+
+------------------------------------------------------------------------------
 
 # What is Dynamic Programming (DP)?
 ::: {.definition}
@@ -263,7 +277,7 @@ $$ (\tilde{x}_{j,1}, \tilde{y}_{j,1}), (\tilde{x}_{j,2}, \tilde{y}_{j,2}), \ldot
 ### Bootstrapping in *reinforcement learning*
 
 ::: incremental
-- In order to update an essimate of a function of interest (say, $\textcolor{red}{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
+- In order to update an estimate of a function of interest (say, $\textcolor{red}{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
 - We have seen this just a minute ago! [In the (iterative) policy evaluation algorithm, we have
 $$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
 ]{.fragment}
@@ -426,7 +440,7 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 
 ::: fragment
 ::: footer
-**Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:bulb: in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
 :::
 :::
 
@@ -436,7 +450,7 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 
 ::: fragment
 ::: footer
-**Note:** in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
+:bulb: in the stochastic setting, each maximizing action can be given a non-zero probability in $\pias$. Any apportioning scheme is allowed as long as all submaximal actions are given zero probability.
 :::
 ::: -->
 
@@ -468,7 +482,7 @@ This way of finding an optimal policy is called **policy iteration**.
 
 ::: fragment
 ::: footer
-**Note**: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value
+:bulb: since each policy evaluation is itself an iterative computation, we start it with the value function for the previous policy. This typically results in a great increase in the speed of convergence of policy evaluation (presumably because the value
 function changes little from one policy to the next).
 :::
 :::
@@ -599,16 +613,16 @@ $\quad$ **if** $\Delta < \theta$ **then** break
 ::: small
 ::: incremental
 - **Dynamic Programming**
-  - is a useful technique for solving decision making problems
-  - is based on Bellman's optimality principle
-  - is limited in problem size (**curse of dimensionality**)
+  - is a useful technique for solving decision making problems,
+  - is based on Bellman's optimality principle,
+  - is limited in problem size (**curse of dimensionality**).
 - **Policy evaluation** \& **policy improvement** are iterative procedures to 
-  - approximate the value function $V^\pi$ for a given policy $\pi$
-  - make a greedy upgrade for the policy $\pi$ given a value function $V$
-- **Policy iteration** alternates between policy evaluation and improvement to find an optimal policy $\pi^*$  
-- **Value iteration** is an improved version where we intertwine policy evaluation \& improvement more closely
-- **Generalized Policy Iteration** (**GPI**) 
-  - is the general framework describing various versions of the above iterative process.
+  - approximate the value function $V^\pi$ for a given policy $\pi$,
+  - make a greedy upgrade for the policy $\pi$ given a value function $V$.
+- **Policy iteration** alternates between policy evaluation and improvement to find an optimal policy $\pi^*$.
+- **Value iteration** is an improved version where we intertwine policy evaluation \& improvement more closely.
+- **Generalized Policy Iteration** (**GPI**)
+  - is the general framework describing various versions of the above iterative process,
   - Almost all RL algorithms can be interpreted as versions of GPI.
 :::
 :::

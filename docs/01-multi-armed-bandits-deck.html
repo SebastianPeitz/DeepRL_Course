@@ -171,6 +171,33 @@
           </div>
   </div>
 </section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Multi-armed bandits</li>
+<li>Action-value methods</li>
+<li>A simple bandit algorithm</li>
+<li>What we have not discussed</li>
+<li>Some next steps</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="example-route-planning-oh16-to-hansaplatz-by-car" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -216,6 +243,13 @@ Google Maps (go <a href="https://maps.app.goo.gl/ixKDSXT6bwzfa6Y9A">here</a> for
 <div class="decker">
 <div class="alignment">
 <h1>Multi-armed bandits</h1>
+</div>
+</div>
+</section>
+<section id="multi-armed-bandits-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Multi-armed bandits</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -254,6 +288,13 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <div class="decker">
 <div class="alignment">
 <h1>Action-value methods</h1>
+</div>
+</div>
+</section>
+<section id="action-value-methods-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Action-value methods</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -283,10 +324,10 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 </div>
 </div>
 </section>
-<section id="example-the-k-armed-testbed" class="slide level1">
+<section id="a-simple-bandit-algorithm" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Example: The <span class="math inline">\(k\)</span>-armed testbed</h1>
+<h1>A simple bandit algorithm</h1>
 </div>
 </div>
 </section>
@@ -3738,7 +3779,7 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 </div>
 </div>
 </section>
-<section id="a-simple-bandit-algorithm" class="slide level1">
+<section id="a-simple-bandit-algorithm-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>A simple bandit algorithm</h1>
@@ -4891,6 +4932,25 @@ Q_{t+1} = Q_t + \alpha [r_t - Q_t] &amp;=&amp;\alpha r_t + (1-\alpha) Q_t \\
 <div class="footer">
 <p>For details, see <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></p>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-what-we-have-learned" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary / what we have learned</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>Multi-armed bandits model decision making problems where we want to maximize the expected return (the value) of an action in an unknown and uncertain environment.</li>
+<li>Action-value methods estimate the values of actions and then use these estimates to make action selection decisions.</li>
+<li>The exploration-exploitation dilemma describes the challenge of making use of what we know, versus needing to explore to further improve in the long run.</li>
+<li>A simple approach is the <span class="math inline">\(\epsilon\)</span>-greedy algorithm, where we explore randomly with proabability <span class="math inline">\(\epsilon\)</span>, and otherwise follow the optimal (greedy) action.</li>
+</ul>
 </div>
 </div>
 </div>

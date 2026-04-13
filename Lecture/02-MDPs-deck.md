@@ -5,16 +5,29 @@ feedback:
   deck-id:  'deeprl-MDPs'
 ...
 
+------------------------------------------------------------------------------
+
 # Content
+
+------------------------------------------------------------------------------
+
+# Content
+
 - What is reinforcement learning?
 - Some remarks on stochasticity
-- What are MDPs?
+- Markov Decision Processes
 - Finite Markov chains
 - Finite Markov reward processes
   - Value function \& Bellman equation
 - Markov decision processes
   - State-value functions and action-value functions
 - Optimal policies and value functions
+
+------------------------------------------------------------------------------
+
+# What is reinforcement learning?
+
+------------------------------------------------------------------------------
 
 # What is reinforcement learning?
 
@@ -43,7 +56,11 @@ find a policy that maximizes the **sum of future rewards**!
 :::
 :::
 
+------------------------------------------------------------------------------
+
 # Some remarks on stochasticity
+
+------------------------------------------------------------------------------
 
 # Stochasticity in reinforcement learning
 
@@ -142,7 +159,7 @@ $\Rightarrow$ *$X$ is distributed according to $p(X)$*: $$X\sim p(X).$$
 :::
 
 ::: fragment
-*Note*: in the literature, people sometimes use $p(x)$ to also denote the probability distribution over all possible values of $x$!
+:bulb: in the literature, people sometimes use $p(x)$ to also denote the probability distribution over all possible values of $x$!
 :::
 
 ::: fragment

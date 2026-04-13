@@ -1351,6 +1351,39 @@ OpenAI Rubik’s Cube [<a href="https://www.imgeorgiev.com/2024-03-15-stochastic
 </div>
 </div>
 </section>
+<section id="the-two-central-tasks-in-rl" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The two central tasks in RL</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>In all chapters, we will distinguish between <strong>two core learning tasks in reinforcement learning</strong>:</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>The prediction problem</strong> (<em>evaluation</em>)</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">For a fixed policy <span class="math inline">\(\pi\)</span>, we want to <strong>estimate the quality of a state <span class="math inline">\(s\)</span></strong> (i.e., its <strong>value</strong>).</li>
+</ul>
+<ol class="incremental" start="2" style="list-style-type: decimal">
+<li class="fragment"><strong>The control problem</strong> (<em>improvement</em>)</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">We want to <strong>improve our policy</strong> <span class="math inline">\(\pi\)</span> towards the optimal <span class="math inline">\(\pi^*\)</span> that maximizes the value.</li>
+<li class="fragment">This usually requires a back-and-forth between 1. and 2.
+<ul class="incremental">
+<li class="fragment">Given our estimate of the value, we improve the policy: <span class="math inline">\(\pi&#39; &gt; \pi\)</span>.</li>
+<li class="fragment">We then need to reiterate the values given the new policy <span class="math inline">\(\pi&#39;\)</span> and so on.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="the-key-difference-to-supervised-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">

@@ -5,6 +5,19 @@ feedback:
   deck-id:  'deeprl-multi-armed-bandits'
 ...
 
+------------------------------------------------------------------------------
+
+# Content
+
+------------------------------------------------------------------------------
+
+# Content
+
+- Multi-armed bandits
+- Action-value methods
+- A simple bandit algorithm
+- What we have not discussed
+- Some next steps
 
 # Example: Route planning (OH16 to Hansaplatz by car)
 
@@ -30,6 +43,12 @@ feedback:
 :::
 <!-- https://www.google.com/maps/dir/Otto-Hahn-Stra%C3%9Fe+16,+44227+Dortmund/Hansapl.,+44137+Dortmund-Innenstadt-West/@51.5005743,7.4251556,14z/data=!4m14!4m13!1m5!1m1!1s0x47b918ff9cf944b1:0x3f36034c67e5dc28!2m2!1d7.4051747!2d51.489565!1m5!1m1!1s0x47b919e1942e6f9d:0xbf57c39d87666683!2m2!1d7.4652885!2d51.512955!3e0?entry=ttu&g_ep=EgoyMDI2MDMwMi4wIKXMDSoASAFQAw%3D%3D -->
 
+------------------------------------------------------------------------------
+
+# Multi-armed bandits
+
+------------------------------------------------------------------------------
+
 # Multi-armed bandits
 
 ::: columns-7-3
@@ -51,6 +70,12 @@ feedback:
 ::: footer
 $^*$We will have a discussion on the notation and random variables in the next lecture (MDPs)
 :::
+
+------------------------------------------------------------------------------
+
+# Action-value methods
+
+------------------------------------------------------------------------------
 
 # Action-value methods
 ::: small
@@ -79,7 +104,11 @@ $$a_t=\arg\max_a Q_t(a)$$
 
 :::
 
-# Example: The $k$-armed testbed
+------------------------------------------------------------------------------
+
+# A simple bandit algorithm
+
+------------------------------------------------------------------------------
 
 # The $k$-armed testbed
 ::: small
@@ -156,7 +185,11 @@ while(True):
 ```
 Caption: A simple version of the $\epsilon$ greedy bandit
 
+------------------------------------------------------------------------------
+
 # Some next steps
+
+------------------------------------------------------------------------------
 
 # Computing $Q(a)$ on the fly 
 
@@ -249,6 +282,13 @@ Two topics (and also many more) topics that we have not discussed:
 ::: footer
 For details, see [@Sutton1998]
 :::
+
+# Summary / what we have learned
+
+- Multi-armed bandits model decision making problems where we want to maximize the expected return (the value) of an action in an unknown and uncertain environment.
+- Action-value methods estimate the values of actions and then use these estimates to make action selection decisions.
+- The exploration-exploitation dilemma describes the challenge of making use of what we know, versus needing to explore to further improve in the long run.
+- A simple approach is the $\epsilon$-greedy algorithm, where we explore randomly with proabability $\epsilon$, and otherwise follow the optimal (greedy) action.
 
 # References
 

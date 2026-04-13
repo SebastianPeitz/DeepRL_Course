@@ -5,6 +5,21 @@ feedback:
   deck-id:  'deeprl-monte-carlo'
 ...
 
+------------------------------------------------------------------------------
+
+# Content
+
+------------------------------------------------------------------------------
+
+# Content
+
+- Monte Carlo simulation
+- MC prediction
+- MC esitmation of action values
+- MC control
+- On- and off-policy learning
+- Off-policy MC control
+- Summary
 
 ------------------------------------------------------------------------------
 
@@ -501,6 +516,39 @@ $$]{.math-incremental}
 
 :::
 
+# Greedy in the limit with infinite exploration (GLIE)
+
+::: definition
+### Definition: Greedy in the limit with infinite exploration (GLIE)
+
+A learning policy $\pi$ is called GLIE if it satisfies the following two properties:
+
+::: incremental
+- If a state is visited infinitely often, then each action is chosen infinitely often:
+$$ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = 1 \quad \forall~s\in\Sc,a\in\Ac. $$
+- In the limit ($i\rightarrow\infty$) the learning policy is greedy with respect to the learned action value:
+$$ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = \pi(s) = \arg\max_{a\in\Ac} Q^\pi(s,a)\quad \forall s\in\Sc. $$
+:::
+:::
+
+# GLIE Monte Carlo control
+
+::: definition
+### Theorem: Optimal decision using MC-control with $\epsilon$-greedy
+
+MC-based control using $\epsilon$-greedy exploration is GLIE, if $\epsilon$ is decreased at rate
+$$ \epsilon_k=\frac{1}{k}, $$
+with $k$ being the increasing episode index. In this case,
+$$ Q^\pi(s,a)=Q^*(s,a). $$
+:::
+
+[Remarks:]{.fragment}
+
+::: incremental 
+- Limited feasibility: infinite number of episodes required.
+- $\epsilon$-greedy is an undirected and unmonitored random exploration strategy. Can that be the most efficient way of learning?
+:::
+
 # Example: Gridworld
 
 TBD
@@ -693,9 +741,9 @@ If we want to perform weighted importance sampling in an in an incremental fashi
 [$$ 
 V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
 $$]{.fragment}
-[In addition to keeping track of $V_k$, we must maintain for each state the cumulative sum $c_k$ of the weights given
-to the first $k$$ returns.]{.fragment} [The update rule for $V_k$ is then:]{.fragment}
-[$$ 
+[In addition to keeping track of $V_k$, we must maintain for each state the cumulative sum $c_k$ of the weights given to the first $k$ returns.]{.fragment} 
+[The update rule for $V_k$ is then:
+$$ 
 V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and} \qquad c_{k+1} = c_k + w_{k+1},} 
 $$]{.fragment}
 [with $c_0=0$.]{.fragment}
