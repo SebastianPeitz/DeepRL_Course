@@ -56,7 +56,7 @@ $$
 \begin{eqnarray}
 g_t &=& r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
 V^\pi(s_t) &=& \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
-V^\pi(s_t) &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:BellmanV}
+V^\pi(s_t) &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 $$
 :::
@@ -82,7 +82,7 @@ From this, we derived the *Bellman optimality equation* [@Bellman1954]:
 $$
 \begin{align}
 V^*(s) &= \max_{a\in\Ac} \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:BellmanVstar}
+ &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 $$
 
@@ -91,7 +91,7 @@ Similarly, we can derive an optimal Q-function:
 $$
 \begin{align}
 Q^*(s,a) &= \ExpC{r_{t+1}+\gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
- &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:BellmanQstar}
+ &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 $$
 :::
@@ -191,21 +191,21 @@ In all chapters, we will distinguish between **two core learning tasks in reinfo
 Let's start with the *prediction problem*: [For a given policy $\pi$, how do we compute $V^\pi$?]{.fragment}
 
 ::: fragment
-Let's revisit \eqref{eq:BellmanV}:
+Let's revisit \eqref{eq:DP_BellmanV}:
 
 $$
 \begin{equation}
-V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s')}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V^\pi(s') \right]} \label{eq:BellmanV2}
+V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s')}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V^\pi(s') \right]} \label{eq:DP_BellmanV2}
 \end{equation}
 $$
 :::
 
 ::: incremental
-- If the dynamics $p$ are known, \eqref{eq:BellmanV2} is a system of $\abs{S}$ linear equations in $\abs{S}$ unknowns (the $V^\pi(s)$, $s \in \Sc$) [$\Rightarrow$ Solution is straightforward, if tedious.]{.fragment}
+- If the dynamics $p$ are known, \eqref{eq:DP_BellmanV2} is a system of $\abs{S}$ linear equations in $\abs{S}$ unknowns (the $V^\pi(s)$, $s \in \Sc$) [$\Rightarrow$ Solution is straightforward, if tedious.]{.fragment}
 - Iterative solution method: 
   - Consider a sequence of approximate value functions $V_0, V_1, V_2, \ldots$
   - Choose $V_0$ arbitrarily (except that the terminal state, if any, must be given value 0).
-  - Each successive approximation is obtained by using the Bellman equation \eqref{eq:BellmanV2} as an update rule.
+  - Each successive approximation is obtained by using the Bellman equation \eqref{eq:DP_BellmanV2} as an update rule.
 :::
 
 ::: footer
@@ -215,13 +215,13 @@ termination is guaranteed from all states under the policy $\pi$.
 
 # Iterative policy evaluation
 
-Use the Bellman equation \eqref{eq:BellmanV2} as an update rule:
+Use the Bellman equation \eqref{eq:DP_BellmanV2} as an update rule:
 $$\begin{equation}
-V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s') \right] \label{eq:IterativePolicyEvaluation}
+V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s') \right] \label{eq:DP_IterativePolicyEvaluation}
 \end{equation}$$
 
 ::: incremental
-- $V_k = V^\pi$ is a fixed point for this update rule: \eqref{eq:IterativePolicyEvaluation} is satisfied for $V^\pi$. 
+- $V_k = V^\pi$ is a fixed point for this update rule: \eqref{eq:DP_IterativePolicyEvaluation} is satisfied for $V^\pi$. 
 - The sequence $\set{V_k}$ converges to $V^\pi$ as $k\rightarrow\infty$ (under the same conditions guaranteeing existence of $V^\pi$). 
 - This algorithm is called **iterative policy evaluation**:
   - For each state $s$, replace the old value of $s$ with a new value ...
@@ -241,7 +241,7 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 *Input*: policy $\pi$\
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(terminal) = 0$\
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
 **while** (True):\
 $\quad$ $\Delta=0$\
 $\quad$ **for** $s \in \Sc$:\
@@ -373,7 +373,7 @@ Then $V^{\pi'}(s) \geq V^\pi(s)$ for all $s \in \Sc$.
 **Proof:**
 $$
 \begin{equation}
-V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \fragment{= \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t}\sum_{s_{t+1}\in\Sc} \pstplusstat \left[r_t + \gamma V^\pi(s_{t+1})\right] } \fragment{= \ExpCsub{r_t+\gamma V^\pi(s_{t+1})}{s_t}{\pi'}}\label{eq:policy_improvement_theorem_1}
+V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \fragment{= \sum_{a_t\in\Ac} \pi'\agivenb{a_t}{s_t}\sum_{s_{t+1}\in\Sc} \pstplusstat \left[r_t + \gamma V^\pi(s_{t+1})\right] } \fragment{= \ExpCsub{r_t+\gamma V^\pi(s_{t+1})}{s_t}{\pi'}}\label{eq:DP_policy_improvement_theorem_1}
 \end{equation}
 $$
 :::
@@ -385,7 +385,7 @@ $V^\pi(s_{t+1}) \leq \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi'}.$
 
 ::: fragment
 $$
-\text{Substitute into \eqref{eq:policy_improvement_theorem_1}:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t+\gamma \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi'}}{s_t}{\pi'}\qquad\qquad\qquad~~
+\text{Substitute into \eqref{eq:DP_policy_improvement_theorem_1}:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t+\gamma \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi'}}{s_t}{\pi'}\qquad\qquad\qquad~~
 $$
 :::
 
@@ -421,7 +421,7 @@ $$\pi'(s) = \arg\max_{a\in\Ac} Q^\pi(s, a)
 
 ::: incremental
 - Suppose $\pi'$ is as good as $\pi$, but not better. That is, $\pi'(s) = \pi(s)$ for all $s\in\Sc$.
-- Then $\pi'$ satisfies the Bellman optimality condition \eqref{eq:BellmanVstar}:
+- Then $\pi'$ satisfies the Bellman optimality condition \eqref{eq:DP_BellmanVstar}:
 [$$V^{\pi^\prime}(s) = \max_{a\in\Ac}\ExpCsub{r+\gamma V^{\pi^\prime}(s')}{s,a}{\pi}
 \fragment{= \max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^{\pi^\prime}(s')\right],} $$]{.fragment}
 :::
@@ -493,7 +493,7 @@ function changes little from one policy to the next).
 ### Algorithm: Policy Iteration for estimating $\pi \approx \pi^*$.
 
 ::: incremental
-1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(terminal) = 0$, small threshold $\theta > 0$\
+1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(\mathsf{terminal}) = 0$, small threshold $\theta > 0$\
 
 <!-- ::: columns-5-5 -->
 2. **Policy evaluation**:\
@@ -538,7 +538,7 @@ $\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $\mathsf{flag}_{\mat
 Let's look at our earlier derivation of the policy evaluation procedure:
 
 $$\begin{equation}
-V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s')}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right] \tag{\ref{eq:IterativePolicyEvaluation}}
+V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s')}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
 \end{equation}$$
 
 ::: fragment
@@ -551,11 +551,11 @@ V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s')}{s,a} = \te
 ::: fragment
 Let's compare this to the Bellman equation:
 \begin{align}
-V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa\left[ r + \gamma V^*(s') \right].  \tag{\ref{eq:BellmanVstar}}
+V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa\left[ r + \gamma V^*(s') \right].  \tag{\ref{eq:DP_BellmanVstar}}
 \end{align}
 :::
 
-[$\Rightarrow$ We have simply turned \eqref{eq:BellmanVstar} into an iterative procedure!]{.fragment}
+[$\Rightarrow$ We have simply turned \eqref{eq:DP_BellmanVstar} into an iterative procedure!]{.fragment}
 
 [$\Rightarrow$ Value iteration can be shown to converge for arbitrary $V_0$]{.fragment}
 :::
@@ -566,7 +566,7 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\i
 
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(terminal) = 0$\
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
 **while** ($\Delta > \theta$):\
 $\quad$ $\Delta=0$\
 $\quad$ **for** $s \in \Sc$:\

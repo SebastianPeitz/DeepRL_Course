@@ -213,7 +213,7 @@ The expression *[ Target - OldEstimate ]* is an **error estimate**, used to stee
 :::
 
 ::: fragment
-We will see a formulae of the type $$ NewEstimate \leftarrow OldEstimate + StepSize \; [ Target - OldEstimate ] $$ frequently from now on!
+We will see a formulae of the type $$ \mathsf{NewEstimate} \leftarrow \mathsf{OldEstimate} + StepSize \; [ \mathsf{Target} - \mathsf{OldEstimate} ] $$ frequently from now on!
 :::
 
 :::

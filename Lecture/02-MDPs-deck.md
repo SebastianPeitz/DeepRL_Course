@@ -597,7 +597,7 @@ $$ r^\pi = \sum_{a\in\Ac} \pias p\agivenb{r}{s,a} $$
 
 ::: {.definition}
 The **state-value function** of an MDP is the expected return starting in $s$ following policy $\pi$:
-$$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}$$
+$$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:MDP_state-value-function}\end{equation}$$
 :::
 
 ::: fragment
@@ -605,7 +605,7 @@ $$\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\i
 The **action-value function** of an MDP is the expected return starting in $s$, taking action $a$ and then following policy $\pi$:
 $$\begin{equation}
 Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi}.
-\label{eq:action-value-function}\end{equation}$$
+\label{eq:MDP_action-value-function}\end{equation}$$
 :::
 :::
 
@@ -626,7 +626,7 @@ $$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
-$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmanQ} \end{equation}$$
+$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
 :::
 
 # Bellman expectation equation \& forest tree example (1)
@@ -660,7 +660,7 @@ $$p^\pi\agivenb{s'}{s} = \begin{bmatrix} 0 & \frac{1-\alpha}{2} & 0 & \frac{1+\a
 
 # Bellman expectation equation \& forest tree example (3)
 
-Using the Bellman expectation from \eqref{eq:BellmanQ}, the action values can be calculated directly:
+Using the Bellman expectation from \eqref{eq:MDP_BellmanQ}, the action values can be calculated directly:
 \ 
 
 ![](images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg){ width=1000px }

@@ -2188,7 +2188,7 @@ p\agivenb{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &amp;= \pi\agivenb{a_t}{s_
 <h3>OIS: State-value estimation via Monte Carlo ordinary importance sampling</h3>
 <p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following a behavior policy <span class="math inline">\(b\)</span> using <strong>ordinary importance sampling</strong> (<strong>OIS</strong>) results in scaling and averaging the sampled returns by the importance sampling ratio per episode: <span class="math display">\[ 
 \begin{equation}
-V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:OIS}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:MC_OIS}
 \end{equation}
 \]</span> <em>Here <span class="math inline">\(\mathcal{T}(s)\)</span> is the set of all time steps in which <span class="math inline">\(s\)</span> is visited, and $T(t) is the termination of the episode starting at <span class="math inline">\(t\)</span>.</em></p>
 </div>
@@ -2210,7 +2210,7 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">OIS can be shown to be unbiased <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>, meaning that the expectation of <span class="math inline">\(\eqref{eq:OIS}\)</span> is always <span class="math inline">\(V^\pi\)</span>.</li>
+<li class="fragment">OIS can be shown to be unbiased <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>, meaning that the expectation of <span class="math inline">\(\eqref{eq:MC_OIS}\)</span> is always <span class="math inline">\(V^\pi\)</span>.</li>
 <li class="fragment">On the other hand, it can be extreme.</li>
 </ul>
 </div>
@@ -2219,7 +2219,7 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(
 <h3>WIS: State-value estimation via Monte Carlo importance sampling</h3>
 <p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following <span class="math inline">\(b\)</span> using <strong>weighted importance sampling</strong> (<strong>WIS</strong>) results in a slightly different scaling: <span class="math display">\[ 
 \begin{equation}
-V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:WIS}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:MC_WIS}
 \end{equation}
 \]</span></p>
 </div>
@@ -2231,15 +2231,15 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathca
 <ul class="incremental">
 <li class="fragment">Bias:
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(\eqref{eq:OIS}\)</span> is unbiased.</li>
-<li class="fragment"><span class="math inline">\(\eqref{eq:WIS}\)</span> is biased (though it converges asymptotically to zero).</li>
+<li class="fragment"><span class="math inline">\(\eqref{eq:MC_OIS}\)</span> is unbiased.</li>
+<li class="fragment"><span class="math inline">\(\eqref{eq:MC_WIS}\)</span> is biased (though it converges asymptotically to zero).</li>
 </ul></li>
 <li class="fragment">Variance:
 <ul class="incremental">
-<li class="fragment">The variance of <span class="math inline">\(\eqref{eq:OIS}\)</span> is in general unbounded (the variance of the ratios can be unbounded).</li>
-<li class="fragment">For <span class="math inline">\(\eqref{eq:WIS}\)</span>, the largest weight on any single return is one.</li>
-<li class="fragment">Assuming bounded returns, the variance of <span class="math inline">\(\eqref{eq:WIS}\)</span> converges to zero even if the variance of the ratios themselves is infinite <span class="citation">(<a href="#ref-Precup2001">Precup, Sutton, and Dasgupta 2001</a>)</span></li>
-<li class="fragment">In practice, <span class="math inline">\(\eqref{eq:WIS}\)</span> has dramatically lower variance and is strongly preferred.</li>
+<li class="fragment">The variance of <span class="math inline">\(\eqref{eq:MC_OIS}\)</span> is in general unbounded (the variance of the ratios can be unbounded).</li>
+<li class="fragment">For <span class="math inline">\(\eqref{eq:MC_WIS}\)</span>, the largest weight on any single return is one.</li>
+<li class="fragment">Assuming bounded returns, the variance of <span class="math inline">\(\eqref{eq:MC_WIS}\)</span> converges to zero even if the variance of the ratios themselves is infinite <span class="citation">(<a href="#ref-Precup2001">Precup, Sutton, and Dasgupta 2001</a>)</span></li>
+<li class="fragment">In practice, <span class="math inline">\(\eqref{eq:MC_WIS}\)</span> has dramatically lower variance and is strongly preferred.</li>
 </ul></li>
 </ul>
 </div>
@@ -2258,7 +2258,7 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathca
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_k\)</span> at iteration <span class="math inline">\(k\)</span>:</span> <span class="fragment"><span class="math display">\[ 
+<p>If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in <span class="math inline">\(\eqref{eq:MC_WIS}\)</span>. <span class="fragment">Let’s do this exemplary for the value function <span class="math inline">\(V_k\)</span> at iteration <span class="math inline">\(k\)</span>:</span> <span class="fragment"><span class="math display">\[ 
 V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
 \]</span></span> <span class="fragment">In addition to keeping track of <span class="math inline">\(V_k\)</span>, we must maintain for each state the cumulative sum <span class="math inline">\(c_k\)</span> of the weights given to the first <span class="math inline">\(k\)</span> returns.</span> <span class="fragment">The update rule for <span class="math inline">\(V_k\)</span> is then: <span class="math display">\[ 
 V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and} \qquad c_{k+1} = c_k + w_{k+1},} 

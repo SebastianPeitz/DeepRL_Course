@@ -689,7 +689,7 @@ $$
 Estimating the state value $V^\pi$ following a behavior policy $b$ using **ordinary importance sampling** (**OIS**) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
 $$ 
 \begin{equation}
-V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:OIS}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:MC_OIS}
 \end{equation}
 $$
 *Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
@@ -702,7 +702,7 @@ $$
 
 ::: small
 ::: incremental
-- OIS can be shown to be unbiased [@Sutton1998], meaning that the expectation of \eqref{eq:OIS} is always $V^\pi$.
+- OIS can be shown to be unbiased [@Sutton1998], meaning that the expectation of \eqref{eq:MC_OIS} is always $V^\pi$.
 - On the other hand, it can be extreme.
 :::
 
@@ -713,7 +713,7 @@ $$
 Estimating the state value $V^\pi$ following $b$ using **weighted importance sampling** (**WIS**) results in a slightly different scaling:
 $$ 
 \begin{equation}
-V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:WIS}
+V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:MC_WIS}
 \end{equation}
 $$
 :::
@@ -725,19 +725,19 @@ Main differences between the two (first-visit) versions:
 
 ::: incremental
 - Bias:
-  - \eqref{eq:OIS} is unbiased.
-  - \eqref{eq:WIS} is biased (though it converges asymptotically to zero). 
+  - \eqref{eq:MC_OIS} is unbiased.
+  - \eqref{eq:MC_WIS} is biased (though it converges asymptotically to zero). 
 - Variance:
-  - The variance of \eqref{eq:OIS} is in general unbounded (the variance of the ratios can be unbounded). 
-  - For \eqref{eq:WIS}, the largest weight on any single return is one. 
-  - Assuming bounded returns, the variance of \eqref{eq:WIS} converges to zero even if the variance of the ratios themselves is infinite [@Precup2001]
-  - In practice, \eqref{eq:WIS} has dramatically lower variance and is strongly preferred.
+  - The variance of \eqref{eq:MC_OIS} is in general unbounded (the variance of the ratios can be unbounded). 
+  - For \eqref{eq:MC_WIS}, the largest weight on any single return is one. 
+  - Assuming bounded returns, the variance of \eqref{eq:MC_WIS} converges to zero even if the variance of the ratios themselves is infinite [@Precup2001]
+  - In practice, \eqref{eq:MC_WIS} has dramatically lower variance and is strongly preferred.
 :::
 :::
 
 # WIS: incremental implementation
 ::: small 
-If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in \eqref{eq:WIS}. [Let's do this exemplary for the value function $V_k$ at iteration $k$:]{.fragment}
+If we want to perform weighted importance sampling in an in an incremental fashion, we need to keep track of all the weights in \eqref{eq:MC_WIS}. [Let's do this exemplary for the value function $V_k$ at iteration $k$:]{.fragment}
 [$$ 
 V_k = \frac{\sum_{t=1}^{n} w_t g_t}{\sum_{t=1}^{n} w_t}, \qquad \text{where}\quad w_t=\rho_{k:T(t)}. 
 $$]{.fragment}

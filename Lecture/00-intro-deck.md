@@ -315,13 +315,13 @@ By the end of the course, we will
   - Markov Decision Processes (MDPs)
   - Dynamic Programming
   - Monte Carlo Methods
-  - Temporal Difference Learning \& Q learning
+  - Temporal Difference Learning \& Q-learning
 :::
 
 ::: fragment
 - **Deep-learning-based methods**
   - Brief introduction to deep learning
-  - Deep Q learning
+  - Deep Q-learning
   - Actor-Critic algorithms
   - Advanced algorithms
 :::

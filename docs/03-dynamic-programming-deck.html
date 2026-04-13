@@ -255,7 +255,7 @@
 \begin{eqnarray}
 g_t &amp;=&amp; r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
 V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
-V^\pi(s_t) &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:BellmanV}
+V^\pi(s_t) &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 \]</span></p>
 </div>
@@ -286,14 +286,14 @@ V^\pi(s_t) &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label
 <p>From this, we derived the <em>Bellman optimality equation</em> <span class="citation">(<a href="#ref-Bellman1954">Bellman 1954</a>)</span>: <span class="math display">\[
 \begin{align}
 V^*(s) &amp;= \max_{a\in\Ac} \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:BellmanVstar}
+ &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 \]</span></p>
 <div class="fragment">
 <p>Similarly, we can derive an optimal Q-function: <span class="math display">\[
 \begin{align}
 Q^*(s,a) &amp;= \ExpC{r_{t+1}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s_t = s, a_t = a} \notag \\
- &amp;= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:BellmanQstar}
+ &amp;= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 \]</span></p>
 </div>
@@ -746,21 +746,21 @@ Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1
 <div class="box block">
 <p>Let’s start with the <em>prediction problem</em>: <span class="fragment">For a given policy <span class="math inline">\(\pi\)</span>, how do we compute <span class="math inline">\(V^\pi\)</span>?</span></p>
 <div class="fragment">
-<p>Let’s revisit <span class="math inline">\(\eqref{eq:BellmanV}\)</span>:</p>
+<p>Let’s revisit <span class="math inline">\(\eqref{eq:DP_BellmanV}\)</span>:</p>
 <p><span class="math display">\[
 \begin{equation}
-V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s&#39;)}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V^\pi(s&#39;) \right]} \label{eq:BellmanV2}
+V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s&#39;)}{s}{\pi} \fragment{= \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V^\pi(s&#39;) \right]} \label{eq:DP_BellmanV2}
 \end{equation}
 \]</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">If the dynamics <span class="math inline">\(p\)</span> are known, <span class="math inline">\(\eqref{eq:BellmanV2}\)</span> is a system of <span class="math inline">\(\abs{S}\)</span> linear equations in <span class="math inline">\(\abs{S}\)</span> unknowns (the <span class="math inline">\(V^\pi(s)\)</span>, <span class="math inline">\(s \in \Sc\)</span>) <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Solution is straightforward, if tedious.</span></li>
+<li class="fragment">If the dynamics <span class="math inline">\(p\)</span> are known, <span class="math inline">\(\eqref{eq:DP_BellmanV2}\)</span> is a system of <span class="math inline">\(\abs{S}\)</span> linear equations in <span class="math inline">\(\abs{S}\)</span> unknowns (the <span class="math inline">\(V^\pi(s)\)</span>, <span class="math inline">\(s \in \Sc\)</span>) <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Solution is straightforward, if tedious.</span></li>
 <li class="fragment">Iterative solution method:
 <ul class="incremental">
 <li class="fragment">Consider a sequence of approximate value functions <span class="math inline">\(V_0, V_1, V_2, \ldots\)</span></li>
 <li class="fragment">Choose <span class="math inline">\(V_0\)</span> arbitrarily (except that the terminal state, if any, must be given value 0).</li>
-<li class="fragment">Each successive approximation is obtained by using the Bellman equation <span class="math inline">\(\eqref{eq:BellmanV2}\)</span> as an update rule.</li>
+<li class="fragment">Each successive approximation is obtained by using the Bellman equation <span class="math inline">\(\eqref{eq:DP_BellmanV2}\)</span> as an update rule.</li>
 </ul></li>
 </ul>
 </div>
@@ -780,12 +780,12 @@ V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s&#39;)}{s}{\pi} \fragment{= \sum_{a\in\Ac} \
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Use the Bellman equation <span class="math inline">\(\eqref{eq:BellmanV2}\)</span> as an update rule: <span class="math display">\[\begin{equation}
-V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s&#39;) \right] \label{eq:IterativePolicyEvaluation}
+<p>Use the Bellman equation <span class="math inline">\(\eqref{eq:DP_BellmanV2}\)</span> as an update rule: <span class="math display">\[\begin{equation}
+V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s&#39;) \right] \label{eq:DP_IterativePolicyEvaluation}
 \end{equation}\]</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(V_k = V^\pi\)</span> is a fixed point for this update rule: <span class="math inline">\(\eqref{eq:IterativePolicyEvaluation}\)</span> is satisfied for <span class="math inline">\(V^\pi\)</span>.</li>
+<li class="fragment"><span class="math inline">\(V_k = V^\pi\)</span> is a fixed point for this update rule: <span class="math inline">\(\eqref{eq:DP_IterativePolicyEvaluation}\)</span> is satisfied for <span class="math inline">\(V^\pi\)</span>.</li>
 <li class="fragment">The sequence <span class="math inline">\(\set{V_k}\)</span> converges to <span class="math inline">\(V^\pi\)</span> as <span class="math inline">\(k\rightarrow\infty\)</span> (under the same conditions guaranteeing existence of <span class="math inline">\(V^\pi\)</span>).</li>
 <li class="fragment">This algorithm is called <strong>iterative policy evaluation</strong>:
 <ul class="incremental">
@@ -815,7 +815,7 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <h3>Algorithm: In-place iterative policy evaluation for estimating <span class="math inline">\(V\approx V^\pi\)</span>.</h3>
 <p><em>Input</em>: policy <span class="math inline">\(\pi\)</span><br />
 <em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
-<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span><br />
+<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span><br />
 <strong>while</strong> (True):<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta=0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
@@ -1964,7 +1964,7 @@ Q^\pi(s,a) &amp;= \ExpCsub{r + \gamma V^\pi(s&#39;)}{s,a}{\pi} \\ &amp;= \sum_{s
 <div class="fragment">
 <p><strong>Proof:</strong> <span class="math display">\[
 \begin{equation}
-V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \fragment{= \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t}\sum_{s_{t+1}\in\Sc} \pstplusstat \left[r_t + \gamma V^\pi(s_{t+1})\right] } \fragment{= \ExpCsub{r_t+\gamma V^\pi(s_{t+1})}{s_t}{\pi&#39;}}\label{eq:policy_improvement_theorem_1}
+V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \fragment{= \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t}\sum_{s_{t+1}\in\Sc} \pstplusstat \left[r_t + \gamma V^\pi(s_{t+1})\right] } \fragment{= \ExpCsub{r_t+\gamma V^\pi(s_{t+1})}{s_t}{\pi&#39;}}\label{eq:DP_policy_improvement_theorem_1}
 \end{equation}
 \]</span></p>
 </div>
@@ -1973,7 +1973,7 @@ V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \frag
 </div>
 <div class="fragment">
 <p><span class="math display">\[
-\text{Substitute into \eqref{eq:policy_improvement_theorem_1}:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t+\gamma \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi&#39;}}{s_t}{\pi&#39;}\qquad\qquad\qquad~~
+\text{Substitute into \eqref{eq:DP_policy_improvement_theorem_1}:}\qquad V^\pi(s_t) \leq \ExpCsub{r_t+\gamma \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+2})}{s_{t+1}}{\pi&#39;}}{s_t}{\pi&#39;}\qquad\qquad\qquad~~
 \]</span></p>
 </div>
 <div class="fragment">
@@ -2015,7 +2015,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Suppose <span class="math inline">\(\pi&#39;\)</span> is as good as <span class="math inline">\(\pi\)</span>, but not better. That is, <span class="math inline">\(\pi&#39;(s) = \pi(s)\)</span> for all <span class="math inline">\(s\in\Sc\)</span>.</li>
-<li class="fragment">Then <span class="math inline">\(\pi&#39;\)</span> satisfies the Bellman optimality condition <span class="math inline">\(\eqref{eq:BellmanVstar}\)</span>: <span class="fragment"><span class="math display">\[V^{\pi^\prime}(s) = \max_{a\in\Ac}\ExpCsub{r+\gamma V^{\pi^\prime}(s&#39;)}{s,a}{\pi}
+<li class="fragment">Then <span class="math inline">\(\pi&#39;\)</span> satisfies the Bellman optimality condition <span class="math inline">\(\eqref{eq:DP_BellmanVstar}\)</span>: <span class="fragment"><span class="math display">\[V^{\pi^\prime}(s) = \max_{a\in\Ac}\ExpCsub{r+\gamma V^{\pi^\prime}(s&#39;)}{s,a}{\pi}
 \fragment{= \max_{a\in\Ac}\sum_{s&#39;\in\Sc} \psprimesa \left[r + \gamma V^{\pi^\prime}(s&#39;)\right],} \]</span></span></li>
 </ul>
 </div>
@@ -4214,7 +4214,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <h3>Algorithm: Policy Iteration for estimating <span class="math inline">\(\pi \approx \pi^*\)</span>.</h3>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment"><strong>Initialization</strong>: <span class="math inline">\(V(s)\in\R\)</span> and <span class="math inline">\(\pi(s)\in\Ac\)</span> arbitrarily for all <span class="math inline">\(s\in\Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span>, small threshold <span class="math inline">\(\theta &gt; 0\)</span><br />
+<li class="fragment"><strong>Initialization</strong>: <span class="math inline">\(V(s)\in\R\)</span> and <span class="math inline">\(\pi(s)\in\Ac\)</span> arbitrarily for all <span class="math inline">\(s\in\Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span>, small threshold <span class="math inline">\(\theta &gt; 0\)</span><br />
 </li>
 </ol>
 <!-- ::: columns-5-5 -->
@@ -4287,7 +4287,7 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <div class="small">
 <p>Let’s look at our earlier derivation of the policy evaluation procedure:</p>
 <p><span class="math display">\[\begin{equation}
-V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s&#39;)}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right] \tag{\ref{eq:IterativePolicyEvaluation}}
+V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s&#39;)}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
 \end{equation}\]</span></p>
 <div class="fragment">
 <p>Now, we change this to directly update the value function using the maximizing action (policy improvement step): <span class="math display">\[\begin{equation}
@@ -4296,10 +4296,10 @@ V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s&#39;)}{s,a} =
 </div>
 <div class="fragment">
 <p>Let’s compare this to the Bellman equation: <span class="math display">\[\begin{align}
-V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \psprimesa\left[ r + \gamma V^*(s&#39;) \right].  \tag{\ref{eq:BellmanVstar}}
+V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \psprimesa\left[ r + \gamma V^*(s&#39;) \right].  \tag{\ref{eq:DP_BellmanVstar}}
 \end{align}\]</span></p>
 </div>
-<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have simply turned <span class="math inline">\(\eqref{eq:BellmanVstar}\)</span> into an iterative procedure!</span></p>
+<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have simply turned <span class="math inline">\(\eqref{eq:DP_BellmanVstar}\)</span> into an iterative procedure!</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Value iteration can be shown to converge for arbitrary <span class="math inline">\(V_0\)</span></span></p>
 </div>
 </div>
@@ -4318,7 +4318,7 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{
 <div id="algorithm-value-iteration-for-estimating-piapprox-pi." class="definition">
 <h3>Algorithm: Value iteration for estimating <span class="math inline">\(\pi\approx \pi^*\)</span>.</h3>
 <p><em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
-<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(terminal) = 0\)</span><br />
+<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span><br />
 <strong>while</strong> (<span class="math inline">\(\Delta &gt; \theta\)</span>):<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta=0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />

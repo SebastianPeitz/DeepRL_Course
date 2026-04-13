@@ -5029,13 +5029,13 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 <div class="area">
 <div class="box block">
 <div class="definition">
-<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:state-value-function}\end{equation}\]</span></p>
+<p>The <strong>state-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span> following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}V^\pi(s) = \ExpCsub{g_t}{s_t=s}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}.\label{eq:MDP_state-value-function}\end{equation}\]</span></p>
 </div>
 <div class="fragment">
 <div class="definition">
 <p>The <strong>action-value function</strong> of an MDP is the expected return starting in <span class="math inline">\(s\)</span>, taking action <span class="math inline">\(a\)</span> and then following policy <span class="math inline">\(\pi\)</span>: <span class="math display">\[\begin{equation}
 Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi}.
-\label{eq:action-value-function}\end{equation}\]</span></p>
+\label{eq:MDP_action-value-function}\end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -5070,7 +5070,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="box block">
 <p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
 <div class="fragment">
-<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:BellmanQ} \end{equation}\]</span></p>
+<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -5135,7 +5135,7 @@ p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp;
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Using the Bellman expectation from <span class="math inline">\(\eqref{eq:BellmanQ}\)</span>, the action values can be calculated directly:  </p>
+<p>Using the Bellman expectation from <span class="math inline">\(\eqref{eq:MDP_BellmanQ}\)</span>, the action values can be calculated directly:  </p>
 <div class="media">
 <figure class="image" style="height:auto;width:1000px;">
 <img src="images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg" style="height:auto;width:100%;" alt="images/02-MDPs/Forest_Markov_Decision_Process_Action_Value.svg" />
