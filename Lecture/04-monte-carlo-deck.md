@@ -95,11 +95,11 @@ $$ V(s) = \ExpC{g_t}{s_t = s}=\ExpC{ \sum_{k=0}^T \gamma^k r_{t+k}}{s_t = s} .$$
 - $\ell(s)$: an empty list of returns for all $s \in \Sc$
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
-$\quad$ $g = 0$\
+$\quad$ $g \gets 0$\
 $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g+ r_t$\
+$\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$: $\qquad$ ([*that's the first-visit condition*]{style="color: red;"})\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
@@ -124,11 +124,11 @@ $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 - $\ell(s)$: an empty list of returns for all $s \in \Sc$
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
-$\quad$ $g = 0$\
+$\quad$ $g \gets 0$\
 $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g+ r_t$\
+$\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$  $\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}$ $\qquad$ ([*only difference to first-visit*]{style="color: red;"})\
 $\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
@@ -288,12 +288,12 @@ $$]{.math-incremental}
 - $\ell(s,a)$: an empty list of returns for all $s \in \Sc$, $a\in\Ac$
 
 **for** $k = 1, 2, \ldots, K$ episodes *[(or until $\pi$ converges)]{style="color: red;"}*:\
-$\quad$ $g = 0$\
+$\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g+ r_t$\
+$\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad\quad$ $Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))$\
@@ -344,15 +344,15 @@ $Q(s_t,a_t) = Q(s_t,a_t) + \alpha \left[g - Q(s_t,a_t)\right]$.
 - [$n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits]{style="color: red;"} $\qquad$(~~an empty list of returns $\ell$~~)
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
-$\quad$ $g = 0$\
+$\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g + r_t$\
+$\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ [$n(s_t) = n(s_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
-$\quad\quad\quad$ [$Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: red;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
+$\quad\quad\quad$ [$n(s_t) \gets n(s_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
+$\quad\quad\quad$ [$Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: red;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
 $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
 :::
@@ -480,14 +480,14 @@ Table: Key differences at a glance:
 - $n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
-$\quad$ $g = 0$\
+$\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_k}$ starting at $(s_0, a_0)$ and following $\pi$\
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g + r_t$\
+$\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ $n(s_t) = n(s_t) + 1$\
-$\quad\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad\quad$ $n(s_t) \gets n(s_t) + 1$\
+$\quad\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
 $\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: red;"}\
 $\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}
 :::
@@ -502,7 +502,7 @@ $\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs
 Given an MDP, an $\epsilon$-greedy policy $\pi'$ w.r.t. $Q^\pi$ is an improvemnt over the $\epsilon$-soft policy $\pi$, i.e., $V^{\pi^\prime} > V^\pi$ for all $s\in\Sc$.
 :::
 
-**Small proof**:
+**Proof**:
 [$$
 \begin{align*}
 V^{\pi^\prime}(s)=Q^\pi(s,\pi'(s)) &= \sum_{a\in\Ac} \pi'\agivenb{a}{s} Q^\pi(s,a) \\
@@ -692,7 +692,7 @@ $$
 V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:MC_OIS}
 \end{equation}
 $$
-*Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t) is the termination of the episode starting at $t$.*
+*Here $\mathcal{T}(s)$ is the set of all time steps in which $s$ is visited, and $T(t)$ is the termination of the episode starting at $t$.*
 :::
 :::
 
@@ -762,16 +762,16 @@ $$]{.fragment}
 **initialize** (for all $s \in \Sc$, $a\in\Ac$)
 
 - $Q(s,a)$ arbitrarily
-- $c(s,a)=0$
+- $c(s,a) \gets 0$
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
-$\quad$ $g = 0$, $w=1$\
+$\quad$ $g \gets 0$, $w \gets 1$\
 $\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
-$\quad\quad$ $g = \gamma g + r_t$\
-$\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
-$\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
-$\quad\quad$ $w = w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
+$\quad\quad$ $g \gets \gamma g + r_t$\
+$\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
+$\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad$ $w \gets w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
 :::
 
 ::: platzhalter
@@ -799,20 +799,20 @@ We now have our final algorithm that includes everything we have learned so far
 **initialize** (for all $s \in \Sc$, $a\in\Ac$)
 
 - $Q(s,a)$ arbitrarily
-- $c(s,a)=0$
+- $c(s,a) \gets 0$
 - $\pi(s)=\arg\max_{a\in\Ac}Q(s,a)$ (with ties broken consistently)
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
-$\quad$ $g = 0$, $w=1$\
+$\quad$ $g \gets 0$, $w \gets 1$\
 $\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g = \gamma g + r_t$\
-$\quad\quad$ $c(s_t,a_t) = c(s_t,a_t) + w$\
-$\quad\quad$ $Q(s_t,a_t) = Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
-$\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t,a)$ (with ties broken consistently)\
+$\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
+$\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
+$\quad\quad$ $\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t,a)$ (with ties broken consistently)\
 $\quad\quad$ **if** $\pi(s_t)\neq a_t$:\
 $\quad\quad\quad$ Exit inner loop and proceed to next episode\
-$\quad\quad$ $w = w \frac{1}{b\agivenb{a_t}{s_t}}$
+$\quad\quad$ $w \gets w \frac{1}{b\agivenb{a_t}{s_t}}$
 :::
 :::
 

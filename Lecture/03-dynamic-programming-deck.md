@@ -243,11 +243,11 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 
 *Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
 **while** (True):\
-$\quad$ $\Delta=0$\
+$\quad$ $\Delta\gets 0$\
 $\quad$ **for** $s \in \Sc$:\
-$\quad\quad$ $V_{\mathsf{old}}(s) = V(s)$\
-$\quad\quad$ $V(s) = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
-$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
+$\quad\quad$ $V_{\mathsf{old}}(s) \gets V(s)$\
+$\quad\quad$ $V(s) \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
 $\quad$ **if** $\Delta < \theta$ **then** break
 :::
 :::
@@ -279,7 +279,7 @@ $$ (\tilde{x}_{j,1}, \tilde{y}_{j,1}), (\tilde{x}_{j,2}, \tilde{y}_{j,2}), \ldot
 ::: incremental
 - In order to update an estimate of a function of interest (say, $\textcolor{red}{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
 - We have seen this just a minute ago! [In the (iterative) policy evaluation algorithm, we have
-$$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
+$$ \textcolor{red}{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
 ]{.fragment}
 :::
 :::
@@ -498,18 +498,18 @@ function changes little from one policy to the next).
 <!-- ::: columns-5-5 -->
 2. **Policy evaluation**:\
 **while** (True):\
-$\quad$ $\Delta = 0$\
+$\quad$ $\Delta \gets 0$\
 $\quad$ **for** $s \in \Sc$:\
-$\quad\quad$ $V_{\mathsf{old}} = V(s)$\
-$\quad\quad$ $V(s) = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
-$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})$\
+$\quad\quad$ $V_{\mathsf{old}} \gets V(s)$\
+$\quad\quad$ $V(s) \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})$\
 $\quad$ **if** $\Delta < \theta$ **then** break
 
 3. **Policy improvement**:\
 $\mathsf{flag}_{\mathsf{stable}} = true$\
 **for** $s \in \Sc$:\
-$\quad$ $\pi_{\mathsf{old}}(s) = \pi(s)$\
-$\quad$ $\pi(s) = \arg\max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right]$\
+$\quad$ $\pi_{\mathsf{old}}(s) \gets \pi(s)$\
+$\quad$ $\pi(s) \gets \arg\max_{a\in\Ac}\sum_{s'\in\Sc} \psprimesa \left[r + \gamma V^\pi(s')\right]$\
 $\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $\mathsf{flag}_{\mathsf{stable}} = false$\
 **if** $\mathsf{flag}_{\mathsf{stable}} = true$ **then** return $V\approx V^*$ and $\pi \approx \pi^*$ **else** go back to **2. Policy evaluation**
 :::
@@ -568,11 +568,11 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\i
 
 *Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
 **while** ($\Delta > \theta$):\
-$\quad$ $\Delta=0$\
+$\quad$ $\Delta \gets 0$\
 $\quad$ **for** $s \in \Sc$:\
-$\quad\quad$ $V_{\mathsf{old}}(s) = V(s)$\
-$\quad\quad$ $V(s) = \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
-$\quad\quad$ $\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
+$\quad\quad$ $V_{\mathsf{old}}(s) \gets V(s)$\
+$\quad\quad$ $V(s) \gets \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
 $\quad$ **if** $\Delta < \theta$ **then** break
 :::
 

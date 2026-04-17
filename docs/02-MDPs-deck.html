@@ -1193,7 +1193,7 @@ Processes</title>
 </ul>
 </div>
 <div class="fragment">
-<p><span class="emoji" data-emoji="bulb">💡</span> in the literature, people sometimes use <span class="math inline">\(p(x)\)</span> to also denote the probability distribution over all possible values of <span class="math inline">\(x\)</span>!</p>
+<p><strong>Note</strong>: in the literature, people sometimes use <span class="math inline">\(p(x)\)</span> to also denote the probability distribution over all possible values of <span class="math inline">\(x\)</span>!</p>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\Rightarrow\)</span> <em><span class="math inline">\(x\)</span> is distributed according to <span class="math inline">\(p\)</span></em>: <span class="math display">\[x\sim p \quad / \quad x\sim p(x).\]</span></p>
@@ -1214,13 +1214,23 @@ Processes</title>
 <div class="area">
 <div class="box block">
 <div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Let us assume that we have a slot machine and we repeatedly can choose between <span class="math inline">\(k\)</span> different actions.</li>
 <li class="fragment">After each choice <span class="math inline">\(A_t\)</span> you receive a numerical reward <span class="math inline">\(R_t\)</span> chosen from a stationary probability distribution.</li>
-<li class="fragment">Objective: maximize the <strong>value</strong>: <span class="math display">\[ Q(a) = \ExpC{R_t}{A_t=a} \]</span>.</li>
+<li class="fragment">Objective: maximize the <strong>value</strong>: <span class="math display">\[ Q(a) = \ExpC{R_t}{A_t=a}. \]</span></li>
 <li class="fragment">We have to rely on estimates <span class="math inline">\(Q_t(a)\)</span> which we can iteratively update based on past experience.</li>
 </ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:auto;">
+<img src="images/01-multi-armed-bandits/multi-armed-bandit.png" style="height:150px;width:auto;" aria-label="A multi-armed bandit (Ferreira, Schubert, and Scotti 2024)" alt="images/01-multi-armed-bandits/multi-armed-bandit.png" />
+<figcaption>
+A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferreira, Schubert, and Scotti 2024</a>)</span>
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -1239,7 +1249,7 @@ Processes</title>
 <div class="grid-layout" style="grid-template-columns: 3fr 7fr;">
 <div class="media">
 <figure class="image" style="height:auto;width:auto;">
-<img src="images/00-introduction/RL_SuttonBarto.png" style="height:250px;width:auto;" aria-label="Reinforcement Learning framework (Sutton and Barto 1998)" alt="images/00-introduction/RL_SuttonBarto.png" />
+<img src="images/00-introduction/RL_SuttonBarto.png" style="height:350px;width:auto;" aria-label="Reinforcement Learning framework (Sutton and Barto 1998)" alt="images/00-introduction/RL_SuttonBarto.png" />
 <figcaption>
 Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>
 </figcaption>
@@ -3111,9 +3121,9 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <p>Exemplary samples for <span class="math inline">\(g\)</span> with <span class="math inline">\(\gamma = 0.5\)</span>, starting with the planting (<span class="math inline">\(s=1\)</span>): <span class="math-incremental"><span class="math display">\[
 \begin{align*}
 s &amp;= 1 \rightarrow 4, &amp; g &amp;= 0, \\
-s &amp;= 1 \rightarrow 2 \rightarrow 4, &amp; g &amp;= 0 + 0.5 \cdot 1 = 0.5, \\
-s &amp;= 1 \rightarrow 2 \rightarrow 3 \rightarrow 4, &amp; g &amp;= 0 + 0.5 \cdot 1 + 0.25 \cdot 2 = 1, \\
-s &amp;= 1 \rightarrow 2 \rightarrow 3 \rightarrow 3 \rightarrow 4, &amp; g &amp;= 0 + 0.5 \cdot 1 + 0.25 \cdot 2 + 0.125 \cdot 3 = 1.375.
+s &amp;= 1 \rightarrow 2 \rightarrow 4, &amp; g &amp;= 1 + 0.5 \cdot 0 = 1, \\
+s &amp;= 1 \rightarrow 2 \rightarrow 3 \rightarrow 4, &amp; g &amp;= 1 + 0.5 \cdot 2 + 0.25 \cdot 0 = 2, \\
+s &amp;= 1 \rightarrow 2 \rightarrow 3 \rightarrow 3 \rightarrow 4, &amp; g &amp;= 1 + 0.5 \cdot 2 + 0.25 \cdot 3 + 0.125 \cdot 0 = 2.75.
 \end{align*}
 \]</span></span></p>
 </div>
@@ -3160,6 +3170,7 @@ Exemplary value function for different golf ball locations (<span class="citatio
 <div class="layout">
 <div class="area">
 <div class="box block">
+<div class="small">
 <div class="fragment">
 <p><em>Challenge</em>: How to calculate all state values in closed form?</p>
 </div>
@@ -3168,14 +3179,19 @@ Exemplary value function for different golf ball locations (<span class="citatio
 </div>
 <p><span class="math-incremental"><span class="math display">\[
 \begin{align*}
-V(s_t) &amp;= \ExpC{g_t}{s_t} \\
-       &amp;= \ExpC{r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots}{s_t} \\
-       &amp;= \ExpC{r_{t} + \gamma \left(r_{t+1} + \gamma r_{t+1} + \ldots\right)}{s_t} \\
-       &amp;= \ExpC{r_{t} + \gamma g_{t+1}}{s_t} \\
-       &amp;= \ExpC{r_{t} + \gamma V(s_{t+1})}{s_t} \\
-       &amp;= \ExpC{r_{t}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
+V(s_t) = &amp; \,\ExpC{g_t }{s_t} \\
+= &amp;\, \ExpC{r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \dots }{s_t} \\
+= &amp;\, \ExpC{r_t + \gamma ( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
+\overset{\text{Law of total expectation}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot p\agivenb{s_{t+1}}{s_t} \\
+\overset{\text{Markov property}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \ExpC{V(s_{t+1}) }{s_t} \\[0.5em]
+\big( = &amp;\, \ExpC{r_t}{s_t} + \gamma \mathbb{E}_{s_{t+1} \sim p(\cdot \mid s_t)}[V(s_{t+1})] \big)
 \end{align*}
 \]</span></span></p>
+</div>
 </div>
 </div>
 </div>
@@ -5240,7 +5256,7 @@ V^*(s_t) &amp;= \max_a Q^{\pi^*}(s_t,a) \\
 \end{align*}
 \]</span></span></li>
 <li class="fragment">for a finite MDP: <span class="math display">\[
-V^*(s_t) = \max_a \Exp{p\agivenb{r}{s_t,a}}‚ + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
 \]</span></li>
 </ul>
 </div>
@@ -5405,6 +5421,9 @@ V^*(1) &amp;= \max \begin{cases}\gamma \left[ (1-\alpha) V^*(2) \right] \\ 1 \en
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Bellman1954" class="csl-entry">
 Bellman, Richard. 1954. <span>“The Theory of Dynamic Programming.”</span> <em>Bulletin of the American Mathematical Society</em> 60 (6). American Mathematical Society (AMS): 503–15. doi:<a href="https://doi.org/10.1090/s0002-9904-1954-09848-8">10.1090/s0002-9904-1954-09848-8</a>.
+</div>
+<div id="ref-Ferreira2024mab" class="csl-entry">
+Ferreira, Rafael Pereira, Emil Schubert, and Américo Scotti. 2024. <span>“Exploring Multi-Armed Bandit (MAB) as an AI Tool for Optimising GMA-WAAM Path Planning.”</span> <em>Journal of Manufacturing and Materials Processing</em> 8 (3).
 </div>
 <div id="ref-Sutton1998" class="csl-entry">
 Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.

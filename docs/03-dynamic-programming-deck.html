@@ -817,11 +817,11 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
 <p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span><br />
 <strong>while</strong> (True):<br />
-<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta=0\)</span><br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta\gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}}(s) = V(s)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}}(s) \gets V(s)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) \gets \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>if</strong> <span class="math inline">\(\Delta &lt; \theta\)</span> <strong>then</strong> break</p>
 </div>
 </div>
@@ -859,7 +859,7 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">In order to update an estimate of a function of interest (say, <span class="math inline">\(\textcolor{red}{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
-<li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></span></li>
+<li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \textcolor{red}{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></span></li>
 </ul>
 </div>
 </div>
@@ -4221,17 +4221,17 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <ol class="incremental" start="2" style="list-style-type: decimal">
 <li class="fragment"><p><strong>Policy evaluation</strong>:<br />
 <strong>while</strong> (True):<br />
-<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta = 0\)</span><br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}} = V(s)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta = \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}} \gets V(s)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) \gets \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>if</strong> <span class="math inline">\(\Delta &lt; \theta\)</span> <strong>then</strong> break</p></li>
 <li class="fragment"><p><strong>Policy improvement</strong>:<br />
 <span class="math inline">\(\mathsf{flag}_{\mathsf{stable}} = true\)</span><br />
 <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
-<span class="math inline">\(\quad\)</span> <span class="math inline">\(\pi_{\mathsf{old}}(s) = \pi(s)\)</span><br />
-<span class="math inline">\(\quad\)</span> <span class="math inline">\(\pi(s) = \arg\max_{a\in\Ac}\sum_{s&#39;\in\Sc} \psprimesa \left[r + \gamma V^\pi(s&#39;)\right]\)</span><br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(\pi_{\mathsf{old}}(s) \gets \pi(s)\)</span><br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(\pi(s) \gets \arg\max_{a\in\Ac}\sum_{s&#39;\in\Sc} \psprimesa \left[r + \gamma V^\pi(s&#39;)\right]\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>if</strong> <span class="math inline">\(\pi(s) \neq \pi_{\mathsf{old}}(s)\)</span> <strong>then</strong> <span class="math inline">\(\mathsf{flag}_{\mathsf{stable}} = false\)</span><br />
 <strong>if</strong> <span class="math inline">\(\mathsf{flag}_{\mathsf{stable}} = true\)</span> <strong>then</strong> return <span class="math inline">\(V\approx V^*\)</span> and <span class="math inline">\(\pi \approx \pi^*\)</span> <strong>else</strong> go back to <strong>2. Policy evaluation</strong></p></li>
 </ol>
@@ -4320,11 +4320,11 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{
 <p><em>Parameters</em>: a small threshold <span class="math inline">\(\theta &gt; 0\)</span> determining accuracy of estimation</p>
 <p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span><br />
 <strong>while</strong> (<span class="math inline">\(\Delta &gt; \theta\)</span>):<br />
-<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta=0\)</span><br />
+<span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}}(s) = V(s)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) = \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta = \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}}(s) \gets V(s)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) \gets \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V(s&#39;) \right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>if</strong> <span class="math inline">\(\Delta &lt; \theta\)</span> <strong>then</strong> break</p>
 </div>
 </div>

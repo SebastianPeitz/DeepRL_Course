@@ -159,7 +159,7 @@ $\Rightarrow$ *$X$ is distributed according to $p(X)$*: $$X\sim p(X).$$
 :::
 
 ::: fragment
-:bulb: in the literature, people sometimes use $p(x)$ to also denote the probability distribution over all possible values of $x$!
+**Note**: in the literature, people sometimes use $p(x)$ to also denote the probability distribution over all possible values of $x$!
 :::
 
 ::: fragment
@@ -171,18 +171,22 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 
 # Multi-armed bandit notation revisited
 ::: small
+::: columns-6-4
 ::: incremental
 - Let us assume that we have a slot machine and we repeatedly can choose between $k$ different actions.
 - After each choice $A_t$ you receive a numerical reward $R_t$ chosen from a stationary probability distribution.
-- Objective: maximize the **value**: $$ Q(a) = \ExpC{R_t}{A_t=a} $$.
+- Objective: maximize the **value**: $$ Q(a) = \ExpC{R_t}{A_t=a}. $$
 - We have to rely on estimates $Q_t(a)$ which we can iteratively update based on past experience.
+:::
+
+![A multi-armed bandit [@Ferreira2024mab]](images/01-multi-armed-bandits/multi-armed-bandit.png){ height=150px }
 :::
 :::
 
 # The RL components in extensive notation
 ::: columns-3-7
 
-![Reinforcement Learning framework [@Sutton1998]](images/00-introduction/RL_SuttonBarto.png){ height=250px }
+![Reinforcement Learning framework [@Sutton1998]](images/00-introduction/RL_SuttonBarto.png){ height=350px }
 
 ::: platzhalter
 In the literature, we often also find *capital letters* for state, action and reward to properly account for the probabilistic nature
@@ -419,9 +423,9 @@ Exemplary samples for $g$ with $\gamma = 0.5$, starting with the planting ($s=1$
 [$$
 \begin{align*}
 s &= 1 \rightarrow 4, & g &= 0, \\
-s &= 1 \rightarrow 2 \rightarrow 4, & g &= 0 + 0.5 \cdot 1 = 0.5, \\
-s &= 1 \rightarrow 2 \rightarrow 3 \rightarrow 4, & g &= 0 + 0.5 \cdot 1 + 0.25 \cdot 2 = 1, \\
-s &= 1 \rightarrow 2 \rightarrow 3 \rightarrow 3 \rightarrow 4, & g &= 0 + 0.5 \cdot 1 + 0.25 \cdot 2 + 0.125 \cdot 3 = 1.375.
+s &= 1 \rightarrow 2 \rightarrow 4, & g &= 1 + 0.5 \cdot 0 = 1, \\
+s &= 1 \rightarrow 2 \rightarrow 3 \rightarrow 4, & g &= 1 + 0.5 \cdot 2 + 0.25 \cdot 0 = 2, \\
+s &= 1 \rightarrow 2 \rightarrow 3 \rightarrow 3 \rightarrow 4, & g &= 1 + 0.5 \cdot 2 + 0.25 \cdot 3 + 0.125 \cdot 0 = 2.75.
 \end{align*}
 $$]{ .math-incremental }
 
@@ -440,7 +444,7 @@ The **state-value function** $V(s)$ (or simply **value function**) of an MRP is 
 :::
 
 # The Bellman equation for MRPs (1)
-
+::: small
 ::: fragment
 *Challenge*: How to calculate all state values in closed form?
 :::
@@ -451,14 +455,21 @@ The **state-value function** $V(s)$ (or simply **value function**) of an MRP is 
 
 [$$
 \begin{align*}
-V(s_t) &= \ExpC{g_t}{s_t} \\
-       &= \ExpC{r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots}{s_t} \\
-       &= \ExpC{r_{t} + \gamma \left(r_{t+1} + \gamma r_{t+1} + \ldots\right)}{s_t} \\
-       &= \ExpC{r_{t} + \gamma g_{t+1}}{s_t} \\
-       &= \ExpC{r_{t} + \gamma V(s_{t+1})}{s_t} \\
-       &= \ExpC{r_{t}}{s_t} + \gamma\ExpC{V(s_{t+1})}{s_t}
+V(s_t) = & \,\ExpC{g_t }{s_t} \\
+= &\, \ExpC{r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \dots }{s_t} \\
+= &\, \ExpC{r_t + \gamma ( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
+\overset{\text{Law of total expectation}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot p\agivenb{s_{t+1}}{s_t} \\
+\overset{\text{Markov property}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot p\agivenb{s_{t+1}}{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \ExpC{V(s_{t+1}) }{s_t} \\[0.5em]
+\big( = &\, \ExpC{r_t}{s_t} + \gamma \mathbb{E}_{s_{t+1} \sim p(\cdot \mid s_t)}[V(s_{t+1})] \big)
 \end{align*}
 $$]{ .math-incremental }
+
+:::
+
 
 # The Bellman equation for MRPs (2)
 
@@ -740,7 +751,7 @@ V^*(s_t) &= \max_a Q^{\pi^*}(s_t,a) \\
 $$]{ .math-incremental }
 - for a finite MDP:
 $$
-V^*(s_t) = \max_a \Exp{p\agivenb{r}{s_t,a}}‚ + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
 $$
 :::
 :::

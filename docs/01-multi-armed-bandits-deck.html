@@ -301,21 +301,21 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><em>action-value methods</em>: estimate the values of actions and then use these estimates to make action selection decisions</li>
+<li class="fragment"><em>Action-value methods</em>: estimate the values of actions and then use these estimates to make action selection decisions.</li>
 <li class="fragment">What was the true value again? <span class="fragment"><span class="math inline">\(\rightarrow\)</span> the <strong>expected reward</strong></span></li>
-<li class="fragment">What does that mean for a finite number of samples? <span class="fragment"><span class="math inline">\(\rightarrow\)</span> we take the <strong>mean</strong> <span class="math display">\[ Q_t(a) = \frac{\sum_{i=1}^{t-1} r_i \cdot \mathbb{1}_{a_i=a}}{\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}} \]</span></span> <span class="fragment">Here, <span class="math inline">\(\mathbb{1}_{x}\)</span> denotes the random variable that is <span class="math inline">\(1\)</span> if the predicate <span class="math inline">\(x\)</span> is true and <span class="math inline">\(0\)</span> if <span class="math inline">\(x\)</span> is false.</span> <span class="fragment">(In other words, we’re <em>counting</em> how often the action <span class="math inline">\(a\)</span> was taken)</span></li>
-<li class="fragment">For <span class="math inline">\(\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}\)</span> (we have never used the action <span class="math inline">\(a\)</span>), we can choose a default value such as <span class="math inline">\(Q_t(a) = 0\)</span></li>
-<li class="fragment">We call this the <em>sample-average method</em> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></li>
+<li class="fragment">What does that mean for a finite number of samples? <span class="fragment"><span class="math inline">\(\rightarrow\)</span> we take the <strong>mean</strong> <span class="math display">\[ Q_t(a) = \frac{\sum_{i=1}^{t-1} r_i \cdot \mathbb{1}_{a_i=a}}{\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}}. \]</span></span> <span class="fragment">Here, <span class="math inline">\(\mathbb{1}_{x}\)</span> denotes the random variable that is <span class="math inline">\(1\)</span> if the predicate <span class="math inline">\(x\)</span> is true and <span class="math inline">\(0\)</span> if <span class="math inline">\(x\)</span> is false.</span> <span class="fragment">(In other words, we’re <em>counting</em> how often the action <span class="math inline">\(a\)</span> was taken).</span></li>
+<li class="fragment">For <span class="math inline">\(\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a} = 0\)</span> (we have never used the action <span class="math inline">\(a\)</span>), we can choose a default value such as <span class="math inline">\(Q_t(a) = 0\)</span>.</li>
+<li class="fragment">We call this the <em>sample-average method</em> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <p><strong>Question</strong>: How do we pick the action <span class="math inline">\(a_t\)</span>? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> just take the max!</span></p>
 </div>
 <div class="fragment">
-<p><span class="math display">\[a_t=\arg\max_a Q_t(a)\]</span></p>
+<p><span class="math display">\[a_t=\arg\max_a Q_t(a),\]</span></p>
 </div>
 <div class="fragment">
-<p>(with ties broken arbitrarily)</p>
+<p>(with ties broken arbitrarily).</p>
 </div>
 </div>
 </div>
@@ -341,11 +341,11 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Let’s study a large number of randomly generated <span class="math inline">\(k\)</span>-armed bandit problems (here: <span class="math inline">\(k = 10\)</span>)</li>
-<li class="fragment">For each bandit problem the action values <span class="math inline">\(q(a)\)</span>, <span class="math inline">\(a = 1, \ldots, 10\)</span>, are selected to a normal distribution: <span class="math display">\[ q(a) \sim \Normal{0}{1} \]</span></li>
-<li class="fragment">The corresponding reward is a random variable as well: <span class="math display">\[ r_t \sim \Normal{q(a_t)}{1} \]</span></li>
+<li class="fragment">Let’s study a large number of randomly generated <span class="math inline">\(k\)</span>-armed bandit problems (here: <span class="math inline">\(k = 10\)</span>).</li>
+<li class="fragment">For each bandit problem the action values <span class="math inline">\(q(a)\)</span>, <span class="math inline">\(a = 1, \ldots, 10\)</span>, are selected to a normal distribution: <span class="math display">\[ q(a) \sim \Normal{0}{1}. \]</span></li>
+<li class="fragment">The corresponding reward is a random variable as well: <span class="math display">\[ r_t \sim \Normal{q(a_t)}{1}. \]</span></li>
 <li class="fragment">One <strong>run</strong>: perform <span class="math inline">\(T=1000\)</span> steps. For each time step, report the average reward received until then.</li>
-<li class="fragment"><strong>Statistics</strong>: repeat the above experiment <span class="math inline">\(2000\)</span> times</li>
+<li class="fragment"><strong>Statistics</strong>: repeat the above experiment <span class="math inline">\(2000\)</span> times.</li>
 </ul>
 </div>
 </div>
@@ -367,11 +367,11 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <!-- ::: small -->
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">First, we are going to follow a <strong>greedy</strong> strategy: pick the maximizing action <em>always</em></li>
+<li class="fragment">First, we are going to follow a <strong>greedy</strong> strategy: pick the maximizing action <em>always</em>.</li>
 <li class="fragment">Then, we will compare against <span class="math inline">\(\epsilon\)</span> greedy:
 <ul class="incremental">
-<li class="fragment">pick the maximizing action <span class="math inline">\(1-\epsilon\)</span> of the time</li>
-<li class="fragment">pick a random action <span class="math inline">\(\epsilon\)</span> of the time</li>
+<li class="fragment">pick the maximizing action <span class="math inline">\(1-\epsilon\)</span> of the time,</li>
+<li class="fragment">pick a random action <span class="math inline">\(\epsilon\)</span> of the time.</li>
 </ul></li>
 </ul>
 </div>
@@ -3767,8 +3767,8 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Too little (or no) exploration is harmful</li>
-<li class="fragment">Too much exploration is also harmful</li>
+<li class="fragment">Too little (or no) exploration is harmful.</li>
+<li class="fragment">Too much exploration is also harmful.</li>
 <li class="fragment">Should we think about a <strong>schedule</strong> in terms of the exploration?</li>
 </ul>
 </div>
@@ -3833,17 +3833,17 @@ A multi-armed bandit <span class="citation">(<a href="#ref-Ferreira2024mab">Ferr
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Calculating <span class="math inline">\(Q(a)\)</span> anew every time appears to be expensive. <span class="fragment">For a single action, consider that we have received a sequence of rewards <span class="math inline">\(r_1,\ldots,r_{t-1}\)</span> so far:</span> <span class="fragment"><span class="math display">\[ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}\]</span></span> <span class="fragment">Wouldn’t it be easier if we could just updated incrementally?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s try</span></p>
+<p>Calculating <span class="math inline">\(Q(a)\)</span> anew every time appears to be expensive. <span class="fragment">For a single action, consider that we have received a sequence of rewards <span class="math inline">\(r_1,\ldots,r_{t-1}\)</span> so far:</span> <span class="fragment"><span class="math display">\[ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}.\]</span></span> <span class="fragment">Wouldn’t it be easier if we could just updated incrementally?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s try</span></p>
 <p><span class="math-incremental"><span class="math display">\[
 \begin{eqnarray*}
 Q_{t+1} &amp;=&amp; \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t + \sum_{i=1}^{t-1} r_i \right)} \fragment{= \frac{1}{t}\left(r_t + (t-1)\frac{1}{t-1} \sum_{i=1}^{t-1} r_i \right)}
 \fragment{= \frac{1}{t}\left(r_t + (t-1)Q_t \right)}
   \fragment{= \frac{1}{t}\left(r_t + t Q_t - Q_t \right)}\\
-  &amp;=&amp; Q_t + \frac{1}{t}\left(r_t - Q_t \right)
+  &amp;=&amp; Q_t + \frac{1}{t}\left(r_t - Q_t \right).
 \end{eqnarray*}
 \]</span></span></p>
 <div class="fragment">
-<p>The expression <em>[ Target - OldEstimate ]</em> is an <strong>error estimate</strong>, used to steer us closer to the <strong>target</strong></p>
+<p>The expression <em>[ Target - OldEstimate ]</em> is an <strong>error estimate</strong>, used to steer us closer to the <strong>target</strong>.</p>
 </div>
 <div class="fragment">
 <p>We will see a formulae of the type <span class="math display">\[ \mathsf{NewEstimate} \leftarrow \mathsf{OldEstimate} + StepSize \; [ \mathsf{Target} - \mathsf{OldEstimate} ] \]</span> frequently from now on!</p>
@@ -3865,9 +3865,9 @@ Q_{t+1} &amp;=&amp; \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t 
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">In reinforcement learning, problems are often <em>non-stationary</em>, meaning that processes change over time (e.g., due to updates of the <strong>policy</strong> <span class="math inline">\(\pi\)</span>)</li>
+<li class="fragment">In reinforcement learning, problems are often <em>non-stationary</em>, meaning that processes change over time (e.g., due to updates of the <strong>policy</strong> <span class="math inline">\(\pi\)</span>).</li>
 <li class="fragment">Recent rewards should be more relevant than those longer in the past!</li>
-<li class="fragment">Let’s define some constant <strong>step size</strong> <span class="math inline">\(\alpha\in(0,1]\)</span></li>
+<li class="fragment">Let’s define some constant <strong>step size</strong> <span class="math inline">\(\alpha\in(0,1]\)</span>:</li>
 </ul>
 </div>
 <p><span class="math-incremental"><span class="math display">\[
@@ -3875,12 +3875,12 @@ Q_{t+1} &amp;=&amp; \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t 
 Q_{t+1} = Q_t + \alpha [r_t - Q_t] &amp;=&amp;\alpha r_t + (1-\alpha) Q_t \\ 
 &amp;=&amp; \alpha r_t + (1-\alpha) [\alpha r_{t-1} + (1-\alpha) Q_{t-1}] \fragment{= \alpha r_t + (1-\alpha) \alpha r_{t-1} + (1-\alpha)^2 Q_{t-1}} \\
 &amp;=&amp; \alpha r_t + (1-\alpha) \alpha r_{t-1} + (1-\alpha)^2 \alpha r_{t-2} + \ldots + (1-\alpha)^t r_{1} \\
-&amp;=&amp; (1-\alpha)^t r_{1} + \sum_{i=1}^t \alpha (1-\alpha)^{t-i}r_i
+&amp;=&amp; (1-\alpha)^t r_{1} + \sum_{i=1}^t \alpha (1-\alpha)^{t-i}r_i.
 \end{eqnarray*}
 \]</span></span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">This is called an <em>(exponential-recency) weighted average</em>, as <span class="math display">\[(1-\alpha)^t + \sum_{i=1}^t \alpha (1-\alpha)^{t-i} = 1\]</span></li>
+<li class="fragment">This is called an <em>(exponential-recency) weighted average</em>, as <span class="math display">\[(1-\alpha)^t + \sum_{i=1}^t \alpha (1-\alpha)^{t-i} = 1.\]</span></li>
 <li class="fragment">For time dependent weights <span class="math inline">\(\alpha_t\)</span>, we require <span class="math inline">\(\sum_{i=1}^\infty \alpha_t(a) = \infty\)</span> and <span class="math inline">\(\sum_{i=1}^\infty \alpha^2_t(a) &lt;\infty\)</span> to ensure convergence. Does this hold for <span class="math inline">\(\alpha_t=\frac{1}{t}\)</span> and <span class="math inline">\(\alpha_t=\alpha\)</span>? <span class="fragment">(Does it have to hold?)</span></li>
 </ul>
 </div>
@@ -3904,10 +3904,10 @@ Q_{t+1} = Q_t + \alpha [r_t - Q_t] &amp;=&amp;\alpha r_t + (1-\alpha) Q_t \\
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">All methods up to now are <em>biased</em> in the sense that they depend on the (arbitrarily selected) initial guesses <span class="math inline">\(Q_1(a)\)</span></li>
+<li class="fragment">All methods up to now are <em>biased</em> in the sense that they depend on the (arbitrarily selected) initial guesses <span class="math inline">\(Q_1(a)\)</span>.</li>
 <li class="fragment">Can we use this to our advantage and increase exploration?</li>
 <li class="fragment">Let us choose overly <strong>optimistic initial values</strong>!</li>
-<li class="fragment">For <span class="math inline">\(q(a) \sim \Normal{1}{0}\)</span>, an initial guess of <span class="math inline">\(Q_1(a)\)</span> is certainly unrealistically high.</li>
+<li class="fragment">For <span class="math inline">\(q(a) \sim \Normal{1}{0}\)</span>, an initial guess of <span class="math inline">\(Q_1(a)=5\)</span> is certainly unrealistically high.</li>
 </ul>
 </div>
 </div>
@@ -4914,12 +4914,12 @@ Q_{t+1} = Q_t + \alpha [r_t - Q_t] &amp;=&amp;\alpha r_t + (1-\alpha) Q_t \\
 <p>Two topics (and also many more) topics that we have not discussed:</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Bandits with <strong>upper confidence bounds</strong> (<strong>UCCB</strong>):
+<li class="fragment">Bandits with <strong>upper confidence bounds</strong> (<strong>UCB</strong>):
 <ul class="incremental">
 <li class="fragment">Along with the estimate for <span class="math inline">\(Q_t\)</span>, we assign an upper confidence bound based on the number of times <span class="math inline">\(N_t\)</span> we have selected this action.</li>
 <li class="fragment">The larger <span class="math inline">\(N_t\)</span>, the more confident we are in our estimate.</li>
 <li class="fragment">We do not select our next action according to the maximal estimate of <span class="math inline">\(Q_t\)</span>, but to <span class="math inline">\(Q_t\)</span> <strong>plus</strong> the confidence bound!</li>
-<li class="fragment">The less certain we are, the higher this bound will be <span class="math inline">\(\Rightarrow\)</span> improved exploration</li>
+<li class="fragment">The less certain we are, the higher this bound will be <span class="math inline">\(\Rightarrow\)</span> improved exploration.</li>
 </ul></li>
 <li class="fragment">Gradient bandits:
 <ul class="incremental">

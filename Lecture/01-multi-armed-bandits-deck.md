@@ -80,14 +80,14 @@ $^*$We will have a discussion on the notation and random variables in the next l
 # Action-value methods
 ::: small
 ::: incremental
-- *action-value methods*: estimate the values of actions and then use these estimates to make action selection decisions
+- *Action-value methods*: estimate the values of actions and then use these estimates to make action selection decisions.
 - What was the true value again? [$\rightarrow$ the **expected reward**]{.fragment} 
 - What does that mean for a finite number of samples? 
-[$\rightarrow$ we take the **mean** $$ Q_t(a) = \frac{\sum_{i=1}^{t-1} r_i \cdot \mathbb{1}_{a_i=a}}{\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}} $$]{.fragment} 
+[$\rightarrow$ we take the **mean** $$ Q_t(a) = \frac{\sum_{i=1}^{t-1} r_i \cdot \mathbb{1}_{a_i=a}}{\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}}. $$]{.fragment} 
 [Here, $\mathbb{1}_{x}$ denotes the random variable that is $1$ if the predicate $x$ is true and $0$ if $x$ is false.]{.fragment}
-[(In other words, we're *counting* how often the action $a$ was taken)]{.fragment}
-- For $\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a}$ (we have never used the action $a$), we can choose a default value such as $Q_t(a) = 0$
-- We call this the *sample-average method* [@Sutton1998]
+[(In other words, we're *counting* how often the action $a$ was taken).]{.fragment}
+- For $\sum_{i=1}^{t-1} \mathbb{1}_{a_i=a} = 0$ (we have never used the action $a$), we can choose a default value such as $Q_t(a) = 0$.
+- We call this the *sample-average method* [@Sutton1998].
 :::
 
 ::: fragment
@@ -95,11 +95,11 @@ $^*$We will have a discussion on the notation and random variables in the next l
 :::
 
 ::: fragment
-$$a_t=\arg\max_a Q_t(a)$$
+$$a_t=\arg\max_a Q_t(a),$$
 :::
 
 ::: fragment
-(with ties broken arbitrarily)
+(with ties broken arbitrarily).
 :::
 
 :::
@@ -113,11 +113,11 @@ $$a_t=\arg\max_a Q_t(a)$$
 # The $k$-armed testbed
 ::: small
 ::: incremental
-- Let's study a large number of randomly generated $k$-armed bandit problems (here: $k = 10$)
-- For each bandit problem the action values $q(a)$, $a = 1, \ldots, 10$, are selected to a normal distribution: $$ q(a) \sim \Normal{0}{1} $$
-- The corresponding reward is a random variable as well: $$ r_t \sim \Normal{q(a_t)}{1} $$
+- Let's study a large number of randomly generated $k$-armed bandit problems (here: $k = 10$).
+- For each bandit problem the action values $q(a)$, $a = 1, \ldots, 10$, are selected to a normal distribution: $$ q(a) \sim \Normal{0}{1}. $$
+- The corresponding reward is a random variable as well: $$ r_t \sim \Normal{q(a_t)}{1}. $$
 - One **run**: perform $T=1000$ steps. For each time step, report the average reward received until then.
-- **Statistics**: repeat the above experiment $2000$ times
+- **Statistics**: repeat the above experiment $2000$ times.
 :::
 :::
 
@@ -127,10 +127,10 @@ $$a_t=\arg\max_a Q_t(a)$$
 ::: platzhalter
 <!-- ::: small -->
 ::: incremental
-- First, we are going to follow a **greedy** strategy: pick the maximizing action *always*
+- First, we are going to follow a **greedy** strategy: pick the maximizing action *always*.
 - Then, we will compare against $\epsilon$ greedy: 
-  - pick the maximizing action $1-\epsilon$ of the time
-  - pick a random action $\epsilon$ of the time
+  - pick the maximizing action $1-\epsilon$ of the time,
+  - pick a random action $\epsilon$ of the time.
 :::
 :::
 <!-- ::: -->
@@ -154,8 +154,8 @@ What is $\epsilon$'s job? [$\Rightarrow$ the **exploration**]{.fragment}
 
 ::: small
 ::: incremental
-- Too little (or no) exploration is harmful
-- Too much exploration is also harmful
+- Too little (or no) exploration is harmful.
+- Too much exploration is also harmful.
 - Should we think about a **schedule** in terms of the exploration?
 :::
 :::
@@ -196,7 +196,7 @@ Caption: A simple version of the $\epsilon$ greedy bandit
 ::: small
 
 Calculating $Q(a)$ anew every time appears to be expensive. [For a single action, consider that we have received a sequence of rewards $r_1,\ldots,r_{t-1}$ so far:]{.fragment}
-[$$ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}$$]{ .fragment }
+[$$ Q_t = \frac{r_1 + r_2 + \ldots + r_{t-1}}{t-1}.$$]{ .fragment }
 [Wouldn't it be easier if we could just updated incrementally?]{ .fragment } [$\Rightarrow$ let's try]{ .fragment }
 
 [$$
@@ -204,12 +204,12 @@ Calculating $Q(a)$ anew every time appears to be expensive. [For a single action
 Q_{t+1} &=& \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t + \sum_{i=1}^{t-1} r_i \right)} \fragment{= \frac{1}{t}\left(r_t + (t-1)\frac{1}{t-1} \sum_{i=1}^{t-1} r_i \right)}
 \fragment{= \frac{1}{t}\left(r_t + (t-1)Q_t \right)}
   \fragment{= \frac{1}{t}\left(r_t + t Q_t - Q_t \right)}\\
-  &=& Q_t + \frac{1}{t}\left(r_t - Q_t \right)
+  &=& Q_t + \frac{1}{t}\left(r_t - Q_t \right).
 \end{eqnarray*}
 $$]{ .math-incremental }
 
 ::: fragment
-The expression *[ Target - OldEstimate ]* is an **error estimate**, used to steer us closer to the **target**
+The expression *[ Target - OldEstimate ]* is an **error estimate**, used to steer us closer to the **target**.
 :::
 
 ::: fragment
@@ -221,9 +221,9 @@ We will see a formulae of the type $$ \mathsf{NewEstimate} \leftarrow \mathsf{Ol
 # Non-stationary problems
 ::: small
 ::: incremental
-- In reinforcement learning, problems are often *non-stationary*, meaning that processes change over time (e.g., due to updates of the **policy** $\pi$)
+- In reinforcement learning, problems are often *non-stationary*, meaning that processes change over time (e.g., due to updates of the **policy** $\pi$).
 - Recent rewards should be more relevant than those longer in the past!
-- Let's define some constant **step size** $\alpha\in(0,1]$
+- Let's define some constant **step size** $\alpha\in(0,1]$:
 :::
 
 [$$
@@ -231,12 +231,12 @@ We will see a formulae of the type $$ \mathsf{NewEstimate} \leftarrow \mathsf{Ol
 Q_{t+1} = Q_t + \alpha [r_t - Q_t] &=&\alpha r_t + (1-\alpha) Q_t \\ 
 &=& \alpha r_t + (1-\alpha) [\alpha r_{t-1} + (1-\alpha) Q_{t-1}] \fragment{= \alpha r_t + (1-\alpha) \alpha r_{t-1} + (1-\alpha)^2 Q_{t-1}} \\
 &=& \alpha r_t + (1-\alpha) \alpha r_{t-1} + (1-\alpha)^2 \alpha r_{t-2} + \ldots + (1-\alpha)^t r_{1} \\
-&=& (1-\alpha)^t r_{1} + \sum_{i=1}^t \alpha (1-\alpha)^{t-i}r_i
+&=& (1-\alpha)^t r_{1} + \sum_{i=1}^t \alpha (1-\alpha)^{t-i}r_i.
 \end{eqnarray*}
 $$]{ .math-incremental }
 
 ::: incremental
-- This is called an *(exponential-recency) weighted average*, as $$(1-\alpha)^t + \sum_{i=1}^t \alpha (1-\alpha)^{t-i} = 1$$
+- This is called an *(exponential-recency) weighted average*, as $$(1-\alpha)^t + \sum_{i=1}^t \alpha (1-\alpha)^{t-i} = 1.$$
 - For time dependent weights $\alpha_t$, we require $\sum_{i=1}^\infty \alpha_t(a) = \infty$ and $\sum_{i=1}^\infty \alpha^2_t(a) <\infty$ to ensure convergence. Does this hold for $\alpha_t=\frac{1}{t}$ and $\alpha_t=\alpha$? [(Does it have to hold?)]{.fragment}
 :::
 
@@ -250,10 +250,10 @@ $$]{ .math-incremental }
 # Bias in the selection of initial values
 ::: small
 ::: incremental
-- All methods up to now are *biased* in the sense that they depend on the (arbitrarily selected) initial guesses $Q_1(a)$
+- All methods up to now are *biased* in the sense that they depend on the (arbitrarily selected) initial guesses $Q_1(a)$.
 - Can we use this to our advantage and increase exploration?
 - Let us choose overly **optimistic initial values**!
-- For $q(a) \sim \Normal{1}{0}$, an initial guess of $Q_1(a)$ is certainly unrealistically high.
+- For $q(a) \sim \Normal{1}{0}$, an initial guess of $Q_1(a)=5$ is certainly unrealistically high.
 :::
 :::
 
@@ -268,11 +268,11 @@ Two topics (and also many more) topics that we have not discussed:
 
 
 ::: incremental
-- Bandits with **upper confidence bounds** (**UCCB**):
+- Bandits with **upper confidence bounds** (**UCB**):
   - Along with the estimate for $Q_t$, we assign an upper confidence bound based on the number of times $N_t$ we have selected this action. 
   - The larger $N_t$, the more confident we are in our estimate.
   - We do not select our next action according to the maximal estimate of $Q_t$, but to $Q_t$ **plus** the confidence bound!
-  - The less certain we are, the higher this bound will be $\Rightarrow$ improved exploration
+  - The less certain we are, the higher this bound will be $\Rightarrow$ improved exploration.
 - Gradient bandits:
   - We assign a **preference** for each bandit arm $a$ and introduce the probability $\pi_t(a)$ for choosing this arm.
   - We can then derive a gradient ascent scheme for the preferences.

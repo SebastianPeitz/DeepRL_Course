@@ -12,7 +12,7 @@ feedback:
 
 - Prof. Dr. Sebastian Peitz
 - Chair of Safe Autonomous Systems
-- JvF25, Room 124
+- JvF25, Room E16
 - <https://sas.cs.tu-dortmund.de/>
 :::
 
@@ -360,14 +360,14 @@ By the end of the course, we will
 ::: fragment
 **Lectures**
 
-- Tuesdays (10:15 - 11:45, OH16/205)
-- Wednesdays (08:30 - 10:00, OH12/4.031)
+- Tuesdays (10:15 - 11:45, OH16 / 205)
+- Wednesdays (08:30 - 10:00, OH12 / E.003)
 :::
 
 ::: fragment
 **Exercises**
 
-- Thursdays (10:15 - 11:45, OH16/205)
+- Thursdays (10:15 - 11:45, OH16 / 205)
 - One exercise sheet per week
   - pen-and-paper exercises the cover and extend the theoretical content of the lecture
   - programming exercises (in Python) supporting the Studienleistung (next slide)
