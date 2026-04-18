@@ -549,10 +549,26 @@ $$ Q^\pi(s,a)=Q^*(s,a). $$
 - $\epsilon$-greedy is an undirected and unmonitored random exploration strategy. Can that be the most efficient way of learning?
 :::
 
-# Example: Gridworld
+# Example: Gridworld - fixed starting point
 
-TBD
+Fixed-start, every-visit action-value estimation:
 
+::: columns-5-5
+![$\epsilon=0$](images/04-Monte-Carlo/GridWorld-Fixed_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
+
+![$\epsilon=0.?$](images/04-Monte-Carlo/GridWorld-Fixed_Start_eps_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
+:::
+
+
+# Example: Gridworld - exploring starts
+
+Exploting starts (ES), every-visit action-value estimation:
+
+::: columns-5-5
+![$\epsilon=0$](images/04-Monte-Carlo/GridWorld-Random_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
+
+![$\epsilon=0.?$](images/04-Monte-Carlo/GridWorld-Random_Start_eps_greedy.mp4 "$\epsilon=0.?$"){ height=400px .controls .autoplay .muted }
+:::
 
 ------------------------------------------------------------------------------
 

@@ -13,9 +13,10 @@ feedback:
 # Content
 
 - The TD learning concept
-- GLIE
-- SARSA
-- Q-learning
+- Prediction using TD learning
+- Policy improvement / control using TD learning 
+  - SARSA
+  - Q-learning
 
 ------------------------------------------------------------------------------
 
@@ -351,24 +352,6 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 :::
 :::
 
-<!-- # Greedy in the limit with infinite exploration (GLIE)
-
-A learning policy $\pi$ is called GLIE if it satisfies the following two properties:
-
-- If a state is visited inifinitely often, then each action is choosen inifintely often:
-$$ \lim_{i \to \infty} \pi_i(a|s) = 1 \quad \forall  \{s \in \Sc, a \in \Ac\}$$
-
-- In the limit ($i \to \infty$) the learning policy is greedy with respect to the learned action value:
-$$ \lim_{i \to \infty} \pi_i(a|s) = \pi(s) = \arg \max_{a \in \Ac} Q(s,a) \quad \forall s \in \Sc $$
-
-# GLIE Monte Carlo control
-
-MC-based control using $\epsilon$-greedy exploration is GLIE, if $\epsilon$ is decreased at a rate 
-$$ \epsilon_i = \frac{1}{i} $$
-with $i$ being the increasing episode index. In this case,
-$$ \hat Q(s,a) = Q^*(s,a) $$
-follows. -->
-
 ------------------------------------------------------------------------------
 
 # Policy improvement / control using TD learning 
@@ -414,8 +397,10 @@ $^*$ $ π \left( a  \middle| s \right)> 0$ for all $s\in\Sc$ and $a\in\Ac$.
 
 
 # On-policy TD control: SARSA
-::: small
+
 $s,a,r,s',a'$: **S**tate-**A**ction-**R**eward-Next **S**tate-Next **A**ction
+
+::: small
 
 ::: fragment
 ::: {.definition}
@@ -430,11 +415,11 @@ $s,a,r,s',a'$: **S**tate-**A**ction-**R**eward-Next **S**tate-Next **A**ction
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
-$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
+$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$ $\qquad\qquad\qquad\qquad\qquad\qquad~$ \
 $\quad\quad$ Select $a_{t+1} \sim \pi(s_{t+1})$\
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
 $\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]$$
-$\quad\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$\
+$\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$ $\qquad$ ([This is on-policy!]{style="color: red;"})\
 $\quad\quad$ $t \gets t+1$\
 :::
 :::
