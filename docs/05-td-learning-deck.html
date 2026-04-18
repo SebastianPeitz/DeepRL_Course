@@ -189,9 +189,12 @@
 <div class="box block">
 <ul>
 <li>The TD learning concept</li>
-<li>GLIE</li>
+<li>Prediction using TD learning</li>
+<li>Policy improvement / control using TD learning
+<ul>
 <li>SARSA</li>
 <li>Q-learning</li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -383,7 +386,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">in the mean for a constant but sufficiently small step-size <span class="math inline">\(\alpha\)</span> and</li>
-<li class="fragment">with probability one if the step-size holds the condition <span class="math display">\[\begin{equation}
+<li class="fragment">with probability one if the step-size holds the <em>Robbins-Munro</em> condition <span class="math display">\[\begin{equation}
 \sum_{t=1}^\infty \alpha_t = \infty \qquad \text{and}\qquad \sum_{t=1}^\infty \alpha^2_t &lt; \infty . \label{eq:stepsize_criterion}
 \end{equation}\]</span></li>
 </ul>
@@ -864,23 +867,6 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 </div>
 </div>
 </div>
-<!-- # Greedy in the limit with infinite exploration (GLIE)
-
-A learning policy $\pi$ is called GLIE if it satisfies the following two properties:
-
-- If a state is visited inifinitely often, then each action is choosen inifintely often:
-$$ \lim_{i \to \infty} \pi_i(a|s) = 1 \quad \forall  \{s \in \Sc, a \in \Ac\}$$
-
-- In the limit ($i \to \infty$) the learning policy is greedy with respect to the learned action value:
-$$ \lim_{i \to \infty} \pi_i(a|s) = \pi(s) = \arg \max_{a \in \Ac} Q(s,a) \quad \forall s \in \Sc $$
-
-# GLIE Monte Carlo control
-
-MC-based control using $\epsilon$-greedy exploration is GLIE, if $\epsilon$ is decreased at a rate 
-$$ \epsilon_i = \frac{1}{i} $$
-with $i$ being the increasing episode index. In this case,
-$$ \hat Q(s,a) = Q^*(s,a) $$
-follows. -->
 </div>
 </div>
 </div>
@@ -919,7 +905,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <div class="fragment">
 <p><strong>Convergence</strong> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></p>
 <ul>
-<li>towards <span class="math inline">\(Q^*\)</span> with probability one if all tuples <span class="math inline">\((s,a)\)</span> are visited infinitely often and the step-size condition <span class="math inline">\(\eqref{eq:TD_TD0-update-Q}\)</span> is satisfied.</li>
+<li>towards <span class="math inline">\(Q^*\)</span> with probability one if all tuples <span class="math inline">\((s,a)\)</span> are visited infinitely often and the step-size condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span> is satisfied.</li>
 <li>towards <span class="math inline">\(\pi^*\)</span> if the policy is GLIE.</li>
 </ul>
 </div>
@@ -941,8 +927,9 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div class="small">
 <p><span class="math inline">\(s,a,r,s&#39;,a&#39;\)</span>: <strong>S</strong>tate-<strong>A</strong>ction-<strong>R</strong>eward-Next <strong>S</strong>tate-Next <strong>A</strong>ction</p>
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="fragment">
 <div id="algorithm-sarsa." class="definition">
 <h3>Algorithm: SARSA.</h3>
@@ -955,37 +942,36 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_t \gets s_0\)</span>, <span class="math inline">\(t \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
-<span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span> <span class="math inline">\(\qquad\qquad\qquad~\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Select <span class="math inline">\(a_{t+1} \sim \pi(s_{t+1})\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy: <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span> <span class="math inline">\(\qquad\)</span> (<span style="color: red;">This is on-policy!</span>)<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span><br />
 </p>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="convergence-of-sarsa" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Convergence of SARSA</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<p>[Based on Marius Lindauer’s lecture]</p>
-<p>SARSA for finite-state and finite-action MDPs converges to the optimal action-value, <span class="math inline">\(Q(s, a) \to  Q^*(s, a)\)</span>, under the following conditions:</p>
+<div class="fragment">
+<p><strong>Convergence</strong>: SARSA for finite-state and finite-action MDPs converges to the optimal action-value, <span class="math display">\[Q(s, a) \to  Q^*(s, a),\]</span> under the following conditions:</p>
 <ol style="list-style-type: decimal">
-<li>The policy sequence <span class="math inline">\(\pi_t(a \mid s)\)</span> satisfies the condition of GLIE</li>
-<li>The step-sizes <span class="math inline">\(\alpha_t\)</span> satisfy the Robbins-Munro sequence such that <span class="math display">\[ 
- \sum_{t=1}^{\infty} \alpha_t = \infty \nonumber \\
- \sum_{t=1}^{\infty} \alpha^2_t &lt; \infty \nonumber
-  \]</span></li>
+<li>The policy sequence <span class="math inline">\(\pi_t\agivenb{a}{s}\)</span> is GLIE.</li>
+<li>The step-sizes <span class="math inline">\(\alpha_t\)</span> satisfy the step-size condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span> (as does, e.g., <span class="math inline">\(\alpha_t = \frac{1}{t}\)</span>).</li>
 </ol>
-<p>For example, <span class="math inline">\(\alpha_t = \frac{1}{t}\)</span> satisfies the above condition.</p>
+</div>
+</div>
+</div>
+<!-- # Convergence of SARSA
+
+[Based on Marius Lindauer's lecture]
+
+SARSA for finite-state and finite-action MDPs converges to the optimal action-value, $Q(s, a) \to  Q^*(s, a)$, under the following conditions:
+
+1. The policy sequence $\pi_t(a \mid s)$ satisfies the condition of GLIE
+2. The step-sizes $\alpha_t$ satisfy the Robbins-Munro sequence such that 
+  $$ 
+    \sum_{t=1}^{\infty} \alpha_t = \infty \nonumber \\
+    \sum_{t=1}^{\infty} \alpha^2_t < \infty \nonumber
+  $$
+	
+For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 </div>
 </div>
 </div>

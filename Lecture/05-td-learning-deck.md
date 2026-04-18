@@ -158,7 +158,7 @@ Given a finite MDP and a fixed policy $\pi$, the state-value estimate $V$ of TD(
 
 ::: incremental
 - in the mean for a constant but sufficiently small step-size $\alpha$ and
-- with probability one if the step-size holds the condition
+- with probability one if the step-size holds the *Robbins-Munro* condition
 $$\begin{equation}
 \sum_{t=1}^\infty \alpha_t = \infty \qquad \text{and}\qquad \sum_{t=1}^\infty \alpha^2_t < \infty . \label{eq:stepsize_criterion}
 \end{equation}$$
@@ -383,7 +383,7 @@ $$
 ::: fragment
 **Convergence** [@Sutton1998]
 
-- towards $Q^*$ with probability one if all tuples $(s,a)$ are visited infinitely often and the step-size condition \eqref{eq:TD_TD0-update-Q} is satisfied.
+- towards $Q^*$ with probability one if all tuples $(s,a)$ are visited infinitely often and the step-size condition \eqref{eq:stepsize_criterion} is satisfied.
 - towards $\pi^*$ if the policy is GLIE.
 :::
 
@@ -402,6 +402,7 @@ $s,a,r,s',a'$: **S**tate-**A**ction-**R**eward-Next **S**tate-Next **A**ction
 
 ::: small
 
+::: columns-7-3
 ::: fragment
 ::: {.definition}
 ### Algorithm: SARSA.
@@ -415,7 +416,7 @@ $s,a,r,s',a'$: **S**tate-**A**ction-**R**eward-Next **S**tate-Next **A**ction
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
-$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$ $\qquad\qquad\qquad\qquad\qquad\qquad~$ \
+$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$ $\qquad\qquad\qquad~$ \
 $\quad\quad$ Select $a_{t+1} \sim \pi(s_{t+1})$\
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
 $\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]$$
@@ -423,9 +424,17 @@ $\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$ $\qquad$ ([This is on-p
 $\quad\quad$ $t \gets t+1$\
 :::
 :::
+
+::: fragment
+**Convergence**: SARSA for finite-state and finite-action MDPs converges to the optimal action-value, $$Q(s, a) \to  Q^*(s, a),$$ under the following conditions:
+
+1. The policy sequence $\pi_t\agivenb{a}{s}$ is GLIE.
+2. The step-sizes $\alpha_t$ satisfy the step-size condition \eqref{eq:stepsize_criterion} (as does, e.g., $\alpha_t = \frac{1}{t}$).
+:::
+:::
 :::
 
-# Convergence of SARSA
+<!-- # Convergence of SARSA
 
 [Based on Marius Lindauer's lecture]
 
@@ -438,7 +447,7 @@ SARSA for finite-state and finite-action MDPs converges to the optimal action-va
     \sum_{t=1}^{\infty} \alpha^2_t < \infty \nonumber
   $$
 	
-For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition.
+For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 
 # Q-Learning
 - SARSA estimates $Q$ of the current policy
