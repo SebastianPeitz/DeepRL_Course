@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "18.04.2026 13:50"
+        "20.04.2026 12:31"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "5",
@@ -744,7 +744,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Temporal Difference Learning & Q Learning",
+    "subtitle": "Temporal Difference Learning & Q-learning",
     "supportPath": "support",
     "template": {
         "deck": {

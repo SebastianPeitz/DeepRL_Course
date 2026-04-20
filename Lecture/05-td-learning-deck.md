@@ -1,5 +1,5 @@
 ---
-subtitle:    Temporal Difference Learning \& Q Learning
+subtitle:    Temporal Difference Learning \& Q-learning
 chapter:     5
 feedback:
   deck-id:  'deeprl-td-learning'
@@ -17,6 +17,7 @@ feedback:
 - Policy improvement / control using TD learning 
   - SARSA
   - Q-learning
+- Double Q-learning
 
 ------------------------------------------------------------------------------
 
@@ -158,7 +159,7 @@ Given a finite MDP and a fixed policy $\pi$, the state-value estimate $V$ of TD(
 
 ::: incremental
 - in the mean for a constant but sufficiently small step-size $\alpha$ and
-- with probability one if the step-size holds the *Robbins-Munro* condition
+- with probability one if the step-size satisfies the *Robbins-Munro* condition
 $$\begin{equation}
 \sum_{t=1}^\infty \alpha_t = \infty \qquad \text{and}\qquad \sum_{t=1}^\infty \alpha^2_t < \infty . \label{eq:stepsize_criterion}
 \end{equation}$$
@@ -334,12 +335,12 @@ $\Rightarrow$ *TD assumes an MDP problem structure* and is absolutely certain th
 
 :::
 
-# The *random walk* example [@Sutton1998{}, Ex.\ 6.2]
+# The *random walk* example
 
 ::: small
 Consider a simple Markov reward process (MRP; no actions), for which we want to estimate $V(s)$ from experience only.
 
-![](images/05-td-learning/Example-RandomWalk-1.svg){ width=800px }
+![](images/05-td-learning/Example-RandomWalk-1.svg){ width=750px }
 
 ::: incremental
 - For all states $s$, we have $p(\leftarrow) = p(\rightarrow) = 0.5$.
@@ -350,6 +351,12 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 ::: fragment
 ![**TD(0) learning** for the random walk. **Left**: Different numbers of iterations ( α=0.1 ). **Middle**: Learning curves for different values of α. **Right**: Batch training.](images/05-td-learning/Example-RandomWalk-2.svg){ .embed width=1280px }
 :::
+:::
+
+\ 
+
+::: footer
+The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 :::
 
 ------------------------------------------------------------------------------
@@ -450,9 +457,8 @@ SARSA for finite-state and finite-action MDPs converges to the optimal action-va
 For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 
 # Q-Learning
-- SARSA estimates $Q$ of the current policy
-- Q-learning is similar but directly estimates $Q^*$
-- off-policy update, since the optimal action-value function is updated independent of a given behavior policy
+::: small
+::: columns-7-3
 
 ::: fragment
 ::: {.definition}
@@ -464,18 +470,206 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 - $Q($terminal-state$,\cdot) = 0$
 - $\pi = \epsilon$-greedy$(Q)$
 
-**for** $j = 1, 2, \ldots, J$ episodes:\
+**for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
 $\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
-$\quad\quad$ Select $a_{t+1} \sim \pi(s_{t+1})$\
-$\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
+$\quad\quad$ ~~Select $\cancel{a_{t+1} \sim \pi(s_{t+1})}$~~$\qquad\qquad\qquad\qquad$ ([Not needed in off-policy]{style="color: red;"}) \
+$\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
 $\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
 $\quad\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$\
 $\quad\quad$ $t \gets t+1$\
 :::
 :::
 
+::: incremental
+- Q-learning is similar but directly estimates $Q^*$.
+- *Off-policy update*, since the optimal action-value function is updated independent of a given behavior policy.
+- The policy still determines which state–action pairs are visited and updated.
+- Convergence with probability 1 to $Q^*$ [@Sutton1998] if 
+  - all state-action pairs continue to be visited,
+  - a variant of the usual stochastic approximation conditions on the sequence of step-size parameters holds.
+:::
+
+:::
+:::
+
+# Example: Walking along a cliff
+
+::: small
+::: columns-6-4
+::: platzhalter
+::: incremental
+- Usual Gridworld setting.
+- All rewards are -1, except 
+  - the goal $G$ has $r=0$,
+  - the cliff has $r=-100$ and leads back to $S$.#
+- The policy is $\epsilon$-greedy with $\epsilon=0.1$
+:::
+
+[**Outcome**:]{.fragment}
+
+::: incremental
+- Q-learning learns the optimal path, close along the cliff.
+- On-policy SARSA learns a much safer path. [*Why do you think that is*?]{.fragment}
+- In the GLIE case (i.e., $\epsilon\to 0$), both policies will converge to the optimal path.
+:::
+:::
+
+![](images/05-td-learning/Example-Cliff.svg){ .embed width=400px }
+
+:::
+
+::: fragment
+In our setting, Q-learning is worse than SARSA. [*Why do you think that is*?]{.fragment}
+
+[$\Rightarrow$ the combination of falling off randomly and the resulting very large negative reward.]{.fragment}
+:::
+:::
+
+::: footer
+The example is taken from [@Sutton1998{}, Ex.\ 6.6]
+:::
+
+# Expected SARSA
+
+::: small
+::: columns-5-4
+::: platzhalter
+What can we do to reduce the large variance in the SARSA update 
+$$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]?$$
+
+::: fragment
+Let's take the expectation of Q $\rightarrow$ **expected SARSA**:
+$$
+\begin{align*}
+Q(s_t,a_t) &\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
+&= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
+\end{align*}
+$$
+:::
+
+::: fragment
+For comparison: Q-learning
+$$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac} Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
+:::
+:::
+
+::: fragment
+![](images/05-td-learning/Example-Cliff_expSARSA.svg){ width=500px }
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------------
+
+# Double Q-learning
+
+------------------------------------------------------------------------------
+
+# Maximization bias
+
+::: small
+All control algorithms discussed so far involve *maximization operations*:
+
+::: incremental
+- Q-learning: target policy is greedy and directly uses max operator for action-value updates.
+- SARSA: typically uses an $\epsilon$-greedy framework $\rightarrow$ max updates during policy improvement.
+:::
+
+[This can lead to a significant *positive bias*:]{.fragment}
+
+::: incremental
+- Maximization over sampled values is used implicitly as an estimate of the maximum value.
+- This issue is called maximization bias.
+:::
+
+[Small example:]{.fragment}
+
+::: incremental
+- Consider a single state $s$ with multiple possible actions $a$.
+- The true action values are all $Q(s, a) = 0$.
+- The sampled estimates $\hat{Q}(s, a)$ are uncertain, i.e., randomly distributed. Some samples are above and below zero.
+- Consequence: The maximum of the estimate is positive!
+:::
+:::
+
+# Double Q-learning approach
+
+::: small
+**Split the learning process**:
+
+::: incremental
+- Divide sampled experience into two sets.
+- Use sets to estimate independent estimates $Q_1(s, a)$ and $Q_2(s, a)$. 
+:::
+
+[**Assign specific tasks to each estimate**:]{.fragment}
+
+::: incremental
+- Estimate the maximizing action using $Q_1$:
+$$ a^* = \arg\max_{a\in\Ac} Q_1(s,a).$$
+- Estimate corresponding action value using $Q_2$:
+$$Q(s,a^*) \approx Q_2(s,a^*)=Q_2(s,\arg\max_{a\in\Ac} Q_1(s,a)).$$
+- Since this approach is perfectly symmetric, we can repeat the process with reversed roles between $Q_1$ and $Q_2$.
+:::
+:::
+
+# Double Q-learning algorithm
+::: small
+::: {.definition}
+### Algorithm: Q-Learning.
+
+**initialize**
+
+- $Q_1(s,a)$ and $Q_2(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
+- $Q_1($terminal-state$,\cdot) = Q_2($terminal-state$,\cdot) = 0$
+
+**for** $k = 1, 2, \ldots, K$ episodes:\
+$\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
+$\quad$ **while** $s_t$ is not terminal:\
+$\quad\quad$ Take action $a_t$ using an $\epsilon$-greedy policy on $Q_1 + Q_2$ and observe $(r_t,s_{t+1})$ $\qquad\qquad\qquad\qquad\qquad~$ \
+$\quad\quad$ **if** $\mathsf{rand()} > 0.5$:
+$\quad$ $$Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[r_t + \gamma Q_2(s_{t+1},\arg\max_{a} Q_1(s_{t+1},a))- Q_1(s_t,a_t)\right]$$
+$\quad\quad$ **else**:
+$\quad$ $$Q_2(s_t,a_t) \gets Q_2(s_t,a_t) + \alpha \left[r_t + \gamma Q_1(s_{t+1},\arg\max_{a} Q_2(s_{t+1},a))- Q_2(s_t,a_t)\right]$$
+$\quad\quad$ $t \gets t+1$\
+:::
+:::
+
+# Maximization bias example
+
+::: small
+![Comparison of Q-learning and Double Q-learning on a simple episodic MDP [@Sutton1998{}, Ex.\ 6.7]. Q-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the $5\%$ minimum probability enforced by $\epsilon$-greedy action selection with $\epsilon=0.1$. In contrast, Double Q-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.](images/05-td-learning/Example-Maximization-Bias.svg){ width=1000px }
+:::
+
+------------------------------------------------------------------------------
+
+# Summary / what you have learned
+
+------------------------------------------------------------------------------
+
+# Summary / what you have learned
+
+::: small
+::: incremental
+- TD unites two key characteristics from DP and MC:
+  - From MC: sample-based updates (i.e., operating in unknown MDPs).
+  - From DP: update estimates based on other estimates (bootstrapping).
+- TD allows certain simplifications and improvements compared to MC:
+  - Updates are available after each step and not after each episode.
+  - Off-policy learning comes without importance sampling.
+  - Exploits MDP formalism by maximum likelihood estimates.
+  - Hence, TD prediction and control exhibit a high applicability for many problems.
+- Batch training can be used when only limited experience is available, i.e., the available
+samples are re-processed again and again.
+- Greedy policy improvements can lead to maximization biases and, therefore, slow down the learning process.
+- TD requires careful tuning of learning parameters:
+  - Step size $\alpha$: how to tune convergence rate vs. uncertainty / accuracy?
+  - Exploration vs. exploitation: how to visit all state-action pairs and the optimal policy?
+:::
+:::
 
 # References
 
