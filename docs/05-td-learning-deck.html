@@ -1321,24 +1321,24 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">TD unites two key characteristics from DP and MC:
+<li class="fragment">TD <strong>unites two key characteristics from DP and MC</strong>:
 <ul class="incremental">
 <li class="fragment">From MC: sample-based updates (i.e., operating in unknown MDPs).</li>
 <li class="fragment">From DP: update estimates based on other estimates (bootstrapping).</li>
 </ul></li>
-<li class="fragment">TD allows certain simplifications and improvements compared to MC:
+<li class="fragment">TD allows certain <strong>simplifications and improvements compared to MC</strong>:
 <ul class="incremental">
 <li class="fragment">Updates are available after each step and not after each episode.</li>
 <li class="fragment">Off-policy learning comes without importance sampling.</li>
 <li class="fragment">Exploits MDP formalism by maximum likelihood estimates.</li>
-<li class="fragment">Hence, TD prediction and control exhibit a high applicability for many problems.</li>
+<li class="fragment">TD prediction and control exhibit a high applicability for many problems.</li>
 </ul></li>
-<li class="fragment">Batch training can be used when only limited experience is available, i.e., the available samples are re-processed again and again.</li>
-<li class="fragment">Greedy policy improvements can lead to maximization biases and, therefore, slow down the learning process.</li>
-<li class="fragment">TD requires careful tuning of learning parameters:
+<li class="fragment"><strong>Batch training</strong> can be used when only limited experience is available, i.e., the available samples are re-processed again and again.</li>
+<li class="fragment">Greedy policy improvements can lead to <strong>maximization biases</strong> and, therefore, slow down the learning process.</li>
+<li class="fragment">TD <strong>requires careful tuning of learning parameters</strong>:
 <ul class="incremental">
 <li class="fragment">Step size <span class="math inline">\(\alpha\)</span>: how to tune convergence rate vs. uncertainty / accuracy?</li>
-<li class="fragment">Exploration vs. exploitation: how to visit all state-action pairs and the optimal policy?</li>
+<li class="fragment">Exploration vs. exploitation: how to visit all state-action pairs?</li>
 </ul></li>
 </ul>
 </div>

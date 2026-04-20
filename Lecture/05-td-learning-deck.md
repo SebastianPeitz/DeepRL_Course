@@ -654,20 +654,19 @@ $\quad\quad$ $t \gets t+1$\
 
 ::: small
 ::: incremental
-- TD unites two key characteristics from DP and MC:
+- TD **unites two key characteristics from DP and MC**:
   - From MC: sample-based updates (i.e., operating in unknown MDPs).
   - From DP: update estimates based on other estimates (bootstrapping).
-- TD allows certain simplifications and improvements compared to MC:
+- TD allows certain **simplifications and improvements compared to MC**:
   - Updates are available after each step and not after each episode.
   - Off-policy learning comes without importance sampling.
   - Exploits MDP formalism by maximum likelihood estimates.
-  - Hence, TD prediction and control exhibit a high applicability for many problems.
-- Batch training can be used when only limited experience is available, i.e., the available
-samples are re-processed again and again.
-- Greedy policy improvements can lead to maximization biases and, therefore, slow down the learning process.
-- TD requires careful tuning of learning parameters:
+  - TD prediction and control exhibit a high applicability for many problems.
+- **Batch training** can be used when only limited experience is available, i.e., the available samples are re-processed again and again.
+- Greedy policy improvements can lead to **maximization biases** and, therefore, slow down the learning process.
+- TD **requires careful tuning of learning parameters**:
   - Step size $\alpha$: how to tune convergence rate vs. uncertainty / accuracy?
-  - Exploration vs. exploitation: how to visit all state-action pairs and the optimal policy?
+  - Exploration vs. exploitation: how to visit all state-action pairs?
 :::
 :::
 
