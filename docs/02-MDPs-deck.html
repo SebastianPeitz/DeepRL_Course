@@ -218,13 +218,6 @@ Processes</title>
 <div class="decker">
 <div class="alignment">
 <h1>What is reinforcement learning?</h1>
-</div>
-</div>
-</section>
-<section id="section" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1></h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -3018,7 +3011,7 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <ul>
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
 <li><span class="math inline">\(p\agivenb{s&#39;}{s}\)</span> is the state <strong>transition probability</strong>,</li>
-<li><span style="color: red;"><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(r_{t+1} \sim p\agivenb{r}{s_t}\)</span>),</span></li>
+<li><span style="color: red;"><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(r_{t} \sim p\agivenb{r}{s_t}\)</span>),</span></li>
 <li><span style="color: red;"><span class="math inline">\(\gamma\in[0,1]\)</span> is a <strong>discount factor</strong>.</span></li>
 </ul>
 </div>
@@ -3026,7 +3019,7 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <ul class="incremental">
 <li class="fragment">Markov chain extended by rewards.</li>
 <li class="fragment">Still an autonomous stochastic process, no inputs.</li>
-<li class="fragment">The reward <span class="math inline">\(r_{t+1}\)</span> only depends on the state <span class="math inline">\(s_t\)</span>.</li>
+<li class="fragment">The reward <span class="math inline">\(r_{t}\)</span> only depends on the state <span class="math inline">\(s_t\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -4934,7 +4927,7 @@ V_\Sc &amp;= \hat r_\Sc + \gamma P V_\Sc \\
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
 <li><span style="color: red;"><span class="math inline">\(\Ac\)</span> is a finite set of discrete-time <strong>actions</strong> <span class="math inline">\(a_t\in\Ac\)</span></span>,</li>
 <li><span class="math inline">\(\textcolor{red}{\psprimesa}\)</span> is the <strong>state transition probability</strong>,</li>
-<li><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(\textcolor{red}{r_{t+1} \sim p\agivenb{r}{s_t,a_t}}\)</span>),</li>
+<li><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(\textcolor{red}{r_{t} \sim p\agivenb{r}{s_t,a_t}}\)</span>),</li>
 <li><span class="math inline">\(\gamma\in[0,1]\)</span> is a <strong>discount factor</strong>.</li>
 </ul>
 </div>
@@ -5067,7 +5060,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Analog to MRPs, the state value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ V^\pi(s_t) = \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \]</span></p>
+<p>Analog to MRPs, the state value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ V^\pi(s_t) = \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \]</span></p>
 <div class="fragment">
 <p>In finite MDPs, the state value can be directly linked to the action value: <span class="math display">\[ V^\pi(s_t)\sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).\]</span></p>
 </div>
@@ -5086,7 +5079,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="box block">
 <p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
 <div class="fragment">
-<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}\]</span></p>
+<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -5102,7 +5095,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Let’s assume following very simple policy (’fifty-fifty’): <span class="math display">\[ \pi\agivenb{a=\text{cut}}{s} = 0.5, \qquad \pi\agivenb{a=\text{wait}}{s} = 0.5 \qquad \forall s\in\Sc. \]</span></p>
+<p>Let’s assume following very simple policy (“fifty-fifty”): <span class="math display">\[ \pi\agivenb{a=\text{cut}}{s} = 0.5, \qquad \pi\agivenb{a=\text{wait}}{s} = 0.5 \qquad \forall s\in\Sc. \]</span></p>
 <div class="fragment">
 <p>Applied to the given environment behavior <span class="math-incremental"><span class="math display">\[
 \begin{align*}
@@ -5366,7 +5359,7 @@ V^*(1) &amp;= \max \begin{cases}\gamma \left[ (1-\alpha) V^*(2) \right] \\ 1 \en
 <ul class="incremental">
 <li class="fragment">Possible only for small action and state-space MDPs
 <ul class="incremental">
-<li class="fragment">“Solving” Backgammon with <span class="math inline">\(\approx 10^20\)</span> states?</li>
+<li class="fragment">“Solving” Backgammon with <span class="math inline">\(\approx 10^{20}\)</span> states?</li>
 </ul></li>
 <li class="fragment">Another issue: total environment knowledge required</li>
 </ul>

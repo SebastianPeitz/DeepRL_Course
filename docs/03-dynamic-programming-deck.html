@@ -255,7 +255,7 @@
 \begin{eqnarray}
 g_t &amp;=&amp; r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
 V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
-V^\pi(s_t) &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
+ &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 \]</span></p>
 </div>
@@ -306,10 +306,10 @@ Q^*(s,a) &amp;= \ExpC{r_{t+1}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s
 </div>
 </div>
 </section>
-<section id="a-dp-example-from-production-1-bertsekas2019" class="slide level1">
+<section id="a-dp-example-from-production-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>A DP example from production (1) <span class="citation">(<a href="#ref-Bertsekas2019">Bertsekas 2019</a>)</span></h1>
+<h1>A DP example from production (1)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -340,16 +340,19 @@ Q^*(s,a) &amp;= \ExpC{r_{t+1}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s
 </ul>
 </div>
 </div>
+<div class="footer">
+<p>Example taken from <span class="citation">(<a href="#ref-Bertsekas2019">Bertsekas 2019</a>, Example 1.1.1)</span></p>
+</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="a-dp-example-from-production-2-bertsekas2019" class="slide level1">
+<section id="a-dp-example-from-production-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>A DP example from production (2) <span class="citation">(<a href="#ref-Bertsekas2019">Bertsekas 2019</a>)</span></h1>
+<h1>A DP example from production (2)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -765,7 +768,7 @@ V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s&#39;)}{s}{\pi} \fragment{= \sum_{a\in\Ac} \
 </ul>
 </div>
 <div class="footer">
-<p>Existence and uniqueness of <span class="math inline">\(V^\pi\)</span> are guaranteed as long as either <span class="math inline">\(\gamma &lt; 1\)</span> or eventual termination is guaranteed from all states under the policy <span class="math inline">\(\pi\)</span>.</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> Existence and uniqueness of <span class="math inline">\(V^\pi\)</span> are guaranteed as long as either <span class="math inline">\(\gamma &lt; 1\)</span> or eventual termination is guaranteed from all states under the policy <span class="math inline">\(\pi\)</span>.</p>
 </div>
 </div>
 </div>
@@ -885,11 +888,11 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <div class="grid-layout" style="grid-template-columns: 6fr 2fr 2fr;">
 <div class="platzhalter">
 <p>We have a small robot in a gridworld that wants to recharge.</p>
-<p><span class="fragment" data-fragment-index="1"><span class="math inline">\(\bullet\)</span> Initial state <span class="math inline">\(s_0\)</span>: a random valid field.</span><br />
-<span class="fragment" data-fragment-index="2"><span class="math inline">\(\bullet\)</span> Goal: reach the battery (<span class="math inline">\(r=1\)</span>, otherwise <span class="math inline">\(r=0\)</span>).</span><br />
+<p><span class="fragment" data-fragment-index="1"><span class="math inline">\(\bullet\)</span> <strong>Initial state <span class="math inline">\(s_0\)</span></strong>: a random valid field.</span><br />
+<span class="fragment" data-fragment-index="2"><span class="math inline">\(\bullet\)</span> <strong>Goal</strong>: reach the battery (<span class="math inline">\(r=1\)</span>, otherwise <span class="math inline">\(r=0\)</span>).</span><br />
 <span class="fragment" data-fragment-index="3"><span class="math inline">\(\bullet\)</span> <span class="math inline">\(\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}\)</span> (<em>leaving</em> or <em>invalid field</em> <span class="math inline">\(\Rightarrow\)</span> no movement).</span><br />
 <span class="fragment"><span class="math inline">\(\bullet\)</span> <span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</span><br />
-<span class="fragment"><span class="math inline">\(\bullet\)</span> Discount: <span class="math inline">\(\gamma = 0.8\)</span></span></p>
+<span class="fragment"><span class="math inline">\(\bullet\)</span> <strong>Discount factor</strong>: <span class="math inline">\(\gamma = 0.8\)</span>.</span></p>
 </div>
 <div class="media">
 <figure class="image" style="height:auto;width:150px;">
@@ -901,8 +904,8 @@ Gridworld
 </div>
 <p><span class="fragment" data-fragment-index="3"><span class="media"><span class="figure image" style="height:auto;width:150px;"><img src="images/03-dynamic-programming/GridWorld-RandomPolicy.png" style="height:auto;width:100%;" aria-label="Random policy" alt="images/03-dynamic-programming/GridWorld-RandomPolicy.png" /><span class="figcaption"><span>Random policy</span></span></span></span></span></p>
 </div>
-<p><span class="fragment"><span class="math inline">\(\bullet\)</span> Terminal state: If the robot hits the battery, it receives <span class="math inline">\(r=1\)</span> (potentially discounted) and the episode ends.</span><br />
-<span class="fragment"><span class="math inline">\(\bullet\)</span> Optimal strategy: Move towards the battery as quickly as possible.</span></p>
+<p><span class="fragment"><span class="math inline">\(\bullet\)</span> <strong>Terminal state</strong>: If the robot hits the battery, it receives <span class="math inline">\(r=1\)</span> (potentially discounted) and the episode ends.</span><br />
+<span class="fragment"><span class="math inline">\(\bullet\)</span> <strong>Optimal strategy</strong>: Move towards the battery as quickly as possible.</span></p>
 <p><br />
 </p>
 <div class="fragment">

@@ -56,7 +56,7 @@ $$
 \begin{eqnarray}
 g_t &=& r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
 V^\pi(s_t) &=& \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
-V^\pi(s_t) &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
+ &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 $$
 :::
@@ -100,7 +100,7 @@ $$
 **Central idea of DP**: turn these equations into algorithmic assignments.
 :::
 
-# A DP example from production (1) [@Bertsekas2019]
+# A DP example from production (1)
 
 ::: small
 ::: columns-8-3
@@ -127,7 +127,11 @@ $$
 
 :::
 
-# A DP example from production (2) [@Bertsekas2019]
+::: footer
+Example taken from [@Bertsekas2019{}, Example 1.1.1]
+:::
+
+# A DP example from production (2)
 
 ::: small
 ::: columns-7-3
@@ -209,7 +213,7 @@ $$
 :::
 
 ::: footer
-Existence and uniqueness of $V^\pi$ are guaranteed as long as either $\gamma < 1$ or eventual
+:bulb: Existence and uniqueness of $V^\pi$ are guaranteed as long as either $\gamma < 1$ or eventual
 termination is guaranteed from all states under the policy $\pi$.
 :::
 
@@ -297,11 +301,11 @@ $^*$ i.i.d. = independent and identically distributed.
 ::: platzhalter
 We have a small robot in a gridworld that wants to recharge.
 
-[$\bullet$ Initial state $s_0$: a random valid field.]{ .fragment data-fragment-index=1 }\
-[$\bullet$ Goal: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
+[$\bullet$ **Initial state $s_0$**: a random valid field.]{ .fragment data-fragment-index=1 }\
+[$\bullet$ **Goal**: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
 [$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
 [$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
-[$\bullet$ Discount: $\gamma = 0.8$]{ .fragment }
+[$\bullet$ **Discount factor**: $\gamma = 0.8$.]{ .fragment }
 :::
 
 ![Gridworld](images/03-dynamic-programming/GridWorld.png){ width=150px }
@@ -312,8 +316,8 @@ We have a small robot in a gridworld that wants to recharge.
 
 :::
 
-[$\bullet$ Terminal state: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
-[$\bullet$ Optimal strategy: Move towards the battery as quickly as possible.]{ .fragment }
+[$\bullet$ **Terminal state**: If the robot hits the battery, it receives $r=1$ (potentially discounted) and the episode ends.]{ .fragment }\
+[$\bullet$ **Optimal strategy**: Move towards the battery as quickly as possible.]{ .fragment }
 
 \
 

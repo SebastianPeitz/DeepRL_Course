@@ -31,7 +31,6 @@ feedback:
 
 # What is reinforcement learning?
 
-# 
 ::: columns-4-6
 ![](images/00-introduction/RL_illustration.svg){ .embed width=600px }
 
@@ -362,7 +361,7 @@ A **finite Markov reward process** (**MRP**) is a tuple $(\Sc, p, \textcolor{red
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
 - $p\agivenb{s'}{s}$ is the state **transition probability**,
-- [$r$ is a **reward function** (a random variable with realization $r_{t+1} \sim p\agivenb{r}{s_t}$),]{style="color: red;"}
+- [$r$ is a **reward function** (a random variable with realization $r_{t} \sim p\agivenb{r}{s_t}$),]{style="color: red;"}
 - [$\gamma\in[0,1]$ is a **discount factor**.]{style="color: red;"}
 
 :::
@@ -370,7 +369,7 @@ A **finite Markov reward process** (**MRP**) is a tuple $(\Sc, p, \textcolor{red
 ::: incremental
 - Markov chain extended by rewards.
 - Still an autonomous stochastic process, no inputs.
-- The reward $r_{t+1}$ only depends on the state $s_t$.
+- The reward $r_{t}$ only depends on the state $s_t$.
 :::
 
 # Example of a finite Markov reward processes
@@ -546,7 +545,7 @@ A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \textcolor{red}
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
 - [$\Ac$ is a finite set of discrete-time **actions** $a_t\in\Ac$]{style="color: red;"},
 - $\textcolor{red}{\psprimesa}$ is the **state transition probability**,
-- $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t+1} \sim p\agivenb{r}{s_t,a_t}}$),
+- $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t} \sim p\agivenb{r}{s_t,a_t}}$),
 - $\gamma\in[0,1]$ is a **discount factor**.
 
 :::
@@ -623,7 +622,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 # Bellman expectation equation (1)
 
 Analog to MRPs, the state value of an MDP can be decomposed into a Bellman notation:
-$$ V^\pi(s_t) = \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. $$
+$$ V^\pi(s_t) = \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. $$
 
 ::: fragment
 In finite MDPs, the state value can be directly linked to the action value:
@@ -637,12 +636,12 @@ $$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
-$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
+$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
 :::
 
 # Bellman expectation equation \& forest tree example (1)
 ::: small
-Let’s assume following very simple policy (’fifty-fifty’):
+Let’s assume following very simple policy ("fifty-fifty"):
 $$ \pi\agivenb{a=\text{cut}}{s} = 0.5, \qquad \pi\agivenb{a=\text{wait}}{s} = 0.5 \qquad \forall s\in\Sc. $$
 
 ::: fragment
@@ -797,7 +796,7 @@ $$]{ .math-incremental }
 
 ::: incremental 
 - Possible only for small action and state-space MDPs
-  - "Solving" Backgammon with $\approx 10^20$ states?
+  - "Solving" Backgammon with $\approx 10^{20}$ states?
 - Another issue: total environment knowledge required
 :::
 
