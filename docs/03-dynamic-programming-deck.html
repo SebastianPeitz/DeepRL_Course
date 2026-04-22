@@ -253,9 +253,9 @@
 <div class="fragment">
 <p><span class="math display">\[
 \begin{eqnarray}
-g_t &amp;=&amp; r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
-V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
- &amp;=&amp; \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
+g_t &amp;=&amp; r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k}, \notag \\
+V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
+ &amp;=&amp; \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 \]</span></p>
 </div>
@@ -285,15 +285,15 @@ V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\Ex
 <div class="box block">
 <p>From this, we derived the <em>Bellman optimality equation</em> <span class="citation">(<a href="#ref-Bellman1954">Bellman 1954</a>)</span>: <span class="math display">\[
 \begin{align}
-V^*(s) &amp;= \max_{a\in\Ac} \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
+V^*(s) &amp;= \max_{a\in\Ac} \ExpC{r_{t}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
+ &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 \]</span></p>
 <div class="fragment">
 <p>Similarly, we can derive an optimal Q-function: <span class="math display">\[
 \begin{align}
-Q^*(s,a) &amp;= \ExpC{r_{t+1}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s_t = s, a_t = a} \notag \\
- &amp;= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:DP_BellmanQstar}
+Q^*(s,a) &amp;= \ExpC{r_{t}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s_t = s, a_t = a} \notag \\
+ &amp;= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 \]</span></p>
 </div>
@@ -1980,7 +1980,7 @@ V^\pi(s_t) \leq \sum_{a_t\in\Ac} \pi&#39;\agivenb{a_t}{s_t} Q^\pi(s_t,a_t) \frag
 \]</span></p>
 </div>
 <div class="fragment">
-<p>Using the linearity of expectations and the law of total expectation (<span class="math inline">\(\Exp{\ExpC{x}{y}} = \Exp{x}\)</span>): <span class="math display">\[
+<p>Using the linearity of expectations and the law of total expectation (<span class="math inline">\(\Exp{\ExpC{x}{y}} = \Exp{x}\)</span>; see, e.g., <a href="https://en.wikipedia.org/wiki/Law_of_total_expectation">Wikipedia</a>): <span class="math display">\[
 V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#39;}.
 \]</span></p>
 </div>
@@ -4302,7 +4302,7 @@ V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s&#39;)}{s,a} =
 V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s&#39;)}{s,a} = \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \psprimesa\left[ r + \gamma V^*(s&#39;) \right].  \tag{\ref{eq:DP_BellmanVstar}}
 \end{align}\]</span></p>
 </div>
-<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have simply turned <span class="math inline">\(\eqref{eq:DP_BellmanVstar}\)</span> into an iterative procedure!</span></p>
+<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have simply turned <span class="math inline">\(\eqref{eq:DP_BellmanVstar}\)</span> into an iterative procedure (using <em>bootstrapping</em>)!</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Value iteration can be shown to converge for arbitrary <span class="math inline">\(V_0\)</span></span></p>
 </div>
 </div>

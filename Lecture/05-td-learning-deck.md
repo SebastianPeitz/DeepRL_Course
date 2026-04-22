@@ -18,6 +18,11 @@ feedback:
   - SARSA
   - Q-learning
 - Double Q-learning
+- $n$-step TD learning
+  - $n$-step TD prediction
+  - $n$-step TD control
+  - $n$-step off-policy learning
+  - TD($\lambda$)
 
 ------------------------------------------------------------------------------
 
@@ -642,6 +647,196 @@ $\quad\quad$ $t \gets t+1$\
 
 ::: small
 ![Comparison of Q-learning and Double Q-learning on a simple episodic MDP [@Sutton1998{}, Ex.\ 6.7]. Q-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the $5\%$ minimum probability enforced by $\epsilon$-greedy action selection with $\epsilon=0.1$. In contrast, Double Q-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.](images/05-td-learning/Example-Maximization-Bias.svg){ width=1000px }
+:::
+
+------------------------------------------------------------------------------
+
+# $n$-step TD learning
+
+------------------------------------------------------------------------------
+
+# Let's unify MC and TD learning
+
+::: columns-6-4
+![[@Sutton1998{}, Figure 8.11]](images/05-td-learning/Methods-DP-MC-TD.svg){ width=600px }
+
+::: incremental
+- MC and TD are the "extreme options" in terms of the update depth. 
+- What about intermediate solutions?
+:::
+:::
+
+# $n$-step bootstrapping idea
+::: columns-6-4
+![[@Sutton1998{}, Figure 7.1]](images/05-td-learning/Back_Up_n_Step_Methods.svg){ .embed width=500px }
+
+::: incremental
+- $n$-step update: consider $n$ rewards plus estimated value $n$ steps later (bootstrapping).
+- Consequence: Estimate update is available only after an $n$-step delay.
+- TD(0) and MC are special cases included in $n$-step prediction.
+:::
+:::
+
+# Unified target notation (1)
+
+Recap the **update targets** for the incremental prediction methods:
+
+::: incremental
+- **Monte Carlo**: builds on the complete sampled return series
+$$ g_{t:T} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^T r_T . $$
+  - $g_{t:T}$ denotes that all steps until termination at $T$ are considered to estimate a target for step $t$.
+- **TD(0)**: utilizes a one-step bootstrapped return
+$$ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). $$
+  - $g_{t:t+1}$ highlights that only one future sampled reward step is considered before bootstrapping.
+  - $V_t$ is an estimate of $V^\pi$ at time step $t$.
+:::
+
+# Unified target notation (2)
+
+::: small
+::: definition
+### Definition: $n$-step state-value prediction target
+
+The generalized $n$-step target is defined as:
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + V_{t+n-1}(s_{t+n}) . $$
+:::
+
+::: incremental
+- Approximation of full return series truncated after $n$-steps.
+- If $t + n \geq T$ (i.e., $n$-step prediction exceeds termination lookahead), then all missing terms are considered zero.
+:::
+
+::: fragment
+::: definition
+### Definition: $n$-step TD
+
+The state-value estimate using the $n$-step return approximation is:
+$$ V_{t+n}(s_t) = V_{t+n-1}(s_t) + \alpha \left[ g_{t:t+n} - V_{t+n-1}(s_{t}) \right], \qquad 0 \leq t \leq T. $$
+:::
+:::
+
+::: incremental
+- Delay of $n$-steps before $V(s)$ is updated.
+- Additional auxiliary update steps required at the end of each episode.
+:::
+
+:::
+
+# $n$-step TD prediction: Algorithmic implementation 
+
+::: small
+::: {.definition}
+### Algorithm: $n$-step TD for estimating $V \approx V^\pi$.
+
+**input**. a policy $\pi$ to be evaluated, parameter: step size $\alpha \in (0, 1]$, prediction steps $n \in \Z^+$.\
+**Initialize**: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$.\
+**for** $k = 1, 2, \ldots, K$ episodes:\
+$\quad$ initialize and store $s_0$\
+$\quad$ $T \leftarrow \infty$, $\tau \leftarrow 0$\
+$\quad$ **for** $t=1,2,3,\ldots$\
+$\quad\quad$ **if** $t<T$ **then**\
+$\quad\quad\quad$ take action $a_t \sim \pi\agivenb{\cdot}{s_t}$, observe and store $s_{t+1}$ and $r_{t+1}$\
+$\quad\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** $T \leftarrow k + 1$\
+$\quad\quad$ $\tau\leftarrow t-n-1$ ($\tau$ is the time index for the estimate update)\
+$\quad\quad$ **if** $\tau\geq 0$ **then**\
+$\quad\quad\quad$ $g \leftarrow \sum_{k=\tau+1}^{\min(\tau + n,T)} \gamma^{k-\tau-1} r_k$\
+$\quad\quad\quad$ **if** $\tau + n < T$ **then** $g \leftarrow g + \gamma^n V(s_{\tau+n})$\
+$\quad\quad\quad$ $V(s_\tau) \leftarrow V(s_\tau) + \alpha \left[g - V(s_{\tau})\right]$\
+$\quad\quad$ **if** $\tau = T − 1$ **then** $\mathsf{STOP}$
+:::
+:::
+
+# Example: 19-state random walk
+
+![](images/05-td-learning/Example-RandomWalk-3.svg){ width=700px }
+
+\
+
+::: fragment
+::: columns-5-5
+![[@Sutton1998{}, Example 7.1]](images/05-td-learning/Example-RandomWalk-4.svg){ width=600px }
+
+::: incremental
+- Early stage performance after only $10$ episodes
+- Averaged over $100$ independent runs
+- Best result here: $n = 4$, $\alpha \approx 0.4$
+- Picture may change for longer episodes (no generalizable results)
+:::
+
+:::
+:::
+
+------------------------------------------------------------------------------
+
+# $n$-step TD learning
+
+------------------------------------------------------------------------------
+
+# Transfer the $n$-step approach to state-action values (1)
+
+::: small
+::: incremental
+- For on-policy control by SARSA action-value estimates are required.
+- Recap the one-step action-value update as required for "SARSA(0)":
+$$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},a_{t+1})}_{\text{target }g} - Q(s_t,a_t)\right]$$
+:::
+
+::: fragment
+::: definition
+
+### Definition: $n$-step state-action value prediction target.
+
+Analog to $n$-step TD, the state-action value target is rewritten as:
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. $$
+:::
+:::
+
+::: fragment
+- Again, if an episode terminates within the lookahead horizon ($k + n \geq T$) the target is equal to the Monte Carlo update: 
+$$g_{t:t+n} = g_t.$$
+:::
+:::
+
+# Transfer the $n$-step approach to state-action values (2)
+
+::: small
+For n-step expected SARSA, the update is similar but the state-action value estimate at
+step k + n becomes the expected approximate value of x under the target policy valid at
+time step k:
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. $$
+
+::: fragment
+Finally, the modified n-step targets can be directly integrated to the state-action value estimate update rule of SARSA:
+
+::: definition
+
+### Definition: $n$-step SARSA.
+
+$$ Q_{t+n}(s_t, a_t) = Q_{t+n-1}(s_t, a_t) + \alpha \left[ g_{t:t+n} - Q_{t+n-1}(s_{t}, a_t) \right], \qquad 0 \leq t \leq T. $$
+:::
+:::
+:::
+
+# $n$-step bootstrapping for state-action values
+
+![[@Sutton1998{}, Figure 7.3]](images/05-td-learning/Back_Up_n_Step_Sarsa.svg){ .embed width=500px }
+
+# Example: Gridworld
+
+::: small
+- Standard assumptions for movement etc.
+- zero rewards everywhere, except for the goal $G$, where we have $r=1$.
+
+![Executed updates (highlighted by arrows) for one-step and ten-step SARSA implementations during an episode.[@Sutton1998{}, Figure 7.4]](images/05-td-learning/Example-Gridworld-SARSA-1.svg){ .embed width=1000px }
+
+\
+
+::: incremental
+- For one-step SARSA, one state-action value is updated [$\Rightarrow$ This is the only field where we can "see" the reward of reaching the goal.]{.fragment}
+- For ten-step SARSA, ten state-action values are updated.
+- Consequence: a trade-off between the resulting learning delay and the number of updated state-action values results.
+:::
+
 :::
 
 ------------------------------------------------------------------------------

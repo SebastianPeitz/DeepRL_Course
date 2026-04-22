@@ -853,7 +853,6 @@ $\quad\quad$ $w \gets w \frac{1}{b\agivenb{a_t}{s_t}}$
   - This estimation task comes with a bias-variance-dilemma.
   - Slow learning can result from ineffective experience usage in MC methods.
 :::
-
 :::
 
 # References

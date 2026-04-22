@@ -54,9 +54,9 @@ We here consider finite state and action spaces $\Sc$ and $\Ac$. [In the last le
 ::: fragment
 $$
 \begin{eqnarray}
-g_t &=& r_{t+1} + \gamma r_{t+2} + \gamma^2 r_{t+3} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k+1}, \notag \\
-V^\pi(s_t) &=& \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t+1}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
- &=& \ExpCsub{r_{t+1}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
+g_t &=& r_{t} + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots = \sum_{k=0}^\infty \gamma^k r_{t+k}, \notag \\
+V^\pi(s_t) &=& \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t}}{s_t} + \gamma\ExpCsub{V(s_{t+1})}{s_t}{\pi}, \notag \\
+ &=& \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \label{eq:DP_BellmanV}
 \end{eqnarray}
 $$
 :::
@@ -81,8 +81,8 @@ An optimal policy has the property that whatever the initial state and initial d
 From this, we derived the *Bellman optimality equation* [@Bellman1954]:
 $$
 \begin{align}
-V^*(s) &= \max_{a\in\Ac} \ExpC{r_{t+1}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
+V^*(s) &= \max_{a\in\Ac} \ExpC{r_{t}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
+ &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 $$
 
@@ -90,8 +90,8 @@ $$
 Similarly, we can derive an optimal Q-function:
 $$
 \begin{align}
-Q^*(s,a) &= \ExpC{r_{t+1}+\gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
- &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t+1} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:DP_BellmanQstar}
+Q^*(s,a) &= \ExpC{r_{t}+\gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
+ &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 $$
 :::
@@ -394,7 +394,7 @@ $$
 :::
 
 ::: fragment
-Using the linearity of expectations and the law of total expectation ($\Exp{\ExpC{x}{y}} = \Exp{x}$):
+Using the linearity of expectations and the law of total expectation ($\Exp{\ExpC{x}{y}} = \Exp{x}$; see, e.g., [Wikipedia](https://en.wikipedia.org/wiki/Law_of_total_expectation)):
 $$
 V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi'}.
 $$
@@ -559,7 +559,7 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\i
 \end{align}
 :::
 
-[$\Rightarrow$ We have simply turned \eqref{eq:DP_BellmanVstar} into an iterative procedure!]{.fragment}
+[$\Rightarrow$ We have simply turned \eqref{eq:DP_BellmanVstar} into an iterative procedure (using *bootstrapping*)!]{.fragment}
 
 [$\Rightarrow$ Value iteration can be shown to converge for arbitrary $V_0$]{.fragment}
 :::
