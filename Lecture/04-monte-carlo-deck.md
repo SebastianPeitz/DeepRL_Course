@@ -674,10 +674,12 @@ $$]{.math-incremental}
 
 ::: fragment
 ::: definition
+
 ### Importance sampling ratio
+
 The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step $k$ to $T$ is
 $$
-\rho_{k:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
+\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
 \fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}}
 \fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
 $$

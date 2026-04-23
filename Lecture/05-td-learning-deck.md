@@ -364,6 +364,29 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 :::
 
+# Example: MC vs. TD(0) prediction in Gridworld
+
+::: small
+::: columns-6-4
+
+![](images/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD(0) prediction"){ width=600px .controls .autoplay .muted }
+
+::: platzhalter
+- Fixed policy: $$\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.$$
+- Discount: $\gamma = 0.9$.
+
+\
+
+[**Why is MC learning faster? Wouldn't we expect TD(0) to be stronger?**]{.fragment}
+
+[$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment}
+
+[$\Rightarrow$ We then update entire trajectories, not just the last field we saw before the target.]{.fragment}
+
+:::
+:::
+:::
+
 ------------------------------------------------------------------------------
 
 # Policy improvement / control using TD learning 
@@ -461,7 +484,7 @@ SARSA for finite-state and finite-action MDPs converges to the optimal action-va
 	
 For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 
-# Q-Learning
+# Off-policy TD control: Q-Learning
 ::: small
 ::: columns-7-3
 
@@ -768,7 +791,7 @@ $\quad\quad$ **if** $\tau = T − 1$ **then** $\mathsf{STOP}$
 
 ------------------------------------------------------------------------------
 
-# $n$-step TD learning
+# $n$-step TD control
 
 ------------------------------------------------------------------------------
 
@@ -786,33 +809,63 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 
 ### Definition: $n$-step state-action value prediction target.
 
-Analog to $n$-step TD, the state-action value target is rewritten as:
-$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. $$
+Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}$) is rewritten as:
+$$ 
+\begin{equation} 
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+\end{equation}
+$$
 :::
 :::
 
 ::: fragment
-- Again, if an episode terminates within the lookahead horizon ($k + n \geq T$) the target is equal to the Monte Carlo update: 
-$$g_{t:t+n} = g_t.$$
+::: definition
+
+### Definition: $n$-step state-action value prediction target.
+
+For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
+$$ 
+\begin{equation}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+\end{equation}
+$$
+:::
+:::
+:::
+
+::: fragment
+::: footer
+Again, if an episode terminates within the lookahead horizon ($t + n \geq T$) the target is equal to the Monte Carlo update: 
+$g_{t:t+n} = g_t$.
 :::
 :::
 
 # Transfer the $n$-step approach to state-action values (2)
 
 ::: small
-For n-step expected SARSA, the update is similar but the state-action value estimate at
-step k + n becomes the expected approximate value of x under the target policy valid at
-time step k:
-$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. $$
 
-::: fragment
 Finally, the modified n-step targets can be directly integrated to the state-action value estimate update rule of SARSA:
 
 ::: definition
 
 ### Definition: $n$-step SARSA.
 
-$$ Q_{t+n}(s_t, a_t) = Q_{t+n-1}(s_t, a_t) + \alpha \left[ g_{t:t+n} - Q_{t+n-1}(s_{t}, a_t) \right], \qquad 0 \leq t \leq T. $$
+$$ Q_{t+n}(s_t, a_t) = Q_{t+n-1}(s_t, a_t) + \alpha \left[ g_{t:t+n} - Q_{t+n-1}(s_{t}, a_t) \right], \qquad 0 \leq t \leq T, $$
+
+with $g_{t:t+n}$ according to \eqref{eq:TD_nstep-onpolicy-return} for the *on-policy*, and \eqref{eq:TD_nstep-expected-return} for the *expected* version of SARSA.
+:::
+
+
+::: fragment
+
+::: definition
+### Remark: Off-policy $n$-step SARSA.
+
+For the off-policy version of $n$-step SARSA, we need to adapt the importance sampling weights we have seen in MC off-policy control to the $n$-step case, i.e., for various prediction lengths $h\in\{t+1,\ldots,t+n-1\}$:
+$$
+\rho_{t:h} = \prod_{k=t}^{\min(t+h, T)}\frac{\pi\agivenb{a_k}{s_k}}{b\agivenb{a_k}{s_k}}.
+$$
+For more details, see [@Sutton1998{}, Chapter 7.3].
 :::
 :::
 :::
@@ -827,17 +880,146 @@ $$ Q_{t+n}(s_t, a_t) = Q_{t+n-1}(s_t, a_t) + \alpha \left[ g_{t:t+n} - Q_{t+n-1}
 - Standard assumptions for movement etc.
 - zero rewards everywhere, except for the goal $G$, where we have $r=1$.
 
-![Executed updates (highlighted by arrows) for one-step and ten-step SARSA implementations during an episode.[@Sutton1998{}, Figure 7.4]](images/05-td-learning/Example-Gridworld-SARSA-1.svg){ .embed width=1000px }
+![Executed updates (highlighted by arrows) for one-step and ten-step SARSA implementations during an episode. [@Sutton1998{}, Figure 7.4]](images/05-td-learning/Example-Gridworld-SARSA-1.svg){ .embed width=1000px }
 
 \
 
 ::: incremental
-- For one-step SARSA, one state-action value is updated [$\Rightarrow$ This is the only field where we can "see" the reward of reaching the goal.]{.fragment}
-- For ten-step SARSA, ten state-action values are updated.
+- One-step SARSA: one $Q$-value is updated [$\Rightarrow$ This is the only field where we can "see" the reward of reaching $G$.]{.fragment}
+- Τen-step SARSA> ten $Q$-values are updated.
 - Consequence: a trade-off between the resulting learning delay and the number of updated state-action values results.
 :::
 
 :::
+
+------------------------------------------------------------------------------
+
+# TD($\lambda$)
+
+------------------------------------------------------------------------------
+
+# Averaging of n-step returns
+
+::: columns-3-7
+![Exemplary averaging of one- and three-step returns. [@Sutton1998{}, Figure 7.4]](images/05-td-learning/TDLambda-Average-Bootstrap-Example.svg){ width=200px }
+
+::: incremental
+- Averaging different $n$-step returns is possible without introducing a bias (if sum of weights is one).
+- Example on the left:
+$$ g = \frac{1}{3} g_{t:t+1} + \frac{2}{3} g_{t:t+3}. $$
+- Horizontal line in backup diagram indicates the averaging.
+- Enables additional degree of freedom to reduce prediction error.
+- Such updates are called **compound updates**.
+:::
+
+:::
+
+# $\lambda$-return (1)
+
+::: columns-5-5
+![The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD(0) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. [@Sutton1998{}, Figure 12.1]](images/05-td-learning/TDLambda-Return-Backup_v2.svg){ width=500px }
+
+::: incremental
+- **$\lambda$-return**: is a compound update with exponentially decaying weights:
+$$\begin{equation}
+g_t^\lambda = (1-\lambda) \sum_{k=1}^\infty \lambda^{(k-1)} g_{t:t+n}. \label{eq:TD_infinite-td-lambda}
+\end{equation}$$
+- Parameter is $\lambda \in [0,1]$.
+- Geometric series of weights is one:
+$$ (1-\lambda) \sum_{k=1}^\infty \lambda^{(k-1)} = 1.$$
+:::
+
+:::
+
+# $\lambda$-return (2)
+
+::: small
+::: incremental
+- Rewrite $\lambda$-return for episodic tasks with termination at $t = T$:
+$$\begin{equation} 
+g_t^\lambda = (1-\lambda) \left(\sum_{k=1}^{T-t-1} \lambda^{(k-1)} g_{t:t+n}\right) + \lambda^{T-t-1} g_t. \label{eq:TD_finite-td-lambda}
+\end{equation}$$
+- Return $g_t$ after termination is weighted with residual weight $\lambda^{T-t-1}$.
+- The equation includes two special cases:
+  - If $\lambda = 0$: becomes the TD(0) update.
+  - If $\lambda = 1$: becomes the MC update.
+:::
+
+\
+
+::: fragment
+![Weighting given in the λ-return to each of the n-step returns. [@Sutton1998{}, Figure 12.2]](images/05-td-learning/TDLambda-Weighting-Series.svg){ width=650px }
+:::
+:::
+
+# Truncated $\lambda$-returns for continuing tasks
+
+::: incremental
+- Using $\lambda$-returns as in \eqref{eq:TD_infinite-td-lambda} is not feasible for continuing tasks.
+- One would have to wait infinitely long to receive the trajectory.
+- Intuitive approximation: truncate $\lambda$-return after $h$ steps.
+- This gives us a formulation very close to the episodic formulation \eqref{eq:TD_finite-td-lambda}:
+$$ g_{t:h}^\lambda = (1-\lambda) \left(\sum_{k=1}^{h-t-1} \lambda^{(k-1)} g_{t:t+n}\right) + \lambda^{h-t-1} g_{t:h}. $$
+- Horizon $h$ divides continuing tasks in rolling episodes.
+:::
+
+# Forward view of TD($\lambda$)
+
+::: incremental
+- Both, $n$-step and $λ$-return updates, are based on a *forward view*.
+- We have to wait for future states and rewards to arrive before we are able to perform an update.
+- Currently, $λ$-returns are only an alternative to $n$-step updates with different weighting options.
+:::
+
+::: fragment
+![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4]](images/05-td-learning/TDLambda-Forward-View.svg){ width=800px }
+:::
+
+# Backward view of TD($\lambda$)
+
+::: small
+::: columns-2-16
+
+General idea:
+
+::: incremental
+- Use $λ$-weighted returns looking into the past.
+- Implement this in a recursive fashion to save memory \
+[$\Rightarrow$ Introduce an **eligibility trace** $z_t$ denoting the importance of past events to the current state update:
+$$z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 & \text{if}~s_t \neq s \\ 1 & \text{if}~s_t = s \end{cases}.$$]{.fragment}
+- We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \mathsf{Target}(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}$. [For example,
+$$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). $$]{.fragment}
+:::
+:::
+
+::: columns-6-4
+![Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. [@Sutton1998{}, Figure 12.5]](images/05-td-learning/TDLambda-Backward-View.svg){ width=450px }
+
+::: fragment
+
+\
+
+\
+
+![Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP [@Abdelwanis2026{}]](images/05-td-learning/Eligibility-Trace-State-Visits.svg){ width=650 }
+:::
+:::
+:::
+
+\
+
+::: fragment
+::: footer
+:bulb: More details can be found in [@Sutton1998{}, Chapter 12].
+:::
+:::
+
+# Example: Different SARSA variants in Gridworld
+
+- $λ$ can be interpreted as the discounting factor acting on the eligibility trace (see right-most panel below).
+- Intuitive interpretation: more recent transitions are more certain/relevant for the current update step.
+
+![[@Sutton1998{}, Figure 12.1]](images/05-td-learning/Example-Gridworld-SARSA-2.svg){ .embed width=650 }
 
 ------------------------------------------------------------------------------
 
@@ -862,6 +1044,7 @@ $$ Q_{t+n}(s_t, a_t) = Q_{t+n-1}(s_t, a_t) + \alpha \left[ g_{t:t+n} - Q_{t+n-1}
 - TD **requires careful tuning of learning parameters**:
   - Step size $\alpha$: how to tune convergence rate vs. uncertainty / accuracy?
   - Exploration vs. exploitation: how to visit all state-action pairs?
+- $n$-step TD versions and TD($λ$) offer a **unified view on MC and TD** learning
 :::
 :::
 
