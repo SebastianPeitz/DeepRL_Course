@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "23.04.2026 11:06"
+        "24.04.2026 12:33"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "7",
@@ -557,6 +557,8 @@
             "Ac": "{\\mathcal{A}}",
             "C": "{\\mathbb{C}}",
             "Dc": "{\\mathcal{D}}",
+            "Dtest": "{\\mathcal{D}_{\\mathsf{test}}}",
+            "Dtrain": "{\\mathcal{D}_{\\mathsf{train}}}",
             "E": "{\\mathbb{E}}",
             "Exp": [
                 "{\\mathbb{E}\\left[ #1 \\right]}",
@@ -574,6 +576,7 @@
                 "{\\mathbb{E}_{#2}\\left[ #1 \\right]}",
                 2.0
             ],
+            "Hc": "{\\mathcal{H}}",
             "Im": [
                 "{\\mathrm{Im}\\!\\left( #1 \\right)}",
                 1.0
@@ -598,6 +601,7 @@
             "Vpi": "{V^\\pi}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
+            "Yc": "{\\mathcal{Y}}",
             "Z": "{\\mathbb{Z}}",
             "abs": [
                 "\\left\\vert #1 \\right\\vert",
@@ -642,7 +646,11 @@
                 "{\\left\\{ #1 \\right\\}}",
                 1.0
             ],
-            "sprime": "{s^{\\prime}}"
+            "sprime": "{s^{\\prime}}",
+            "th": [
+                "{{#1}^{\\mathsf{th}}}",
+                1.0
+            ]
         },
         "scale": 1.0
     },

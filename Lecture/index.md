@@ -44,7 +44,7 @@ templates:
 |         | Monte Carlo methods                                       |           [slides:](04-monte-carlo) |
 |         | Temporal difference learning \& Q-learning                |           [slides:](05-td-learning) |
 |   **2** | **Deep-learning-based methods**                           |                                     |
-|         | Brief introduction to deep learning                       |        | <!--  [slides:](06-deep-learning) | -->
+|         | Brief introduction to deep learning                       |         [slides:](06-deep-learning) |
 |         | Deep Q-learning                                           |        | <!--     [slides:](07-q-learning) | -->
 |         | Policy gradients                                          |        | <!-- [slides:](08-policy-gradients) | -->
 |         | Actor-critic algorithms                                   |        | <!--   [slides:](09-actor-critic) | -->

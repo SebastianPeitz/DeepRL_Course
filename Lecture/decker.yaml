@@ -95,10 +95,12 @@ math:
     C: '{\mathbb{C}}'
     Ac: '{\mathcal{A}}'
     Dc: '{\mathcal{D}}'
+    Hc: '{\mathcal{H}}'
     Nc: '{\mathcal{N}}'
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
+    Yc: '{\mathcal{Y}}'
     aprime: '{a^{\prime}}'
     sprime: '{s^{\prime}}'
     piprime: '{\pi^{\prime}}'
@@ -114,6 +116,9 @@ math:
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
     Var: '{\mathbb{E}}'
     Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
+    th: ['{{#1}^{\mathsf{th}}}', 1]
+    Dtrain: '{\mathcal{D}_{\mathsf{train}}}'
+    Dtest: '{\mathcal{D}_{\mathsf{test}}}'
 
     Vpi: '{V^\pi}'
     Qpi: '{Q^\pi}'

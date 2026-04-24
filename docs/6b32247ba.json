@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "23.04.2026 11:06"
+        "24.04.2026 12:33"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -233,6 +233,13 @@
             },
             {
                 "id": false,
+                "src": "06-deep-learning-deck.md",
+                "subtitle": "Brief Introduction to Deep Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-deep-learning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "07-q-learning-deck.md",
                 "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
@@ -358,6 +365,13 @@
                 "subtitle": "Temporal Difference Learning & Q-learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-deep-learning-deck.md",
+                "subtitle": "Brief Introduction to Deep Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-deep-learning-deck.html"
             },
             {
                 "id": false,
@@ -489,6 +503,13 @@
             },
             {
                 "id": false,
+                "src": "06-deep-learning-deck.md",
+                "subtitle": "Brief Introduction to Deep Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-deep-learning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "07-q-learning-deck.md",
                 "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
@@ -617,6 +638,13 @@
             },
             {
                 "id": false,
+                "src": "06-deep-learning-deck.md",
+                "subtitle": "Brief Introduction to Deep Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-deep-learning-deck.html"
+            },
+            {
+                "id": false,
                 "src": "07-q-learning-deck.md",
                 "subtitle": "Deep Q Learning",
                 "title": "Deep Reinforcement Learning",
@@ -742,6 +770,13 @@
                 "subtitle": "Temporal Difference Learning & Q-learning",
                 "title": "Deep Reinforcement Learning",
                 "url": "05-td-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "06-deep-learning-deck.md",
+                "subtitle": "Brief Introduction to Deep Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "06-deep-learning-deck.html"
             },
             {
                 "id": false,
@@ -1195,6 +1230,8 @@
             "Ac": "{\\mathcal{A}}",
             "C": "{\\mathbb{C}}",
             "Dc": "{\\mathcal{D}}",
+            "Dtest": "{\\mathcal{D}_{\\mathsf{test}}}",
+            "Dtrain": "{\\mathcal{D}_{\\mathsf{train}}}",
             "E": "{\\mathbb{E}}",
             "Exp": [
                 "{\\mathbb{E}\\left[ #1 \\right]}",
@@ -1212,6 +1249,7 @@
                 "{\\mathbb{E}_{#2}\\left[ #1 \\right]}",
                 2.0
             ],
+            "Hc": "{\\mathcal{H}}",
             "Im": [
                 "{\\mathrm{Im}\\!\\left( #1 \\right)}",
                 1.0
@@ -1236,6 +1274,7 @@
             "Vpi": "{V^\\pi}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
+            "Yc": "{\\mathcal{Y}}",
             "Z": "{\\mathbb{Z}}",
             "abs": [
                 "\\left\\vert #1 \\right\\vert",
@@ -1280,7 +1319,11 @@
                 "{\\left\\{ #1 \\right\\}}",
                 1.0
             ],
-            "sprime": "{s^{\\prime}}"
+            "sprime": "{s^{\\prime}}",
+            "th": [
+                "{{#1}^{\\mathsf{th}}}",
+                1.0
+            ]
         },
         "scale": 1.0
     },
