@@ -207,8 +207,8 @@ Learning</title>
 <li>Training</li>
 <li>Regularization</li>
 <li>Neural network architectures</li>
-<li>Linear regression as a special case</li>
 </ul></li>
+<li>Linear regression as a special case</li>
 </ul>
 </div>
 <div class="platzhalter">
@@ -2718,9 +2718,9 @@ The learning diagram <span class="citation">(<a href="#ref-Abu2012learning">Abu-
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">What does it mean to have a perfect model on your training dataset <span class="math inline">\(\Dtrain\)</span>, i.e., <span class="math inline">\(L(w, \Dtrain) = 0\)</span>?<br />
+<li class="fragment">What does it mean to have a perfect model on your training dataset <span class="math inline">\(\Dtrain\)</span>, i.e., <span class="math inline">\(L(\theta; \Dtrain) = 0\)</span>?<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> we have simply memorized the data!</span></li>
-<li class="fragment">Learning means that we get <strong>good predictions on unseen data</strong>: <span class="math display">\[ \underbrace{L(w, \Dtest)}_{\text{in-sample error}} \approx \underbrace{L(w, \Dtrain)}_{\text{out-of-sample error}}. \]</span></li>
+<li class="fragment">Learning means that we get <strong>good predictions on unseen data</strong>: <span class="math display">\[ \underbrace{L(\theta; \Dtest)}_{\text{in-sample error}} \approx \underbrace{L(\theta; \Dtrain)}_{\text{out-of-sample error}}. \]</span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -3022,7 +3022,7 @@ The learning diagram <span class="citation">(<a href="#ref-Abu2012learning">Abu-
 <div class="box block">
 <div class="small">
 <p><strong>Example</strong> (see <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">Wikipedia</a>): Fitting a model of serveral radial basis functions to noisy trainig data: <span class="math display">\[ f_\theta(x) = \sum_{k=1}^d \theta_k \exp\left(-\frac{1}{2}\frac{x-c_k}{\sigma_k^2}\right). \]</span></p>
-<p><span class="fragment" data-fragment-index="1"><span class="math inline">\(\bullet\)</span> For a wide spread, the bias is high: the RBFs cannot fully approximate the function (especially the central dip), but the variance between different trials is low.</span></p>
+<p><span class="fragment" data-fragment-index="1"><span class="math inline">\(\bullet\)</span> For a wide spread (i.e., large <span class="math inline">\(\sigma_k\)</span>), the bias is high: the RBFs cannot fully approximate the function (especially the central dip), but the variance between different trials is low.</span></p>
 <p><span class="fragment" data-fragment-index="2"><span class="math inline">\(\bullet\)</span> As spread decreases (image 3 and 4) the bias decreases: the blue curves more closely approximate the red…</span></p>
 <p><span class="fragment" data-fragment-index="3"><span class="math inline">\(\bullet\)</span> … but the variance between trials (<span class="math inline">\(\Dc_{\mathsf{train,1}},\Dc_{\mathsf{train,2}},\ldots\)</span>) increases.</span></p>
 </div>
@@ -3052,7 +3052,6 @@ Function and training data <span class="math inline">\(\Dc_{\mathsf{train,1}}\)<
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div class="small">
 <div class="grid-layout" style="grid-template-columns: 5fr 7fr;">
 <div class="embed media">
 <figure class="image" style="height:auto;width:500px;">
@@ -3069,7 +3068,6 @@ Function and training data <span class="math inline">\(\Dc_{\mathsf{train,1}}\)<
 <li class="fragment">The validation error is an indicator for tuning hyperparameters.</li>
 <li class="fragment">Example of a <span class="math inline">\(k\)</span>-fold Cross-validation (CV).</li>
 </ul>
-</div>
 </div>
 </div>
 </div>
@@ -3095,7 +3093,10 @@ Function and training data <span class="math inline">\(\Dc_{\mathsf{train,1}}\)<
 <li class="fragment"><strong>Choosing a more appropriate model</strong>. A genereal rule is to select the model according to the amount of data one has, not according to the expected complexity of the funtion to approximate.</li>
 <li class="fragment"><strong>Optimizing hyperparameters</strong> of the model.</li>
 <li class="fragment"><strong>Ensemble learning</strong>: Averaging over several different models.</li>
-<li class="fragment"><strong>Including knowledge</strong>, e.g., in the form of tailored features (feature engineering) or informed loss functions.</li>
+<li class="fragment"><strong>Including knowledge</strong>, e.g., in the form of tailored features (feature engineering) or informed loss functions.
+<ul class="incremental">
+<li class="fragment">This is known as <strong>inductive bias</strong> in the ML literature.</li>
+</ul></li>
 </ul>
 </div>
 <div class="fragment">
@@ -3129,7 +3130,7 @@ Function and training data <span class="math inline">\(\Dc_{\mathsf{train,1}}\)<
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.29734127"
-     inkscape:cx="-73.989056"
+     inkscape:cx="250.55385"
      inkscape:cy="364.90057"
      inkscape:window-width="1920"
      inkscape:window-height="1022"
@@ -3355,11 +3356,11 @@ MLP architecture <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwani
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Only forward-flowing edges.</li>
-<li class="fragment">The depth <span class="math inline">\(L\)</span> and width <span class="math inline">\(H^{(\ell)}\)</span> are hyperparameters.</li>
-<li class="fragment">With <span class="math inline">\(\sigma^{(\ell)}\)</span> and <span class="math inline">\(z^{(\ell)}\)</span> denoting the activation function and <strong>activation</strong> of layer <span class="math inline">\(\ell\)</span> respectively, we get for the output in the <span class="math inline">\(\th{\ell}\)</span> layer. <span class="math display">\[ x^{(\ell)} = \sigma^{(\ell)}\big( \underbrace{\Theta^{(\ell)} x^{(\ell-1)} + b^{(\ell)}}_{z^{(\ell)}} \big) ,\]</span> with input <span class="math inline">\(x^{(0)}=x\)</span> and output <span class="math inline">\(x^{(L)}=y\)</span>:</li>
+<li class="fragment">The depth <span class="math inline">\(L\)</span> and width <span class="math inline">\(\iterate{H}{\ell}\)</span> are hyperparameters.</li>
+<li class="fragment">With <span class="math inline">\(\iterate{\sigma}{\ell}\)</span> and <span class="math inline">\(\iterate{z}{\ell}\)</span> denoting the activation function and <strong>activation</strong> of layer <span class="math inline">\(\ell\)</span> respectively, we get for the output in the <span class="math inline">\(\th{\ell}\)</span> layer. <span class="math display">\[ \iterate{x}{\ell}= \iterate{\sigma}{\ell}\big( \underbrace{\iterate{\Theta}{\ell}\iterate{x}{\ell-1} + \iterate{b}{\ell}}_{\iterate{z}{\ell}} \big) ,\]</span> with input <span class="math inline">\(\iterate{x}{0}=x\)</span> and output <span class="math inline">\(\iterate{x}{L}=y\)</span>:</li>
 <li class="fragment">Training:
 <ul class="incremental">
-<li class="fragment">Summarize the full set of parameters (i.e., weight matrix <span class="math inline">\(\Theta^{(\ell)}\in\R^{H^{(\ell)} \times H^{(\ell-1)}}\)</span> and biases <span class="math inline">\(b^{(\ell)}\)</span>) under <span class="math inline">\(\theta\)</span>.</li>
+<li class="fragment">Summarize the full set of parameters (i.e., weight matrices <span class="math inline">\(\iterate{\Theta}{\ell}\in\R^{\iterate{H}{\ell} \times \iterate{H}{\ell-1}}\)</span> and biases <span class="math inline">\(\iterate{b}{\ell}\)</span>) under <span class="math inline">\(\theta\)</span>.</li>
 <li class="fragment">Iteratively update the weights using gradient information.</li>
 </ul></li>
 </ul>
@@ -3403,18 +3404,18 @@ Exemplary activation functions <span class="citation">(<a href="#ref-Abdelwanis2
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The activation of the output layer, <span class="math inline">\(\sigma^{(L)}(z)\)</span>, is task-dependent. For instance,
+<li class="fragment">The activation of the output layer, <span class="math inline">\(\iterate{\sigma}{L}(z)\)</span>, is task-dependent. For instance,
 <ul class="incremental">
-<li class="fragment">regression: <span class="math inline">\(y=\sigma^{(L)}(x^{(L-1)})=x^{(L-1)}\)</span>, i.e., <span class="math inline">\(\sigma^{(L)} = \mathsf{Id}\)</span> is the identity mapping.</li>
+<li class="fragment">regression: <span class="math inline">\(y=\iterate{\sigma}{L}(\iterate{z}{L})=\iterate{z}{L}\)</span>, i.e., <span class="math inline">\(\iterate{\sigma}{L} = \mathsf{Id}\)</span> is the identity mapping.</li>
 <li class="fragment">binary classification: sigmoid (i.e., probability), followed by a rounding step to either <span class="math inline">\(0\)</span> or <span class="math inline">\(1\)</span>.</li>
-<li class="fragment">multi-class classification: <span class="math inline">\(y_i=\frac{\exp(z^{(L-1)}_i)}{\sum_j \exp(z^{(L-1)}_j)}\)</span> (softmax).</li>
+<li class="fragment">multi-class classification: <span class="math inline">\(y_i=\frac{\exp(\iterate{z}{L}_i)}{\sum_j \exp(\iterate{z}{L}_j)}\)</span> (softmax).</li>
 </ul></li>
 </ul>
 </div>
 <p> </p>
 <p> </p>
 <div class="footer">
-<p><span class="math inline">\(^*\)</span> Without nonlinear activation functions, every ANN collapses to a single matrix-vector multiplication <span class="math inline">\(y=\hat\Theta x\)</span>: <span class="math display">\[x^{(\ell+2)}=\Theta^{(\ell+2)} x^{(\ell+1)} = \Theta^{(\ell+2)} \left(\Theta^{(\ell+1)} x^{(\ell)}\right)  = \left(\Theta^{(\ell+2)} \Theta^{(\ell+1)}\right)x^{(\ell)} = \hat\Theta x^{(\ell)} .\]</span> For non-zero biases, we obtain an <em>affine</em> transformation instead.</p>
+<p><span class="math inline">\(^*\)</span> Without nonlinear activation functions, every ANN collapses to a single matrix-vector multiplication <span class="math inline">\(y=\hat\Theta x\)</span>: <span class="math display">\[\iterate{x}{\ell+2}=\iterate{\Theta}{\ell+2}\iterate{x}{\ell+1}= \iterate{\Theta}{\ell+2}\left(\iterate{\Theta}{\ell+1}\iterate{x}{\ell}\right)  = \left(\iterate{\Theta}{\ell+2}\iterate{\Theta}{\ell+1}\right)\iterate{x}{\ell}= \hat\Theta \iterate{x}{\ell}.\]</span> For non-zero biases, we obtain an <em>affine</em> transformation instead.</p>
 </div>
 </div>
 </div>
@@ -3429,17 +3430,26 @@ Exemplary activation functions <span class="citation">(<a href="#ref-Abdelwanis2
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="grid-layout" style="grid-template-columns: 9fr 3fr;">
+<div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Training is performed in an iterative manner: <span class="math display">\[\theta \gets \theta + \eta \delta\theta,\]</span> where <span class="math inline">\(\eta\in\R_{&gt;0}\)</span> is the <strong>step size</strong> or <strong>learning rate</strong>, and <span class="math inline">\(\delta\theta\in\R^d\)</span> is the <strong>update direction</strong>, usually a gradient-based <strong>descent direction</strong>.</li>
+<li class="fragment">Training is performed in an iterative manner: <span class="math display">\[\theta \gets \theta + \eta \delta\theta.\]</span>
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(\eta\in\R_{&gt;0}\)</span> is the <strong>step size</strong> or <strong>learning rate</strong>.</li>
+<li class="fragment"><span class="math inline">\(\delta\theta\in\R^d\)</span> is the <strong>update direction</strong>, usually a gradient-based <strong>descent direction</strong>.</li>
+<li class="fragment">Numerous variants for <span class="math inline">\(\delta\theta\)</span>. The strongest contain additional <strong>momentum</strong> terms such as the <em>Adam</em> algorithm <span class="citation">(<a href="#ref-kingma2014adam">Kingma and Ba 2014</a>)</span>. <span class="fragment">We remember the previous update <span class="math inline">\(\delta\theta^{-}\)</span> and thereby flatten out zig-zag behavior.<br />
+<span class="media"><span class="figure image" style="height:auto;width:400px;"><img src="images/06-deep-learning/Gradient_descent_momentum.png" style="height:auto;width:100%;" aria-label="Source" alt="images/06-deep-learning/Gradient_descent_momentum.png" /><span class="figcaption"><span><a href="https://optimization.cbe.cornell.edu/index.php?title=File:Gradient_descent_momentum.png">Source</a></span></span></span></span></span></li>
+</ul></li>
 <li class="fragment">First, we need to define a <strong>loss function</strong> that we wish to minimize.
 <ul class="incremental">
 <li class="fragment">Regression: (root) mean square error, mean absolute error.</li>
 <li class="fragment">Classification: cross entropy.</li>
+<li class="fragment">Additional terms, e.g., regularization, physics information, …</li>
 </ul></li>
-<li class="fragment">Several iterations over the dataset <span class="math inline">\(\Dtrain\)</span> are called <strong>depochs</strong>.</li>
+<li class="fragment">Iterations over the dataset <span class="math inline">\(\Dtrain\)</span> are called <strong>epochs</strong>.</li>
 </ul>
+</div>
 </div>
 <div class="media">
 <figure class="image" style="height:auto;width:300px;">
@@ -3467,13 +3477,13 @@ The loss landscape of deep neural networks (with and without skip-connection) <s
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">The descent direction is computed by taking the derivative of the loss function w.r.t. the weight vector. In terms of the MSE: <span class="math-incremental"><span class="math display">\[\begin{align*} 
-\nabla L(\theta) &amp;= \nabla \left(\frac{1}{N} \sum_{k=1}^N \|f_\theta(x_k) - y_k\|_2^2 \right) \\
-&amp;= \frac{1}{N} \sum_{k=1}^N \nabla \|f_\theta(x_k) - y_k\|_2^2 \\
-&amp;= \frac{1}{N} \sum_{k=1}^N \left(2 \|f_\theta(x_k) - y_k\|_2 \cdot \nabla f_\theta(x_k)\right).
+\nabla L(\theta) &amp;= \nabla \left(\frac{1}{N} \sum_{k=1}^N \norm{f_\theta(x_k) - y_k}_2^2 \right) \\
+&amp;= \frac{1}{N} \sum_{k=1}^N \nabla \norm{f_\theta(x_k) - y_k}_2^2 \qquad &amp;&amp;\text{(Linearity of the sum)}\\
+&amp;= \frac{1}{N} \sum_{k=1}^N \left(2 \norm{f_\theta(x_k) - y_k}_2  \nabla f_\theta(x_k)\right) &amp;&amp;\text{(Chain rule of differentiation)}
 \end{align*}\]</span></span></li>
 <li class="fragment">This means that we need to <em>propagate</em> the error through our model <span class="math inline">\(f_\theta\)</span>.</li>
-<li class="fragment">Since a neural network is a chain of neurons, we need to apply the <strong>chain rule</strong> of differentiation.</li>
-<li class="fragment">As a consequence the loss is <strong>backpropgated</strong> through the network to determine the individual descent directions: <span class="math inline">\(\frac{\partial L}{\partial\theta_i}\)</span>.</li>
+<li class="fragment">Since a neural network is a chain of neurons, we need to apply the <strong>chain rule</strong> of differentiation over the layers.</li>
+<li class="fragment">As a consequence the loss is <strong>backpropgated</strong> through the network to determine the individual descent directions: <span class="math inline">\(\pdiff{L}{\theta_i}\)</span>.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -3488,10 +3498,105 @@ The loss landscape of deep neural networks (with and without skip-connection) <s
 </div>
 </div>
 </section>
+<section id="backpropagation-example" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Backpropagation example</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>Let’s consider a very simple network with <span class="math inline">\(x,y\in\R\)</span> and two hidden layers with a single neuron each.</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 7fr;">
+<div class="platzhalter">
+<p><strong>Symbolic</strong></p>
+<p><span class="math display">\[ \stackrel{x}{\bigcirc} 
+\underbrace{
+\underbrace{\stackrel{\iterate{\theta}{1}}{\longrightarrow} \stackrel{\iterate{z}{1}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~1} 
+\stackrel{\iterate{x}{1}}{\bigcirc} 
+\underbrace{\stackrel{\iterate{\theta}{2}}{\longrightarrow} \stackrel{\iterate{z}{2}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~2} 
+\stackrel{\iterate{x}{2}}{\bigcirc} 
+\underbrace{\stackrel{\iterate{\theta}{3}}{\longrightarrow}}_{\text{Output\\ layer}}
+}_{\hat{y}=f_\theta(x)}
+\stackrel{\hat{y}}{\bigcirc} \stackrel{L}{\longrightarrow} \stackrel{\text{Loss}}{\bigcirc} \]</span> <!-- \longleftarrow \stackrel{y}{\bigcirc} $$ --></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\quad\)</span><strong>In mathematical terms</strong></p>
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} \hat{y} &amp;= \iterate{\theta}{3} \big( \iterate{x}{2} \big) \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{z}{2} \big) \big)} \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \iterate{x}{1} \big) \big) \big)} \\
+&amp;= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \theta\big(\iterate{z}{1}\big) \big) \big) \big)
+\fragment{= \iterate{\theta}{3} \underbrace{\sigma\big(\iterate{\theta}{2} \overbrace{\sigma\big( \iterate{\theta}{1} x \big)}^{\text{Hidden\\ Layer}~1} \big)}_{\text{Hidden\\ Layer}~2}}
+ \end{align*}\]</span></span></p>
+</div>
+</div>
+<p><span class="fragment">Let’s assume a single sample <span class="math inline">\((x,y)\)</span> and the MSE loss: <span class="math inline">\(L(\theta)=(\hat{y}-y)^2\)</span>.</span> <span class="fragment">Using the chain rule, we get:</span></p>
+<div class="grid-layout" style="grid-template-columns: 3fr 4fr 5fr;">
+<p><span class="fragment"><span class="math inline">\(1.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_3\)</span>: <span class="math display">\[ \pdiff{L}{\theta_3} = \textcolor{red}{\underbrace{\pdiff{L}{\hat{y}}}_{=2(\hat{y}-y)}}\pdiff{\hat{y}}{\theta_3}. \]</span></span></p>
+<p><span class="fragment"><span class="math inline">\(2.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_2\)</span>: <span class="math display">\[ \pdiff{L}{\theta_2} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma&#39;}}\pdiff{\iterate{z}{2}}{\theta_2}. \]</span></span></p>
+<p><span class="fragment"><span class="math inline">\(3.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_1\)</span>: <span class="math display">\[ \pdiff{L}{\theta_3} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma&#39;}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma&#39;}}\pdiff{\iterate{z}{1}}{\theta_1}. \]</span></span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(\Rightarrow\)</span> we propagate the loss <strong>back</strong> through the network, reusing most of the previous calculations!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="stochastic-gradient-descent-and-batch-learning" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Stochastic gradient descent and batch learning</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The cost for a single gradient step scales with the dataset size <span class="math inline">\(N\)</span>, which can be <strong>very large</strong>.</li>
+<li class="fragment">For each sample, we need to perform one forward and one backward pass.</li>
+<li class="fragment"><strong>Stochastic gradient descent</strong> (<strong>SGD</strong>): massive speedup by using a single sample per step insetad of the entire dataset, <span class="math display">\[\delta \theta = \nabla L(\theta; x_k), \qquad k\sim U(\{1,\ldots,N\}). \]</span></li>
+<li class="fragment"><strong>Mini-batch gradient descent</strong> with <span class="math inline">\(s\in\{1,\ldots,N\}\)</span> samples per step: compromise ground between efficiency and noisiness, <span class="math display">\[ \delta \theta = \frac{1}{s} \sum_{k\in\mathcal{I}} \nabla L(\theta; x_k), \qquad \text{where}~\mathcal{I}~\text{is an $s$-dimensional, ranodmly drawn subset of $\{1,\ldots,N\}$}.\]</span></li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:500px;">
+<img src="images/06-deep-learning/GD-SGD.png" style="height:auto;width:100%;" aria-label="Gradient descent vs. SGD vs. Mini-batch gradient descent [Sourcre]." alt="images/06-deep-learning/GD-SGD.png" />
+<figcaption>
+Gradient descent vs. SGD vs. Mini-batch gradient descent [<a href="https://medium.com/data-science/gradient-descent-algorithm-and-its-variants-10f652806a3">Sourcre</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="regularization" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>Regularization</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>In order to mitigate overfitting (i.e., good performacne on <span class="math inline">\(\Dtrain\)</span>, poor generalization), neural networks can be regularized by</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Weight decay</strong>: adding an <span class="math inline">\(\ell_2\)</span> penalty term to the weights: <span class="math inline">\(L(\theta) + \lambda \norm{\theta}_2^2\)</span></li>
+<li class="fragment"><strong>Layer normalization</strong> during training: all layers’ activations are normalized separately by standard scaling,</li>
+<li class="fragment"><strong>Dropout</strong>: randomly disable nodes’ contribution.
+<ul class="incremental">
+<li class="fragment">This helps especially in deep networks,</li>
+<li class="fragment">and effectively builds an ensemble of ANNs with shared edges.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3523,6 +3628,128 @@ The neural network zoo [<a href="https://www.asimovinstitute.org/neural-network-
 </div>
 </div>
 </section>
+<section id="the-linear-model-single-layer-nn-with-sigmamathsfid" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The linear model: single-layer NN with <span class="math inline">\(\sigma=\mathsf{Id}\)</span></h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Let’s assume that we only have a single layer directly mapping inputs <span class="math inline">\(x\in\R^n\)</span> to outputs <span class="math inline">\(y\in\R^m\)</span>: <span class="math display">\[ \hat{y} = f_\Theta(x) = \Theta^\top x\qquad\text{with}\quad \Theta\in\R^{m\times n}.\]</span></li>
+<li class="fragment">Let’s consider the usual MSE loss: <span class="math display">\[ L(\Theta) = \frac{1}{N} \sum_{k=1}^N \norm{\Theta^\top x_k - y_k}_2^2.\]</span></li>
+<li class="fragment">We organize the data in a slightly different fashion, i.e., <span class="math display">\[ X = \begin{pmatrix} - &amp; x_1^\top &amp; - \\ &amp; \vdots &amp; \\ - &amp; x_N^\top &amp; - \end{pmatrix}\in\R^{N\times n}, \qquad  Y = \begin{pmatrix} - &amp; y_1^\top &amp; - \\ &amp; \vdots &amp; \\ - &amp; y_N^\top &amp; - \end{pmatrix}\in\R^{N\times m}.\]</span></li>
+<li class="fragment">Then the model can predict all <span class="math inline">\(N\)</span> samples at the same time by a matrix-matrix product: <span class="math inline">\(\hat{Y} = X\Theta\)</span>.</li>
+<li class="fragment">The associated loss function then simply is the <strong>Frobenius norm</strong> over the dataset <span class="math inline">\(\Dtrain = (X,Y)\)</span>: <span class="math display">\[ L(\Theta; \Dtrain) = \frac{1}{N} \norm{X\Theta - Y}_F^2 = \frac{1}{N} (X\Theta - Y)^\top (X\Theta - Y). \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solving-the-regression-problem" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Solving the regression problem</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">What’s the necessary condition for the minimizer of a function?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> The gradient has to be zero!</span> <span class="fragment"><span class="math display">\[ \pdiff{L(\Theta; \Dtrain)}{\Theta} = \pdiff{}{\Theta} \left[\frac{1}{N} (X\Theta - Y)^\top (X\Theta - Y) \right] = \frac{2}{N} X^\top (X\Theta - Y) \]</span></span></li>
+<li class="fragment">Optimal solution: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\frac{2}{N} X^\top (X\Theta^* - Y) &amp;\stackrel{!}{=} 0 \\
+\Leftrightarrow \quad X^\top X \Theta^* &amp;= X^\top Y \\
+\Leftrightarrow \quad \Theta^* &amp;= (X^\top X)^{-1} X^\top Y = X^\dagger Y,
+\end{align*}\]</span></span> <span class="fragment">where <span class="math inline">\(X^\dagger\)</span> is the <a href="https://de.wikipedia.org/wiki/Pseudoinverse"><strong>pseudo-inverse</strong></a> of <span class="math inline">\(X\)</span>.</span></li>
+<li class="fragment">Training is replaced by a simple one-step learning approach (using, e.g. <code>numpy.linalg.pinv</code>).</li>
+<li class="fragment">Since the loss function <span class="math inline">\(L\)</span> is convex, the solution <span class="math inline">\(\Theta^*\)</span> is not a local, but the <strong>global optimum</strong>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="features-as-an-additional-pre-processing-step" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Features as an additional pre-processing step</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">If we introduce <em>feature functions</em> <span class="math inline">\(\psi_i:\R^n \rightarrow \R\)</span>, <span class="math inline">\(\psi_i(x) = z_i\)</span>, then we can significantly improve the performance: <span class="math display">\[ \psi(x) = [\psi_1(x), \ldots, \psi_q(x)]^\top.  \]</span></li>
+<li class="fragment">Different ways of introducing features:</li>
+</ul>
+</div>
+<div class="grid-layout" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:200px;">
+<img src="images/06-deep-learning/feature-engineering-linear.svg" style="height:auto;width:100%;" aria-label="Tailored (Abdelwanis et al. 2026)" alt="images/06-deep-learning/feature-engineering-linear.svg" />
+<figcaption>
+Tailored <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 2026</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:230px;">
+<img src="images/06-deep-learning/Poly-features.png" style="height:auto;width:100%;" aria-label="Manual: Polynomials" alt="images/06-deep-learning/Poly-features.png" />
+<figcaption>
+Manual: Polynomials
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:230px;">
+<img src="images/06-deep-learning/Fourier-features.png" style="height:auto;width:100%;" aria-label="Manual: Fourier modes" alt="images/06-deep-learning/Fourier-features.png" />
+<figcaption>
+Manual: Fourier modes
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:230px;">
+<img src="images/06-deep-learning/ELM.svg" style="height:auto;width:100%;" aria-label="Randomly: Extreme Leraning Machine" alt="images/06-deep-learning/ELM.svg" />
+<figcaption>
+Randomly: Extreme Leraning Machine
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> The layers <span class="math inline">\(1\)</span> to <span class="math inline">\(L-1\)</span> of a neural network can also be seen as a feature transform, <strong>learned autmoatically</strong> from data.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="summary-what-you-have-learned" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -3540,7 +3767,31 @@ The neural network zoo [<a href="https://www.asimovinstitute.org/neural-network-
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">a</li>
+<li class="fragment">There are <strong>three main learning paradigms</strong>:
+<ul class="incremental">
+<li class="fragment"><strong>supervised learning</strong> for function approximation of input-to-output mappings,</li>
+<li class="fragment"><strong>unsupervised learning</strong> for clustering, pattern detection or dimensionality reduction,</li>
+<li class="fragment"><strong>reinforcement learning</strong> for sequential decision making in dynamic envionments.</li>
+</ul></li>
+<li class="fragment">In supervised learning, we aim to approximate an unknown function <span class="math inline">\(f\)</span> by a parametric function <span class="math inline">\(f_\theta\)</span> by adjusting <span class="math inline">\(\theta\)</span> such that a loss function <span class="math inline">\(L\)</span> is minimized over a training dataset <span class="math inline">\(\Dtrain\)</span>.
+<ul class="incremental">
+<li class="fragment">The central goal is <strong>generalization</strong> beyond the training data.</li>
+<li class="fragment">We have to handle the <strong>bias-variance-tradeoff</strong>, which is often a matter of model complexity.</li>
+<li class="fragment">There are many techniques to improve learning such as cross-validation, regularization, inductive biases, …</li>
+</ul></li>
+<li class="fragment"><strong>Deep neural networks</strong> come in a great range of varieties.
+<ul class="incremental">
+<li class="fragment">They are a large network of a single unit known as the perceptron.</li>
+<li class="fragment">The general structure consists of linear transformations, followed by nonlinear activation functions.</li>
+<li class="fragment">Training is realized via <strong>backpropagation</strong> and <strong>gradient descent</strong>.</li>
+<li class="fragment">Various versions for the descent direction, for instance using <strong>momentum</strong>.</li>
+<li class="fragment">Improved efficiency (at the cost of noise) by using <strong>stochastic gradient descent</strong> or <strong>mini-batch gradient descent</strong>.</li>
+</ul></li>
+<li class="fragment">Linear regression is the special case of a single linear layer.
+<ul class="incremental">
+<li class="fragment">Training can be realized in closed form using the <strong>pseudo-inverse</strong>.</li>
+<li class="fragment"><strong>Features</strong> significantly improve the performance of linear models.</li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -3572,6 +3823,9 @@ Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. 
 </div>
 <div id="ref-hastie2009elements" class="csl-entry">
 Hastie, Trevor. 2009. <span>“The Elements of Statistical Learning: Data Mining, Inference, and Prediction.”</span> springer.
+</div>
+<div id="ref-kingma2014adam" class="csl-entry">
+Kingma, Diederik P, and Jimmy Ba. 2014. <span>“Adam: A Method for Stochastic Optimization.”</span> <em>arXiv Preprint arXiv:1412.6980</em>.
 </div>
 <div id="ref-li2018visualizing" class="csl-entry">
 Li, Hao, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein. 2018. <span>“Visualizing the Loss Landscape of Neural Nets.”</span> <em>Advances in Neural Information Processing Systems</em> 31.

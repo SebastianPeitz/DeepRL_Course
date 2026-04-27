@@ -119,6 +119,7 @@ math:
     th: ['{{#1}^{\mathsf{th}}}', 1]
     Dtrain: '{\mathcal{D}_{\mathsf{train}}}'
     Dtest: '{\mathcal{D}_{\mathsf{test}}}'
+    iterate: ['{{#1}^{(#2)}}', 2]
 
     Vpi: '{V^\pi}'
     Qpi: '{Q^\pi}'
