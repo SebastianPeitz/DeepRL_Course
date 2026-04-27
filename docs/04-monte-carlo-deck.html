@@ -1976,12 +1976,14 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <h3>Theorem: Optimal decision using MC-control with <span class="math inline">\(\epsilon\)</span>-greedy</h3>
 <p>MC-based control using <span class="math inline">\(\epsilon\)</span>-greedy exploration is GLIE, if <span class="math inline">\(\epsilon\)</span> is decreased at rate <span class="math display">\[ \epsilon_k=\frac{1}{k}, \]</span> with <span class="math inline">\(k\)</span> being the increasing episode index. In this case, <span class="math display">\[ Q^\pi(s,a)=Q^*(s,a). \]</span></p>
 </div>
+<div class="small">
 <p><span class="fragment">Remarks:</span></p>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Limited feasibility: infinite number of episodes required.</li>
 <li class="fragment"><span class="math inline">\(\epsilon\)</span>-greedy is an undirected and unmonitored random exploration strategy. Can that be the most efficient way of learning?</li>
 </ul>
+</div>
 </div>
 </div>
 </div>

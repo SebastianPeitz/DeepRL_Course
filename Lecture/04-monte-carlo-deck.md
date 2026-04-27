@@ -542,11 +542,13 @@ with $k$ being the increasing episode index. In this case,
 $$ Q^\pi(s,a)=Q^*(s,a). $$
 :::
 
+::: small
 [Remarks:]{.fragment}
 
 ::: incremental 
 - Limited feasibility: infinite number of episodes required.
 - $\epsilon$-greedy is an undirected and unmonitored random exploration strategy. Can that be the most efficient way of learning?
+:::
 :::
 
 # Example: Gridworld - fixed starting point

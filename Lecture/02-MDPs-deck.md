@@ -242,7 +242,7 @@ Table: Classification of Markov models
 :::
 <!-- ::: -->
 
-![](images/02-MDPs/MDP-chess-state.png){ width=400px }
+![Source: [@Abdelwanis2026]](images/02-MDPs/MDP-chess-state.png){ width=400px }
 :::
 
 # Finite Markov chains
@@ -333,7 +333,7 @@ $$
 :::
 
 ::: footer
-Source: [Oliver Wallscheid's RL course](https://github.com/upb-lea/reinforcement_learning_course_materials)
+Source: [Oliver Wallscheid's RL course](https://github.com/upb-lea/reinforcement_learning_course_materials) / [@Abdelwanis2026]
 :::
 
 # Example of a Markov chain (2)
