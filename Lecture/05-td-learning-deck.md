@@ -369,7 +369,7 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 ::: small
 ::: columns-6-4
 
-![](images/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD(0) prediction"){ width=600px .controls .autoplay .muted }
+![](videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD(0) prediction"){ width=600px .controls .autoplay .muted }
 
 ::: platzhalter
 - Fixed policy: $$\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.$$
@@ -557,6 +557,20 @@ In our setting, Q-learning is worse than SARSA. [*Why do you think that is*?]{.f
 
 ::: footer
 The example is taken from [@Sutton1998{}, Ex.\ 6.6]
+:::
+
+# Example: Gridworld
+
+::: columns-5-5
+![On-policy: SARSA](videos/05-td-learning/GridWorld-SARSA.mp4 "SARSA"){ height=400px .controls .autoplay .muted }
+
+![Off-policy: Q-learning](videos/05-td-learning/GridWorld-Q-Learning.mp4 "Q-learning"){ height=400px .controls .autoplay .muted }
+:::
+
+::: small
+- Discout: $\gamma = 0.9$
+- Exploration: $\epsilon = 0.2$
+- Step size: $\alpha = 0.5$
 :::
 
 # Expected SARSA
@@ -835,7 +849,7 @@ $$
 
 ::: fragment
 ::: footer
-Again, if an episode terminates within the lookahead horizon ($t + n \geq T$) the target is equal to the Monte Carlo update: 
+:bulb: Again, if an episode terminates within the lookahead horizon ($t + n \geq T$) the target is equal to the Monte Carlo update: 
 $g_{t:t+n} = g_t$.
 :::
 :::

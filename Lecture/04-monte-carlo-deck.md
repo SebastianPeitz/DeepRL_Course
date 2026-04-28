@@ -177,7 +177,7 @@ We have a small robot in a gridworld that wants to recharge.
 # Example: Gridworld
 Now: Every-visit MC prediction of $V^\pi$, for $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
 
-![](images/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
+![](videos/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
 
 ------------------------------------------------------------------------------
 
@@ -362,10 +362,10 @@ $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 Let's apply the Monte Carlo Exploring Starts algorithm to two gridworlds of different sizes:
 
 ::: columns-5-5
-![](images/04-Monte-Carlo/GridWorld-MC-control.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
+![](videos/04-Monte-Carlo/GridWorld-MC-control.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
 
 ::: fragment
-![](images/04-Monte-Carlo/GridWorld-MC-control-large.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
+![](videos/04-Monte-Carlo/GridWorld-MC-control-large.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
 :::
 
 :::
@@ -556,9 +556,9 @@ $$ Q^\pi(s,a)=Q^*(s,a). $$
 Fixed-start, every-visit action-value estimation:
 
 ::: columns-5-5
-![$\epsilon=0$](images/04-Monte-Carlo/GridWorld-Fixed_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
+![$\epsilon=0$](videos/04-Monte-Carlo/GridWorld-Fixed_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
 
-![$\epsilon=0.2$](images/04-Monte-Carlo/GridWorld-Fixed_Start_eps_greedy.mp4 "$\epsilon=0.2$"){ height=400px .controls .autoplay .muted }
+![$\epsilon=0.2$](videos/04-Monte-Carlo/GridWorld-Fixed_Start_eps_greedy.mp4 "$\epsilon=0.2$"){ height=400px .controls .autoplay .muted }
 :::
 
 
@@ -567,9 +567,9 @@ Fixed-start, every-visit action-value estimation:
 Exploting starts (ES), every-visit action-value estimation:
 
 ::: columns-5-5
-![$\epsilon=0$](images/04-Monte-Carlo/GridWorld-Random_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
+![$\epsilon=0$](videos/04-Monte-Carlo/GridWorld-Random_Start_greedy.mp4 "$\epsilon=0$"){ height=400px .controls .autoplay .muted }
 
-![$\epsilon=0.2$](images/04-Monte-Carlo/GridWorld-Random_Start_eps_greedy.mp4 "$\epsilon=0.2$"){ height=400px .controls .autoplay .muted }
+![$\epsilon=0.2$](videos/04-Monte-Carlo/GridWorld-Random_Start_eps_greedy.mp4 "$\epsilon=0.2$"){ height=400px .controls .autoplay .muted }
 :::
 
 ------------------------------------------------------------------------------

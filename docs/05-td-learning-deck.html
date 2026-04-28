@@ -896,7 +896,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="media">
 <figure class="video" style="height:auto;width:600px;">
-<video aria-label="MC vs TD(0) prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="images/05-td-learning/Example-Gridworld-MCvsTD0.mp4">
+<video aria-label="MC vs TD(0) prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4">
 
 </video>
 </figure>
@@ -1174,6 +1174,48 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 </div>
 <div class="footer">
 <p>The example is taken from <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ex. 6.6)</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-gridworld" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Gridworld</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="media">
+<figure class="video" style="height:auto;width:auto;">
+<video aria-label="SARSA" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="videos/05-td-learning/GridWorld-SARSA.mp4">
+
+</video>
+<figcaption>
+On-policy: SARSA
+</figcaption>
+</figure>
+</div>
+<div class="media">
+<figure class="video" style="height:auto;width:auto;">
+<video aria-label="Q-learning" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="videos/05-td-learning/GridWorld-Q-Learning.mp4">
+
+</video>
+<figcaption>
+Off-policy: Q-learning
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="small">
+<ul>
+<li>Discout: <span class="math inline">\(\gamma = 0.9\)</span></li>
+<li>Exploration: <span class="math inline">\(\epsilon = 0.2\)</span></li>
+<li>Step size: <span class="math inline">\(\alpha = 0.5\)</span></li>
+</ul>
 </div>
 </div>
 </div>
@@ -3252,7 +3294,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k
 </div>
 <div class="fragment">
 <div class="footer">
-<p>Again, if an episode terminates within the lookahead horizon (<span class="math inline">\(t + n \geq T\)</span>) the target is equal to the Monte Carlo update: <span class="math inline">\(g_{t:t+n} = g_t\)</span>.</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> Again, if an episode terminates within the lookahead horizon (<span class="math inline">\(t + n \geq T\)</span>) the target is equal to the Monte Carlo update: <span class="math inline">\(g_{t:t+n} = g_t\)</span>.</p>
 </div>
 </div>
 </div>
@@ -5474,7 +5516,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k
 </div>
 </div>
 </section>
-<section id="example-gridworld" class="slide level1">
+<section id="example-gridworld-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
 <h1>Example: Gridworld</h1>
