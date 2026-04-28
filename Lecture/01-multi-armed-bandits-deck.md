@@ -19,6 +19,25 @@ feedback:
 - What we have not discussed
 - Some next steps
 
+
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   $\inRed{1}$  | $\inRed{Multi-armed bandits}$                   |   $\inRed{Exploration-exploitation dilemma}$ |
+|   2  | Markov decision processes                                 |     |
+|   3  | Dynamic programming                                       |    |
+|   4  | Monte Carlo methods                                       |    |
+|   5  | Temporal difference learning \& Q-learning                |        |
+|      | **Deep-learning-based methods**                           |        |
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+Table: Lecture contents
+:::
+
 # Example: Route planning (OH16 to Hansaplatz by car)
 
 ::: platzhalter

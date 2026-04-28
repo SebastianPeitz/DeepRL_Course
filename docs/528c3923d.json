@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "27.04.2026 14:40"
+        "28.04.2026 10:57"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -1291,6 +1291,10 @@
             ],
             "dt": "{\\,\\mathrm{d}t}",
             "dx": "{\\,\\mathrm{d}x}",
+            "inRed": [
+                "{\\textcolor{red}{\\text{#1}}}",
+                1.0
+            ],
             "iterate": [
                 "{{#1}^{(#2)}}",
                 2.0

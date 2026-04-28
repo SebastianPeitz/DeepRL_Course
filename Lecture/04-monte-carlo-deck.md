@@ -21,6 +21,26 @@ feedback:
 - Off-policy MC control
 - Summary
 
+
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   1  | Multi-armed bandits                                       |   Exploration-exploitation dilemma |
+|   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
+|   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
+|   [4]{style="color: red;"}  | [Monte Carlo methods]{style="color: red;"}                                    |   [*Data-driven learning* from entire episodes]{style="color: red;"} |
+|   5  | Temporal difference learning \& Q-learning                |        |
+|      | **Deep-learning-based methods**                           |        |
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+
+Table: Lecture contents
+:::
+
 ------------------------------------------------------------------------------
 
 # Monte Carlo simulation
@@ -52,6 +72,7 @@ $$\Exp{f(X)} = \sum_{\omega\in\Omega} p(x) f(x) \qquad / \qquad \Exp{f(X)} = \in
 - Randomly and uniformly place points in the unit square: $$(x,y)\sim U([0,1]^2).$$
 - Probability of landing **inside** the quarter circle is the ratio of the areas: $$ p(x^2+y^2\leq 1) = \frac{A}{1^2} = \frac{\pi}{4}.$$
 - Monte Carlo estimate: $$\pi = 4 \cdot \Exp{p(x^2+y^2\leq 1)}.$$
+- Let's estimate $π$ with various numbers of samples. Repeated experiments for mean and variance at different $n$.
 :::
 :::
 :::
@@ -297,7 +318,7 @@ $\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad\quad$ $Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))$\
-$\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
+$\quad\quad\quad$ $\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
 
 ::: incremental
@@ -320,7 +341,7 @@ $$
 $$
 - In terms of the averaging function from the algorithm before, this means that we can update $Q(s_t,a_t)$ incrementally (with $n(s_t,a_t)$ being the number of occurrences of the tuple $(s_t,a_t)$):
 $$
-Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
+Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
 $$
 :::
 :::
@@ -351,7 +372,7 @@ $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ [$n(s_t) \gets n(s_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
+$\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
 $\quad\quad\quad$ [$Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: red;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
 $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
@@ -486,7 +507,7 @@ $\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_k}$ starting at $(s_0,
 $\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
-$\quad\quad\quad$ $n(s_t) \gets n(s_t) + 1$\
+$\quad\quad\quad$ $n(s_t,a_t) \gets n(s_t,a_t) + 1$\
 $\quad\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
 $\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: red;"}\
 $\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}

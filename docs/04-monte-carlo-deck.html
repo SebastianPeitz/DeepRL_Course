@@ -200,6 +200,78 @@
 </div>
 </div>
 </section>
+<section id="where-are-we" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Where are we?</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<caption>Lecture contents</caption>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Topic</th>
+<th align="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Basics &amp; tabular methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="left">Multi-armed bandits</td>
+<td align="left">Exploration-exploitation dilemma</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left">Markov decision processes</td>
+<td align="left">Dynamics, rewards, policies</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="left">Dynamic programming</td>
+<td align="left">Optimal decision making with <em>full knowledge</em></td>
+</tr>
+<tr>
+<td align="center"><span style="color: red;">4</span></td>
+<td align="left"><span style="color: red;">Monte Carlo methods</span></td>
+<td align="left"><span style="color: red;"><em>Data-driven learning</em> from entire episodes</span></td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">Temporal difference learning &amp; Q-learning</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Deep-learning-based methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Model-Based Control</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Advanced Topics</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="monte-carlo-simulation" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -254,6 +326,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <li class="fragment">Randomly and uniformly place points in the unit square: <span class="math display">\[(x,y)\sim U([0,1]^2).\]</span></li>
 <li class="fragment">Probability of landing <strong>inside</strong> the quarter circle is the ratio of the areas: <span class="math display">\[ p(x^2+y^2\leq 1) = \frac{A}{1^2} = \frac{\pi}{4}.\]</span></li>
 <li class="fragment">Monte Carlo estimate: <span class="math display">\[\pi = 4 \cdot \Exp{p(x^2+y^2\leq 1)}.\]</span></li>
+<li class="fragment">Let’s estimate <span class="math inline">\(π\)</span> with various numbers of samples. Repeated experiments for mean and variance at different <span class="math inline">\(n\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -714,7 +787,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))\)</span><br />
-<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
+<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -746,7 +819,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 \mu_K = \frac{1}{K}\sum_{k=1}^K g_k \fragment{= \frac{1}{K} \left[g_K + \sum_{k=1}^{K-1} g_k\right]} \fragment{= \frac{1}{K} \left[g_K + (K-1)\mu_{K-1}\right]} \fragment{= \mu_{K-1} + \frac{1}{K} \left[g_K -\mu_{K-1}\right].}
 \]</span></li>
 <li class="fragment">In terms of the averaging function from the algorithm before, this means that we can update <span class="math inline">\(Q(s_t,a_t)\)</span> incrementally (with <span class="math inline">\(n(s_t,a_t)\)</span> being the number of occurrences of the tuple <span class="math inline">\((s_t,a_t)\)</span>): <span class="math display">\[
-Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
+Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].
 \]</span></li>
 </ul>
 </div>
@@ -784,7 +857,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
-<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(n(s_t) \gets n(s_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span></span><span class="math inline">\(\qquad\quad\)</span> (<del>averaging over the list of returns </del>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
 </div>
@@ -1901,7 +1974,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
-<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t) \gets n(s_t) + 1\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, &amp; a = \tilde{a} \\ \epsilon/\abs{\Ac}, &amp; a \neq \tilde{a} \end{cases}\)</span></span></p>

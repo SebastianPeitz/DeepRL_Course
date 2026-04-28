@@ -24,6 +24,24 @@ feedback:
   - $n$-step off-policy learning
   - TD($\lambda$)
 
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   1  | Multi-armed bandits                                       |   Exploration-exploitation dilemma |
+|   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
+|   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
+|   4  | Monte Carlo methods                                       |   *Data-driven learning* from entire episodes |
+|   [5]{style="color: red;"}  | [Temporal difference learning \& Q-learning]{style="color: red;"}                |   [*Data-driven learning* from individual transitions]{style="color: red;"}     |
+|      | **Deep-learning-based methods**                           |        |
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+Table: Lecture contents
+:::
+
 ------------------------------------------------------------------------------
 
 # The TD learning concept

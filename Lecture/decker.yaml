@@ -139,3 +139,4 @@ math:
     pdiff: ['{\frac{\partial #1}{\partial #2}}', 2]
     Re: ['{\mathrm{Re}\!\left( #1 \right)}', 1]
     Im: ['{\mathrm{Im}\!\left( #1 \right)}', 1]
+    inRed: ['{\textcolor{red}{\text{#1}}}', 1]

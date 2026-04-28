@@ -44,6 +44,29 @@ feedback:
 :::
 :::
 
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   1  | Multi-armed bandits                                       |   Exploration-exploitation dilemma |
+|   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
+|   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
+|   4  | Monte Carlo methods                                       |   *Data-driven learning* from entire episodes |
+|   5  | Temporal difference learning \& Q-learning                |    *Data-driven learning* from individual transitions    |
+|      | **Deep-learning-based methods**                           |        |
+|   [6]{style="color: red;"}  | [Brief introduction to deep learning]{style="color: red;"}                       |    [The basics for what comes next]{style="color: red;"}    |
+|   7  | Deep Q-learning                                           |        | 
+|   8  | Policy gradients                                          |        | 
+|   9  | Actor-critic algorithms                                   |        | 
+|  10  | Advanced algorithms                                       |        | 
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+Table: Lecture contents
+:::
+
 ------------------------------------------------------------------------------
 
 # The three main learning paradigms

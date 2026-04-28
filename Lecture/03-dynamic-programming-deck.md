@@ -22,6 +22,25 @@ feedback:
 - Asynchronous DP
 - Generalized policy iteration
 
+
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   1  | Multi-armed bandits                                       | Exploration-exploitation dilemma |
+|   2  | Markov decision processes                                 | Dynamics, rewards, policies |
+|   $\inRed{3}$  | $\inRed{Dynamic programming}$                   | [Optimal decision making with *full knowledge*]{style="color: red;"} |
+|   4  | Monte Carlo methods                                       |    |
+|   5  | Temporal difference learning \& Q-learning                |        |
+|      | **Deep-learning-based methods**                           |        |
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+Table: Lecture contents
+:::
+
 ------------------------------------------------------------------------------
 
 # What is Dynamic Programming (DP)?

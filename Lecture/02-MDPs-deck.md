@@ -23,6 +23,25 @@ feedback:
   - State-value functions and action-value functions
 - Optimal policies and value functions
 
+
+# Where are we?
+
+::: small
+| Chapter | Topic                                                  |                            Content  |
+| :--: | :-------------------------------------------------------- | :---------------------------------- |
+|      | **Basics \& tabular methods**                             |                                     |
+|   1  | Multi-armed bandits                                       | Exploration-exploitation dilemma |
+|   $\inRed{2}$  | $\inRed{Markov decision processes}$             | $\inRed{Dynamics, rewards, policies}$ |
+|   3  | Dynamic programming                                       | |
+|   4  | Monte Carlo methods                                       |    |
+|   5  | Temporal difference learning \& Q-learning                |        |
+|      | **Deep-learning-based methods**                           |        |
+|      | **Model-Based Control**                                   |        |
+|      | **Advanced Topics**                                       |        |
+
+Table: Lecture contents
+:::
+
 ------------------------------------------------------------------------------
 
 # What is reinforcement learning?
