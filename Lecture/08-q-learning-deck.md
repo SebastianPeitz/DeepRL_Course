@@ -1,6 +1,6 @@
 ---
 subtitle:    Deep Q Learning
-chapter:     7
+chapter:     8
 feedback:
   deck-id:  'deeprl-q-learning'
 ...
@@ -28,10 +28,11 @@ a
 |   5  | Temporal difference learning \& Q-learning                |    *Data-driven learning* from individual transitions    |
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
-|   7  | Deep Q-learning                                           |        | 
-|   8  | Policy gradients                                          |        | 
-|   9  | Actor-critic algorithms                                   |        | 
-|  10  | Advanced algorithms                                       |        | 
+|   7  | Value function approximation                              |        | 
+|   8  | Deep Q-learning                                           |        | 
+|   9  | Policy gradients                                          |        | 
+|  10  | Actor-critic algorithms                                   |        | 
+|  11  | Advanced algorithms                                       |        | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 

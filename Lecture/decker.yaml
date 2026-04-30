@@ -94,6 +94,7 @@ math:
     Q: '{\mathbb{Q}}'
     C: '{\mathbb{C}}'
     Ac: '{\mathcal{A}}'
+    Bc: '{\mathcal{B}}'
     Dc: '{\mathcal{D}}'
     Hc: '{\mathcal{H}}'
     Nc: '{\mathcal{N}}'
@@ -127,12 +128,15 @@ math:
     Qstar: '{Q^*}'
 
     dx: '{\,\mathrm{d}x}'
+    ds: '{\,\mathrm{d}s}'
     dt: '{\,\mathrm{d}t}'
 
     abs: ['\left\vert #1 \right\vert', 1]
     norm: ['\left\Vert #1 \right\Vert', 1]
 
     set: ['{\left\{ #1 \right\}}', 1]
+    cbracket: ['{\left( #1 \right)}', 1]
+    rbracket: ['{\left[ #1 \right]}', 1]
 
     diff: ['{\frac{\mathrm{d} #1}{\mathrm{d} #2}}', 2]
     ndiff: ['{\frac{\mathrm{d}^{#3} #1}{\mathrm{d} {#2}^{#3}}}', 3]
@@ -140,3 +144,5 @@ math:
     Re: ['{\mathrm{Re}\!\left( #1 \right)}', 1]
     Im: ['{\mathrm{Im}\!\left( #1 \right)}', 1]
     inRed: ['{\textcolor{red}{\text{#1}}}', 1]
+    submin: ['{{#1}_{\mathsf{min}}}', 1]
+    submax: ['{{#1}_{\mathsf{max}}}', 1]

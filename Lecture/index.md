@@ -45,10 +45,11 @@ templates:
 |         | Temporal difference learning \& Q-learning                |           [slides:](05-td-learning) |
 |   **2** | **Deep-learning-based methods**                           |                                     |
 |         | Brief introduction to deep learning                       |         [slides:](06-deep-learning) |
-|         | Deep Q-learning                                           |        | <!--     [slides:](07-q-learning) | -->
-|         | Policy gradients                                          |        | <!-- [slides:](08-policy-gradients) | -->
-|         | Actor-critic algorithms                                   |        | <!--   [slides:](09-actor-critic) | -->
-|         | Advanced algorithms                                       |        | <!-- [slides:](10-advanced-algorithms) | -->
+|         | Value function approximation                              |   [slides:](07-value-approximation) |
+|         | Deep Q-learning                                           |        | <!--     [slides:](08-q-learning) | -->
+|         | Policy gradients                                          |        | <!-- [slides:](09-policy-gradients) | -->
+|         | Actor-critic algorithms                                   |        | <!--   [slides:](10-actor-critic) | -->
+|         | Advanced algorithms                                       |        | <!-- [slides:](11-advanced-algorithms) | -->
 |   **3** | **Model-Based Control**                                   |                                     |
 |         | Planning \& optimal control                               |        | <!-- [slides:](11-planning-control) | -->
 |         | Model-based reinforcement learning                        |        | <!-- [slides:](12-model-based-RL) | -->

@@ -107,7 +107,7 @@ $$ V(s) = \ExpC{g_t}{s_t = s}=\ExpC{ \sum_{k=0}^T \gamma^k r_{t+k}}{s_t = s} .$$
 :::
 
 ::: fragment
-::: {.definition}
+::: definition
 ### Algorithm: First-visit MC prediction for estimating $V \approx V^\pi$.
 
 **initialize**
@@ -119,7 +119,7 @@ $$ V(s) = \ExpC{g_t}{s_t = s}=\ExpC{ \sum_{k=0}^T \gamma^k r_{t+k}}{s_t = s} .$$
 $\quad$ $g \gets 0$\
 $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$: $\qquad$ ([*that's the first-visit condition*]{style="color: red;"})\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
@@ -148,7 +148,7 @@ $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 $\quad$ $g \gets 0$\
 $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$  $\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}$ $\qquad$ ([*only difference to first-visit*]{style="color: red;"})\
 $\quad\quad$ Append $g$ to $\ell(s_t)$\
@@ -313,7 +313,7 @@ $\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
@@ -369,7 +369,7 @@ $\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
@@ -504,7 +504,7 @@ Table: Key differences at a glance:
 $\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence $\set{(s_t,a_t,r_t)}_{t=1}^{T_k}$ starting at $(s_0, a_0)$ and following $\pi$\
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$:\
 $\quad\quad\quad$ $n(s_t,a_t) \gets n(s_t,a_t) + 1$\
@@ -808,7 +808,7 @@ $$]{.fragment}
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g \gets 0$, $w \gets 1$\
 $\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
@@ -846,7 +846,7 @@ We now have our final algorithm that includes everything we have learned so far
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g \gets 0$, $w \gets 1$\
 $\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
-$\quad$ **for** $t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}$:\
+$\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\

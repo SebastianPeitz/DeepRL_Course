@@ -321,6 +321,7 @@ By the end of the course, we will
 ::: fragment
 - **Deep-learning-based methods**
   - Brief introduction to deep learning
+  - Value function approximation
   - Deep Q-learning
   - Actor-Critic algorithms
   - Advanced algorithms

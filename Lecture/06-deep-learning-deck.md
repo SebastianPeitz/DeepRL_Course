@@ -57,10 +57,11 @@ feedback:
 |   5  | Temporal difference learning \& Q-learning                |    *Data-driven learning* from individual transitions    |
 |      | **Deep-learning-based methods**                           |        |
 |   [6]{style="color: red;"}  | [Brief introduction to deep learning]{style="color: red;"}                       |    [The basics for what comes next]{style="color: red;"}    |
-|   7  | Deep Q-learning                                           |        | 
-|   8  | Policy gradients                                          |        | 
-|   9  | Actor-critic algorithms                                   |        | 
-|  10  | Advanced algorithms                                       |        | 
+|   7  | Value function approximation                              |        | 
+|   8  | Deep Q-learning                                           |        | 
+|   9  | Policy gradients                                          |        | 
+|  10  | Actor-critic algorithms                                   |        | 
+|  11  | Advanced algorithms                                       |        | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -415,6 +416,85 @@ In order to mitigate overfitting (i.e., good performacne on $\Dtrain$, poor gene
   - and effectively builds an ensemble of ANNs with shared edges.
 :::
 
+# Convolutional neural networks
+
+::: small
+In machine learning (as well as in nature) **many tasks are independent of absolute position**.
+
+::: columns-5-5
+::: platzhalter
+A function is **invariant** under some transformation if it's output $y$ remains unchanged under transformations of the input $x$.
+
+![](images/06-deep-learning/CNN-invariance.svg){ .embed width=500px }
+:::
+
+::: fragment
+A function is **equivariant** under some transformation if it's output $y$ is transformed "in the same way" as the input $x$.
+
+![](images/06-deep-learning/CNN-equivariance.svg){ .embed width=500px }
+:::
+:::
+:::
+
+\
+
+\
+
+::: footer
+:bulb: These ideas can be formalized and extended under the framework of *group theory*, see also *geometric deep learning* [@BBCV21].
+:::
+
+# Weight sharing in CNNs
+
+::: small
+::: columns-1-1
+::: incremental
+- What does this mean for learning?\
+[$\Rightarrow$ We have to learn the same thin in different locations!]{.fragment}\
+[$\Rightarrow$ An "edge" remains an "edge", no matter where we are.]{.fragment}
+- Instead of training a fully connected layer, we train the weights of a **kernel** that moves over the input
+- Same weights in every location $\Rightarrow$ weight sharing!
+:::
+
+::: incremental
+- Architecture is closely related to fully connected NNs:
+  - Inner product between kernel weights $\theta$ and input $x$ $\Rightarrow$ activation $z$.
+  - Multiple kernels $\Rightarrow$ multiple **channels**.
+  - Then comes a nonlinear activation function $\sigma(z)$.
+  - Further followed by additional steps (see next slide).
+:::
+:::
+
+::: columns-1-1
+::: fragment
+![A kernel sweeping over an input [[Source](https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/)]](images/06-deep-learning/CNN-kernels.gif){ width=400px }
+:::
+
+::: fragment
+![Second kernel = second channel [[Source](https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/)]](images/06-deep-learning/CNN-kernels_vertical.png){ width=380px }
+:::
+:::
+:::
+
+# Ingredients of a CNN
+Further considerations (**padding** \& **stride**) and additional steps (e.g., **pooling**) 
+
+::: columns-1-1-1
+![Padding [[Source](https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/)]](images/06-deep-learning/CNN-padding.png){ width=420px }
+
+::: fragment
+\
+
+![Stride [[Source](https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/)]](images/06-deep-learning/CNN-stride.gif){ width=420px }
+:::
+
+::: fragment
+\
+\
+![Pooling [[Source](https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/)]](images/06-deep-learning/CNN-pooling.gif){ width=420px }
+:::
+:::
+
 # Neural network architectures
 
 ![The neural network zoo [[Asimov Institute](https://www.asimovinstitute.org/neural-network-zoo/)].](images/06-deep-learning/NN-zoo.png){ width=1280px }
@@ -527,5 +607,7 @@ $$ \psi(x) = [\psi_1(x), \ldots, \psi_q(x)]^\top.  $$
 
 # References
 
+::: small
 ::: { #refs }
+:::
 :::
