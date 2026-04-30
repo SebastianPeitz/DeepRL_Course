@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "28.04.2026 10:58"
+        "30.04.2026 14:11"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "1",
@@ -555,6 +555,7 @@
     "math": {
         "macros": {
             "Ac": "{\\mathcal{A}}",
+            "Bc": "{\\mathcal{B}}",
             "C": "{\\mathbb{C}}",
             "Dc": "{\\mathcal{D}}",
             "Dtest": "{\\mathcal{D}_{\\mathsf{test}}}",
@@ -612,10 +613,15 @@
                 2.0
             ],
             "aprime": "{a^{\\prime}}",
+            "cbracket": [
+                "{\\left( #1 \\right)}",
+                1.0
+            ],
             "diff": [
                 "{\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}}",
                 2.0
             ],
+            "ds": "{\\,\\mathrm{d}s}",
             "dt": "{\\,\\mathrm{d}t}",
             "dx": "{\\,\\mathrm{d}x}",
             "inRed": [
@@ -650,11 +656,23 @@
             ],
             "psprimesa": "{p\\left( s^{\\prime} \\middle| s, a \\right)}",
             "pstplusstat": "{p\\left( s_{t+1} \\middle| s_t, a_t \\right)}",
+            "rbracket": [
+                "{\\left[ #1 \\right]}",
+                1.0
+            ],
             "set": [
                 "{\\left\\{ #1 \\right\\}}",
                 1.0
             ],
             "sprime": "{s^{\\prime}}",
+            "submax": [
+                "{{#1}_{\\mathsf{max}}}",
+                1.0
+            ],
+            "submin": [
+                "{{#1}_{\\mathsf{min}}}",
+                1.0
+            ],
             "th": [
                 "{{#1}^{\\mathsf{th}}}",
                 1.0

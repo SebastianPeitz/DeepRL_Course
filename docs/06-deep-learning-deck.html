@@ -288,21 +288,26 @@ Learning</title>
 </tr>
 <tr>
 <td align="center">7</td>
-<td align="left">Deep Q-learning</td>
+<td align="left">Value function approximation</td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="center">8</td>
-<td align="left">Policy gradients</td>
+<td align="left">Deep Q-learning</td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="center">9</td>
-<td align="left">Actor-critic algorithms</td>
+<td align="left">Policy gradients</td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="center">10</td>
+<td align="left">Actor-critic algorithms</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">11</td>
 <td align="left">Advanced algorithms</td>
 <td align="left"></td>
 </tr>
@@ -3697,6 +3702,487 @@ Gradient descent vs. SGD vs. Mini-batch gradient descent [<a href="https://med
 </div>
 </div>
 </section>
+<section id="convolutional-neural-networks" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Convolutional neural networks</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>In machine learning (as well as in nature) <strong>many tasks are independent of absolute position</strong>.</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<p>A function is <strong>invariant</strong> under some transformation if it’s output <span class="math inline">\(y\)</span> remains unchanged under transformations of the input <span class="math inline">\(x\)</span>.</p>
+<div class="media">
+<figure class="embed svg embedded" style="height:auto;width:500px;">
+<div style="height:auto;width:100%;">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="167.20891mm"
+   height="97.559753mm"
+   viewBox="0 0 167.20891 97.559753"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   sodipodi:docname="CNN-invariance.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.77680594"
+     inkscape:cx="112.64075"
+     inkscape:cy="6.436614"
+     inkscape:window-width="1344"
+     inkscape:window-height="449"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" /><defs
+     id="defs1"><marker
+       style="overflow:visible"
+       id="ConcaveTriangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Concave triangle arrow"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"><path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" /></marker></defs><g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-15.966688,-35.226303)"><g
+       id="g7"
+       class="fragment"><rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+         id="rect1"
+         width="49.859814"
+         height="49.859814"
+         x="16.216688"
+         y="35.476303" /><image
+         width="16.933332"
+         height="16.933332"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+         id="image1"
+         x="21.908709"
+         y="39.061867" /></g><g
+       id="g9"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 41.146595,89.578893 V 115.46481"
+         id="path1" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="43.177731"
+         y="103.54366"
+         id="text2"><tspan
+           sodipodi:role="line"
+           id="tspan2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="43.177731"
+           y="103.54366">classification</tspan></text><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="22.128305"
+         y="132.68959"
+         id="text3"><tspan
+           sodipodi:role="line"
+           id="tspan3"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.5"
+           x="22.128305"
+           y="132.68959">&quot;SAS robot&quot;</tspan></text></g><g
+       id="g10"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 75.749079,55.815614 H 101.63497"
+         id="path2" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="77.134529"
+         y="47.684582"
+         id="text4"><tspan
+           sodipodi:role="line"
+           id="tspan4"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="77.134529"
+           y="47.684582">translation</tspan></text><g
+         id="g8"><rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+           id="rect4"
+           width="49.859814"
+           height="49.859814"
+           x="120.75756"
+           y="35.476303" /><image
+           width="16.933332"
+           height="16.933332"
+           preserveAspectRatio="none"
+           xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+           id="image4"
+           x="147.61626"
+           y="60.228539" /></g></g><g
+       id="g11"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 145.6874,89.578894 V 115.46481"
+         id="path4" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="147.7187"
+         y="102.86246"
+         id="text5"><tspan
+           sodipodi:role="line"
+           id="tspan5"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="147.7187"
+           y="102.86246">classification</tspan></text><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="126.6693"
+         y="132.68959"
+         id="text6"><tspan
+           sodipodi:role="line"
+           id="tspan6"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.5"
+           x="126.6693"
+           y="132.68959">&quot;SAS robot&quot;</tspan></text></g></g></svg>
+
+</div>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>A function is <strong>equivariant</strong> under some transformation if it’s output <span class="math inline">\(y\)</span> is transformed “in the same way” as the input <span class="math inline">\(x\)</span>.</p>
+<div class="media">
+<figure class="embed svg embedded" style="height:auto;width:500px;">
+<div style="height:auto;width:100%;">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="157.44138mm"
+   height="141.37651mm"
+   viewBox="0 0 157.44138 141.37651"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   sodipodi:docname="CNN-equivariance.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.3232917"
+     inkscape:cx="357.81982"
+     inkscape:cy="292.83037"
+     inkscape:window-width="1512"
+     inkscape:window-height="854"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" /><defs
+     id="defs1"><marker
+       style="overflow:visible"
+       id="ConcaveTriangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Concave triangle arrow"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"><path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" /></marker></defs><g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-15.966688,-35.226303)"><g
+       id="g7"><rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+         id="rect1"
+         width="49.859814"
+         height="49.859814"
+         x="16.216688"
+         y="35.476303" /><image
+         width="16.933332"
+         height="16.933332"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+         id="image1"
+         x="21.908709"
+         y="39.061867" /></g><g
+       id="g1"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 41.146595,89.578893 V 115.46481"
+         id="path1" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="43.177731"
+         y="103.54366"
+         id="text2"><tspan
+           sodipodi:role="line"
+           id="tspan2"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="43.177731"
+           y="103.54366">object</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="43.177731"
+           y="110.59921"
+           id="tspan13">detection</tspan></text><rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+         id="rect11"
+         width="49.859814"
+         height="49.859814"
+         x="16.216688"
+         y="126.493" /><image
+         width="16.933332"
+         height="16.933332"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+         id="image11"
+         x="21.908709"
+         y="130.07857" /><path
+         style="fill:#000000"
+         d="m 22.768604,145.55774 c -0.526035,-0.59747 -0.409313,-2.0766 0.198438,-2.51464 0.291042,-0.20977 0.529166,-0.59324 0.529166,-0.85216 0,-0.25892 0.119063,-0.47076 0.264584,-0.47076 0.15679,0 0.264583,-0.97014 0.264583,-2.38125 0,-2.20486 0.0392,-2.38125 0.529167,-2.38125 0.291041,0 0.529166,-0.11906 0.529166,-0.26458 0,-0.14552 0.595313,-0.26459 1.322917,-0.26459 0.727604,0 1.322917,-0.11906 1.322917,-0.26458 0,-0.14552 -0.238125,-0.26458 -0.529167,-0.26458 -0.291042,0 -0.529167,-0.11906 -0.529167,-0.26459 0,-0.14552 -0.238125,-0.26458 -0.529166,-0.26458 -0.47877,0 -0.529167,-0.17639 -0.529167,-1.85208 v -1.85208 h 0.79375 c 0.436562,0 0.79375,-0.11907 0.79375,-0.26459 0,-0.14552 0.357187,-0.26458 0.79375,-0.26458 0.617361,0 0.79375,-0.11759 0.79375,-0.52917 0,-0.29104 0.119062,-0.52916 0.264583,-0.52916 0.145521,0 0.264584,0.23812 0.264584,0.52916 0,0.41158 0.176388,0.52917 0.793749,0.52917 0.617362,0 0.79375,-0.11759 0.79375,-0.52917 0,-0.29104 0.119063,-0.52916 0.264584,-0.52916 0.145521,0 0.264583,0.23812 0.264583,0.52916 0,0.45861 0.176389,0.52917 1.322917,0.52917 h 1.322916 v 2.38125 2.38125 h -1.322916 c -0.727604,0 -1.322917,0.11906 -1.322917,0.26458 0,0.15119 0.79375,0.26458 1.852083,0.26458 h 1.852084 v 0.99993 c 0,0.6964 0.160626,1.1157 0.529166,1.38132 0.291042,0.20978 0.529167,0.59325 0.529167,0.85216 0,0.25892 0.119062,0.47076 0.264583,0.47076 0.145521,0 0.264583,0.23813 0.264583,0.52917 0,0.29104 0.119063,0.52916 0.264584,0.52916 0.145521,0 0.264583,0.23813 0.264583,0.52917 0,0.29104 0.119063,0.52917 0.264583,0.52917 0.145521,0 0.264584,0.23812 0.264584,0.52916 0,0.29105 0.119062,0.52917 0.264583,0.52917 0.516298,0 0.254745,1.35681 -0.384848,1.9964 -0.594542,0.59454 -0.85331,0.64943 -3.061607,0.64943 -2.640373,0 -3.168128,-0.23926 -3.168128,-1.43631 0,-0.50396 -0.137191,-0.68035 -0.529167,-0.68035 -0.300898,0 -0.529166,0.17639 -0.529166,0.4089 0,0.2249 -0.292245,0.70115 -0.649432,1.05833 -0.614301,0.6143 -0.811096,0.64889 -3.638021,0.63937 -2.239864,-0.008 -3.071445,-0.10417 -3.319318,-0.38571 z"
+         id="path14" /></g><g
+       id="g16"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 75.749079,55.815614 H 101.63497"
+         id="path2" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="77.134529"
+         y="47.684582"
+         id="text4"><tspan
+           sodipodi:role="line"
+           id="tspan4"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="77.134529"
+           y="47.684582">translation</tspan></text><rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+         id="rect4"
+         width="49.859814"
+         height="49.859814"
+         x="120.75756"
+         y="35.476303" /><image
+         width="16.933332"
+         height="16.933332"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+         id="image4"
+         x="147.61626"
+         y="60.228539" /></g><g
+       id="g17"
+       class="fragment"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 145.6874,89.578894 V 115.46481"
+         id="path4" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="147.7187"
+         y="102.86246"
+         id="text5"><tspan
+           sodipodi:role="line"
+           id="tspan5"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="147.7187"
+           y="102.86246">object</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="147.7187"
+           y="109.91801"
+           id="tspan14">detection</tspan></text><rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:0.996255"
+         id="rect12"
+         width="49.859814"
+         height="49.859814"
+         x="120.75756"
+         y="126.493" /><image
+         width="16.933332"
+         height="16.933332"
+         preserveAspectRatio="none"
+         xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADV0lEQVR4nO2av28TMRTH3704aQOi&#10;TQVLBxYm/gSEIn4NoUIIMbEgxAISEj8XoGoZCbQCIYFAHYAB8T8g2IqUgb8AEEPFRBZQ0wBKmtwl&#10;SPZ5OCuO7cSXBL1+hn4bn/0c5T0/+95d0O12YRQsFIt8oveVSjDI9bRAIA4CcRCIE/jOAXItp42v&#10;XIFAHObb09cWFxOfn6+s9GwfFGnPFwjEYcMasPVsoVDgWp9PevDZxRrXG28Kfds7X65AGiAQh/ky&#10;tHtuimu2m+daqwkPTjoIxGG+DOVxmmsYuY1T176p3TcIxGG+DIWR28FMl/0l0+05rs3sJqQJAnGY&#10;L0PtzE+u2WifVX/p+dVb77jmNw8rPfpHiC8QiMN8n83vGc7qM9XkybF813CSrAqpxRHhGwTiBL7q&#10;AaOqA0h26gGTWhFSIyIzmwUboq02152q8KRHwMKI17otg0YOAnGYr9pfWjXAtGuECMRhth11HpW1&#10;PrUCNLu3/28bRDMwDL4qTgjEYbYdpadduZx727P9VeMq10v5Fz2vv2xd6Dv+ce08+ACBOMx1wP0B&#10;s7v0uOm6LiLU8erd4aDvFyAQh6VluHz7gfjn6f6enlU9qvO87rouB7hGAgJxmOval3d38u5t/uCe&#10;nv2rX387eVqXA2zH5w+I5xKNjSa4gEAcNqwB6WlT5HyPc4ErptwgUT1vmwsQiMNcBzT/thIjs2Fg&#10;lQvWWue4TrEOV/EXYA3Ocu1m6okToOR1cIpruyPmaYe7uG4r86jzmyJTgkCcwFQRUusBao1P7ga2&#10;LJdFTmBMhFCIcUR0hGIUio7ZXF87W786TvUAXS5AIA4b1PNqu+25AHLiNw/jLLD+4SPXYyePcq2s&#10;f+JaPHGE68MnhxJ2/tS/cb1zXTyLlBjn1YBAHObboOkXl/cIy4+WREOc3SWN7U4q8+rOBQjEYbZV&#10;YLnGbXcB3Zr8sRElaoLHS6djQ0JKpTOJz0s3P/e0oysJuuYCBOIE8hww7H6v7gY6WjkRdLlWvN+P&#10;CZkLEIjD1Abb/V7X3/VcoGZl01NlXS5Sr9vmAgTisLQnsL0rG9e8CMRhw+73an+1n+4+3VSpMdn1&#10;NS8CcQK1HpD2GyC29Xrf32OnHjDqt8T+FxCIg0AcHPcXGDf/AODLf65UbhxoAAAAAElFTkSuQmCC&#10;&#10;"
+         id="image12"
+         x="147.61626"
+         y="151.24525" /><path
+         style="fill:#000000"
+         d="m 148.47615,166.72443 c -0.52603,-0.59747 -0.40931,-2.0766 0.19844,-2.51465 0.29104,-0.20977 0.52917,-0.59324 0.52917,-0.85215 0,-0.25892 0.11906,-0.47076 0.26458,-0.47076 0.15679,0 0.26458,-0.97014 0.26458,-2.38125 0,-2.20486 0.0392,-2.38125 0.52917,-2.38125 0.29104,0 0.52917,-0.11906 0.52917,-0.26458 0,-0.14553 0.59531,-0.26459 1.32291,-0.26459 0.72761,0 1.32292,-0.11906 1.32292,-0.26458 0,-0.14552 -0.23813,-0.26458 -0.52917,-0.26458 -0.29104,0 -0.52916,-0.11907 -0.52916,-0.26459 0,-0.14552 -0.23813,-0.26458 -0.52917,-0.26458 -0.47877,0 -0.52917,-0.17639 -0.52917,-1.85208 v -1.85209 h 0.79375 c 0.43657,0 0.79375,-0.11906 0.79375,-0.26458 0,-0.14552 0.35719,-0.26458 0.79375,-0.26458 0.61736,0 0.79375,-0.1176 0.79375,-0.52917 0,-0.29104 0.11907,-0.52917 0.26459,-0.52917 0.14552,0 0.26458,0.23813 0.26458,0.52917 0,0.41157 0.17639,0.52917 0.79375,0.52917 0.61736,0 0.79375,-0.1176 0.79375,-0.52917 0,-0.29104 0.11906,-0.52917 0.26458,-0.52917 0.14552,0 0.26459,0.23813 0.26459,0.52917 0,0.45861 0.17639,0.52917 1.32291,0.52917 h 1.32292 v 2.38125 2.38125 h -1.32292 c -0.7276,0 -1.32291,0.11906 -1.32291,0.26458 0,0.15119 0.79375,0.26458 1.85208,0.26458 h 1.85208 v 0.99993 c 0,0.6964 0.16063,1.11569 0.52917,1.38132 0.29104,0.20977 0.52917,0.59324 0.52917,0.85216 0,0.25892 0.11906,0.47076 0.26458,0.47076 0.14552,0 0.26458,0.23812 0.26458,0.52917 0,0.29104 0.11907,0.52916 0.26459,0.52916 0.14552,0 0.26458,0.23813 0.26458,0.52917 0,0.29104 0.11906,0.52916 0.26458,0.52916 0.14552,0 0.26459,0.23813 0.26459,0.52917 0,0.29104 0.11906,0.52917 0.26458,0.52917 0.5163,0 0.25474,1.35681 -0.38485,1.9964 -0.59454,0.59454 -0.85331,0.64943 -3.06161,0.64943 -2.64037,0 -3.16812,-0.23926 -3.16812,-1.43631 0,-0.50397 -0.1372,-0.68036 -0.52917,-0.68036 -0.3009,0 -0.52917,0.17639 -0.52917,0.40891 0,0.22489 -0.29224,0.70114 -0.64943,1.05833 -0.6143,0.6143 -0.8111,0.64889 -3.63802,0.63937 -2.23986,-0.008 -3.07145,-0.10418 -3.31932,-0.38571 z"
+         id="path15" /></g><g
+       id="g18"
+       class="fragment"
+       transform="translate(0,-2.6458334)"><path
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255;marker-end:url(#ConcaveTriangle)"
+         d="M 75.749079,154.76984 H 101.63497"
+         id="path12" /><text
+         xml:space="preserve"
+         style="font-weight:bold;font-size:5.64444px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#000000;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
+         x="77.134529"
+         y="146.63869"
+         id="text12"><tspan
+           sodipodi:role="line"
+           id="tspan12"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#000000;stroke:none;stroke-width:0.5"
+           x="77.134529"
+           y="146.63869">translation</tspan></text></g></g></svg>
+
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p><br />
+</p>
+<p><br />
+</p>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> These ideas can be formalized and extended under the framework of <em>group theory</em>, see also <em>geometric deep learning</em> <span class="citation">(<a href="#ref-BBCV21">Bronstein et al. 2021</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="weight-sharing-in-cnns" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Weight sharing in CNNs</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 1fr 1fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">What does this mean for learning?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have to learn the same thin in different locations!</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> An “edge” remains an “edge”, no matter where we are.</span></li>
+<li class="fragment">Instead of training a fully connected layer, we train the weights of a <strong>kernel</strong> that moves over the input</li>
+<li class="fragment">Same weights in every location <span class="math inline">\(\Rightarrow\)</span> weight sharing!</li>
+</ul>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Architecture is closely related to fully connected NNs:
+<ul class="incremental">
+<li class="fragment">Inner product between kernel weights <span class="math inline">\(\theta\)</span> and input <span class="math inline">\(x\)</span> <span class="math inline">\(\Rightarrow\)</span> activation <span class="math inline">\(z\)</span>.</li>
+<li class="fragment">Multiple kernels <span class="math inline">\(\Rightarrow\)</span> multiple <strong>channels</strong>.</li>
+<li class="fragment">Then comes a nonlinear activation function <span class="math inline">\(\sigma(z)\)</span>.</li>
+<li class="fragment">Further followed by additional steps (see next slide).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 1fr 1fr;">
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:400px;">
+<img src="images/06-deep-learning/CNN-kernels.gif" style="height:auto;width:100%;" aria-label="A kernel sweeping over an input [Source]" alt="images/06-deep-learning/CNN-kernels.gif" />
+<figcaption>
+A kernel sweeping over an input [<a href="https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/">Source</a>]
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:380px;">
+<img src="images/06-deep-learning/CNN-kernels_vertical.png" style="height:auto;width:100%;" aria-label="Second kernel = second channel [Source]" alt="images/06-deep-learning/CNN-kernels_vertical.png" />
+<figcaption>
+Second kernel = second channel [<a href="https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/">Source</a>]
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ingredients-of-a-cnn" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Ingredients of a CNN</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>Further considerations (<strong>padding</strong> &amp; <strong>stride</strong>) and additional steps (e.g., <strong>pooling</strong>)</p>
+<div class="grid-layout" style="grid-template-columns: 1fr 1fr 1fr;">
+<div class="media">
+<figure class="image" style="height:auto;width:420px;">
+<img src="images/06-deep-learning/CNN-padding.png" style="height:auto;width:100%;" aria-label="Padding [Source]" alt="images/06-deep-learning/CNN-padding.png" />
+<figcaption>
+Padding [<a href="https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/">Source</a>]
+</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p><br />
+</p>
+<div class="media">
+<figure class="image" style="height:auto;width:420px;">
+<img src="images/06-deep-learning/CNN-stride.gif" style="height:auto;width:100%;" aria-label="Stride [Source]" alt="images/06-deep-learning/CNN-stride.gif" />
+<figcaption>
+Stride [<a href="https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/">Source</a>]
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><br />
+<br />
+<span class="media"><span class="figure image" style="height:auto;width:420px;"><img src="images/06-deep-learning/CNN-pooling.gif" style="height:auto;width:100%;" aria-label="Pooling [Source]" alt="images/06-deep-learning/CNN-pooling.gif" /><span class="figcaption"><span>Pooling [<a href="https://towardsdatascience.com/convolutional-neural-networks-explained-how-to-successfully-classify-images-in-python-df829d4ba761/">Source</a>]</span></span></span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="neural-network-architectures" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -3905,6 +4391,7 @@ Randomly: Extreme Leraning Machine
 <div class="layout">
 <div class="area">
 <div class="box block">
+<div class="small">
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Abdelwanis2026" class="csl-entry">
 Abdelwanis, Ali, Barnabas Haucke-Korber, Darius Jakobeit, Wilhelm Kirchgässner, Marvin Meyer, Maximilian Schenke, Hendrik Vater, Oliver Wallscheid, and Daniel Weber. 2026. <span>“Reinforcement Learning: A Comprehensive Open-Source Course.”</span> <em>Journal of Open Source Education</em> 9 (97). The Open Journal: 306. doi:<a href="https://doi.org/10.21105/jose.00306">10.21105/jose.00306</a>.
@@ -3918,6 +4405,9 @@ Bengio, Yoshua, Ian Goodfellow, Aaron Courville, et al. 2017. <em>Deep Learning<
 <div id="ref-Bishop2006prml" class="csl-entry">
 Bishop, Christopher M. 2006. <em>Pattern Recognition and Machine Learning</em>. Vol. 4. 4. Springer.
 </div>
+<div id="ref-BBCV21" class="csl-entry">
+Bronstein, Michael M., Joan Bruna, Taco Cohen, and Petar Veličković. 2021. <span>“Geometric Deep Learning: Grids, Groups, Graphs, Geodesics, and Gauges.”</span> <em>arXiv:2104.13478</em>, April.
+</div>
 <div id="ref-hastie2009elements" class="csl-entry">
 Hastie, Trevor. 2009. <span>“The Elements of Statistical Learning: Data Mining, Inference, and Prediction.”</span> springer.
 </div>
@@ -3926,6 +4416,7 @@ Kingma, Diederik P, and Jimmy Ba. 2014. <span>“Adam: A Method for Stochastic O
 </div>
 <div id="ref-li2018visualizing" class="csl-entry">
 Li, Hao, Zheng Xu, Gavin Taylor, Christoph Studer, and Tom Goldstein. 2018. <span>“Visualizing the Loss Landscape of Neural Nets.”</span> <em>Advances in Neural Information Processing Systems</em> 31.
+</div>
 </div>
 </div>
 </div>

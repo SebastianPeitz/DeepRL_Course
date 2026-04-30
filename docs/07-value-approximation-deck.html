@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Prof. Dr. Sebastian Peitz">
+  <title> Deep Reinforcement Learning:  Value function
+approximation</title>
+
+  <!-- PWA stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="support/pwa/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#84b819" />
+  <link rel="manifest" href="support/pwa/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <link rel="shortcut icon" href="support/assets/favicon.ico">
+
+  <script type="module">
+    /* Store JSON encoded Pandoc meta data in a global variable. */
+    import initializeDecker from "./support/js/decker.js";
+    initializeDecker("92ee81cba.json");
+  </script>
+
+    <!-- Default values for CSS variables can live here. They can be overridden by
+    meta data values. -->
+    <link rel="stylesheet" href="support/css/variables.css">
+
+    <!-- Transfer meta data values from keys `palette.colors` and `css-variables`
+    into a style sheet. Default values can come from `variables.css`. -->
+    <style class="css-declarations">
+      :root {
+                --shade7: #1d1f21;
+                --shade6: #282a2e;
+                --shade5: #4d4d4c;
+                --shade4: #969896;
+                --shade3: #8e908c;
+                --shade2: #d6d6d6;
+                --shade1: #eeeeee;
+                --shade0: #ffffff;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #8959a8;
+                --base0D: #2a9ddf;
+                --base0C: #3e999f;
+                --base0B: #84b819;
+                --base0A: #eab700;
+                --base09: #f5871f;
+                --base08: #c82829;
+                --base07: #1d1f21;
+                --base06: #282a2e;
+                --base05: #4d4d4c;
+                --base04: #969896;
+                --base03: #8e908c;
+                --base02: #d6d6d6;
+                --base01: #eeeeee;
+                --base00: #ffffff;
+                --accent7: #a3685a;
+                --accent6: #8959a8;
+                --accent5: #2a9ddf;
+                --accent4: #3e999f;
+                --accent3: #84b819;
+                --accent2: #eab700;
+                --accent1: #f5871f;
+                --accent0: #c82829;
+            }
+      :root.dark {
+                --shade7: #ffffff;
+                --shade6: #e0e0e0;
+                --shade5: #c5c8c6;
+                --shade4: #b4b7b4;
+                --shade3: #969896;
+                --shade2: #373b41;
+                --shade1: #282a2e;
+                --shade0: #1d1f21;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #b294bb;
+                --base0D: #81a2be;
+                --base0C: #8abeb7;
+                --base0B: #7da72a;
+                --base0A: #f0c674;
+                --base09: #de935f;
+                --base08: #cc6666;
+                --base07: #ffffff;
+                --base06: #e0e0e0;
+                --base05: #c5c8c6;
+                --base04: #b4b7b4;
+                --base03: #969896;
+                --base02: #373b41;
+                --base01: #282a2e;
+                --base00: #1d1f21;
+                --accent7: #a3685a;
+                --accent6: #b294bb;
+                --accent5: #81a2be;
+                --accent4: #8abeb7;
+                --accent3: #7da72a;
+                --accent2: #f0c674;
+                --accent1: #de935f;
+                --accent0: #cc6666;
+            }
+      :root {
+            }
+    </style>
+
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reset.css">
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reveal.css">
+    <link rel="stylesheet" href="support/components/components.css">
+    <link rel="stylesheet" href="support/plugins/decker/ui-anchors.css">
+    <link rel="stylesheet" href="support/plugins/whiteboard/whiteboard.css">
+    <link rel="stylesheet" href="support/plugins/menu/menu.css">
+    <link rel="stylesheet" href="support/plugins/feedback/feedback.css">
+    <link rel="stylesheet" href="support/vendor/videojs/video-js.min.css">
+    <link rel="stylesheet" href="support/plugins/explain/explain.css">
+      <link rel="stylesheet" href="support/plugins/quiz-wue/quiz-wue.css">
+    <link rel="stylesheet" href="support/plugins/quizzer/quizzer.css">
+    <link rel="stylesheet" href="support/css/deck.css">
+    <link rel="stylesheet" href="support/css/tudo-deck.css">
+      <link rel="stylesheet" href="support/fonts/lato.css">
+      <link rel="stylesheet" href="support/plugins/handout/handout.css">
+        <link rel="stylesheet" href="styles/mafi-deck.css">
+    
+</head>
+
+<body >
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title-slide">
+  <div class="decker">
+    <div class="alignment">
+      <header class="background-on-accent">
+        <h1 class="title">
+        <span class="title-title">Deep Reinforcement Learning</span>
+        </h1>
+        <h2 class="subtitle">
+        <span class="title-subtitle">Value function approximation</span>
+        </h2>
+      </header>
+
+      
+            
+            <div class="author">
+                
+              <p>
+                Prof. Dr. Sebastian Peitz
+              </p>
+              </div>
+      
+            <div class="affiliation">
+              <p>
+                Chair of Safe Autonomous Systems, TU Dortmund
+              </p>
+              </div>
+      
+              <div class="date">Summer term 2026</div>
+      
+      
+      <div class="logos">
+                <div class="logo">
+          <img src="./support/assets/tu-logo-light.svg" alt="Logo der TU Dortmund">
+        </div>
+                                    <div class="logo">
+            <img class="title-image" src="assets/inf-logo.svg" alt="Logo">
+
+          </div>
+                          </div>
+            <a class="decker-link" href="https://github.com/decker-edu/decker/">🚀 by Decker</a>
+          </div>
+  </div>
+</section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<ul>
+<li>Limitations of tabular methods</li>
+<li>Value estimation / prediction with function approximation</li>
+<li>Gradient-based prediction</li>
+<li>Batch learning</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-are-we" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Where are we?</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<caption>Lecture contents</caption>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Topic</th>
+<th align="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Basics &amp; tabular methods</strong></td>
+<td align="left">RL basics for finite state and action spaces of moderat sizes</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Deep-learning-based methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Brief introduction to deep learning</td>
+<td align="left">The basics for what comes next</td>
+</tr>
+<tr>
+<td align="center"><span style="color: red;">7</span></td>
+<td align="left"><span style="color: red;">Value function approximation</span></td>
+<td align="left"><span style="color: red;">Prediction / Value estimation with function approximation</span></td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">Deep Q-learning</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">Policy gradients</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">Actor-critic algorithms</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">Advanced algorithms</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Model-Based Control</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Advanced Topics</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="limitations-of-tabular-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Limitations of tabular methods</h1>
+</div>
+</div>
+</section>
+<section id="limitations-of-tabular-methods-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Limitations of tabular methods</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>We have essentially “solved” the RL problem in part one of our lecture! <span class="fragment">But there are quite a few limitations when it comes to real-world systems:</span></p>
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The <strong>curse of dimensinoality</strong>: For large dimensions <span class="math inline">\(\abs{\Sc}\)</span> or <span class="math inline">\(\abs{\Ac}\)</span> (even moderate ones), the calculations become prohibitively expensive and convergence is very slow.</li>
+<li class="fragment"><strong>Continuous state spaces</strong>, i.e., infinitely many possible states <span class="math display">\[
+s\in\Sc\subseteq \R^n  \quad / \quad \abs{\Sc}=\infty. \qquad (\text{instead of}~\Sc = \set{s_1,\ldots,s_\abs{\Sc}})
+\]</span>
+<ul class="incremental">
+<li class="fragment"><strong>Example</strong>: The <em>mountain car</em>, with continous <span class="math inline">\(\Sc=[\submin{x},\submax{x}]\times[\submin{v},\submax{v}]\)</span> (minimal and maximal position <span class="math inline">\(x\)</span> and velocity <span class="math inline">\(v\)</span>), but finite <span class="math inline">\(\Ac=\set{-1,0,1}\)</span> (accelerate left, do nothing, accelerate right).</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:300px;">
+<img src="images/07-value-approximation/Mountain-car.gif" style="height:auto;width:100%;" aria-label="Mountain car [Source]." alt="images/07-value-approximation/Mountain-car.gif" />
+<figcaption>
+Mountain car [<a href="https://gymnasium.farama.org/environments/classic_control/mountain_car/">Source</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Continuous action spaces</strong>, i.e., infinitely many possible actions<span class="math inline">\(^*\)</span> <span class="math display">\[ a\in\Ac\subseteq \R^m  \quad / \quad \abs{\Ac}=\infty. \qquad (\text{instead of}~\Ac = \set{a_1,\ldots,a_\abs{\Ac}}) \]</span>
+<ul class="incremental">
+<li class="fragment"><strong>Example</strong>: The <em>ant</em>, with 27 continous state variables and 8 continuous action variables.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:250px;">
+<img src="images/07-value-approximation/Ant.gif" style="height:auto;width:100%;" aria-label="Ant [Source]." alt="images/07-value-approximation/Ant.gif" />
+<figcaption>
+Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="math inline">\(^*\)</span> For now, however, we will stick to finite action spaces.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="value-estimation-prediction-with-function-approximation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Value estimation / prediction with function approximation</h1>
+</div>
+</div>
+</section>
+<section id="value-estimation-prediction-with-function-approximation-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Value estimation / prediction with function approximation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">From now on, we will introduce function approximators for the quantities of interest.</li>
+<li class="fragment">For the value function, this means that we’re looking for <span class="math display">\[ V_\theta(s) \approx V^\pi(s).\]</span>
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(V_\theta(s)\)</span> may be a linear model, i.e., <span class="math display">\[ V_\theta(s) = \sum_{k=1}^d \theta_k \psi_k(s) = \theta_1 \psi_1(s) + \ldots + \theta_d \psi_d(s), \]</span></li>
+<li class="fragment">but also a linear model such as a deep neural network.</li>
+</ul></li>
+<li class="fragment">The weight vector <span class="math inline">\(\theta\in\R^d\)</span> typically is of lower dimension <span class="math inline">\(d\)</span> than the state space <span class="math inline">\(\Sc\)</span>: <span class="math inline">\(d \ll  \abs{\Sc}.\)</span>
+<ul class="incremental">
+<li class="fragment">Otherwise this exercise would be pointless!</li>
+<li class="fragment">This obviously holds for continuous state spaces, but also for very large yet finite-dimensinoal state spaces.</li>
+</ul></li>
+</ul>
+</div>
+<div class="platzhalter">
+<div class="fragment">
+<div id="a-note-on-the-state-space-dimension" class="definition">
+<h3>A note on the state space dimension</h3>
+<p>We use <span class="math inline">\(n\)</span> to denote the number of state variables, but this does not mean that we need to have <span class="math inline">\(n=\infty\)</span> for continuous state spaces. A state space is finite if each state variable <span class="math inline">\(s_k\)</span> is an element of a finite set, whereas it is continous, if at least one <span class="math inline">\(s_1,\ldots,s_n\)</span> is a continuous variable.</p>
+</div>
+</div>
+<div class="fragment">
+<div id="global-impact-of-experience" class="definition">
+<h3>Global impact of experience</h3>
+<p>Updates due to new experience lead to updates in our model parameter <span class="math inline">\(\phi\)</span>. This means that <em>we modify our value estimate for many states</em>, in contrast to tabular methods where we update individual states only.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> We will use subscript greek letters (e.g., <span class="math inline">\(\theta\)</span> or <span class="math inline">\(\phi\)</span>) to indicate the trainable parameters.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-objective" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Prediction objective</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">In the tabular case a specific prediction objective was not needed:
+<ul class="incremental">
+<li class="fragment">The learned value function could exactly match the true value.</li>
+<li class="fragment">The value estimate at each state was decoupled from other states.</li>
+</ul></li>
+<li class="fragment">Due to global impact of experience, we need to define an accuracy metric on the entire state space: the <strong>RL prediction goal</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="definition-value-error-ve" class="definition">
+<h3>Definition: Value error (VE)</h3>
+<p>The RL prediction objective is defined as the mean squared value error <span class="math display">\[ \overline{VE}(\theta) = \int_\Sc \mu(s) \big(V^\pi(s) - V_\theta(s)\big)^2 \ds. \]</span> Here, <span class="math inline">\(\mu(s)\geq 0\)</span> is the <em>state distribution</em>, with <span class="math inline">\(\int_\Sc \mu(s)\ds = 1\)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Challenge</strong>:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The true value <span class="math inline">\(V^\pi(s)\)</span> is unknown in most tasks!</li>
+<li class="fragment">We need to find ways to estimate <span class="math inline">\(V^\pi(s)\)</span> from experience.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-on-policy-prediction-objective" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The on-policy prediction objective</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">For prediction we will <strong>focus entirely on the on-policy case</strong>.</li>
+<li class="fragment">Hence, <span class="math inline">\(\mu(s)\)</span> is the on-policy distribution under the current policy <span class="math inline">\(\pi\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="on-policy-prediction-objective" class="definition">
+<h3>On policy prediction objective</h3>
+<p>As <span class="math inline">\(\overline{VE}(\theta)\)</span> is the expected error, we can use <em>Monte Carlo sampling</em> to estimate it:</p>
+<p><span class="math display">\[\begin{equation} J(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \overline{VE}(\theta). \label{eq:VAL_J}\end{equation}\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Goal</strong>: find the optimal value estimate <span class="math inline">\(V_{\theta^*}\)</span> by optimization: <span class="math display">\[\theta^* = \arg\min_\theta J(\theta).\]</span></p>
+</div>
+</div>
+<div class="platzhalter">
+<div class="fragment">
+<p><strong>Challenges</strong>:</p>
+</div>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">The true value <span class="math inline">\(V^\pi(s)\)</span> is unknown in most tasks!</li>
+<li class="fragment">The function approximator <span class="math inline">\(V_\theta(s)\)</span> needs to be able to approximate <span class="math inline">\(V^\pi(s)\)</span>.</li>
+<li class="fragment">Training:</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">If <span class="math inline">\(V_\theta(s)\)</span> is a linear model: convex optimization problem.
+<ul class="incremental">
+<li class="fragment">The “easy” case: local optimum = global optimum, uniquely defined.</li>
+</ul></li>
+<li class="fragment">If <span class="math inline">\(V_\theta(s)\)</span> is nonlinear model: nonlinear optimization problem.
+<ul class="incremental">
+<li class="fragment">The “hard” case: many local optima with no guarantee to locate the global one.</li>
+<li class="fragment">Training may diverge, advanced optimization techniques are very important!</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> <strong>Off-policy prediction</strong>: <em>importance sampling</em> to transform the sampled value estimates from the behavior to the target policy.<span class="math inline">\(\qquad\quad\)</span><br />
+<span class="math inline">\(\Rightarrow\)</span> Increases the prediction variance; in combination with generalization errors due to function approximation: large risk of diverging.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="gradient-based-prediction" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Gradient-based prediction</h1>
+</div>
+</div>
+</section>
+<section id="incremental-weight-updates" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Incremental weight updates</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Now that we have an objective <span class="math inline">\(J(\theta)\)</span> (Eq. <span class="math inline">\(\eqref{eq:VAL_J}\)</span>) we would like to optimize for, let’s use gradient descent with learning rate <span class="math inline">\(\alpha\)</span>: <span class="math display">\[\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.\]</span></li>
+<li class="fragment">What’s the problem here?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We often only have a single sample. (Or, instead, we would like to perform an update after a single sample.)</span><br />
+</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="sgd-based-parameter-update" class="definition">
+<h3>SGD-based parameter update</h3>
+<p>Given a new sample <span class="math inline">\(s_t\)</span> and its (for now exact) value <span class="math inline">\(V^\pi(s_t)\)</span>, we can update our current weight vector <span class="math inline">\(\iterate{\theta}{t}\)</span> by using <strong>stochastic gradient descent</strong> (<strong>SGD</strong>) with: <span class="math display">\[\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha\nabla \rbracket{\cbracket{V^\pi(s_t) - V_\theta(s_t)}^2} \fragment{=\iterate{\theta}{t} + \alpha\rbracket{V^\pi(s_t) - V_\theta(s_t)} \nabla V_\theta(s_t).} \label{eq:VAL_SGD-update} \end{equation}\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question</strong>: Should we follow <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> to opimality?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> No!</span> <span class="fragment">We are optimizing for a single sample <span class="math inline">\(\rightarrow\)</span> overfitting.</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Take a single, small step only, then collect new experience.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bootstrapping-the-true-value" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Bootstrapping the true value</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective .</p>
+<p><span class="fragment">What can we do?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Use an estimate <span class="math inline">\(U_t\)</span> for <span class="math inline">\(V^\pi(s_t)\)</span> that we can compute from experience!</span></p>
+<p><span class="fragment"><strong>Possible options for estimates</strong>:</span></p>
+<div class="fragment">
+<div id="unbiased-estimates-of-vpis_t" class="definition">
+<h3>Unbiased estimates of <span class="math inline">\(V^\pi(s_t)\)</span></h3>
+<p>Monte Carlo estimates for <span class="math inline">\(g_t\)</span>, sample from entire trajectories.</p>
+</div>
+</div>
+<div class="fragment">
+<div id="bootstrapped-estimates-of-vpis_t" class="definition">
+<h3>Bootstrapped estimates of <span class="math inline">\(V^\pi(s_t)\)</span></h3>
+<ul>
+<li>The Dynamic Programming target <span class="math display">\[V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
+<li>TD targets (e.g., TD(0)) <span class="math display">\[ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> Inserting the bootstrapped versions into <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> does not yield a true gradient descent method, as we are ignoring the parametric dependency of the target on <span class="math inline">\(\theta\)</span> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>. More on this on the next slides.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="algorithm-gradient-monte-carlo-value-estimation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Algorithm: Gradient Monte Carlo value estimation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="algorithm-gradient-monte-carlo-algorithm-for-estimating-v_theta-approx-vpi" class="definition">
+<h3>Algorithm: Gradient Monte Carlo algorithm for estimating <span class="math inline">\(V_\theta \approx V^\pi\)</span></h3>
+<p><em>Input</em>:</p>
+<ul>
+<li>The current policy <span class="math inline">\(\pi\)</span></li>
+<li>a differentiable, parameter-dependent function <span class="math inline">\(V_\theta: \Sc \to \R\)</span></li>
+<li>learning rate <span class="math inline">\(\alpha\)</span></li>
+</ul>
+<p><em>Initialize</em>: Value function weights <span class="math inline">\(\theta\in\R^d\)</span> arbitrarily<br />
+</p>
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> Calculate the every-visit returns <span class="math inline">\(g_t\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nabla V_\theta(s_t)\)</span></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Direct transfer from the tabular case to function approximation.</li>
+<li class="fragment">Only change: The entry-based update (<span class="math inline">\(V(s_t) = \mathsf{average}(\ell(s_t))\)</span>) is replaced by the SGD update for <span class="math inline">\(\theta\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="semi-gradient-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Semi-gradient methods</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">If bootstrapping is applied, the true target <span class="math inline">\(V^\pi(s_t)\)</span> is approximated by a target depending on the estimate <span class="math inline">\(V_\theta(s_t)\)</span>.</li>
+<li class="fragment">If <span class="math inline">\(V_\theta(s_t)\)</span> does not fit <span class="math inline">\(V^\pi(s_t)\)</span> (which it does not before convergence), then the update target becomes a <em>biased estimate</em>.
+<ul class="incremental">
+<li class="fragment">For example, in the TD(0) case, we get for <span class="math inline">\(\eqref{eq:VAL_J}\)</span>: <span class="math display">\[J(\theta) = \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2.\]</span></li>
+<li class="fragment">Taking the gradient of the single-sample version for <span class="math inline">\(J(\theta)\)</span> yields: <span class="math-incremental"><span class="math display">\[\begin{align*} \theta ~\gets~ &amp;\theta - \frac{1}{2} \alpha\nabla \rbracket{\cbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)}^2} \\
+&amp;= \theta + \alpha \rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)}~ \textcolor{red}{\nabla\rbracket{\gamma V_\theta(s_{k+1}) - V_\theta(s_t)}} \\
+&amp;\neq\theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \qquad\qquad \nabla V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
+\end{align*}\]</span></span></li>
+<li class="fragment">Application of Eq. <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> is still very common.</li>
+<li class="fragment">These appraoches are known as <strong>semi-gradients</strong> because they do not approximate the actual gradient.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="td0-semi-gradient-update-of-theta" class="definition">
+<h3>TD(0) semi-gradient update of <span class="math inline">\(\theta\)</span></h3>
+<p><span class="math display">\[\begin{equation} \theta \gets\theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \nabla V_\theta(s_t). \label{eq:VAL_TDsemigradient} \end{equation}\]</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> Even though widely applied, there are no convergence guarantees for semi-gradient methods <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="algorithm-semi-gradient-td0-value-estimation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Algorithm: Semi-gradient TD(0) value estimation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
+<div id="algorithm-semi-gradient-td0-for-estimating-v_theta-approx-vpi" class="definition">
+<h3>Algorithm: Semi-gradient TD(0) for estimating <span class="math inline">\(V_\theta \approx V^\pi\)</span></h3>
+<p><em>Input</em>:</p>
+<ul>
+<li>The current policy <span class="math inline">\(\pi\)</span></li>
+<li>a differentiable, parameter-dependent function <span class="math inline">\(V_\theta: \Sc \to \R\)</span></li>
+<li>learning rate <span class="math inline">\(\alpha\)</span></li>
+</ul>
+<p><em>Initialize</em>: Value function weights <span class="math inline">\(\theta\in\R^d\)</span> arbitrarily<br />
+</p>
+<p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
+<span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_0\)</span><br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
+<span class="math inline">\(\quad\quad\)</span> Apply action <span class="math inline">\(a_t\sim \pi\agivenb{\cdot}{s_t}\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \nabla V_\theta(s_t)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\mathsf{terminal}\)</span> <strong>then</strong> STOP</p>
+</div>
+<div class="fragment">
+<div id="note-n-step-version-tdn" class="definition">
+<h3>Note: <span class="math inline">\(n\)</span>-step version TD(n)</h3>
+<p>The above algorithm can be extended towards <span class="math inline">\(n\)</span>-step bootstrapping by replacing the TD(0) target <span class="math inline">\(r_k + \gamma V_\theta(s_{k+1})\)</span> with the <span class="math inline">\(n\)</span>-step bootstrapped return <span class="math display">\[ \begin{align*} g_{t:t+n} = &amp;r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &amp;+ \gamma^{n-1} r_{k+n} + V_{\theta}(s_{t+n}) . \end{align*} \]</span> The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when <span class="math inline">\(T-t&lt;n\)</span>).</p>
+<p>For details, see <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ch. 9.4)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="batch-learning" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Batch learning</h1>
+</div>
+</div>
+</section>
+<section id="batch-learning-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Batch learning</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">As discussed during the TD learning lecture, training on individual samples can be slow.</li>
+<li class="fragment">This also applies to SGD-based updates with bootstrapping.</li>
+<li class="fragment">Alternative: Batch learning methods</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="mini-batch-semi-gradient-td0-with-experience-replay" class="definition">
+<h3>Mini-batch semi-gradient TD(0) with experience replay</h3>
+<p>Based on a dataset <span class="math inline">\(\Dc=\set{(s_0, V^\pi(s_0)),\ldots,(s_N, V^\pi(s_N))}\)</span>, repeat</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Sample uniformly <span class="math inline">\(b\)</span> state-value pairs from experience (so-called mini batches), i.e., <span class="math inline">\(\Bc=\set{(s_i, V^\pi(s_i))}_{i=1}^b \subset\Dc\)</span>: <span class="math display">\[(s_i, V^\pi(s_i)) \sim\Dc.\]</span></li>
+<li class="fragment">Apply (semi) SGD update step: <span class="math display">\[ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nabla V_{\iterate{\theta}{k}}(s_i).\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Remarks</strong>:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Universally applicable: <span class="math inline">\(V_{\theta}\)</span> can be any differentiable function.</li>
+<li class="fragment">The true target <span class="math inline">\(V^\pi\)</span> is usually approximated by MC or TD targets.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-what-you-have-learned" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary / what you have learned</h1>
+</div>
+</div>
+</section>
+<section id="summary-what-you-have-learned-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary / what you have learned</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>To cover unfeasible large or continuous state spaces <strong>function approximation</strong> is required.</li>
+<li><strong>On-policy prediction</strong> is straightforward with function approximation:
+<ul>
+<li>Transfer of incremental learning from the tabular case to <strong>gradient descent for <span class="math inline">\(\theta\)</span></strong>.</li>
+<li><strong>Stochastic gradient descent</strong> allows step-by-step based updates.</li>
+</ul></li>
+<li>Gradient-based prediction is <strong>not risk free</strong> (especially non-linear case):
+<ul>
+<li>challenging optimization problems (descent directions, learning rates, etc.),</li>
+<li>local optima vs. global optimum.</li>
+</ul></li>
+<li>If <strong>bootstrapping</strong> is applied, the update target depends on <span class="math inline">\(\theta\)</span>.
+<ul>
+<li>True gradient becomes computationally more complex.</li>
+<li><strong>Semi-gradient</strong> methods reduce computational burden at accuracy costs.</li>
+</ul></li>
+<li><strong>Batch learning</strong> is often more efficient for training.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>References</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Sutton1998" class="csl-entry">
+Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<code class="sourceCode markdown" style="display:none;"></code>
+
+    </div>
+  </div>
+  
+  <script src="support/vendor/videojs/video.min.js"></script>
+  <script src="support/vendor/chartjs/chart.umd.js"></script>
+  <script src="support/plugins/quizzer/wordcloud2.js"></script>
+  <script src="support/plugins/quizzer/d3-sankey.min.js"></script>
+  <script type="module" src="support/components/custom-dialog.js"></script>
+  <script type="module" src="./support/js/color-scheme.js"></script>
+
+<script type="module">
+  // import Reveal and all plugins
+  import Reveal from './support/vendor/reveal/dist/reveal.esm.js';
+  import deckerPlugin from './support/plugins/decker/decker.js';
+  import uiAnchorsPlugin from './support/plugins/decker/ui-anchors.js'
+  import mathPlugin from './support/plugins/math/math.js';
+  import whiteboardPlugin from './support/plugins/whiteboard/whiteboard.js';
+  import sagePlugin from './support/plugins/sage/sage.js';
+  import searchPlugin from './support/plugins/search/search.js';
+  import zoomPlugin from './support/plugins/zoom/zoom.js';
+  import printPlugin from './support/plugins/print/print.js';
+  import jinglesPlugin from './support/plugins/jingles/jingles.js';
+  import quizPlugin from './support/plugins/quiz/quiz.js';
+  import quizWuePlugin from './support/plugins/quiz-wue/quiz-wue.js';
+  import quizzerPlugin from './support/plugins/quizzer/quizzer.js'
+  import explainPlugin from './support/plugins/explain/explain.js';
+  import chartsPlugin from './support/plugins/charts/charts.js';
+  import menuPlugin from './support/plugins/menu/menu.js';
+  import feedbackPlugin from './support/plugins/feedback/feedback.js';
+  import notesPlugin from './support/vendor/reveal/plugin/notes/notes.esm.js';
+      import a11yPlugin from './support/plugins/a11y/a11y.js';
+  import handoutPlugin from './support/plugins/handout/handout.js';
+  import chattyPlugin from './support/plugins/chatty/chatty.js';
+
+  let revealConfig = { 
+    // reveal configuration (see https://revealjs.com/config/)
+    ...Decker.meta.reveal,
+
+    // plugin configuration
+    math: { mathjax: String.raw`support/vendor/mathjax/`, ...Decker.meta.math },
+    chart: Decker.meta.chart,
+    menu: Decker.meta.menu,
+    explain: Decker.meta.explain,
+    feedback: Decker.meta.feedback || Decker.meta["decker-engine"],
+    jingles: Decker.meta.jingles,
+    whiteboard: Decker.meta.whiteboard,
+    
+    // list of plugins
+    plugins: [
+      deckerPlugin,
+      uiAnchorsPlugin,
+      sagePlugin,
+      mathPlugin,
+      chartsPlugin,
+      whiteboardPlugin,
+      searchPlugin,
+      zoomPlugin,
+      printPlugin,
+      jinglesPlugin,
+      quizPlugin,
+      quizWuePlugin,
+      quizzerPlugin,
+      explainPlugin,
+      menuPlugin,
+      chattyPlugin,
+      feedbackPlugin,
+      notesPlugin,
+              a11yPlugin,
+      handoutPlugin
+    ]
+  };
+
+  Reveal.initialize(revealConfig);
+</script>
+  
+
+</body>
+</html>

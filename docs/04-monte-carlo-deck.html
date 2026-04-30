@@ -485,7 +485,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_t \notin \{s_0,\ldots,s_{t-1}\}\)</span>: <span class="math inline">\(\qquad\)</span> (<span style="color: red;"><em>that’s the first-visit condition</em></span>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
@@ -520,7 +520,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}\)</span> <span class="math inline">\(\qquad\)</span> (<span style="color: red;"><em>only difference to first-visit</em></span>)<br />
 <span class="math inline">\(\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
@@ -782,7 +782,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em><span style="color: red;">(or until <span class="math inline">\(\pi\)</span> converges)</span></em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
@@ -854,7 +854,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
@@ -1971,7 +1971,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Choose <span class="math inline">\(s_0\in\Sc\)</span> and <span class="math inline">\(a_0\in\Ac\)</span> randomly such that all pairs have probability <span class="math inline">\(&gt;0\)</span><br />
 <span class="math inline">\(\quad\)</span> Generate a sequence <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=1}^{T_k}\)</span> starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span>:<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span><br />
@@ -2422,7 +2422,7 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span>, <span class="math inline">\(w \gets 1\)</span><br />
 <span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
@@ -2467,7 +2467,7 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span>, <span class="math inline">\(w \gets 1\)</span><br />
 <span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
-<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t \in \{T_k-1,T_k-2,T_k-3,\ldots,0\}\)</span>:<br />
+<span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
