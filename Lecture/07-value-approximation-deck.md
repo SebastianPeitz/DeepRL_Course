@@ -52,7 +52,7 @@ We have essentially "solved" the RL problem in part one of our lecture! [But the
 
 ::: columns-7-3
 ::: incremental
-- The **curse of dimensinoality**: For large dimensions $\abs{\Sc}$ or $\abs{\Ac}$ (even moderate ones), the calculations become prohibitively expensive and convergence is very slow.
+- The **curse of dimensionality**: For large dimensions $\abs{\Sc}$ or $\abs{\Ac}$ (even moderate ones), the calculations become prohibitively expensive and convergence is very slow.
 - **Continuous state spaces**, i.e., infinitely many possible states
 $$
 s\in\Sc\subseteq \R^n  \quad / \quad \abs{\Sc}=\infty. \qquad (\text{instead of}~\Sc = \set{s_1,\ldots,s_\abs{\Sc}})
@@ -99,12 +99,12 @@ $^*$ For now, however, we will stick to finite action spaces.
 - From now on, we will introduce function approximators for the quantities of interest.
 - For the value function, this means that we're looking for 
 $$ V_\theta(s) \approx V^\pi(s).$$
-  - $V_\theta(s)$ may be a linear model, i.e.,
+  - $V_\theta(s)$ may be a *linear model*, i.e.,
   $$ V_\theta(s) = \sum_{k=1}^d \theta_k \psi_k(s) = \theta_1 \psi_1(s) + \ldots + \theta_d \psi_d(s), $$
-  - but also a linear model such as a deep neural network.
+  - but also a *nonlinear model* such as a deep neural network.
 - The weight vector $\theta\in\R^d$ typically is of lower dimension $d$ than the state space $\Sc$: $d \ll  \abs{\Sc}.$
   - Otherwise this exercise would be pointless!
-  - This obviously holds for continuous state spaces, but also for very large yet finite-dimensinoal state spaces.
+  - This obviously holds for continuous state spaces, but also for very large yet finite-dimensional state spaces.
 :::
 
 ::: platzhalter
@@ -128,7 +128,7 @@ Updates due to new experience lead to updates in our model parameter $\phi$. Thi
 :::
 
 ::: footer
-:bulb: We will use subscript greek letters (e.g., $\theta$ or $\phi$) to indicate the trainable parameters.
+:bulb: We will use greek letters (e.g., $\theta$ or $\phi$) to indicate the trainable parameters.
 :::
 
 # Prediction objective
@@ -222,7 +222,7 @@ $\Rightarrow$ Increases the prediction variance; in combination with generalizat
 - Now that we have an objective $J(\theta)$ (Eq. \eqref{eq:VAL_J}) we would like to optimize for, let's use gradient descent with learning rate $\alpha$:
 $$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.$$
 - What's the problem here?\
-[$\Rightarrow$ We often only have a single sample. (Or, instead, we would like to perform an update after a single sample.)]{.fragment}\
+[$\Rightarrow$ We often only have a *single sample*. (Or, instead, we would like to perform an update after a single sample.)]{.fragment}\
 :::
 
 ::: fragment
@@ -235,9 +235,9 @@ $$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alp
 :::
 
 ::: fragment
-**Question**: Should we follow \eqref{eq:VAL_SGD-update} to opimality?\
+**Question**: Should we follow \eqref{eq:VAL_SGD-update} to optimality?\
 [$\Rightarrow$ No!]{.fragment} 
-[We are optimizing for a single sample $\rightarrow$ overfitting.]{.fragment}\
+[We are optimizing for a single sample $\rightarrow$ **overfitting**.]{.fragment}\
 [$\Rightarrow$ Take a single, small step only, then collect new experience.]{.fragment} 
 :::
 :::
@@ -246,7 +246,7 @@ $$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alp
 
 ::: small
 
-Challenge 1. remains: We do not know $V^\pi(s_t)$ which we need for our prediction objective \eqref\label{eq:VAL_J}.
+Challenge 1. remains: We do not know $V^\pi(s_t)$ which we need for our prediction objective \eqref{eq:VAL_J}.
 
 [What can we do?]{.fragment}
 [$\Rightarrow$ Use an estimate $U_t$ for $V^\pi(s_t)$ that we can compute from experience!]{.fragment} 
@@ -265,8 +265,10 @@ Monte Carlo estimates for $g_t$, sample from entire trajectories.
 ::: definition
 ### Bootstrapped estimates of $V^\pi(s_t)$
 
+::: incremental
   - The Dynamic Programming target $$V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s'\in\Sc} p\agivenb{s'}{s_t, a} \left[ r + \gamma V_\theta(s') \right].$$
   - TD targets (e.g., TD(0)) $$ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].$$
+:::
 :::
 :::
 :::
@@ -383,7 +385,7 @@ For details, see [@Sutton1998{}, Ch. 9.4].
 
 ------------------------------------------------------------------------------
 
-# Batch learning
+# Batch learning / experience replay
 
 ::: small
 ::: incremental

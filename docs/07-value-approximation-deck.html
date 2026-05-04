@@ -296,7 +296,7 @@ approximation</title>
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The <strong>curse of dimensinoality</strong>: For large dimensions <span class="math inline">\(\abs{\Sc}\)</span> or <span class="math inline">\(\abs{\Ac}\)</span> (even moderate ones), the calculations become prohibitively expensive and convergence is very slow.</li>
+<li class="fragment">The <strong>curse of dimensionality</strong>: For large dimensions <span class="math inline">\(\abs{\Sc}\)</span> or <span class="math inline">\(\abs{\Ac}\)</span> (even moderate ones), the calculations become prohibitively expensive and convergence is very slow.</li>
 <li class="fragment"><strong>Continuous state spaces</strong>, i.e., infinitely many possible states <span class="math display">\[
 s\in\Sc\subseteq \R^n  \quad / \quad \abs{\Sc}=\infty. \qquad (\text{instead of}~\Sc = \set{s_1,\ldots,s_\abs{\Sc}})
 \]</span>
@@ -369,13 +369,13 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <li class="fragment">From now on, we will introduce function approximators for the quantities of interest.</li>
 <li class="fragment">For the value function, this means that we’re looking for <span class="math display">\[ V_\theta(s) \approx V^\pi(s).\]</span>
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(V_\theta(s)\)</span> may be a linear model, i.e., <span class="math display">\[ V_\theta(s) = \sum_{k=1}^d \theta_k \psi_k(s) = \theta_1 \psi_1(s) + \ldots + \theta_d \psi_d(s), \]</span></li>
-<li class="fragment">but also a linear model such as a deep neural network.</li>
+<li class="fragment"><span class="math inline">\(V_\theta(s)\)</span> may be a <em>linear model</em>, i.e., <span class="math display">\[ V_\theta(s) = \sum_{k=1}^d \theta_k \psi_k(s) = \theta_1 \psi_1(s) + \ldots + \theta_d \psi_d(s), \]</span></li>
+<li class="fragment">but also a <em>nonlinear model</em> such as a deep neural network.</li>
 </ul></li>
 <li class="fragment">The weight vector <span class="math inline">\(\theta\in\R^d\)</span> typically is of lower dimension <span class="math inline">\(d\)</span> than the state space <span class="math inline">\(\Sc\)</span>: <span class="math inline">\(d \ll  \abs{\Sc}.\)</span>
 <ul class="incremental">
 <li class="fragment">Otherwise this exercise would be pointless!</li>
-<li class="fragment">This obviously holds for continuous state spaces, but also for very large yet finite-dimensinoal state spaces.</li>
+<li class="fragment">This obviously holds for continuous state spaces, but also for very large yet finite-dimensional state spaces.</li>
 </ul></li>
 </ul>
 </div>
@@ -396,7 +396,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 <div class="footer">
-<p><span class="emoji" data-emoji="bulb">💡</span> We will use subscript greek letters (e.g., <span class="math inline">\(\theta\)</span> or <span class="math inline">\(\phi\)</span>) to indicate the trainable parameters.</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> We will use greek letters (e.g., <span class="math inline">\(\theta\)</span> or <span class="math inline">\(\phi\)</span>) to indicate the trainable parameters.</p>
 </div>
 </div>
 </div>
@@ -525,7 +525,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <ul class="incremental">
 <li class="fragment">Now that we have an objective <span class="math inline">\(J(\theta)\)</span> (Eq. <span class="math inline">\(\eqref{eq:VAL_J}\)</span>) we would like to optimize for, let’s use gradient descent with learning rate <span class="math inline">\(\alpha\)</span>: <span class="math display">\[\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.\]</span></li>
 <li class="fragment">What’s the problem here?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We often only have a single sample. (Or, instead, we would like to perform an update after a single sample.)</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We often only have a <em>single sample</em>. (Or, instead, we would like to perform an update after a single sample.)</span><br />
 </li>
 </ul>
 </div>
@@ -536,8 +536,8 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 <div class="fragment">
-<p><strong>Question</strong>: Should we follow <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> to opimality?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> No!</span> <span class="fragment">We are optimizing for a single sample <span class="math inline">\(\rightarrow\)</span> overfitting.</span><br />
+<p><strong>Question</strong>: Should we follow <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> to optimality?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> No!</span> <span class="fragment">We are optimizing for a single sample <span class="math inline">\(\rightarrow\)</span> <strong>overfitting</strong>.</span><br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Take a single, small step only, then collect new experience.</span></p>
 </div>
 </div>
@@ -555,7 +555,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective .</p>
+<p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective <span class="math inline">\(\eqref{eq:VAL_J}\)</span>.</p>
 <p><span class="fragment">What can we do?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Use an estimate <span class="math inline">\(U_t\)</span> for <span class="math inline">\(V^\pi(s_t)\)</span> that we can compute from experience!</span></p>
 <p><span class="fragment"><strong>Possible options for estimates</strong>:</span></p>
 <div class="fragment">
@@ -567,10 +567,12 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="fragment">
 <div id="bootstrapped-estimates-of-vpis_t" class="definition">
 <h3>Bootstrapped estimates of <span class="math inline">\(V^\pi(s_t)\)</span></h3>
-<ul>
-<li>The Dynamic Programming target <span class="math display">\[V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
-<li>TD targets (e.g., TD(0)) <span class="math display">\[ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The Dynamic Programming target <span class="math display">\[V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
+<li class="fragment">TD targets (e.g., TD(0)) <span class="math display">\[ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -711,10 +713,10 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 </section>
-<section id="batch-learning-1" class="slide level1">
+<section id="batch-learning-experience-replay" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Batch learning</h1>
+<h1>Batch learning / experience replay</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">

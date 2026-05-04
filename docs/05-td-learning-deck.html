@@ -983,6 +983,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <p><span class="fragment"><strong>Why is MC learning faster? Wouldn’t we expect TD(0) to be stronger?</strong></span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Because this is a rather simple case where we find the target relatively quickly with high probability.</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We then update entire trajectories, not just the last field we saw before the target.</span></p>
+<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Also, we started with a poor initializaiton for <span class="math inline">\(V\)</span>.</span></p>
 </div>
 </div>
 </div>
@@ -1025,7 +1026,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <p><strong>Convergence</strong> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></p>
 <ul>
 <li>towards <span class="math inline">\(Q^*\)</span> with probability one if all tuples <span class="math inline">\((s,a)\)</span> are visited infinitely often and the step-size condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span> is satisfied.</li>
-<li>towards <span class="math inline">\(\pi^*\)</span> if the policy is GLIE.</li>
+<li>towards <span class="math inline">\(\pi^*\)</span> if the policy is GLIE (<strong>G</strong>reedy in the <strong>L</strong>imit with <strong>I</strong>nfinite <strong>E</strong>xploration).</li>
 </ul>
 </div>
 <p><span class="fragment"><strong><em>Key question</em></strong>: how do we select <span class="math inline">\(a_{t+1}\)</span>?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <strong>On-policy versus off policy!</strong></span></p>
@@ -1161,7 +1162,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <li class="fragment">All rewards are -1, except
 <ul class="incremental">
 <li class="fragment">the goal <span class="math inline">\(G\)</span> has <span class="math inline">\(r=0\)</span>,</li>
-<li class="fragment">the cliff has <span class="math inline">\(r=-100\)</span> and leads back to <span class="math inline">\(S\)</span>.#</li>
+<li class="fragment">the cliff has <span class="math inline">\(r=-100\)</span> and leads back to <span class="math inline">\(S\)</span>.</li>
 </ul></li>
 <li class="fragment">The policy is <span class="math inline">\(\epsilon\)</span>-greedy with <span class="math inline">\(\epsilon=0.1\)</span></li>
 </ul>
@@ -1359,7 +1360,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Maximization over sampled values is used implicitly as an estimate of the maximum value.</li>
-<li class="fragment">This issue is called maximization bias.</li>
+<li class="fragment">This issue is called <strong>maximization bias</strong>.</li>
 </ul>
 </div>
 <p><span class="fragment">Small example:</span></p>
@@ -3222,7 +3223,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <div class="small">
 <div id="definition-n-step-state-value-prediction-target" class="definition">
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-value prediction target</h3>
-<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + V_{t+n-1}(s_{t+n}) . \]</span></p>
+<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + V_{t+n-1}(s_{t+n}) . \]</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -3348,7 +3349,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -3358,7 +3359,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>For <span class="math inline">\(n\)</span>-step expected SARSA, the update is similar but we’re considering the expected value at <span class="math inline">\(t+n\)</span>: <span class="math display">\[ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 \]</span></p>
 </div>

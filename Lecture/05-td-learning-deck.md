@@ -401,6 +401,8 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 
 [$\Rightarrow$ We then update entire trajectories, not just the last field we saw before the target.]{.fragment}
 
+[$\Rightarrow$ Also, we started with a poor initializaiton for $V$.]{.fragment}
+
 :::
 :::
 :::
@@ -437,7 +439,7 @@ $$
 **Convergence** [@Sutton1998]
 
 - towards $Q^*$ with probability one if all tuples $(s,a)$ are visited infinitely often and the step-size condition \eqref{eq:stepsize_criterion} is satisfied.
-- towards $\pi^*$ if the policy is GLIE.
+- towards $\pi^*$ if the policy is GLIE (**G**reedy in the **L**imit with **I**nfinite **E**xploration).
 :::
 
 [***Key question***: how do we select $a_{t+1}$?]{.fragment} [$\Rightarrow$ **On-policy versus off policy!**]{.fragment}
@@ -549,7 +551,7 @@ $\quad\quad$ $t \gets t+1$\
 - Usual Gridworld setting.
 - All rewards are -1, except 
   - the goal $G$ has $r=0$,
-  - the cliff has $r=-100$ and leads back to $S$.#
+  - the cliff has $r=-100$ and leads back to $S$.
 - The policy is $\epsilon$-greedy with $\epsilon=0.1$
 :::
 
@@ -642,7 +644,7 @@ All control algorithms discussed so far involve *maximization operations*:
 
 ::: incremental
 - Maximization over sampled values is used implicitly as an estimate of the maximum value.
-- This issue is called maximization bias.
+- This issue is called **maximization bias**.
 :::
 
 [Small example:]{.fragment}
@@ -753,7 +755,7 @@ $$ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). $$
 ### Definition: $n$-step state-value prediction target
 
 The generalized $n$-step target is defined as:
-$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + V_{t+n-1}(s_{t+n}) . $$
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + V_{t+n-1}(s_{t+n}) . $$
 :::
 
 ::: incremental
@@ -844,7 +846,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}$) is rewritten as:
 $$ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 $$
 :::
@@ -858,7 +860,7 @@ $$
 For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
 $$ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{k+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 $$
 :::
