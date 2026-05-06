@@ -96,7 +96,7 @@ Table: Lecture contents
 - What does it mean to have a perfect model on your training dataset $\Dtrain$, i.e., $L(\theta; \Dtrain) = 0$?\
 [$\Rightarrow$ we have simply memorized the data!]{.fragment}
 - Learning means that we get **good predictions on unseen data**:
-$$ \underbrace{L(\theta; \Dtest)}_{\text{in-sample error}} \approx \underbrace{L(\theta; \Dtrain)}_{\text{out-of-sample error}}. $$
+$$ \underbrace{L(\theta; \Dtest)}_{\text{out-of-sample error}} \approx \underbrace{L(\theta; \Dtrain)}_{\text{in-sample error}}. $$
 :::
 
 ::: fragment
@@ -349,11 +349,11 @@ Let's consider a very simple network with $x,y\in\R$ and two hidden layers with 
 
 $$ \stackrel{x}{\bigcirc} 
 \underbrace{
-\underbrace{\stackrel{\iterate{\theta}{1}}{\longrightarrow} \stackrel{\iterate{z}{1}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~1} 
+\underbrace{\stackrel{\theta_1}{\longrightarrow} \stackrel{\iterate{z}{1}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~1} 
 \stackrel{\iterate{x}{1}}{\bigcirc} 
-\underbrace{\stackrel{\iterate{\theta}{2}}{\longrightarrow} \stackrel{\iterate{z}{2}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~2} 
+\underbrace{\stackrel{\theta_2}{\longrightarrow} \stackrel{\iterate{z}{2}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~2} 
 \stackrel{\iterate{x}{2}}{\bigcirc} 
-\underbrace{\stackrel{\iterate{\theta}{3}}{\longrightarrow}}_{\text{Output\\ layer}}
+\underbrace{\stackrel{\theta_3}{\longrightarrow}}_{\text{Output\\ layer}}
 }_{\hat{y}=f_\theta(x)}
 \stackrel{\hat{y}}{\bigcirc} \stackrel{L}{\longrightarrow} \stackrel{\text{Loss}}{\bigcirc} $$ 
 <!-- \longleftarrow \stackrel{y}{\bigcirc} $$ -->
@@ -362,9 +362,9 @@ $$ \stackrel{x}{\bigcirc}
 ::: fragment
 $\quad$**In mathematical terms**
 
-[$$\begin{align*} \hat{y} &= \iterate{\theta}{3} \big( \iterate{x}{2} \big) \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{z}{2} \big) \big)} \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \iterate{x}{1} \big) \big) \big)} \\
-&= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \theta\big(\iterate{z}{1}\big) \big) \big) \big)
-\fragment{= \iterate{\theta}{3} \underbrace{\sigma\big(\iterate{\theta}{2} \overbrace{\sigma\big( \iterate{\theta}{1} x \big)}^{\text{Hidden\\ Layer}~1} \big)}_{\text{Hidden\\ Layer}~2}}
+[$$\begin{align*} \hat{y} &= \theta_3 \big( \iterate{x}{2} \big) \fragment{= \theta_3 \big( \sigma \big( \iterate{z}{2} \big) \big)} \fragment{= \theta_3 \big( \sigma \big( \theta_2 \big( \iterate{x}{1} \big) \big) \big)} \\
+&= \theta_3 \big( \sigma \big( \theta_2 \big( \theta\big(\iterate{z}{1}\big) \big) \big) \big)
+\fragment{= \theta_3 \underbrace{\sigma\big(\theta_2 \overbrace{\sigma\big( \theta_1 x \big)}^{\text{Hidden\\ Layer}~1} \big)}_{\text{Hidden\\ Layer}~2}}
  \end{align*}$$]{.math-incremental}
 :::
 :::
@@ -379,7 +379,7 @@ $$ \pdiff{L}{\theta_3} = \textcolor{red}{\underbrace{\pdiff{L}{\hat{y}}}_{=2(\ha
 $$ \pdiff{L}{\theta_2} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\pdiff{\iterate{z}{2}}{\theta_2}. $$]{.fragment}
 
 [$3.$ Gradient w.r.t. $\theta_1$:
-$$ \pdiff{L}{\theta_3} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma'}}\pdiff{\iterate{z}{1}}{\theta_1}. $$]{.fragment}
+$$ \pdiff{L}{\theta_1} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma'}}\pdiff{\iterate{z}{1}}{\theta_1}. $$]{.fragment}
 :::
 
 ::: fragment
@@ -497,7 +497,7 @@ Further considerations (**padding** \& **stride**) and additional steps (e.g., *
 
 # Neural network architectures
 
-![The neural network zoo [[Asimov Institute](https://www.asimovinstitute.org/neural-network-zoo/)].](images/06-deep-learning/NN-zoo.png){ width=1280px }
+![The neural network zoo [[Asimov Institute](https://www.asimovinstitute.org/neural-network-zoo/)].](images/06-deep-learning/NN-zoo2.png){ width=1280px }
 
 ------------------------------------------------------------------------------
 

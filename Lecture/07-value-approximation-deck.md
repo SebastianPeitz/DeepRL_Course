@@ -220,7 +220,7 @@ $\Rightarrow$ Increases the prediction variance; in combination with generalizat
 ::: small
 ::: incremental
 - Now that we have an objective $J(\theta)$ (Eq. \eqref{eq:VAL_J}) we would like to optimize for, let's use gradient descent with learning rate $\alpha$:
-$$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.$$
+$$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nablatheta \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.$$
 - What's the problem here?\
 [$\Rightarrow$ We often only have a *single sample*. (Or, instead, we would like to perform an update after a single sample.)]{.fragment}\
 :::
@@ -230,7 +230,7 @@ $$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbra
 ### SGD-based parameter update
 
 Given a new sample $s_t$ and its (for now exact) value $V^\pi(s_t)$, we can update our current weight vector $\iterate{\theta}{t}$ by using **stochastic gradient descent** (**SGD**) with:
-$$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha\nabla \rbracket{\cbracket{V^\pi(s_t) - V_\theta(s_t)}^2} \fragment{=\iterate{\theta}{t} + \alpha\rbracket{V^\pi(s_t) - V_\theta(s_t)} \nabla V_\theta(s_t).} \label{eq:VAL_SGD-update} \end{equation}$$
+$$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{V^\pi(s_t) - V_\theta(s_t)}^2} \fragment{=\iterate{\theta}{t} + \alpha\rbracket{V^\pi(s_t) - V_\theta(s_t)} \nablatheta V_\theta(s_t).} \label{eq:VAL_SGD-update} \end{equation}$$
 :::
 :::
 
@@ -299,7 +299,7 @@ $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ Calculate the every-visit returns $g_t$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
-$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nabla V_\theta(s_t)$
+$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablatheta V_\theta(s_t)$
 :::
 
 ::: incremental
@@ -315,11 +315,11 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nabla 
 - If bootstrapping is applied, the true target $V^\pi(s_t)$ is approximated by a target depending on the estimate $V_\theta(s_t)$.
 - If $V_\theta(s_t)$ does not fit $V^\pi(s_t)$ (which it does not before convergence), then the update target becomes a *biased estimate*.
   - For example, in the TD(0) case, we get for \eqref{eq:VAL_J}:
-  $$J(\theta) = \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2.$$
+  $$J(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
   - Taking the gradient of the single-sample version for $J(\theta)$ yields:
-  [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nabla \rbracket{\cbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)}^2} \\
-  &= \theta + \alpha \rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)}~ \textcolor{red}{\nabla\rbracket{\gamma V_\theta(s_{k+1}) - V_\theta(s_t)}} \\
-  &\neq\theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \qquad\qquad \nabla V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
+  [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
+  &= \theta + \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
+  &\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
   \end{align*}$$]{.math-incremental}
   - Application of Eq. \eqref{eq:VAL_SGD-update} is still very common.
   - These appraoches are known as **semi-gradients** because they do not approximate the actual gradient.
@@ -329,7 +329,7 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nabla 
 ::: definition
 ### TD(0) semi-gradient update of $\theta$
 
-$$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \nabla V_\theta(s_t). \label{eq:VAL_TDsemigradient} \end{equation}$$
+$$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t). \label{eq:VAL_TDsemigradient} \end{equation}$$
 :::
 :::
 
@@ -361,7 +361,7 @@ $\quad$ Initialize $s_0$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
 $\quad\quad$ Apply action $a_t\sim \pi\agivenb{\cdot}{s_t}$\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
-$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_k + \gamma V_\theta(s_{k+1}) - V_\theta(s_t)} \nabla V_\theta(s_t)$\
+$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t)$\
 $\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** STOP
 :::
 
@@ -369,8 +369,8 @@ $\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** STOP
 ::: definition
 ### Note: $n$-step version TD(n)
 
-The above algorithm can be extended towards $n$-step bootstrapping by replacing the TD(0) target $r_k + \gamma V_\theta(s_{k+1})$ with the $n$-step bootstrapped return 
-$$ \begin{align*} g_{t:t+n} = &r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &+ \gamma^{n-1} r_{k+n} + V_{\theta}(s_{t+n}) . \end{align*} $$
+The above algorithm can be extended towards $n$-step bootstrapping by replacing the TD(0) target $r_t + \gamma V_\theta(s_{t+1})$ with the $n$-step bootstrapped return 
+$$ \begin{align*} g_{t:t+n} = &r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &+ \gamma^{n} r_{t+n} + V_{\theta}(s_{t+n}) . \end{align*} $$
 The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when $T-t<n$).
 
 For details, see [@Sutton1998{}, Ch. 9.4].
@@ -404,7 +404,7 @@ Based on a dataset $\Dc=\set{(s_0, V^\pi(s_0)),\ldots,(s_N, V^\pi(s_N))}$, repea
 - Sample uniformly $b$ state-value pairs from experience (so-called mini batches), i.e., $\Bc=\set{(s_i, V^\pi(s_i))}_{i=1}^b \subset\Dc$:
 $$(s_i, V^\pi(s_i)) \sim\Dc.$$
 - Apply (semi) SGD update step:
-$$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nabla V_{\iterate{\theta}{k}}(s_i).$$
+$$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nablatheta V_{\iterate{\theta}{k}}(s_i).$$
 :::
 :::
 :::
@@ -420,13 +420,71 @@ $$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^
 
 ------------------------------------------------------------------------------
 
+# Least squares policy evaluation
+
+------------------------------------------------------------------------------
+
+# Linear modeling of value functions
+
+::: small
+::: incremental
+- Let's assume that we choose an approximation that is *linear* w.r.t. the weights $\theta$:
+$$ V_{\theta}(s) = \theta^\top \psi(s) = \sum_{k=1}^d \theta_k \psi_k(s) . $$
+- What's the gradient in this case?
+[$\Rightarrow$ it's simply the feature vector, $$\nablatheta V_\theta(s) = \nablatheta \theta^\top \psi(s) = \psi(s) .$$]{.fragment}
+- Our semi-gradient TD(0) update \eqref{eq:VAL_TDsemigradient} thus simply becomes 
+[$$\begin{align*} 
+\theta \gets &\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t) \\
+&= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})} \psi(s_{t}) \\
+&= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi_{t+1} - \theta^\top \psi_{t}} \psi_{t}
+\fragment{ = \theta + \alpha\rbracket{r_t + \theta^\top \cbracket{\gamma \psi_{t+1} - \psi_{t}}} \psi_{t},}
+\end{align*}$$]{.math-incremental}
+[where we have introduced $\psi_t$ for $\psi(s_t)$.]{.fragment}
+- Similarly, in **batch mode**, our bootstrapped version of the on-policy prediction objective \eqref{eq:VAL_J} becomes
+$$ J(\theta) = \sum_{t=0}^T \big(r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})\big)^2 \fragment{=\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 .} $$ 
+:::
+:::
+
+# Minimization of $J(\theta)$
+
+::: small
+::: columns-7-4
+::: incremental
+- Collect data: $$ y = \begin{bmatrix} r_0 \\ \vdots \\ r_{T-1} \end{bmatrix}, \qquad \Psi = \begin{bmatrix} \psi_0^\top - \gamma \psi_1^\top\\ \vdots \\ \psi_{T-1}^\top - \gamma \psi_T^\top \end{bmatrix}.$$
+- Loss function: 
+$$ J(\theta) =\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2 . $$
+- Optimal solution (a.k.a. **TD fixed point** [@Sutton1998{}, Sec. 9.4]): $$ \theta^* = (\Psi^\top \Psi)^{-1} \Psi^\top y = \Psi^\dagger y .$$
+- Estimated value function:
+$$ V_{\theta^*}(s) = {\theta^*}^\top \psi(s) = \sum_{k=1}^d \theta^*_k \psi_k(s) . $$
+:::
+
+::: platzhalter
+::: definition
+### Recall: Linear regression
+
+- Model: $\hat{y} = f_\Theta(x) = \Theta^\top x.$
+- Loss function $L(\Theta)$ (MSE):
+$$\begin{align*}
+\frac{1}{N} \sum_{k=1}^N \norm{\Theta^\top x_k - y_k}_2^2 =\frac{1}{N} \norm{X\Theta - Y}_F^2 .
+\end{align*}$$
+- Batch data:
+$$ X = \begin{pmatrix}  x_1^\top \\ \vdots \\ x_N^\top \end{pmatrix}, \quad  Y = \begin{pmatrix} y_1^\top \\ \vdots \\ y_N^\top \end{pmatrix}$$
+- Optimal solution ($\Theta^*$):
+$$ \Theta^* = (X^\top X)^{-1} X^\top Y = X^\dagger Y. $$
+:::
+:::
+:::
+:::
+
+------------------------------------------------------------------------------
+
 # Summary / what you have learned
 
 ------------------------------------------------------------------------------
 
 # Summary / what you have learned
 
-- To cover unfeasible large or continuous state spaces **function approximation** is required.
+- To cover large or continuous state spaces **function approximation** is required.
 - **On-policy prediction** is straightforward with function approximation:
   - Transfer of incremental learning from the tabular case to **gradient descent for $\theta$**.
   - **Stochastic gradient descent** allows step-by-step based updates.
@@ -437,6 +495,7 @@ $$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^
   - True gradient becomes computationally more complex.
   - **Semi-gradient** methods reduce computational burden at accuracy costs.
 - **Batch learning** is often more efficient for training.
+- **Linear models** can be trained in a single step using the pseudo-inverse.
 
 # References
 

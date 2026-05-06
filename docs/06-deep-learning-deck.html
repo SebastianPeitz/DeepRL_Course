@@ -2822,7 +2822,7 @@ The learning diagram <span class="citation">(<a href="#ref-Abu2012learning">Abu-
 <ul class="incremental">
 <li class="fragment">What does it mean to have a perfect model on your training dataset <span class="math inline">\(\Dtrain\)</span>, i.e., <span class="math inline">\(L(\theta; \Dtrain) = 0\)</span>?<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> we have simply memorized the data!</span></li>
-<li class="fragment">Learning means that we get <strong>good predictions on unseen data</strong>: <span class="math display">\[ \underbrace{L(\theta; \Dtest)}_{\text{in-sample error}} \approx \underbrace{L(\theta; \Dtrain)}_{\text{out-of-sample error}}. \]</span></li>
+<li class="fragment">Learning means that we get <strong>good predictions on unseen data</strong>: <span class="math display">\[ \underbrace{L(\theta; \Dtest)}_{\text{out-of-sample error}} \approx \underbrace{L(\theta; \Dtrain)}_{\text{in-sample error}}. \]</span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -3614,19 +3614,19 @@ The loss landscape of deep neural networks (with and without skip-connection) <s
 <p><strong>Symbolic</strong></p>
 <p><span class="math display">\[ \stackrel{x}{\bigcirc} 
 \underbrace{
-\underbrace{\stackrel{\iterate{\theta}{1}}{\longrightarrow} \stackrel{\iterate{z}{1}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~1} 
+\underbrace{\stackrel{\theta_1}{\longrightarrow} \stackrel{\iterate{z}{1}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~1} 
 \stackrel{\iterate{x}{1}}{\bigcirc} 
-\underbrace{\stackrel{\iterate{\theta}{2}}{\longrightarrow} \stackrel{\iterate{z}{2}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~2} 
+\underbrace{\stackrel{\theta_2}{\longrightarrow} \stackrel{\iterate{z}{2}}{\bigcirc} \stackrel{\sigma}{\longrightarrow}}_{\text{Hidden\\ Layer}~2} 
 \stackrel{\iterate{x}{2}}{\bigcirc} 
-\underbrace{\stackrel{\iterate{\theta}{3}}{\longrightarrow}}_{\text{Output\\ layer}}
+\underbrace{\stackrel{\theta_3}{\longrightarrow}}_{\text{Output\\ layer}}
 }_{\hat{y}=f_\theta(x)}
 \stackrel{\hat{y}}{\bigcirc} \stackrel{L}{\longrightarrow} \stackrel{\text{Loss}}{\bigcirc} \]</span> <!-- \longleftarrow \stackrel{y}{\bigcirc} $$ --></p>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\quad\)</span><strong>In mathematical terms</strong></p>
-<p><span class="math-incremental"><span class="math display">\[\begin{align*} \hat{y} &amp;= \iterate{\theta}{3} \big( \iterate{x}{2} \big) \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{z}{2} \big) \big)} \fragment{= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \iterate{x}{1} \big) \big) \big)} \\
-&amp;= \iterate{\theta}{3} \big( \sigma \big( \iterate{\theta}{2} \big( \theta\big(\iterate{z}{1}\big) \big) \big) \big)
-\fragment{= \iterate{\theta}{3} \underbrace{\sigma\big(\iterate{\theta}{2} \overbrace{\sigma\big( \iterate{\theta}{1} x \big)}^{\text{Hidden\\ Layer}~1} \big)}_{\text{Hidden\\ Layer}~2}}
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} \hat{y} &amp;= \theta_3 \big( \iterate{x}{2} \big) \fragment{= \theta_3 \big( \sigma \big( \iterate{z}{2} \big) \big)} \fragment{= \theta_3 \big( \sigma \big( \theta_2 \big( \iterate{x}{1} \big) \big) \big)} \\
+&amp;= \theta_3 \big( \sigma \big( \theta_2 \big( \theta\big(\iterate{z}{1}\big) \big) \big) \big)
+\fragment{= \theta_3 \underbrace{\sigma\big(\theta_2 \overbrace{\sigma\big( \theta_1 x \big)}^{\text{Hidden\\ Layer}~1} \big)}_{\text{Hidden\\ Layer}~2}}
  \end{align*}\]</span></span></p>
 </div>
 </div>
@@ -3634,7 +3634,7 @@ The loss landscape of deep neural networks (with and without skip-connection) <s
 <div class="grid-layout" style="grid-template-columns: 3fr 4fr 5fr;">
 <p><span class="fragment"><span class="math inline">\(1.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_3\)</span>: <span class="math display">\[ \pdiff{L}{\theta_3} = \textcolor{red}{\underbrace{\pdiff{L}{\hat{y}}}_{=2(\hat{y}-y)}}\pdiff{\hat{y}}{\theta_3}. \]</span></span></p>
 <p><span class="fragment"><span class="math inline">\(2.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_2\)</span>: <span class="math display">\[ \pdiff{L}{\theta_2} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma&#39;}}\pdiff{\iterate{z}{2}}{\theta_2}. \]</span></span></p>
-<p><span class="fragment"><span class="math inline">\(3.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_1\)</span>: <span class="math display">\[ \pdiff{L}{\theta_3} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma&#39;}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma&#39;}}\pdiff{\iterate{z}{1}}{\theta_1}. \]</span></span></p>
+<p><span class="fragment"><span class="math inline">\(3.\)</span> Gradient w.r.t. <span class="math inline">\(\theta_1\)</span>: <span class="math display">\[ \pdiff{L}{\theta_1} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma&#39;}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma&#39;}}\pdiff{\iterate{z}{1}}{\theta_1}. \]</span></span></p>
 </div>
 <div class="fragment">
 <p><span class="math inline">\(\Rightarrow\)</span> we propagate the loss <strong>back</strong> through the network, reusing most of the previous calculations!</p>
@@ -4192,7 +4192,7 @@ Stride [<a href="https://towardsdatascience.com/convolutional-neural-networks-ex
 <div class="box block">
 <div class="media">
 <figure class="image" style="height:auto;width:1280px;">
-<img src="images/06-deep-learning/NN-zoo.png" style="height:auto;width:100%;" aria-label="The neural network zoo [Asimov Institute]." alt="images/06-deep-learning/NN-zoo.png" />
+<img src="images/06-deep-learning/NN-zoo2.png" style="height:auto;width:100%;" aria-label="The neural network zoo [Asimov Institute]." alt="images/06-deep-learning/NN-zoo2.png" />
 <figcaption>
 The neural network zoo [<a href="https://www.asimovinstitute.org/neural-network-zoo/">Asimov Institute</a>].
 </figcaption>

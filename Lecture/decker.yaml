@@ -102,6 +102,7 @@ math:
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
     Yc: '{\mathcal{Y}}'
+    nablatheta: '{\nabla_{\mkern-6mu \theta\mkern+2mu}}'
     aprime: '{a^{\prime}}'
     sprime: '{s^{\prime}}'
     piprime: '{\pi^{\prime}}'

@@ -302,8 +302,8 @@
 <p>The main aspects of our previous two categories of methods:</p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Monte Carlo (MC): <strong>learning from experience</strong>, possibly without knowledge of a model, e.g., <em>MC prediction</em> with exploring starts: <span class="math display">\[Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].\]</span></li>
-<li class="fragment">Dynamic programming (DP): <strong>bootstrapping</strong> <span class="math inline">\(\Rightarrow\)</span> updating estimates based on estimates, e.g., <em>iterative policy evaluation</em>: <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></li>
+<li class="fragment">Monte Carlo (MC): <strong>learning from experience</strong>, possibly without knowledge of a model, e.g., <em>MC prediction</em> with exploring starts: <span class="math display">\[Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g_t - Q(s_t,a_t)\right].\]</span></li>
+<li class="fragment">Dynamic programming (DP): <strong>bootstrapping</strong> <span class="math inline">\(\Rightarrow\)</span> updating <span style="color: red;">estimates</span> based on <span style="color: red;">estimates</span>, e.g., <em>iterative policy evaluation</em>: <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></li>
 </ol>
 </div>
 <p><span class="fragment">The <strong>concept of temporal difference (TD) learning</strong> is to combine both:</span></p>
@@ -474,7 +474,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">In particular, <span class="math inline">\(\alpha_k = \frac{1}{k}\)</span> meets the condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span>.</li>
+<li class="fragment">In particular, <span class="math inline">\(\alpha_t = \frac{1}{t}\)</span> meets the condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span>.</li>
 <li class="fragment">TD(0) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it’s faster.</li>
 <li class="fragment">TD(0) can be more sensitive to poor initializations <span class="math inline">\(V_0(s)\)</span> compared to MC.</li>
 </ul>
@@ -721,7 +721,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 \end{align*}
 \]</span></span></p>
 <div class="fragment">
-<p>Convergence: no change in the estimate: <span class="math-incremental"><span class="math display">\[
+<p>Convergence: no change in the estimate, i.e., <span class="math-incremental"><span class="math display">\[
 \begin{align*}
 \alpha \left[g_t - V(s_t)\right] = g_t - V(s_t) &amp;= 0 &amp;&amp;\text{(MC)} \\
 \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] = r_t + \gamma V(s_{t+1}) - V(s_t) &amp;= 0 \qquad &amp;&amp;\text{(TD)}
@@ -751,14 +751,14 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Apply the previous equations first to <strong>state <span class="math inline">\(B\)</span></strong>. Since <span class="math inline">\(B\)</span> is a terminal state, <span class="math inline">\(V(s_{t+1}) = 0\)</span> and <span class="math inline">\(g_{t,k} = r_{t,k}\)</span> apply, i.e., the MC and TD updates are identical for <span class="math inline">\(B\)</span>: <span class="math-incremental"><span class="math display">\[
+<p>Apply the previous equations first to <strong>state <span class="math inline">\(\mathbf B\)</span></strong>. Since <span class="math inline">\(B\)</span> is a terminal state, <span class="math inline">\(V(s_{t+1}) = 0\)</span> and <span class="math inline">\(g_{t,k} = r_{t,k}\)</span> apply, i.e., the MC and TD updates are identical for <span class="math inline">\(B\)</span>: <span class="math-incremental"><span class="math display">\[
 \begin{align*}
 &amp;\text{MC}\big|_{s=B}~\text{:}\qquad \sum_{k=1}^K g_{t,k} - V(B) = 0 \qquad &amp;\Leftrightarrow \qquad V(B)=\frac{1}{K} \sum_{k=1}^K r_{t,k} = \frac{6}{8} = \frac{3}{4}, \\
 &amp;\text{TD}\big|_{s=B}~\text{:}\qquad \sum_{k=1}^K r_{t,k} - V(B) = 0 \qquad &amp;\Leftrightarrow \qquad V(B)=\frac{1}{K} \sum_{k=1}^K r_{t,k} = \frac{6}{8} = \frac{3}{4}.
 \end{align*}
 \]</span></span></p>
 <div class="fragment">
-<p>Now consider <strong>state <span class="math inline">\(A\)</span></strong>, where we have only one trajectory:</p>
+<p>Now consider <strong>state <span class="math inline">\(\mathbf A\)</span></strong>, where we have only one trajectory:</p>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">the instantaneous reward following <span class="math inline">\(A\)</span> is zero, and the return of that episode is also zero.</li>
@@ -790,10 +790,10 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <p>Where does this difference come from? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Without going into a detailed derivation:</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">MC batch learning converges to the least <strong>squares fit of the sampled returns</strong>: <span class="math display">\[ \sum_{k=1}^K\sum_{t=1^T} (g_{t,k} - V(s_{t,k}))^2. \]</span></li>
+<li class="fragment">MC batch learning converges to the least <strong>squares fit of the sampled returns</strong>: <span class="math display">\[ \sum_{k=1}^K\sum_{t=1}^T (g_{t,k} - V(s_{t,k}))^2. \]</span></li>
 <li class="fragment">TD batch learning converges to the <strong>maximum likelihood estimate</strong> such that <span class="math inline">\((\Sc,\Ac,p,r,\gamma)\)</span> explains the data with highest probability: <span class="math display">\[ \begin{align*} 
-\hat{p}\agivenb{s&#39;}{s,a} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1^T} \mathbb{1}\agivenb{s_{t+1,k} = s&#39;}{s_{t,k}=s,a_{t,k}=a},\\
-\hat{r} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1^T} \mathbb{1}(s_{t,k}=s,a_{t,k}=a)r_{t,k}.
+\hat{p}\agivenb{s&#39;}{s,a} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}\agivenb{s_{t+1,k} = s&#39;}{s_{t,k}=s,a_{t,k}=a},\\
+\hat{r} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}(s_{t,k}=s,a_{t,k}=a)r_{t,k}.
 \end{align*}\]</span></li>
 </ul>
 </div>
@@ -981,8 +981,8 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <p><br />
 </p>
 <p><span class="fragment"><strong>Why is MC learning faster? Wouldn’t we expect TD(0) to be stronger?</strong></span></p>
-<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Because this is a rather simple case where we find the target relatively quickly with high probability.</span></p>
-<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We then update entire trajectories, not just the last field we saw before the target.</span></p>
+<!-- [$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment} -->
+<p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We update entire trajectories, not just the last field we saw before the target.</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Also, we started with a poor initializaiton for <span class="math inline">\(V\)</span>.</span></p>
 </div>
 </div>
@@ -1131,7 +1131,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <li class="fragment">Q-learning is similar but directly estimates <span class="math inline">\(Q^*\)</span>.</li>
 <li class="fragment"><em>Off-policy update</em>, since the optimal action-value function is updated independent of a given behavior policy.</li>
 <li class="fragment">The policy still determines which state–action pairs are visited and updated.</li>
-<li class="fragment">Convergence with probability 1 to <span class="math inline">\(Q^*\)</span> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span> if
+<li class="fragment">Convergence with probability one to <span class="math inline">\(Q^*\)</span> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span> if
 <ul class="incremental">
 <li class="fragment">all state-action pairs continue to be visited,</li>
 <li class="fragment">a variant of the usual stochastic approximation conditions on the sequence of step-size parameters holds.</li>
@@ -1363,7 +1363,9 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <li class="fragment">This issue is called <strong>maximization bias</strong>.</li>
 </ul>
 </div>
-<p><span class="fragment">Small example:</span></p>
+<div class="fragment">
+<div id="small-example" class="definition">
+<h3>Small example:</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Consider a single state <span class="math inline">\(s\)</span> with multiple possible actions <span class="math inline">\(a\)</span>.</li>
@@ -1371,6 +1373,8 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <li class="fragment">The sampled estimates <span class="math inline">\(\hat{Q}(s, a)\)</span> are uncertain, i.e., randomly distributed. Some samples are above and below zero.</li>
 <li class="fragment">Consequence: The maximum of the estimate is positive!</li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3223,7 +3227,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <div class="small">
 <div id="definition-n-step-state-value-prediction-target" class="definition">
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-value prediction target</h3>
-<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + V_{t+n-1}(s_{t+n}) . \]</span></p>
+<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \gamma^{n+1} V_{t+n-1}(s_{t+n+1}) . \]</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -3349,7 +3353,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots +} r_{t+n} + \textcolor{red}{\gamma^{n+1} Q_{t+n-1}(s_{t+n+1},a_{t+n+1})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -3359,7 +3363,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>For <span class="math inline">\(n\)</span>-step expected SARSA, the update is similar but we’re considering the expected value at <span class="math inline">\(t+n\)</span>: <span class="math display">\[ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \textcolor{red}{\gamma^{n+1} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -5871,6 +5875,7 @@ The forward view. We decide how to update each state by looking forward to futur
 <li class="fragment">Implement this in a recursive fashion to save memory<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Introduce an <strong>eligibility trace</strong> <span class="math inline">\(z_t\)</span> denoting the importance of past events to the current state update: <span class="math display">\[z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 &amp; \text{if}~s_t \neq s \\ 1 &amp; \text{if}~s_t = s \end{cases}.\]</span></span></li>
 <li class="fragment">We additionally scale the update term by <span class="math inline">\(z(s)\)</span>, i.e., <span class="math inline">\(\alpha\cdot[ \mathsf{Target}(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}\)</span>. <span class="fragment">For example, <span class="math display">\[ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). \]</span></span></li>
+<li class="fragment">Instead of updating only one state-action pair <span class="math inline">\((s_t,a_t)\)</span> we update along the entire <em>trace</em> we have left.</li>
 </ul>
 </div>
 </div>
@@ -5899,13 +5904,17 @@ Simplified representation of updating an eligibility trace of an arbitrary state
 </div>
 </div>
 </div>
-<p><br />
-</p>
-<div class="fragment">
-<div class="footer">
-<p><span class="emoji" data-emoji="bulb">💡</span> More details can be found in <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Chapter 12)</span>.</p>
-</div>
-</div>
+<!-- \
+
+\
+
+\
+
+::: fragment
+::: footer
+:bulb: More details can be found in [@Sutton1998{}, Chapter 12].
+:::
+::: -->
 </div>
 </div>
 </div>

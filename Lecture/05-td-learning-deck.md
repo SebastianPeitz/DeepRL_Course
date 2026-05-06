@@ -57,8 +57,8 @@ The main aspects of our previous two categories of methods:
 
 ::: incremental
 1. Monte Carlo (MC): **learning from experience**, possibly without knowledge of a model, e.g., *MC prediction* with exploring starts:
-$$Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right].$$
-2. Dynamic programming (DP): **bootstrapping** $\Rightarrow$ updating estimates based on estimates, e.g., *iterative policy evaluation*:
+$$Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g_t - Q(s_t,a_t)\right].$$
+2. Dynamic programming (DP): **bootstrapping** $\Rightarrow$ updating [estimates]{style="color: red;"} based on [estimates]{style="color: red;"}, e.g., *iterative policy evaluation*:
 $$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
 :::
 
@@ -190,7 +190,7 @@ $$\begin{equation}
 :::
 
 ::: incremental
-- In particular, $\alpha_k = \frac{1}{k}$ meets the condition \eqref{eq:stepsize_criterion}.
+- In particular, $\alpha_t = \frac{1}{t}$ meets the condition \eqref{eq:stepsize_criterion}.
 - TD(0) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it's faster.
 - TD(0) can be more sensitive to poor initializations $V_0(s)$ compared to MC.
 :::
@@ -287,7 +287,7 @@ V(s_t) &\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] \qqu
 $$]{.math-incremental}
 
 ::: fragment
-Convergence: no change in the estimate:
+Convergence: no change in the estimate, i.e.,
 [$$
 \begin{align*}
 \alpha \left[g_t - V(s_t)\right] = g_t - V(s_t) &= 0 &&\text{(MC)} \\
@@ -310,7 +310,7 @@ $$]{.math-incremental}
 # The batch training AB example (3)
 
 ::: small
-Apply the previous equations first to **state $B$**. Since $B$ is a terminal state, $V(s_{t+1}) = 0$ and $g_{t,k} = r_{t,k}$ apply, i.e., the MC and TD updates are identical for $B$:
+Apply the previous equations first to **state $\mathbf B$**. Since $B$ is a terminal state, $V(s_{t+1}) = 0$ and $g_{t,k} = r_{t,k}$ apply, i.e., the MC and TD updates are identical for $B$:
 [$$
 \begin{align*}
 &\text{MC}\big|_{s=B}~\text{:}\qquad \sum_{k=1}^K g_{t,k} - V(B) = 0 \qquad &\Leftrightarrow \qquad V(B)=\frac{1}{K} \sum_{k=1}^K r_{t,k} = \frac{6}{8} = \frac{3}{4}, \\
@@ -319,7 +319,7 @@ Apply the previous equations first to **state $B$**. Since $B$ is a terminal sta
 $$]{.math-incremental}
 
 ::: fragment
-Now consider **state $A$**, where we have only one trajectory:
+Now consider **state $\mathbf A$**, where we have only one trajectory:
 
 ::: incremental
 - the instantaneous reward following $A$ is zero, and the return of that episode is also zero.
@@ -344,11 +344,11 @@ Where does this difference come from? [$\Rightarrow$ Without going into a detail
 
 ::: incremental
 - MC batch learning converges to the least **squares fit of the sampled returns**:
-$$ \sum_{k=1}^K\sum_{t=1^T} (g_{t,k} - V(s_{t,k}))^2. $$
+$$ \sum_{k=1}^K\sum_{t=1}^T (g_{t,k} - V(s_{t,k}))^2. $$
 - TD batch learning converges to the **maximum likelihood estimate** such that $(\Sc,\Ac,p,r,\gamma)$ explains the data with highest probability:
 $$ \begin{align*} 
-\hat{p}\agivenb{s'}{s,a} &= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1^T} \mathbb{1}\agivenb{s_{t+1,k} = s'}{s_{t,k}=s,a_{t,k}=a},\\
-\hat{r} &= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1^T} \mathbb{1}(s_{t,k}=s,a_{t,k}=a)r_{t,k}.
+\hat{p}\agivenb{s'}{s,a} &= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}\agivenb{s_{t+1,k} = s'}{s_{t,k}=s,a_{t,k}=a},\\
+\hat{r} &= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}(s_{t,k}=s,a_{t,k}=a)r_{t,k}.
 \end{align*}$$
 :::
 
@@ -397,9 +397,9 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 
 [**Why is MC learning faster? Wouldn't we expect TD(0) to be stronger?**]{.fragment}
 
-[$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment}
+<!-- [$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment} -->
 
-[$\Rightarrow$ We then update entire trajectories, not just the last field we saw before the target.]{.fragment}
+[$\Rightarrow$ We update entire trajectories, not just the last field we saw before the target.]{.fragment}
 
 [$\Rightarrow$ Also, we started with a poor initializaiton for $V$.]{.fragment}
 
@@ -534,7 +534,7 @@ $\quad\quad$ $t \gets t+1$\
 - Q-learning is similar but directly estimates $Q^*$.
 - *Off-policy update*, since the optimal action-value function is updated independent of a given behavior policy.
 - The policy still determines which state–action pairs are visited and updated.
-- Convergence with probability 1 to $Q^*$ [@Sutton1998] if 
+- Convergence with probability one to $Q^*$ [@Sutton1998] if 
   - all state-action pairs continue to be visited,
   - a variant of the usual stochastic approximation conditions on the sequence of step-size parameters holds.
 :::
@@ -647,13 +647,17 @@ All control algorithms discussed so far involve *maximization operations*:
 - This issue is called **maximization bias**.
 :::
 
-[Small example:]{.fragment}
+::: fragment
+::: definition
+### Small example:
 
 ::: incremental
 - Consider a single state $s$ with multiple possible actions $a$.
 - The true action values are all $Q(s, a) = 0$.
 - The sampled estimates $\hat{Q}(s, a)$ are uncertain, i.e., randomly distributed. Some samples are above and below zero.
 - Consequence: The maximum of the estimate is positive!
+:::
+:::
 :::
 :::
 
@@ -755,7 +759,7 @@ $$ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). $$
 ### Definition: $n$-step state-value prediction target
 
 The generalized $n$-step target is defined as:
-$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + V_{t+n-1}(s_{t+n}) . $$
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \gamma^{n+1} V_{t+n-1}(s_{t+n+1}) . $$
 :::
 
 ::: incremental
@@ -846,7 +850,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}$) is rewritten as:
 $$ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots +} r_{t+n} + \textcolor{red}{\gamma^{n+1} Q_{t+n-1}(s_{t+n+1},a_{t+n+1})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 $$
 :::
@@ -860,7 +864,7 @@ $$
 For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
 $$ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n} + \textcolor{red}{\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \textcolor{red}{\gamma^{n+1} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 $$
 :::
@@ -1023,6 +1027,7 @@ General idea:
 $$z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 & \text{if}~s_t \neq s \\ 1 & \text{if}~s_t = s \end{cases}.$$]{.fragment}
 - We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \mathsf{Target}(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}$. [For example,
 $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). $$]{.fragment}
+- Instead of updating only one state-action pair $(s_t,a_t)$ we update along the entire *trace* we have left.
 :::
 :::
 
@@ -1040,13 +1045,17 @@ $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1})
 :::
 :::
 
+<!-- \
+
+\
+
 \
 
 ::: fragment
 ::: footer
 :bulb: More details can be found in [@Sutton1998{}, Chapter 12].
 :::
-:::
+::: -->
 
 # Example: Different SARSA variants in Gridworld
 

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "04.05.2026 18:22"
+        "06.05.2026 13:51"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -1340,6 +1340,7 @@
                 "{{#1}^{(#2)}}",
                 2.0
             ],
+            "nablatheta": "{\\nabla_{\\mkern-6mu \\theta\\mkern+2mu}}",
             "ndiff": [
                 "{\\frac{\\mathrm{d}^{#3} #1}{\\mathrm{d} {#2}^{#3}}}",
                 3.0
