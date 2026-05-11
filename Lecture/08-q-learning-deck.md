@@ -249,7 +249,7 @@ x_i(s,a)&=\begin{cases} 1 & (s,a)\in\text{ tile \#}i \\ 0 & \text{otherwise} \en
 - Same off-policy strategy as in the *classical/tabular* Q learning algorithm:
 $$Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{a'\in\Ac} Q(s',a')- Q(s,a)\right].$$
 - Now: incremental learning using semi-gradients (Eq.\ \eqref{eq:DQL_Q_update}) and TD(0) bootstrapping:
-$$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in\Ac} Q_\theta(s',a') - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \end{equation} $$
+$$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in\Ac} Q_\theta(s',a') - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \label{eq:DQL_DQN-gradient} \end{equation} $$
 :::
 
 ::: columns-4-6
@@ -261,7 +261,7 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in
  \
  \
  \
-2. A **separate set of weights** $\theta'$ for the bootstrapped Q-target.
+2. A **separate set of weights** $\theta'$ for the bootstrapped Q-target (\eqref{eq:DQL_DQN-gradient} is **not** a gradient).
 :::
 :::
 
@@ -274,7 +274,7 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in
   - *Stabilize learning* by reducing the correlation between samples\
   $\Rightarrow$ sampling from a replay buffer leads to i.i.d.-like data.
 2. **Stabilization of learning**
-  - targets don’t change in inner loop.
+  - targets don’t change in inner loop
   $\Rightarrow$ well-defined learning problem.
 :::
 \
@@ -350,28 +350,25 @@ $$\theta \gets \theta + \alpha \sum_{i=1}^{\abs{\Bc}} \rbracket{y_i - Q_\theta(s
 ::: columns-9-3
 ::: platzhalter
 ::: incremental
-- Details in the [Farama Gymnasium](https://ale.farama.org/environments/pong/) description.
-- State $s$:
+- *State* $s$:
   - $210 \times 160$ pixels with $3$ channels each (RGB) and values $s_{i}\in\{0,\ldots,255\}$,
   - stacking of multiple frames,
   - some additional preprocessing.
-- Action $a$: $18$ actions in total, ($6$ buttons, some of which can be pushed at the same time).
-- Architecture for $Q_\theta$ [@Mnih2015humanlevelcontrol]:\
+- *Action* $a$: $18$ actions in total, ($6$ buttons, some of which can be pushed at the same time).
+- *Architecture* for $Q_\theta$ [@Mnih2015humanlevelcontrol]:\
 ![](images/08-deep-q-learning/Separate-action-output.svg){ width=130px }
 $\qquad$
 [![](images/08-deep-q-learning/DQN_Atari_Network.png){ width=600px }]{.fragment}
-- Loss function $L(\theta)$: *Huber loss* $L_\delta(\theta) = \begin{cases} \frac{1}{2}\theta^2, & \theta \leq \delta \\ \delta(\abs{\theta} - \frac{1}{2}\theta), & \text{otherwise} \end{cases}$.
-- Training: RMSProp descent algorithm.
+- *Loss function* $L(\theta)$: *Huber loss* $L_\delta(\theta) = \begin{cases} \frac{1}{2}\theta^2, & \theta \leq \delta \\ \delta(\abs{\theta} - \frac{1}{2}\theta), & \text{otherwise} \end{cases}$.
+- *Training*: RMSProp descent algorithm.
+- *Annealing* of the exploration rate: $\epsilon$ goes from $1$ to $0.1$ (or $0.05$) over the first $10^6$ frames.
 :::
 :::
 
 ::: platzhalter
-![](videos/08-deep-q-learning/DQN_Pong/pong.gif){ width=190px }
+![Pong setup: More details in the [Farama Gymnasium](https://ale.farama.org/environments/pong/) description.](videos/08-deep-q-learning/DQN_Pong/pong.gif){ width=190px }
 
 \
-
-\
-
 
 ![Huber loss ([Wikipedia](https://en.wikipedia.org/wiki/Huber_loss))](images/08-deep-q-learning/Huber_loss.svg){ width=250px }
 :::
@@ -412,15 +409,99 @@ $\qquad$
 
 ![Human-level control [@Mnih2015humanlevelcontrol]](images/08-deep-q-learning/DQN_Atari_Results.png){ width=850px }
 
-# Target networks \& alternative target networks (Polyak)
+# The general view of Q learning
+
+![Inspired by the Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
+
+::: small
+::: incremental
+- **DQN**: Processes 1 and 2 run at the same speed, process 2 is slower.
+- **Online Q learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
+  - Value or Q learning as in the last lecture, followed directly by a policy improvement step.
+  - Also similar to the value iteration algorithm from dynamic programming.
+- Many variations: data collection and eviction strategies, frequencies and repetitions of the individual process steps, ...
+:::
+:::
+
+------------------------------------------------------------------------------
+
+# DQN extensions \& modifications
+
+------------------------------------------------------------------------------
+
+# Alternative target networks (Polyak averaging)
+
+::: small
+::: incremental
+- Consider the DQN algorithm and separate it into three main components:
+  1. Data collection, i.e., store tuples $(s,a,r,s')$ in $\Dc$.
+  2. Improvement using mini batches $\Bc$ and a fixed target network, e.g., $\theta \gets \theta + \alpha \sum_{i=1}^{\abs{\Bc}} \rbracket{y_i - Q_\theta(s_i,a_i)} \nablatheta Q_\theta(s_i,a_i)$.
+  3. Update target network every $N_\theta$ steps: $\theta' \gets \theta$.
+- Let's visualize these steps (with $N_\theta=4$, even though it's usually much larger):
+![](images/08-deep-q-learning/Polyak-averaging.svg){ .embed width=850px }
+- The lag is different in different places! [This doesn't need to be a problem, but it feels *uneven*.]{.fragment}
+- Alternative: **Polyak averaging**. [In every step, perform the *linear interpolation* $$ \theta' \gets \tau\theta' + (1-\tau) \theta $$]{.fragment}
+- When initializing $\theta'=\theta$, this linear interpolation tends to work for nonlinear models (i.e., NNs) as well!
+:::
+:::
+
+::: fragment
+::: footer
+:bulb: Polyak averaging originates from optimization theory where in SGD, we update $\theta$ by averaging over recent iterates $\iterate{\theta}{t}, \iterate{\theta}{t-1}, \iterate{\theta}{t-2}, \ldots$.
+:::
+:::
 
 # Double Q networks
+
+::: small
+::: columns-5-5
+::: platzhalter
+Remember the *maximization bias* and double Q learning?\
+[$\Rightarrow$ Don't use same network to choose the action and estimate the value!]{.fragment}
+
+[**Double deep Q learning**: ]{.fragment}
+
+::: incremental
+- Just use the [current network]{style="color: blue;"} ($\theta$) to evaluate the action.
+- Still use the [target network]{style="color: red;"} ($\theta'$) to evaluate the value.
+$$y = r + \gamma \textcolor{red}{Q_{\theta'}}(s',\arg\max_{a} \textcolor{blue}{Q_\theta}(s',a))$$
+:::
+:::
+
+::: {.definition}
+### Algorithm: "Classical" Q-Learning.
+
+- Take $a_t$ ($\epsilon$-greedy on $Q_1 + Q_2$), observe $(r_t,s_{t+1})$
+- **if** $\mathsf{rand()} > 0.5$ **then**
+$$\begin{align*} 
+&y = r_t + \gamma \textcolor{red}{Q_2}(s_{t+1},\arg\max_{a} \textcolor{red}{Q_1}(s_{t+1},a))\\
+&Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[y - Q_1(s_t,a_t)\right] 
+\end{align*}$$
+- **else**: ...
+:::
+:::
+
+::: columns-6-4
+::: platzhalter
+\
+
+\
+[![[@vanHasselt2016ddqn]](images/08-deep-q-learning/DDQN-results1.png){ width=700px }]{.fragment}
+:::
+
+
+[![[@vanHasselt2016ddqn]](images/08-deep-q-learning/DDQN-results2.png){ width=600px }]{.fragment}
+:::
+
+:::
 
 # Prioritized experience replay
 
 # $n$-step returns
 
 # Some remarks on continuous actions
+
+# Some practical tips
 
 ------------------------------------------------------------------------------
 
@@ -510,110 +591,26 @@ Example: Pendulum on a cart [@Abdelwanis2026]
 :::
 :::
 
-<!-- ------------------------------------------------------------------------------
 
-# Function Approximation
 
 ------------------------------------------------------------------------------
 
-# Motivation
-
-- previously we were assuming that we can model everything by table loop-ups
-
-Problems:
-
-- real-world states can be continuous
-- often we cannot see all possible states
-
-Solution: Approximate value function, e.g. by
-
-- linear combination of features
-- decision trees
-- neural networks -> DeepRL !
-
-# Value Function Approximation
-- Represent state/state-action value function with a parametrized function
-
-# Linear Value Function Approximation
-
-Weighted linear combination of features:
-$$ \hat V^\pi(s;\boldsymbol{\theta}) = \boldsymbol{\phi}(s)^\top \boldsymbol{\theta}$$
-
-Optimization of objective (MSE):
-$$ J(\boldsymbol{\theta}) = \mathbb{E} \left[ \left(V^\pi(s) - \hat V^\pi(s;\boldsymbol{\theta}) \right)^2 \right] $$
-
-
-Gradient descent:
-$$ \Delta (\boldsymbol{\theta}) = - \frac{1}{2} \alpha \nabla_\boldsymbol{\theta} J(\boldsymbol{\theta}) $$
-
-Update rule:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(V^\pi(s) - \boldsymbol{\phi}(s)^\top \boldsymbol{\theta}\right) \boldsymbol{\phi}(s) \end{align*}$$ -->
-
-<!-- ------------------------------------------------------------------------------
-
-# Monte Carlo Value Function Approximation
+# Summary / what you have learned
 
 ------------------------------------------------------------------------------
 
-# Monte Carlo VFA
+# Summary / what you have learned
 
-- $G_t$ is a noisy but unbiased estimate of the true expected return $V^\pi(s_t)$
+- The procedures from the approximate prediction can be transferred to value-based control in a straightforward way.
+- Downside: the policy improvement theorem no longer applies in the approximate RL case.
+  - Control algorithms may diverge.
+  - Performance trade-offs between different parts of state-action space could emerge.
+- Off-policy batch learning approaches allow for efficient data usage.
+  - LSPI uses LS-SARSA on linear function approximation.
+  - DQN extends Q-learning on non-linear approximation with additional tweaks (experience replay, target networks,...).
+  - However, a prediction bias results (off-policy sampling distribution).
 
-Update rule:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(G_t - \boldsymbol{\phi}(s)^\top \boldsymbol{\theta}\right) \boldsymbol{\phi}(s) \end{align*}$$
-
-# Monte Carlo VFA: Convergence
-
-[Based on Marius Lindauer's lecture]
-
-Based on [Tsitsiklis and Van Roy. 1997](https://ieeexplore.ieee.org/document/580874).
-
-Define the mean squared error of a linear value function approximation for a particular policy $\pi$  relative to the true value as 
-$$\text{MSVE}(\boldsymbol{\theta}) = \sum_{s \in S} d(s) (V^\pi (s) - \hat{V}^\pi(s;\boldsymbol{\theta}))^2 $$
-where
-
-- $d(s)$: stationary distribution of $\pi$ in the true decision process
-- $\hat{V}^\pi(s;\boldsymbol{\theta}) = \boldsymbol{\phi}(s)^T\boldsymbol{\theta}$, a linear value function approximation
-
-Monte Carlo policy evaluation with VFA converges to the weights $\boldsymbol{\theta}_{MC}$ which has the minimum mean squared error possible:
-$$\text{MSVE}(\boldsymbol{\theta}_{MC}) = \min_{\boldsymbol{\theta}}\sum_{s \in S} d(s) (V^\pi (s) - \hat{V}^\pi(s;\boldsymbol{\theta}))^2 $$
-
-------------------------------------------------------------------------------
-
-# Temporal Difference Learning with Value Function Approximation
-
-------------------------------------------------------------------------------
-
-# TD-Learning with VFA
-
-Compute target using bootstrapping: $$r_t + \gamma \hat V^\pi(s_{t+1};\boldsymbol{\theta}) $$
-Since target is not updated, $\hat V^\pi(s_{t+1};\boldsymbol{\theta})$ is treated as a constant in the derivative.
-
-Update rule:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(r_t + \gamma \hat V^\pi(s_{t+1};\boldsymbol{\theta}) - \boldsymbol{\phi}(s)^\top \boldsymbol{\theta}\right) \boldsymbol{\phi}(s) \end{align*}$$
-
-# TD-Learning VFA: Convergence
-
-[Based on Marius Lindauer's lecture]
-
-TD(0) policy evaluation with VFA converges to weights $\boldsymbol{\theta}_{TD}$ which is a constant factor of the minimum mean squared error possible:
-$$\text{MSVE}(\boldsymbol{\theta}_{TD}) \leq \frac{1}{1-\gamma} \min_\boldsymbol{\theta}\sum_{s\in S} d(s) (V^\pi(s) - \hat{V}(s;\boldsymbol{\theta}))^2$$ -->
-
-<!-- # SARSA and Q-Learning with VFA
-
-[Based on Marius Lindauer's lecture]
-
-Similar to V(s), we can approximate Q(s,a):
-$$ \hat Q(s,a;\boldsymbol{\theta}) = \boldsymbol{\phi}(s,a)^\top \boldsymbol{\theta}$$
-
-Monte Carlo Update:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(\textcolor{green}{G_t} - \hat Q(s,a;\boldsymbol{\theta})\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
-
-SARSA with TD target:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(\textcolor{green}{r_t + \gamma \hat Q(s_{t+1},a_{t+1};\boldsymbol{\theta})} - \hat Q(s,a;\boldsymbol{\theta})\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
-
-Q-Learning with TD target:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(\textcolor{green}{r_t + \gamma \max_a \hat Q(s_{t+1},a;\boldsymbol{\theta})} - \hat Q(s,a;\boldsymbol{\theta})\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
+<!-- 
 
 ------------------------------------------------------------------------------
 
@@ -664,7 +661,7 @@ $$ p_i = | r_i + \gamma \max_{a' \in \Ac} Q(s_{i+1}, a'; \boldsymbol{\theta}^-) 
 - Update $p_i$ every update. $p_i$ for new tuples is set to the maximum value
 - One method: proportional (stochastic prioritization)
 $$ P(i) = \frac{p_i^\beta}{\sum_k p_k^\beta}$$
-- $\beta = 0$ yields random selections 
+- $\beta = 0$ yields random selections
 
 https://arxiv.org/pdf/1511.05952 -->
 

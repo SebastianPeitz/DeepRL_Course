@@ -353,7 +353,7 @@
 <div class="box block">
 <div class="small">
 <p>Recall the <strong>incremental update</strong> of the type we discussed for multi-armed bandits or for MC control<br />
-<span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\mathsf{NewEstimate} \gets \mathsf{OldEstimate} + StepSize \; [ \mathsf{Target} - \mathsf{OldEstimate} ]\)</span>: <span class="fragment"><span class="math display">\[
+<span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\mathsf{NewEstimate} \gets \mathsf{OldEstimate} + StepSize \; [ \target - \mathsf{OldEstimate} ]\)</span>: <span class="fragment"><span class="math display">\[
 \begin{equation}
 V(s_t) \gets V(s_t) + \alpha \left[g_t - V(s_t)\right]. \label{eq:TD_MC-update}
 \end{equation}
@@ -402,14 +402,14 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <h3>Algorithm: TD-based prediction.</h3>
 <p><em>Parameters</em>: Step size <span class="math inline">\(\alpha\in (0,1)\)</span><br />
 </p>
-<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span><br />
+<p><em>Initialize</em>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\terminal) = 0\)</span><br />
 </p>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> Sample action <span class="math inline">\(a_t \sim \pias\)</span> and apply<br />
 <span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(s_{t+1}\)</span> and <span class="math inline">\(r_{t}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right]\)</span> (Eq. <span class="math inline">\(\eqref{eq:TD_TD0-update}\)</span>)<br />
-<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is terminal <strong>then</strong> STOP</p>
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is terminal <strong>then</strong> <span class="math inline">\(\STOP\)</span></p>
 </div>
 <div class="footer">
 <p><span class="emoji" data-emoji="bulb">💡</span> The algorithm can directly be applied to the prediction of action-value functions.</p>
@@ -428,7 +428,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Using the target, we can define the <strong>TD error</strong><span class="math inline">\(^*\)</span> <span class="math inline">\(\delta\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the expression inside the bracket of Eq. <span class="math inline">\(\eqref{eq:TD_TD0-update}\)</span> we’re using to improve our estimate: <span class="math display">\[ \delta_t = \mathsf{target} - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). \]</span></span></p>
+<p>Using the target, we can define the <strong>TD error</strong><span class="math inline">\(^*\)</span> <span class="math inline">\(\delta\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the expression inside the bracket of Eq. <span class="math inline">\(\eqref{eq:TD_TD0-update}\)</span> we’re using to improve our estimate: <span class="math display">\[ \delta_t = \target - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). \]</span></span></p>
 <p><span class="fragment"><strong>Batch mode</strong>: Let’s assume that the TD(0) estimate of <span class="math inline">\(V(s)\)</span> does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):</span> <span class="math-incremental"><span class="math display">\[
 \begin{align*}
 \underbrace{g_t - V(s_t)}_{\text{MC error}} &amp;= r_{t}+\gamma g_{t+1} - V(s_t) \fragment{+\gamma V(s_{t+1}) - \gamma V(s_{t+1})}\\
@@ -1432,7 +1432,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_t \gets s_0\)</span>, <span class="math inline">\(t \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
 <span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t\)</span> using an <span class="math inline">\(\epsilon\)</span>-greedy policy on <span class="math inline">\(Q_1 + Q_2\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad~\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\mathsf{rand()} &gt; 0.5\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[r_t + \gamma Q_2(s_{t+1},\arg\max_{a} Q_1(s_{t+1},a))- Q_1(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> <strong>else</strong>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q_2(s_t,a_t) \gets Q_2(s_t,a_t) + \alpha \left[r_t + \gamma Q_1(s_{t+1},\arg\max_{a} Q_2(s_{t+1},a))- Q_2(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\mathsf{rand()} &gt; 0.5\)</span> <strong>then</strong> <span class="math inline">\(\quad\)</span> <span class="math display">\[Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[r_t + \gamma Q_2(s_{t+1},\arg\max_{a} Q_1(s_{t+1},a))- Q_1(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> <strong>else</strong>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q_2(s_t,a_t) \gets Q_2(s_t,a_t) + \alpha \left[r_t + \gamma Q_1(s_{t+1},\arg\max_{a} Q_2(s_{t+1},a))- Q_2(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span><br />
 </p>
 </div>
 </div>
@@ -3227,7 +3227,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <div class="small">
 <div id="definition-n-step-state-value-prediction-target" class="definition">
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-value prediction target</h3>
-<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \gamma^{n+1} V_{t+n-1}(s_{t+n+1}) . \]</span></p>
+<p>The generalized <span class="math inline">\(n\)</span>-step target is defined as: <span class="math display">\[ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} V_{t+n-1}(s_{t+n}) . \]</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -3265,20 +3265,20 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <div id="algorithm-n-step-td-for-estimating-v-approx-vpi." class="definition">
 <h3>Algorithm: <span class="math inline">\(n\)</span>-step TD for estimating <span class="math inline">\(V \approx V^\pi\)</span>.</h3>
 <p><strong>input</strong>. a policy <span class="math inline">\(\pi\)</span> to be evaluated, parameter: step size <span class="math inline">\(\alpha \in (0, 1]\)</span>, prediction steps <span class="math inline">\(n \in \Z^+\)</span>.<br />
-<strong>Initialize</strong>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\mathsf{terminal}) = 0\)</span>.<br />
+<strong>Initialize</strong>: <span class="math inline">\(V(s)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc\)</span>, <span class="math inline">\(V(\terminal) = 0\)</span>.<br />
 <strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> initialize and store <span class="math inline">\(s_0\)</span><br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(T \leftarrow \infty\)</span>, <span class="math inline">\(\tau \leftarrow 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t=1,2,3,\ldots\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(t&lt;T\)</span> <strong>then</strong><br />
 <span class="math inline">\(\quad\quad\quad\)</span> take action <span class="math inline">\(a_t \sim \pi\agivenb{\cdot}{s_t}\)</span>, observe and store <span class="math inline">\(s_{t+1}\)</span> and <span class="math inline">\(r_{t+1}\)</span><br />
-<span class="math inline">\(\quad\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\mathsf{terminal}\)</span> <strong>then</strong> <span class="math inline">\(T \leftarrow k + 1\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\terminal\)</span> <strong>then</strong> <span class="math inline">\(T \leftarrow k + 1\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\tau\leftarrow t-n-1\)</span> (<span class="math inline">\(\tau\)</span> is the time index for the estimate update)<br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\tau\geq 0\)</span> <strong>then</strong><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(g \leftarrow \sum_{k=\tau+1}^{\min(\tau + n,T)} \gamma^{k-\tau-1} r_k\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\tau + n &lt; T\)</span> <strong>then</strong> <span class="math inline">\(g \leftarrow g + \gamma^n V(s_{\tau+n})\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(V(s_\tau) \leftarrow V(s_\tau) + \alpha \left[g - V(s_{\tau})\right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\tau = T − 1\)</span> <strong>then</strong> <span class="math inline">\(\mathsf{STOP}\)</span></p>
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\tau = T − 1\)</span> <strong>then</strong> <span class="math inline">\(\STOP\)</span></p>
 </div>
 </div>
 </div>
@@ -3353,7 +3353,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots +} r_{t+n} + \textcolor{red}{\gamma^{n+1} Q_{t+n-1}(s_{t+n+1},a_{t+n+1})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -3363,7 +3363,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots +} r_{t+n} + \textc
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>For <span class="math inline">\(n\)</span>-step expected SARSA, the update is similar but we’re considering the expected value at <span class="math inline">\(t+n\)</span>: <span class="math display">\[ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \textcolor{red}{\gamma^{n+1} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -5874,7 +5874,7 @@ The forward view. We decide how to update each state by looking forward to futur
 <li class="fragment">Use <span class="math inline">\(λ\)</span>-weighted returns looking into the past.</li>
 <li class="fragment">Implement this in a recursive fashion to save memory<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Introduce an <strong>eligibility trace</strong> <span class="math inline">\(z_t\)</span> denoting the importance of past events to the current state update: <span class="math display">\[z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 &amp; \text{if}~s_t \neq s \\ 1 &amp; \text{if}~s_t = s \end{cases}.\]</span></span></li>
-<li class="fragment">We additionally scale the update term by <span class="math inline">\(z(s)\)</span>, i.e., <span class="math inline">\(\alpha\cdot[ \mathsf{Target}(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}\)</span>. <span class="fragment">For example, <span class="math display">\[ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). \]</span></span></li>
+<li class="fragment">We additionally scale the update term by <span class="math inline">\(z(s)\)</span>, i.e., <span class="math inline">\(\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}\)</span>. <span class="fragment">For example, <span class="math display">\[ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). \]</span></span></li>
 <li class="fragment">Instead of updating only one state-action pair <span class="math inline">\((s_t,a_t)\)</span> we update along the entire <em>trace</em> we have left.</li>
 </ul>
 </div>

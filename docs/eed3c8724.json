@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "06.05.2026 13:51"
+        "11.05.2026 20:21"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "6",
@@ -597,6 +597,9 @@
                 "{\\mathrm{Re}\\!\\left( #1 \\right)}",
                 1.0
             ],
+            "STOP": [
+                "{\\mathsf{STOP}}"
+            ],
             "Sc": "{\\mathcal{S}}",
             "Var": "{\\mathbb{E}}",
             "Vpi": "{V^\\pi}",
@@ -613,6 +616,15 @@
                 2.0
             ],
             "aprime": "{a^{\\prime}}",
+            "at": [
+                "{a_t}"
+            ],
+            "atp": [
+                "{a_{t+1}}"
+            ],
+            "break": [
+                "{\\mathsf{break}}"
+            ],
             "cbracket": [
                 "{\\left( #1 \\right)}",
                 1.0
@@ -661,11 +673,20 @@
                 "{\\left[ #1 \\right]}",
                 1.0
             ],
+            "rt": [
+                "{r_t}"
+            ],
             "set": [
                 "{\\left\\{ #1 \\right\\}}",
                 1.0
             ],
             "sprime": "{s^{\\prime}}",
+            "st": [
+                "{s_t}"
+            ],
+            "stp": [
+                "{s_{t+1}}"
+            ],
             "submax": [
                 "{{#1}_{\\mathsf{max}}}",
                 1.0
@@ -673,6 +694,12 @@
             "submin": [
                 "{{#1}_{\\mathsf{min}}}",
                 1.0
+            ],
+            "target": [
+                "{\\mathsf{target}}"
+            ],
+            "terminal": [
+                "{\\mathsf{terminal}}"
             ],
             "th": [
                 "{{#1}^{\\mathsf{th}}}",

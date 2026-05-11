@@ -221,7 +221,12 @@ approximation</title>
 <tr>
 <td align="center"></td>
 <td align="left"><strong>Basics &amp; tabular methods</strong></td>
-<td align="left">RL basics for finite state and action spaces of moderat sizes</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">1-5</td>
+<td align="left">Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning</td>
+<td align="left">RL basics in finite dimensions</td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -387,8 +392,8 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 <div class="fragment">
-<div id="global-impact-of-experience" class="definition">
-<h3>Global impact of experience</h3>
+<div id="blubb" class="definition">
+<h3 id="global-impact-of-experience">Global impact of experience</h3>
 <p>Updates due to new experience lead to updates in our model parameter <span class="math inline">\(\phi\)</span>. This means that <em>we modify our value estimate for many states</em>, in contrast to tabular methods where we update individual states only.</p>
 </div>
 </div>
@@ -464,11 +469,11 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div id="on-policy-prediction-objective" class="definition">
 <h3>On policy prediction objective</h3>
 <p>As <span class="math inline">\(\overline{VE}(\theta)\)</span> is the expected error, we can use <em>Monte Carlo sampling</em> to estimate it:</p>
-<p><span class="math display">\[\begin{equation} J(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \overline{VE}(\theta). \label{eq:VAL_J}\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation} L(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \overline{VE}(\theta). \label{eq:VAL_L}\end{equation}\]</span></p>
 </div>
 </div>
 <div class="fragment">
-<p><strong>Goal</strong>: find the optimal value estimate <span class="math inline">\(V_{\theta^*}\)</span> by optimization: <span class="math display">\[\theta^* = \arg\min_\theta J(\theta).\]</span></p>
+<p><strong>Goal</strong>: find the optimal value estimate <span class="math inline">\(V_{\theta^*}\)</span> by optimization: <span class="math display">\[\theta^* = \arg\min_\theta L(\theta).\]</span></p>
 </div>
 </div>
 <div class="platzhalter">
@@ -523,7 +528,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Now that we have an objective <span class="math inline">\(J(\theta)\)</span> (Eq. <span class="math inline">\(\eqref{eq:VAL_J}\)</span>) we would like to optimize for, let’s use gradient descent with learning rate <span class="math inline">\(\alpha\)</span>: <span class="math display">\[\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nablatheta \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.\]</span></li>
+<li class="fragment">Now that we have an objective <span class="math inline">\(L(\theta)\)</span> we would like to optimize for (Eq. <span class="math inline">\(\eqref{eq:VAL_L}\)</span>), let’s use <strong>gradient descent</strong> with learning rate <span class="math inline">\(\alpha\)</span>: <span class="math display">\[\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla L\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nablatheta \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.\]</span></li>
 <li class="fragment">What’s the problem here?<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We often only have a <em>single sample</em>. (Or, instead, we would like to perform an update after a single sample.)</span><br />
 </li>
@@ -555,7 +560,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective <span class="math inline">\(\eqref{eq:VAL_J}\)</span>.</p>
+<p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective <span class="math inline">\(\eqref{eq:VAL_L}\)</span>.</p>
 <p><span class="fragment">What can we do?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Use an estimate <span class="math inline">\(U_t\)</span> for <span class="math inline">\(V^\pi(s_t)\)</span> that we can compute from experience!</span></p>
 <p><span class="fragment"><strong>Possible options for estimates</strong>:</span></p>
 <div class="fragment">
@@ -636,8 +641,8 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <li class="fragment">If bootstrapping is applied, the true target <span class="math inline">\(V^\pi(s_t)\)</span> is approximated by a target depending on the estimate <span class="math inline">\(V_\theta(s_t)\)</span>.</li>
 <li class="fragment">If <span class="math inline">\(V_\theta(s_t)\)</span> does not fit <span class="math inline">\(V^\pi(s_t)\)</span> (which it does not before convergence), then the update target becomes a <em>biased estimate</em>.
 <ul class="incremental">
-<li class="fragment">For example, in the TD(0) case, we get for <span class="math inline">\(\eqref{eq:VAL_J}\)</span>: <span class="math display">\[J(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.\]</span></li>
-<li class="fragment">Taking the gradient of the single-sample version for <span class="math inline">\(J(\theta)\)</span> yields: <span class="math-incremental"><span class="math display">\[\begin{align*} \theta ~\gets~ &amp;\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
+<li class="fragment">For example, in the TD(0) case, we get for <span class="math inline">\(\eqref{eq:VAL_L}\)</span>: <span class="math display">\[L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.\]</span></li>
+<li class="fragment">Taking the gradient of the single-sample version for <span class="math inline">\(L(\theta)\)</span> yields: <span class="math-incremental"><span class="math display">\[\begin{align*} \theta ~\gets~ &amp;\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
 &amp;= \theta + \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
 &amp;\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
 \end{align*}\]</span></span></li>
@@ -689,12 +694,12 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <span class="math inline">\(\quad\quad\)</span> Apply action <span class="math inline">\(a_t\sim \pi\agivenb{\cdot}{s_t}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\mathsf{terminal}\)</span> <strong>then</strong> STOP</p>
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\mathsf{terminal}\)</span> <strong>then</strong> <span class="math inline">\(\STOP\)</span></p>
 </div>
 <div class="fragment">
 <div id="note-n-step-version-tdn" class="definition">
 <h3>Note: <span class="math inline">\(n\)</span>-step version TD(n)</h3>
-<p>The above algorithm can be extended towards <span class="math inline">\(n\)</span>-step bootstrapping by replacing the TD(0) target <span class="math inline">\(r_t + \gamma V_\theta(s_{t+1})\)</span> with the <span class="math inline">\(n\)</span>-step bootstrapped return <span class="math display">\[ \begin{align*} g_{t:t+n} = &amp;r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &amp;+ \gamma^{n} r_{t+n} + V_{\theta}(s_{t+n}) . \end{align*} \]</span> The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when <span class="math inline">\(T-t&lt;n\)</span>).</p>
+<p>The above algorithm can be extended towards <span class="math inline">\(n\)</span>-step bootstrapping by replacing the TD(0) target <span class="math inline">\(r_t + \gamma V_\theta(s_{t+1})\)</span> with the <span class="math inline">\(n\)</span>-step bootstrapped return <span class="math display">\[ \begin{align*} g_{t:t+n} = &amp;r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &amp;+ \gamma^{n-1} r_{t+n-1} + \gamma^n V_{\theta}(s_{t+n}) . \end{align*} \]</span> The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when <span class="math inline">\(T-t&lt;n\)</span>).</p>
 <p>For details, see <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ch. 9.4)</span>.</p>
 </div>
 </div>
@@ -735,7 +740,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Sample uniformly <span class="math inline">\(b\)</span> state-value pairs from experience (so-called mini batches), i.e., <span class="math inline">\(\Bc=\set{(s_i, V^\pi(s_i))}_{i=1}^b \subset\Dc\)</span>: <span class="math display">\[(s_i, V^\pi(s_i)) \sim\Dc.\]</span></li>
-<li class="fragment">Apply (semi) SGD update step: <span class="math display">\[ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nablatheta V_{\iterate{\theta}{k}}(s_i).\]</span></li>
+<li class="fragment">Apply (semi) SGD update step: <span class="math display">\[ \theta \gets \theta + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\theta}(s_i)} \nablatheta V_{\theta}(s_i).\]</span> <!-- $$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nablatheta V_{\iterate{\theta}{k}}(s_i).$$ --></li>
 </ul>
 </div>
 </div>
@@ -781,7 +786,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 &amp;= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi_{t+1} - \theta^\top \psi_{t}} \psi_{t}
 \fragment{ = \theta + \alpha\rbracket{r_t + \theta^\top \cbracket{\gamma \psi_{t+1} - \psi_{t}}} \psi_{t},}
 \end{align*}\]</span></span> <span class="fragment">where we have introduced <span class="math inline">\(\psi_t\)</span> for <span class="math inline">\(\psi(s_t)\)</span>.</span></li>
-<li class="fragment">Similarly, in <strong>batch mode</strong>, our bootstrapped version of the on-policy prediction objective <span class="math inline">\(\eqref{eq:VAL_J}\)</span> becomes <span class="math display">\[ J(\theta) = \sum_{t=0}^T \big(r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})\big)^2 \fragment{=\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 .} \]</span></li>
+<li class="fragment">Similarly, in <strong>batch mode</strong>, our bootstrapped version of the on-policy prediction objective <span class="math inline">\(\eqref{eq:VAL_L}\)</span> becomes <span class="math display">\[ L(\theta) = \sum_{t=0}^{T-1} \big(r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})\big)^2 \fragment{=\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 .} \]</span></li>
 </ul>
 </div>
 </div>
@@ -791,10 +796,10 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 </section>
-<section id="minimization-of-jtheta" class="slide level1">
+<section id="least-squares-td-learning-lstd" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Minimization of <span class="math inline">\(J(\theta)\)</span></h1>
+<h1>Least Squares TD learning (LSTD)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -803,7 +808,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Collect data: <span class="math display">\[ y = \begin{bmatrix} r_0 \\ \vdots \\ r_{T-1} \end{bmatrix}, \qquad \Psi = \begin{bmatrix} \psi_0^\top - \gamma \psi_1^\top\\ \vdots \\ \psi_{T-1}^\top - \gamma \psi_T^\top \end{bmatrix}.\]</span></li>
-<li class="fragment">Loss function: <span class="math display">\[ J(\theta) =\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2 . \]</span></li>
+<li class="fragment">Loss function: <span class="math display">\[ L(\theta) = \sum_{t=0}^{T-1} \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2 . \]</span></li>
 <li class="fragment">Optimal solution (a.k.a. <strong>TD fixed point</strong> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Sec. 9.4)</span>): <span class="math display">\[ \theta^* = (\Psi^\top \Psi)^{-1} \Psi^\top y = \Psi^\dagger y .\]</span></li>
 <li class="fragment">Estimated value function: <span class="math display">\[ V_{\theta^*}(s) = {\theta^*}^\top \psi(s) = \sum_{k=1}^d \theta^*_k \psi_k(s) . \]</span></li>
 </ul>
