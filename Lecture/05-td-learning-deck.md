@@ -92,7 +92,7 @@ $$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left
 # The general TD prediction update
 ::: small
 Recall the **incremental update** of the type we discussed for multi-armed bandits or for MC control\
-$\Rightarrow$ $\mathsf{NewEstimate} \gets \mathsf{OldEstimate} + StepSize \; [ \mathsf{Target} - \mathsf{OldEstimate} ]$:
+$\Rightarrow$ $\mathsf{NewEstimate} \gets \mathsf{OldEstimate} + StepSize \; [ \target - \mathsf{OldEstimate} ]$:
 [$$
 \begin{equation}
 V(s_t) \gets V(s_t) + \alpha \left[g_t - V(s_t)\right]. \label{eq:TD_MC-update}
@@ -133,14 +133,14 @@ $$
 
 *Parameters*: Step size $\alpha\in (0,1)$\
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\terminal) = 0$\
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ **for** $t = 0,1,\ldots,T$:\
 $\quad\quad$ Sample action $a_t \sim \pias$ and apply\
 $\quad\quad$ Observe $s_{t+1}$ and $r_{t}$\
 $\quad\quad$ $V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right]$ (Eq.\ \eqref{eq:TD_TD0-update})\
-$\quad\quad$ **if** $s_{t+1}$ is terminal **then** STOP
+$\quad\quad$ **if** $s_{t+1}$ is terminal **then** $\STOP$
 :::
 
 ::: footer
@@ -151,7 +151,7 @@ $\quad\quad$ **if** $s_{t+1}$ is terminal **then** STOP
 
 ::: small
 Using the target, we can define the **TD error**$^*$ $\delta$ [$\Rightarrow$ the expression inside the bracket of Eq.\ \eqref{eq:TD_TD0-update} we're using to improve our estimate:
-$$ \delta_t = \mathsf{target} - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). $$]{.fragment}
+$$ \delta_t = \target - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). $$]{.fragment}
 
 [**Batch mode**: Let's assume that the TD(0) estimate of $V(s)$ does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):]{.fragment}
 [$$
@@ -696,7 +696,7 @@ $$Q(s,a^*) \approx Q_2(s,a^*)=Q_2(s,\arg\max_{a\in\Ac} Q_1(s,a)).$$
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
 $\quad\quad$ Take action $a_t$ using an $\epsilon$-greedy policy on $Q_1 + Q_2$ and observe $(r_t,s_{t+1})$ $\qquad\qquad\qquad\qquad\qquad~$ \
-$\quad\quad$ **if** $\mathsf{rand()} > 0.5$:
+$\quad\quad$ **if** $\mathsf{rand()} > 0.5$ **then**
 $\quad$ $$Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[r_t + \gamma Q_2(s_{t+1},\arg\max_{a} Q_1(s_{t+1},a))- Q_1(s_t,a_t)\right]$$
 $\quad\quad$ **else**:
 $\quad$ $$Q_2(s_t,a_t) \gets Q_2(s_t,a_t) + \alpha \left[r_t + \gamma Q_1(s_{t+1},\arg\max_{a} Q_2(s_{t+1},a))- Q_2(s_t,a_t)\right]$$
@@ -759,7 +759,7 @@ $$ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). $$
 ### Definition: $n$-step state-value prediction target
 
 The generalized $n$-step target is defined as:
-$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \gamma^{n+1} V_{t+n-1}(s_{t+n+1}) . $$
+$$ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} V_{t+n-1}(s_{t+n}) . $$
 :::
 
 ::: incremental
@@ -790,20 +790,20 @@ $$ V_{t+n}(s_t) = V_{t+n-1}(s_t) + \alpha \left[ g_{t:t+n} - V_{t+n-1}(s_{t}) \r
 ### Algorithm: $n$-step TD for estimating $V \approx V^\pi$.
 
 **input**. a policy $\pi$ to be evaluated, parameter: step size $\alpha \in (0, 1]$, prediction steps $n \in \Z^+$.\
-**Initialize**: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$.\
+**Initialize**: $V(s)$ arbitrarily for $s \in \Sc$, $V(\terminal) = 0$.\
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ initialize and store $s_0$\
 $\quad$ $T \leftarrow \infty$, $\tau \leftarrow 0$\
 $\quad$ **for** $t=1,2,3,\ldots$\
 $\quad\quad$ **if** $t<T$ **then**\
 $\quad\quad\quad$ take action $a_t \sim \pi\agivenb{\cdot}{s_t}$, observe and store $s_{t+1}$ and $r_{t+1}$\
-$\quad\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** $T \leftarrow k + 1$\
+$\quad\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then** $T \leftarrow k + 1$\
 $\quad\quad$ $\tau\leftarrow t-n-1$ ($\tau$ is the time index for the estimate update)\
 $\quad\quad$ **if** $\tau\geq 0$ **then**\
 $\quad\quad\quad$ $g \leftarrow \sum_{k=\tau+1}^{\min(\tau + n,T)} \gamma^{k-\tau-1} r_k$\
 $\quad\quad\quad$ **if** $\tau + n < T$ **then** $g \leftarrow g + \gamma^n V(s_{\tau+n})$\
 $\quad\quad\quad$ $V(s_\tau) \leftarrow V(s_\tau) + \alpha \left[g - V(s_{\tau})\right]$\
-$\quad\quad$ **if** $\tau = T − 1$ **then** $\mathsf{STOP}$
+$\quad\quad$ **if** $\tau = T − 1$ **then** $\STOP$
 :::
 :::
 
@@ -850,7 +850,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}$) is rewritten as:
 $$ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots +} r_{t+n} + \textcolor{red}{\gamma^{n+1} Q_{t+n-1}(s_{t+n+1},a_{t+n+1})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 $$
 :::
@@ -864,7 +864,7 @@ $$
 For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
 $$ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n} r_{t+n} + \textcolor{red}{\gamma^{n+1} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 $$
 :::
@@ -1025,7 +1025,7 @@ General idea:
 - Implement this in a recursive fashion to save memory \
 [$\Rightarrow$ Introduce an **eligibility trace** $z_t$ denoting the importance of past events to the current state update:
 $$z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 & \text{if}~s_t \neq s \\ 1 & \text{if}~s_t = s \end{cases}.$$]{.fragment}
-- We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \mathsf{Target}(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}$. [For example,
+- We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}$. [For example,
 $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). $$]{.fragment}
 - Instead of updating only one state-action pair $(s_t,a_t)$ we update along the entire *trace* we have left.
 :::

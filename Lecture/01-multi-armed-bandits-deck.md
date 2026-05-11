@@ -228,11 +228,11 @@ Q_{t+1} &=& \frac{1}{t}\sum_{i=1}^t r_i \fragment{=\frac{1}{t}\left(r_t + \sum_{
 $$]{ .math-incremental }
 
 ::: fragment
-The expression *[ Target - OldEstimate ]* is an **error estimate**, used to steer us closer to the **target**.
+The expression $[ \target - \mathsf{OldEstimate} ]$ is an **error estimate**, used to steer us closer to the **target**.
 :::
 
 ::: fragment
-We will see a formulae of the type $$ \mathsf{NewEstimate} \leftarrow \mathsf{OldEstimate} + StepSize \; [ \mathsf{Target} - \mathsf{OldEstimate} ] $$ frequently from now on!
+We will see a formulae of the type $$ \mathsf{NewEstimate} \leftarrow \mathsf{OldEstimate} + StepSize \; [ \target - \mathsf{OldEstimate} ] $$ frequently from now on!
 :::
 
 :::

@@ -264,14 +264,14 @@ A more memory-efficient version (that tends to converge faster): [in-place updat
 *Input*: policy $\pi$\
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\terminal) = 0$\
 **while** (True):\
 $\quad$ $\Delta\gets 0$\
 $\quad$ **for** $s \in \Sc$:\
 $\quad\quad$ $V_{\mathsf{old}}(s) \gets V(s)$\
 $\quad\quad$ $V(s) \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
 $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
-$\quad$ **if** $\Delta < \theta$ **then** break
+$\quad$ **if** $\Delta < \theta$ **then** $\STOP$
 :::
 :::
 
@@ -516,7 +516,7 @@ function changes little from one policy to the next).
 ### Algorithm: Policy Iteration for estimating $\pi \approx \pi^*$.
 
 ::: incremental
-1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(\mathsf{terminal}) = 0$, small threshold $\theta > 0$\
+1. **Initialization**: $V(s)\in\R$ and $\pi(s)\in\Ac$ arbitrarily for all $s\in\Sc$, $V(\terminal) = 0$, small threshold $\theta > 0$\
 
 <!-- ::: columns-5-5 -->
 2. **Policy evaluation**:\
@@ -526,7 +526,7 @@ $\quad$ **for** $s \in \Sc$:\
 $\quad\quad$ $V_{\mathsf{old}} \gets V(s)$\
 $\quad\quad$ $V(s) \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
 $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}-V(s)})$\
-$\quad$ **if** $\Delta < \theta$ **then** break
+$\quad$ **if** $\Delta < \theta$ **then** $\STOP$
 
 3. **Policy improvement**:\
 $\mathsf{flag}_{\mathsf{stable}} = true$\
@@ -589,14 +589,14 @@ V^*(s) = \max_{a\in\Ac} \ExpC{r+\gamma V^*(s')}{s,a} = \max_{a\in\Ac} \sum_{s'\i
 
 *Parameters*: a small threshold $\theta > 0$ determining accuracy of estimation
 
-*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\mathsf{terminal}) = 0$\
+*Initialize*: $V(s)$ arbitrarily for $s \in \Sc$, $V(\terminal) = 0$\
 **while** ($\Delta > \theta$):\
 $\quad$ $\Delta \gets 0$\
 $\quad$ **for** $s \in \Sc$:\
 $\quad\quad$ $V_{\mathsf{old}}(s) \gets V(s)$\
 $\quad\quad$ $V(s) \gets \max_{a\in\Ac} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V(s') \right]$\
 $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$\
-$\quad$ **if** $\Delta < \theta$ **then** break
+$\quad$ **if** $\Delta < \theta$ **then** $\STOP$
 :::
 
 

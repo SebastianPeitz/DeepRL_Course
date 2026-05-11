@@ -123,6 +123,17 @@ math:
     Dtest: '{\mathcal{D}_{\mathsf{test}}}'
     iterate: ['{{#1}^{(#2)}}', 2]
 
+    st: ['{s_t}']
+    stp: ['{s_{t+1}}']
+    at: ['{a_t}']
+    atp: ['{a_{t+1}}']
+    rt: ['{r_t}']
+
+    STOP: ['{\mathsf{STOP}}']
+    break: ['{\mathsf{break}}']
+    terminal: ['{\mathsf{terminal}}']
+    target: ['{\mathsf{target}}']
+
     Vpi: '{V^\pi}'
     Qpi: '{Q^\pi}'
     Vstar: '{V^*}'

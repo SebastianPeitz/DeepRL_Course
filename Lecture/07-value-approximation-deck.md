@@ -25,7 +25,8 @@ feedback:
 ::: small
 | Chapter | Topic                                                  |                            Content  |
 | :--: | :-------------------------------------------------------- | :---------------------------------- |
-|      | **Basics \& tabular methods**                             |   RL basics for finite state and action spaces of moderat sizes    |
+|      | **Basics \& tabular methods**                             |      |
+|   1-5  | Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning |   RL basics in finite dimensions  |
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   [7]{style="color: red;"}  | [Value function approximation]{style="color: red;"}  | [Prediction / Value estimation with function approximation]{style="color: red;"} | 
@@ -117,7 +118,7 @@ We use $n$ to denote the number of state variables, but this does not mean that 
 :::
 
 ::: fragment
-::: definition
+::: {.definition #blubb}
 ### Global impact of experience
 
 Updates due to new experience lead to updates in our model parameter $\phi$. This means that *we modify our value estimate for many states*, in contrast to tabular methods where we update individual states only.
@@ -176,12 +177,12 @@ Here, $\mu(s)\geq 0$ is the *state distribution*, with $\int_\Sc \mu(s)\ds = 1$.
 ### On policy prediction objective
 As $\overline{VE}(\theta)$ is the expected error, we can use *Monte Carlo sampling* to estimate it:
 
-$$\begin{equation} J(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \overline{VE}(\theta). \label{eq:VAL_J}\end{equation}$$
+$$\begin{equation} L(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \overline{VE}(\theta). \label{eq:VAL_L}\end{equation}$$
 :::
 :::
 
 ::: fragment
-**Goal**: find the optimal value estimate $V_{\theta^*}$ by optimization: $$\theta^* = \arg\min_\theta J(\theta).$$
+**Goal**: find the optimal value estimate $V_{\theta^*}$ by optimization: $$\theta^* = \arg\min_\theta L(\theta).$$
 :::
 :::
 
@@ -219,8 +220,8 @@ $\Rightarrow$ Increases the prediction variance; in combination with generalizat
 
 ::: small
 ::: incremental
-- Now that we have an objective $J(\theta)$ (Eq. \eqref{eq:VAL_J}) we would like to optimize for, let's use gradient descent with learning rate $\alpha$:
-$$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla J\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nablatheta \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.$$
+- Now that we have an objective $L(\theta)$ we would like to optimize for (Eq. \eqref{eq:VAL_L}), let's use **gradient descent** with learning rate $\alpha$:
+$$\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nabla L\cbracket{\iterate{\theta}{t}} = \iterate{\theta}{t} - \frac{1}{2} \alpha \nablatheta \cbracket{\sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2}.$$
 - What's the problem here?\
 [$\Rightarrow$ We often only have a *single sample*. (Or, instead, we would like to perform an update after a single sample.)]{.fragment}\
 :::
@@ -246,7 +247,7 @@ $$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alp
 
 ::: small
 
-Challenge 1. remains: We do not know $V^\pi(s_t)$ which we need for our prediction objective \eqref{eq:VAL_J}.
+Challenge 1. remains: We do not know $V^\pi(s_t)$ which we need for our prediction objective \eqref{eq:VAL_L}.
 
 [What can we do?]{.fragment}
 [$\Rightarrow$ Use an estimate $U_t$ for $V^\pi(s_t)$ that we can compute from experience!]{.fragment} 
@@ -314,9 +315,9 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablat
 ::: incremental
 - If bootstrapping is applied, the true target $V^\pi(s_t)$ is approximated by a target depending on the estimate $V_\theta(s_t)$.
 - If $V_\theta(s_t)$ does not fit $V^\pi(s_t)$ (which it does not before convergence), then the update target becomes a *biased estimate*.
-  - For example, in the TD(0) case, we get for \eqref{eq:VAL_J}:
-  $$J(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
-  - Taking the gradient of the single-sample version for $J(\theta)$ yields:
+  - For example, in the TD(0) case, we get for \eqref{eq:VAL_L}:
+  $$L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
+  - Taking the gradient of the single-sample version for $L(\theta)$ yields:
   [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
   &= \theta + \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
   &\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
@@ -362,7 +363,7 @@ $\quad$ **for** $t = 0,1,\ldots,T-1$:\
 $\quad\quad$ Apply action $a_t\sim \pi\agivenb{\cdot}{s_t}$\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t)$\
-$\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** STOP
+$\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** $\STOP$
 :::
 
 ::: fragment
@@ -370,7 +371,7 @@ $\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** STOP
 ### Note: $n$-step version TD(n)
 
 The above algorithm can be extended towards $n$-step bootstrapping by replacing the TD(0) target $r_t + \gamma V_\theta(s_{t+1})$ with the $n$-step bootstrapped return 
-$$ \begin{align*} g_{t:t+n} = &r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &+ \gamma^{n} r_{t+n} + V_{\theta}(s_{t+n}) . \end{align*} $$
+$$ \begin{align*} g_{t:t+n} = &r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &+ \gamma^{n-1} r_{t+n-1} + \gamma^n V_{\theta}(s_{t+n}) . \end{align*} $$
 The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when $T-t<n$).
 
 For details, see [@Sutton1998{}, Ch. 9.4].
@@ -404,7 +405,8 @@ Based on a dataset $\Dc=\set{(s_0, V^\pi(s_0)),\ldots,(s_N, V^\pi(s_N))}$, repea
 - Sample uniformly $b$ state-value pairs from experience (so-called mini batches), i.e., $\Bc=\set{(s_i, V^\pi(s_i))}_{i=1}^b \subset\Dc$:
 $$(s_i, V^\pi(s_i)) \sim\Dc.$$
 - Apply (semi) SGD update step:
-$$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nablatheta V_{\iterate{\theta}{k}}(s_i).$$
+$$ \theta \gets \theta + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\theta}(s_i)} \nablatheta V_{\theta}(s_i).$$
+<!-- $$ \iterate{\theta}{k+1} = \iterate{\theta}{k} + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbracket{V^\pi(s_i) - V_{\iterate{\theta}{k}}(s_i)} \nablatheta V_{\iterate{\theta}{k}}(s_i).$$ -->
 :::
 :::
 :::
@@ -440,19 +442,19 @@ $$ V_{\theta}(s) = \theta^\top \psi(s) = \sum_{k=1}^d \theta_k \psi_k(s) . $$
 \fragment{ = \theta + \alpha\rbracket{r_t + \theta^\top \cbracket{\gamma \psi_{t+1} - \psi_{t}}} \psi_{t},}
 \end{align*}$$]{.math-incremental}
 [where we have introduced $\psi_t$ for $\psi(s_t)$.]{.fragment}
-- Similarly, in **batch mode**, our bootstrapped version of the on-policy prediction objective \eqref{eq:VAL_J} becomes
-$$ J(\theta) = \sum_{t=0}^T \big(r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})\big)^2 \fragment{=\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 .} $$ 
+- Similarly, in **batch mode**, our bootstrapped version of the on-policy prediction objective \eqref{eq:VAL_L} becomes
+$$ L(\theta) = \sum_{t=0}^{T-1} \big(r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})\big)^2 \fragment{=\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 .} $$ 
 :::
 :::
 
-# Minimization of $J(\theta)$
+# Least Squares TD learning (LSTD)
 
 ::: small
 ::: columns-7-4
 ::: incremental
 - Collect data: $$ y = \begin{bmatrix} r_0 \\ \vdots \\ r_{T-1} \end{bmatrix}, \qquad \Psi = \begin{bmatrix} \psi_0^\top - \gamma \psi_1^\top\\ \vdots \\ \psi_{T-1}^\top - \gamma \psi_T^\top \end{bmatrix}.$$
 - Loss function: 
-$$ J(\theta) =\sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2 . $$
+$$ L(\theta) = \sum_{t=0}^{T-1} \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2 . $$
 - Optimal solution (a.k.a. **TD fixed point** [@Sutton1998{}, Sec. 9.4]): $$ \theta^* = (\Psi^\top \Psi)^{-1} \Psi^\top y = \Psi^\dagger y .$$
 - Estimated value function:
 $$ V_{\theta^*}(s) = {\theta^*}^\top \psi(s) = \sum_{k=1}^d \theta^*_k \psi_k(s) . $$

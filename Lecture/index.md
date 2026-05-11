@@ -46,7 +46,7 @@ templates:
 |   **2** | **Deep-learning-based methods**                           |                                     |
 |         | Brief introduction to deep learning                       |         [slides:](06-deep-learning) |
 |         | Value function approximation                              |   [slides:](07-value-approximation) |
-|         | Deep Q-learning                                           |        | <!--     [slides:](08-q-learning) | -->
+|         | Deep Q-learning                                           |        [slides:](08-q-learning) |
 |         | Policy gradients                                          |        | <!-- [slides:](09-policy-gradients) | -->
 |         | Actor-critic algorithms                                   |        | <!--   [slides:](10-actor-critic) | -->
 |         | Advanced algorithms                                       |        | <!-- [slides:](11-advanced-algorithms) | -->
