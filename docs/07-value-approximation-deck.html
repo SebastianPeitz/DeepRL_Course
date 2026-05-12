@@ -241,7 +241,7 @@ approximation</title>
 <tr>
 <td align="center"><span style="color: red;">7</span></td>
 <td align="left"><span style="color: red;">Value function approximation</span></td>
-<td align="left"><span style="color: red;">Prediction / Value estimation with function approximation</span></td>
+<td align="left"><span style="color: red;">Value estimation with function approximation</span></td>
 </tr>
 <tr>
 <td align="center">8</td>
@@ -394,7 +394,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="fragment">
 <div id="blubb" class="definition">
 <h3 id="global-impact-of-experience">Global impact of experience</h3>
-<p>Updates due to new experience lead to updates in our model parameter <span class="math inline">\(\phi\)</span>. This means that <em>we modify our value estimate for many states</em>, in contrast to tabular methods where we update individual states only.</p>
+<p>Updates due to new experience lead to updates in our model parameter <span class="math inline">\(\theta\)</span>. This means that <em>we modify our value estimate for many states</em>, in contrast to tabular methods where we update individual states only.</p>
 </div>
 </div>
 </div>
@@ -561,7 +561,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <div class="box block">
 <div class="small">
 <p>Challenge 1. remains: We do not know <span class="math inline">\(V^\pi(s_t)\)</span> which we need for our prediction objective <span class="math inline">\(\eqref{eq:VAL_L}\)</span>.</p>
-<p><span class="fragment">What can we do?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Use an estimate <span class="math inline">\(U_t\)</span> for <span class="math inline">\(V^\pi(s_t)\)</span> that we can compute from experience!</span></p>
+<p><span class="fragment">What can we do?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Use an estimate for <span class="math inline">\(V^\pi(s_t)\)</span> that we can compute from experience!</span></p>
 <p><span class="fragment"><strong>Possible options for estimates</strong>:</span></p>
 <div class="fragment">
 <div id="unbiased-estimates-of-vpis_t" class="definition">
@@ -574,8 +574,8 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <h3>Bootstrapped estimates of <span class="math inline">\(V^\pi(s_t)\)</span></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The Dynamic Programming target <span class="math display">\[V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
-<li class="fragment">TD targets (e.g., TD(0)) <span class="math display">\[ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
+<li class="fragment">The Dynamic Programming target <span class="math display">\[V_\theta(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
+<li class="fragment">TD targets (e.g., TD(<span class="math inline">\(0\)</span>)) <span class="math display">\[ V_\theta(s_t) \gets V_\theta(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
 </ul>
 </div>
 </div>
@@ -641,9 +641,9 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <li class="fragment">If bootstrapping is applied, the true target <span class="math inline">\(V^\pi(s_t)\)</span> is approximated by a target depending on the estimate <span class="math inline">\(V_\theta(s_t)\)</span>.</li>
 <li class="fragment">If <span class="math inline">\(V_\theta(s_t)\)</span> does not fit <span class="math inline">\(V^\pi(s_t)\)</span> (which it does not before convergence), then the update target becomes a <em>biased estimate</em>.
 <ul class="incremental">
-<li class="fragment">For example, in the TD(0) case, we get for <span class="math inline">\(\eqref{eq:VAL_L}\)</span>: <span class="math display">\[L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.\]</span></li>
+<li class="fragment">For example, in the TD(<span class="math inline">\(0\)</span>) case, we get for <span class="math inline">\(\eqref{eq:VAL_L}\)</span>: <span class="math display">\[L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.\]</span></li>
 <li class="fragment">Taking the gradient of the single-sample version for <span class="math inline">\(L(\theta)\)</span> yields: <span class="math-incremental"><span class="math display">\[\begin{align*} \theta ~\gets~ &amp;\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
-&amp;= \theta + \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
+&amp;= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
 &amp;\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
 \end{align*}\]</span></span></li>
 <li class="fragment">Application of Eq. <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> is still very common.</li>
@@ -653,7 +653,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 <div class="fragment">
 <div id="td0-semi-gradient-update-of-theta" class="definition">
-<h3>TD(0) semi-gradient update of <span class="math inline">\(\theta\)</span></h3>
+<h3>TD(<span class="math inline">\(0\)</span>) semi-gradient update of <span class="math inline">\(\theta\)</span></h3>
 <p><span class="math display">\[\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t). \label{eq:VAL_TDsemigradient} \end{equation}\]</span></p>
 </div>
 </div>
@@ -672,14 +672,14 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <section id="algorithm-semi-gradient-td0-value-estimation" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Algorithm: Semi-gradient TD(0) value estimation</h1>
+<h1>Algorithm: Semi-gradient TD(<span class="math inline">\(0\)</span>) value estimation</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
 <div id="algorithm-semi-gradient-td0-for-estimating-v_theta-approx-vpi" class="definition">
-<h3>Algorithm: Semi-gradient TD(0) for estimating <span class="math inline">\(V_\theta \approx V^\pi\)</span></h3>
+<h3>Algorithm: Semi-gradient TD(<span class="math inline">\(0\)</span>) for estimating <span class="math inline">\(V_\theta \approx V^\pi\)</span></h3>
 <p><em>Input</em>:</p>
 <ul>
 <li>The current policy <span class="math inline">\(\pi\)</span></li>
@@ -698,8 +698,8 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 <div class="fragment">
 <div id="note-n-step-version-tdn" class="definition">
-<h3>Note: <span class="math inline">\(n\)</span>-step version TD(n)</h3>
-<p>The above algorithm can be extended towards <span class="math inline">\(n\)</span>-step bootstrapping by replacing the TD(0) target <span class="math inline">\(r_t + \gamma V_\theta(s_{t+1})\)</span> with the <span class="math inline">\(n\)</span>-step bootstrapped return <span class="math display">\[ \begin{align*} g_{t:t+n} = &amp;r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &amp;+ \gamma^{n-1} r_{t+n-1} + \gamma^n V_{\theta}(s_{t+n}) . \end{align*} \]</span> The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when <span class="math inline">\(T-t&lt;n\)</span>).</p>
+<h3>Note: <span class="math inline">\(n\)</span>-step version TD(<span class="math inline">\(n\)</span>)</h3>
+<p>The above algorithm can be extended towards <span class="math inline">\(n\)</span>-step bootstrapping by replacing the TD(<span class="math inline">\(0\)</span>) target <span class="math inline">\(r_t + \gamma V_\theta(s_{t+1})\)</span> with the <span class="math inline">\(n\)</span>-step bootstrapped return <span class="math display">\[ \begin{align*} g_{t:t+n} = &amp;r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &amp;+ \gamma^{n-1} r_{t+n-1} + \gamma^n V_{\theta}(s_{t+n}) . \end{align*} \]</span> The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when <span class="math inline">\(T-t&lt;n\)</span>).</p>
 <p>For details, see <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ch. 9.4)</span>.</p>
 </div>
 </div>
@@ -735,7 +735,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 <div class="fragment">
 <div id="mini-batch-semi-gradient-td0-with-experience-replay" class="definition">
-<h3>Mini-batch semi-gradient TD(0) with experience replay</h3>
+<h3>Mini-batch semi-gradient TD(<span class="math inline">\(0\)</span>) with experience replay</h3>
 <p>Based on a dataset <span class="math inline">\(\Dc=\set{(s_0, V^\pi(s_0)),\ldots,(s_N, V^\pi(s_N))}\)</span>, repeat</p>
 <div class="incremental">
 <ul class="incremental">
@@ -780,7 +780,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <ul class="incremental">
 <li class="fragment">Let’s assume that we choose an approximation that is <em>linear</em> w.r.t. the weights <span class="math inline">\(\theta\)</span>: <span class="math display">\[ V_{\theta}(s) = \theta^\top \psi(s) = \sum_{k=1}^d \theta_k \psi_k(s) . \]</span></li>
 <li class="fragment">What’s the gradient in this case? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> it’s simply the feature vector, <span class="math display">\[\nablatheta V_\theta(s) = \nablatheta \theta^\top \psi(s) = \psi(s) .\]</span></span></li>
-<li class="fragment">Our semi-gradient TD(0) update <span class="math inline">\(\eqref{eq:VAL_TDsemigradient}\)</span> thus simply becomes <span class="math-incremental"><span class="math display">\[\begin{align*} 
+<li class="fragment">Our semi-gradient TD(<span class="math inline">\(0\)</span>) update <span class="math inline">\(\eqref{eq:VAL_TDsemigradient}\)</span> thus simply becomes <span class="math-incremental"><span class="math display">\[\begin{align*} 
 \theta \gets &amp;\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t) \\
 &amp;= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})} \psi(s_{t}) \\
 &amp;= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi_{t+1} - \theta^\top \psi_{t}} \psi_{t}

@@ -320,7 +320,7 @@ For non-zero biases, we obtain an *affine* transformation instead.
 [$$\begin{align*} 
 \nabla L(\theta) &= \nabla \left(\frac{1}{N} \sum_{k=1}^N \norm{f_\theta(x_k) - y_k}_2^2 \right) \\
 &= \frac{1}{N} \sum_{k=1}^N \nabla \norm{f_\theta(x_k) - y_k}_2^2 \qquad &&\text{(Linearity of the sum)}\\
-&= \frac{1}{N} \sum_{k=1}^N \left(2 \norm{f_\theta(x_k) - y_k}_2  \nabla f_\theta(x_k)\right) &&\text{(Chain rule of differentiation)}
+&= \frac{1}{N} \sum_{k=1}^N \left(2 \cbracket{f_\theta(x_k) - y_k}  \nabla f_\theta(x_k)\right) &&\text{(Chain rule of differentiation)}
 \end{align*}$$]{.math-incremental}
 - This means that we need to *propagate* the error through our model $f_\theta$.
 - Since a neural network is a chain of neurons, we need to apply the **chain rule** of differentiation over the layers.
@@ -446,7 +446,7 @@ A function is **equivariant** under some transformation if it's output $y$ is tr
 ::: columns-1-1
 ::: incremental
 - What does this mean for learning?\
-[$\Rightarrow$ We have to learn the same thin in different locations!]{.fragment}\
+[$\Rightarrow$ We have to learn the same thing in different locations!]{.fragment}\
 [$\Rightarrow$ An "edge" remains an "edge", no matter where we are.]{.fragment}
 - Instead of training a fully connected layer, we train the weights of a **kernel** that moves over the input
 - Same weights in every location $\Rightarrow$ weight sharing!

@@ -369,7 +369,7 @@ V(s_t) \gets V(s_t) + \alpha \left[g_t - V(s_t)\right]. \label{eq:TD_MC-update}
 </p>
 <div class="fragment">
 <div id="one-step-td-td0-update" class="definition">
-<h3>One-step TD / TD(0) update</h3>
+<h3>One-step TD / TD(<span class="math inline">\(0\)</span>) update</h3>
 <p><span class="math display">\[
 \begin{equation}
 V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(s_t)\right]. \label{eq:TD_TD0-update}
@@ -377,7 +377,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 \]</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Here, the <strong>TD target</strong> is <span class="math inline">\(\textcolor{red}{r_t + \gamma V(s_{t+1})}\)</span>.</li>
+<li class="fragment">Here, the <strong>TD target</strong> is <span class="math inline">\(\textcolor{red}{y_t = r_t + \gamma V(s_{t+1})}\)</span>.</li>
 <li class="fragment">TD is <em>bootstrapping</em>: estimate <span class="math inline">\(V(s_t)\)</span> based on <span class="math inline">\(V(s_{t+1})\)</span>.</li>
 <li class="fragment"><em>Delay time of one</em> time step; no need to wait until the end of the episode.</li>
 </ul>
@@ -429,7 +429,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="box block">
 <div class="small">
 <p>Using the target, we can define the <strong>TD error</strong><span class="math inline">\(^*\)</span> <span class="math inline">\(\delta\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the expression inside the bracket of Eq. <span class="math inline">\(\eqref{eq:TD_TD0-update}\)</span> we’re using to improve our estimate: <span class="math display">\[ \delta_t = \target - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). \]</span></span></p>
-<p><span class="fragment"><strong>Batch mode</strong>: Let’s assume that the TD(0) estimate of <span class="math inline">\(V(s)\)</span> does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):</span> <span class="math-incremental"><span class="math display">\[
+<p><span class="fragment"><strong>Batch mode</strong>: Let’s assume that the TD(<span class="math inline">\(0\)</span>) estimate of <span class="math inline">\(V(s)\)</span> does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):</span> <span class="math-incremental"><span class="math display">\[
 \begin{align*}
 \underbrace{g_t - V(s_t)}_{\text{MC error}} &amp;= r_{t}+\gamma g_{t+1} - V(s_t) \fragment{+\gamma V(s_{t+1}) - \gamma V(s_{t+1})}\\
 &amp;= \delta_t + \gamma (\underbrace{g_{t+1} - V(s_{t+1})}_{\text{MC error}}) \fragment{= \delta_t + \gamma \delta_{t+1} + \gamma^2(g_{t+2} - V(s_{t+2}))} \\
@@ -439,7 +439,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">The MC error is the discounted sum of TD errors in this case.</li>
-<li class="fragment">If <span class="math inline">\(V(s)\)</span> is updated during an episode (as is common in TD(0)), the above identity only holds approximately.</li>
+<li class="fragment">If <span class="math inline">\(V(s)\)</span> is updated during an episode (as is common in TD(<span class="math inline">\(0\)</span>)), the above identity only holds approximately.</li>
 </ul>
 </div>
 </div>
@@ -455,13 +455,13 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <section id="convergence-of-td0" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Convergence of TD(0)</h1>
+<h1>Convergence of TD(<span class="math inline">\(0\)</span>)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
 <div class="definition">
-<p>Given a finite MDP and a fixed policy <span class="math inline">\(\pi\)</span>, the state-value estimate <span class="math inline">\(V\)</span> of TD(0) converges to the true <span class="math inline">\(V^\pi\)</span><br />
+<p>Given a finite MDP and a fixed policy <span class="math inline">\(\pi\)</span>, the state-value estimate <span class="math inline">\(V\)</span> of TD(<span class="math inline">\(0\)</span>) converges to the true <span class="math inline">\(V^\pi\)</span><br />
 (that is, <span class="math inline">\(\lim_{t\rightarrow\infty} \delta_t = 0\)</span>)</p>
 <div class="incremental">
 <ul class="incremental">
@@ -475,8 +475,8 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">In particular, <span class="math inline">\(\alpha_t = \frac{1}{t}\)</span> meets the condition <span class="math inline">\(\eqref{eq:stepsize_criterion}\)</span>.</li>
-<li class="fragment">TD(0) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it’s faster.</li>
-<li class="fragment">TD(0) can be more sensitive to poor initializations <span class="math inline">\(V_0(s)\)</span> compared to MC.</li>
+<li class="fragment">TD(<span class="math inline">\(0\)</span>) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it’s faster.</li>
+<li class="fragment">TD(<span class="math inline">\(0\)</span>) can be more sensitive to poor initializations <span class="math inline">\(V_0(s)\)</span> compared to MC.</li>
 </ul>
 </div>
 </div>
@@ -668,7 +668,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">the MC estimate?</li>
-<li class="fragment">the TD(0) estimate?</li>
+<li class="fragment">the TD(<span class="math inline">\(0\)</span>) estimate?</li>
 </ul>
 </div>
 <p><span class="fragment">Before approaching this, let’s try to model the underlying MDP!</span></p>
@@ -941,7 +941,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 
 </div>
 <figcaption>
-<strong>TD(0) learning</strong> for the random walk. <strong>Left</strong>: Different numbers of iterations ( α=0.1 ). <strong>Middle</strong>: Learning curves for different values of α. <strong>Right</strong>: Batch training.
+<strong>TD(<span class="math inline">\(0\)</span>) learning</strong> for the random walk. <strong>Left</strong>: Different numbers of iterations ( α=0.1 ). <strong>Middle</strong>: Learning curves for different values of α. <strong>Right</strong>: Batch training.
 </figcaption>
 </figure>
 </div>
@@ -960,7 +960,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <section id="example-mc-vs.-td0-prediction-in-gridworld" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Example: MC vs. TD(0) prediction in Gridworld</h1>
+<h1>Example: MC vs. TD(<span class="math inline">\(0\)</span>) prediction in Gridworld</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -968,7 +968,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="media">
 <figure class="video" style="height:auto;width:600px;">
-<video aria-label="MC vs TD(0) prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4">
+<video aria-label="MC vs TD($0$) prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4">
 
 </video>
 </figure>
@@ -980,7 +980,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 </ul>
 <p><br />
 </p>
-<p><span class="fragment"><strong>Why is MC learning faster? Wouldn’t we expect TD(0) to be stronger?</strong></span></p>
+<p><span class="fragment"><strong>Why is MC learning faster? Wouldn’t we expect TD(<span class="math inline">\(0\)</span>) to be stronger?</strong></span></p>
 <!-- [$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment} -->
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We update entire trajectories, not just the last field we saw before the target.</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Also, we started with a poor initializaiton for <span class="math inline">\(V\)</span>.</span></p>
@@ -1013,10 +1013,10 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 \]</span></p>
 <div class="fragment">
 <div id="estimation-td0-update-of-the-q-function" class="definition">
-<h3>Estimation: TD(0) update of the Q-function</h3>
+<h3>Estimation: TD(<span class="math inline">\(0\)</span>) update of the Q-function</h3>
 <p><span class="math display">\[
 \begin{equation}
-Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(s_{t+1}, a_{t+1})}^{\mathsf{TD~target}} - Q(s_t, a_t)\big]}_{\mathsf{TD~error}~\delta}. \label{eq:TD_TD0-update-Q}
+Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(s_{t+1}, a_{t+1})}^{\mathsf{TD~target}~y} - Q(s_t, a_t)\big]}_{\mathsf{TD~error}~\delta}. \label{eq:TD_TD0-update-Q}
 \end{equation}
 \]</span></p>
 </div>
@@ -1056,7 +1056,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
-<li><span class="math inline">\(Q(\)</span>terminal-state<span class="math inline">\(,\cdot) = 0\)</span></li>
+<li><span class="math inline">\(Q(\terminal,\cdot) = 0\)</span></li>
 <li><span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span></li>
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
@@ -1113,7 +1113,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
-<li><span class="math inline">\(Q(\)</span>terminal-state<span class="math inline">\(,\cdot) = 0\)</span></li>
+<li><span class="math inline">\(Q(\terminal,\cdot) = 0\)</span></li>
 <li><span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span></li>
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
@@ -1285,7 +1285,7 @@ Off-policy: Q-learning
 </div>
 <div class="small">
 <ul>
-<li>Discout: <span class="math inline">\(\gamma = 0.9\)</span></li>
+<li>Discount: <span class="math inline">\(\gamma = 0.9\)</span></li>
 <li>Exploration: <span class="math inline">\(\epsilon = 0.2\)</span></li>
 <li>Step size: <span class="math inline">\(\alpha = 0.5\)</span></li>
 </ul>
@@ -1426,7 +1426,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q_1(s,a)\)</span> and <span class="math inline">\(Q_2(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
-<li><span class="math inline">\(Q_1(\)</span>terminal-state<span class="math inline">\(,\cdot) = Q_2(\)</span>terminal-state<span class="math inline">\(,\cdot) = 0\)</span></li>
+<li><span class="math inline">\(Q_1(\terminal,\cdot) = Q_2(\terminal,\cdot) = 0\)</span></li>
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_t \gets s_0\)</span>, <span class="math inline">\(t \gets 0\)</span><br />
@@ -3180,7 +3180,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(n\)</span>-step update: consider <span class="math inline">\(n\)</span> rewards plus estimated value <span class="math inline">\(n\)</span> steps later (bootstrapping).</li>
 <li class="fragment">Consequence: Estimate update is available only after an <span class="math inline">\(n\)</span>-step delay.</li>
-<li class="fragment">TD(0) and MC are special cases included in <span class="math inline">\(n\)</span>-step prediction.</li>
+<li class="fragment">TD(<span class="math inline">\(0\)</span>) and MC are special cases included in <span class="math inline">\(n\)</span>-step prediction.</li>
 </ul>
 </div>
 </div>
@@ -3204,7 +3204,7 @@ Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span cl
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(g_{t:T}\)</span> denotes that all steps until termination at <span class="math inline">\(T\)</span> are considered to estimate a target for step <span class="math inline">\(t\)</span>.</li>
 </ul></li>
-<li class="fragment"><strong>TD(0)</strong>: utilizes a one-step bootstrapped return <span class="math display">\[ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). \]</span>
+<li class="fragment"><strong>TD(<span class="math inline">\(0\)</span>)</strong>: utilizes a one-step bootstrapped return <span class="math display">\[ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). \]</span>
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(g_{t:t+1}\)</span> highlights that only one future sampled reward step is considered before bootstrapping.</li>
 <li class="fragment"><span class="math inline">\(V_t\)</span> is an estimate of <span class="math inline">\(V^\pi\)</span> at time step <span class="math inline">\(t\)</span>.</li>
@@ -5747,7 +5747,7 @@ Exemplary averaging of one- and three-step returns. <span class="citation">(<a h
 <figure class="image" style="height:auto;width:500px;">
 <img src="images/05-td-learning/TDLambda-Return-Backup_v2.svg" style="height:auto;width:100%;" aria-label="The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD(0) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. (Sutton and Barto 1998, Figure 12.1)" alt="images/05-td-learning/TDLambda-Return-Backup_v2.svg" />
 <figcaption>
-The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD(0) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.1)</span>
+The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD(<span class="math inline">\(0\)</span>) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.1)</span>
 </figcaption>
 </figure>
 </div>
@@ -5783,7 +5783,7 @@ g_t^\lambda = (1-\lambda) \left(\sum_{k=1}^{T-t-1} \lambda^{(k-1)} g_{t:t+n}\rig
 <li class="fragment">Return <span class="math inline">\(g_t\)</span> after termination is weighted with residual weight <span class="math inline">\(\lambda^{T-t-1}\)</span>.</li>
 <li class="fragment">The equation includes two special cases:
 <ul class="incremental">
-<li class="fragment">If <span class="math inline">\(\lambda = 0\)</span>: becomes the TD(0) update.</li>
+<li class="fragment">If <span class="math inline">\(\lambda = 0\)</span>: becomes the TD(<span class="math inline">\(0\)</span>) update.</li>
 <li class="fragment">If <span class="math inline">\(\lambda = 1\)</span>: becomes the MC update.</li>
 </ul></li>
 </ul>

@@ -13,18 +13,12 @@ feedback:
 
 # Content
 
+- Recap: 
+  - Tabular SARSA \& Q-learning
+  - Value function approximation with NNs
 - On-policy control with gradients and semi-gradients
-  - Introduction \& extension of existing algorithms
-  - Gradient MC
-  - Semi-gradient SARSA
-  - Challenges (Levine: Data correlation \& semi-gradient)
-- Deep Q networks
-  - Replay buffers
-  - Target networks \& alternative target networks (Polyak)
-  - Double Q networks
-  - Prioritized experience replay
-  - $n$-step returns
-  - Some remarks on continuous actions
+- Deep Q networks (DQN)
+  - Extensions \& modifications
 - Least squares policy iteration
 
 # Where are we?
@@ -37,7 +31,7 @@ feedback:
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   7  | Value function approximation                              |    Value estimation with function approximation    | 
-|   [8]{style="color: red;"}  | [Deep Q-learning]{style="color: red;"}   |   [Q learning with neural networks]{style="color: red;"}     | 
+|   [8]{style="color: red;"}  | [Deep Q-learning]{style="color: red;"}   |   [Q-learning with neural networks]{style="color: red;"}     | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms                                       |        | 
@@ -45,6 +39,73 @@ feedback:
 |      | **Advanced Topics**                                       |        |
 
 Table: Lecture contents
+:::
+
+------------------------------------------------------------------------------
+
+# Recap: Tabular SARSA and Q-learning
+
+------------------------------------------------------------------------------
+
+# Tabular SARSA and Q-learning
+
+::: small
+::: columns-5-5
+
+::: {.definition}
+### Algorithm: SARSA ([On-policy]{style="color: blue;"}).
+
+**initialize**
+
+- $Q(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
+- $Q(\terminal,\cdot) = 0$
+- $\pi = \epsilon$-greedy$(Q)$
+
+**for** $k = 1, 2, \ldots, K$ episodes:\
+$\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
+$\quad$ **while** $s_t$ is not terminal:\
+$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
+$\quad\quad$ [Select $a_{t+1} \sim \pi(s_{t+1})$]{style="color: blue;"}\
+$\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
+$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]$$
+$\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$\
+$\quad\quad$ $t \gets t+1$
+:::
+
+::: {.definition}
+### Algorithm: Q-Learning ([Off-policy]{style="color: red;"}).
+
+**initialize**
+
+- $Q(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
+- $Q(\terminal,\cdot) = 0$
+- $\pi = \epsilon$-greedy$(Q)$
+
+**for** $k = 1, 2, \ldots, K$ episodes:\
+$\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
+$\quad$ **while** $s_t$ is not terminal:\
+$\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
+$\quad\quad$ ~~Select $\cancel{a_{t+1} \sim \pi(s_{t+1})}$~~\
+$\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
+$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
+$\quad\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$\
+$\quad\quad$ $t \gets t+1$
+:::
+:::
+:::
+
+# Tabular SARSA and Q-learning: Gridworld
+
+::: columns-5-5
+![On-policy: SARSA](videos/05-td-learning/GridWorld-SARSA.mp4 "SARSA"){ height=400px .controls .autoplay .muted }
+
+![Off-policy: Q-learning](videos/05-td-learning/GridWorld-Q-Learning.mp4 "Q-learning"){ height=400px .controls .autoplay .muted }
+:::
+
+::: small
+- Discount: $\gamma = 0.9$
+- Exploration: $\epsilon = 0.2$
+- Step size: $\alpha = 0.5$
 :::
 
 ------------------------------------------------------------------------------
@@ -57,7 +118,7 @@ Table: Lecture contents
 ::: incremental
 - We want to **approximate the value function by parametric model** with trainable parameters $\theta\in\R^d$, i.e., $V_\theta(s) \approx V^\pi(s)$.
 - For training, we need to define a **prediction objective**: 
-$$\begin{equation} J(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \int_\Sc \mu(s) \big(V^\pi(s) - V_\theta(s)\big)^2 \ds = \overline{VE}(\theta). \label{eq:DQL_V_J} \end{equation}$$
+$$\begin{equation} L(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \int_\Sc \mu(s) \big(V^\pi(s) - V_\theta(s)\big)^2 \ds = \overline{VE}(\theta). \label{eq:DQL_V_L} \end{equation}$$
 - **Incremental weight updates** via
   - gradients, e.g., in the Monte Carlos setting: 
   $$\begin{equation} \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). \label{eq:DQL_V_update_MC} \end{equation}$$
@@ -104,8 +165,8 @@ $$ Q_\theta(s,a) \approx Q^*(s,a) \quad \Rightarrow \quad \pi^*(s) = \arg\max_{a
 The transfer from value function approximation is straightforward!
 
 ::: incremental
-- Adaptation of \eqref{eq:DQL_V_J} to get $J(\theta)$
-$$\begin{equation} J(\theta) = \sum_{k=1}^N \big(Q^\pi(s_k, a_k) - Q_\theta(s_k, a_k)\big)^2 . \label{eq:DQL_Q_J} \end{equation}$$
+- Adaptation of \eqref{eq:DQL_V_L} to get $L(\theta)$
+$$\begin{equation} L(\theta) = \sum_{k=1}^N \big(Q^\pi(s_k, a_k) - Q_\theta(s_k, a_k)\big)^2 . \label{eq:DQL_Q_L} \end{equation}$$
 - Incremental update using (semi-)gradients:
 $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{Q^\pi(s,a) - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \label{eq:DQL_Q_update} \end{equation} $$
 - Depending on the control approach, the true target $Q^\pi(s, a)$ is approximated by:
@@ -151,7 +212,7 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \na
 
 ::: small
 ::: definition
-### Algorithm: Semi-gradient SARSA for estimating $Q^\pi$ / $Q^*$
+### Algorithm: Semi-gradient SARSA for estimating $\textcolor{red}{Q^\pi}$ / $\textcolor{blue}{Q^*}$
 
 *Input*: 
 
@@ -165,12 +226,12 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \na
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_0$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
-$\quad\quad$ Obtain $a_t \sim \pi\agivenb{\cdot}{s_t}$ (or $a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$)\
+$\quad\quad$ Obtain $\textcolor{red}{a_t \sim \pi\agivenb{\cdot}{s_t}}$ (or [$a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$]{style="color: blue;"})\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then**\
 $\quad\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$\
 $\quad\quad\quad$ Go to next episode $k+1$\
-$\quad\quad$ Choose $a' \sim \pi\agivenb{\cdot}{s_{t+1}}$ (or $a' \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$)\
+$\quad\quad$ Choose [$a' \sim \pi\agivenb{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a' \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
 $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a') - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$
 :::
 :::
@@ -246,9 +307,9 @@ x_i(s,a)&=\begin{cases} 1 & (s,a)\in\text{ tile \#}i \\ 0 & \text{otherwise} \en
 ::: small
 ::: incremental
 - Introduced in the famous DeepMind paper [@Mnih2015humanlevelcontrol].
-- Same off-policy strategy as in the *classical/tabular* Q learning algorithm:
+- Same off-policy strategy as in the *classical/tabular* Q-learning algorithm:
 $$Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{a'\in\Ac} Q(s',a')- Q(s,a)\right].$$
-- Now: incremental learning using semi-gradients (Eq.\ \eqref{eq:DQL_Q_update}) and TD(0) bootstrapping:
+- Now: incremental learning using semi-gradients (Eq.\ \eqref{eq:DQL_Q_update}) and TD($0$) bootstrapping:
 $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in\Ac} Q_\theta(s',a') - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \label{eq:DQL_DQN-gradient} \end{equation} $$
 :::
 
@@ -359,7 +420,7 @@ $$\theta \gets \theta + \alpha \sum_{i=1}^{\abs{\Bc}} \rbracket{y_i - Q_\theta(s
 ![](images/08-deep-q-learning/Separate-action-output.svg){ width=130px }
 $\qquad$
 [![](images/08-deep-q-learning/DQN_Atari_Network.png){ width=600px }]{.fragment}
-- *Loss function* $L(\theta)$: *Huber loss* $L_\delta(\theta) = \begin{cases} \frac{1}{2}\theta^2, & \theta \leq \delta \\ \delta(\abs{\theta} - \frac{1}{2}\theta), & \text{otherwise} \end{cases}$.
+- *Loss function* $L(\theta)$: *Huber loss* $L_\beta(\theta) = \begin{cases} \frac{1}{2}\theta^2, & \theta \leq \beta \\ \beta(\abs{\theta} - \frac{1}{2}\theta), & \text{otherwise} \end{cases}$.
 - *Training*: RMSProp descent algorithm.
 - *Annealing* of the exploration rate: $\epsilon$ goes from $1$ to $0.1$ (or $0.05$) over the first $10^6$ frames.
 :::
@@ -409,15 +470,15 @@ $\qquad$
 
 ![Human-level control [@Mnih2015humanlevelcontrol]](images/08-deep-q-learning/DQN_Atari_Results.png){ width=850px }
 
-# The general view of Q learning
+# The general view of Q-learning
 
 ![Inspired by the Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
 
 ::: small
 ::: incremental
 - **DQN**: Processes 1 and 2 run at the same speed, process 2 is slower.
-- **Online Q learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
-  - Value or Q learning as in the last lecture, followed directly by a policy improvement step.
+- **Online Q-learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
+  - Value or Q-learning as in the last lecture, followed directly by a policy improvement step.
   - Also similar to the value iteration algorithm from dynamic programming.
 - Many variations: data collection and eviction strategies, frequencies and repetitions of the individual process steps, ...
 :::
@@ -451,30 +512,30 @@ $\qquad$
 :::
 :::
 
-# Double Q networks
+# Double Q networks [@vanHasselt2016ddqn]
 
 ::: small
 ::: columns-5-5
 ::: platzhalter
-Remember the *maximization bias* and double Q learning?\
+Remember the *maximization bias* and double Q-learning?\
 [$\Rightarrow$ Don't use same network to choose the action and estimate the value!]{.fragment}
 
-[**Double deep Q learning**: ]{.fragment}
+[**Double deep Q-learning**: ]{.fragment}
 
 ::: incremental
 - Just use the [current network]{style="color: blue;"} ($\theta$) to evaluate the action.
 - Still use the [target network]{style="color: red;"} ($\theta'$) to evaluate the value.
-$$y = r + \gamma \textcolor{red}{Q_{\theta'}}(s',\arg\max_{a} \textcolor{blue}{Q_\theta}(s',a))$$
+$$y = r + \gamma \textcolor{red}{Q_{\theta'}}(s',\arg\max_{a\in\Ac} \textcolor{blue}{Q_\theta}(s',a))$$
 :::
 :::
 
 ::: {.definition}
-### Algorithm: "Classical" Q-Learning.
+### Algorithm recap: Tabular Q-Learning.
 
 - Take $a_t$ ($\epsilon$-greedy on $Q_1 + Q_2$), observe $(r_t,s_{t+1})$
 - **if** $\mathsf{rand()} > 0.5$ **then**
 $$\begin{align*} 
-&y = r_t + \gamma \textcolor{red}{Q_2}(s_{t+1},\arg\max_{a} \textcolor{red}{Q_1}(s_{t+1},a))\\
+&y = r_t + \gamma \textcolor{red}{Q_2}(s_{t+1},\arg\max_{a\in\Ac} \textcolor{red}{Q_1}(s_{t+1},a))\\
 &Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[y - Q_1(s_t,a_t)\right] 
 \end{align*}$$
 - **else**: ...
@@ -486,22 +547,105 @@ $$\begin{align*}
 \
 
 \
-[![[@vanHasselt2016ddqn]](images/08-deep-q-learning/DDQN-results1.png){ width=700px }]{.fragment}
+[![](images/08-deep-q-learning/DDQN-results1.png){ width=700px }]{.fragment}
 :::
 
 
-[![[@vanHasselt2016ddqn]](images/08-deep-q-learning/DDQN-results2.png){ width=600px }]{.fragment}
+[![](images/08-deep-q-learning/DDQN-results2.png){ width=600px }]{.fragment}
 :::
 
 :::
 
-# Prioritized experience replay
+# Prioritized experience replay [@Schaul2015prioritized]
+
+::: small
+::: columns-7-3
+::: incremental
+- Samples in the replay buffer are *not equally important*.
+- From some examples, you can learn more than from others.
+- What would be a good *criterion to assess the relevance* of a particular sample?
+[$\Rightarrow$ The **TD error** $$\delta_i = r_i + \max_{a\in\Ac}Q_{\theta'}(s_i',a) - Q_\theta(s_i,a_i)$$]{.fragment}
+<!-- [$\Rightarrow$ The **TD error** $$\delta_i = \underbrace{r_i + \gamma Q_{\theta'}(s_i',\arg \max_{a\in\Ac} Q_\theta(s_i',a))}_{=y_i} - Q_\theta(s_i,a_i)$$]{.fragment} -->
+:::
+
+![Inspired by the Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ width=600px }
+:::
+
+::: incremental
+- Instead of sampling uniformly from the replay buffer, we assign an individual probability to each sample:
+$$ P(i) = \frac{p_i^\alpha}{\sum_{k=1}^{\abs{\Dc}}p_k^\alpha}, \qquad p_i = \abs{\delta_i} + \epsilon.$$
+  - Here, $\alpha\geq 0$ determines the degree of prioritization ($\alpha=0$ is the uniform case).
+  - The parameter $\epsilon>0$ ensures that all samples are drawn with non-zero probability.
+- A version that's less sensitive to outliers: rank the transitions according to $\abs{\delta_i}$: $$p_i = \frac{1}{\mathsf{rank}(i)}.$$
+- **But**: this introduces a bias (we sample from a different, uncontrollable distribution) [$\Rightarrow$ Use importance sampling!]{.fragment}
+:::
+
+:::
 
 # $n$-step returns
 
+[$\circ$ The concept of TD($n$) can be extended to deep Q-learning in a straightforward fashion:]{.fragment}
+[$$ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). $$ ]{.fragment}
+
+[$\textcolor{green}{\mathbf{+}\text{ less biased target values when estimates using }Q_\theta\text{ are inaccurate}}$]{.fragment}
+
+[$\textcolor{green}{\mathbf{+}\text{ typically faster learning, especially early on}}$]{.fragment}
+
+[$\textcolor{red}{\mathbf{-}\text{ only actually correct when learning on policy}}$]{.fragment}
+
 # Some remarks on continuous actions
 
+::: small
+What's the problem with continuous actions in DQN?
+
+::: incremental
+1. The action selection: $\pias = \begin{cases} 1, & a = \arg\textcolor{red}{\max}_{\hat{a}\in\Ac} Q_\theta(s,\hat{a}) \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
+2. The target calculation: $y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\theta'}(s_i',a)$.
+:::
+
+[$\Rightarrow$ if $\Ac$ is continuous (i.e., $a\in\R^m$), then the maximization becomes a **challenging optimization** probelm in itself!]{.fragment}
+
+[**What can we do?**]{.fragment}
+
+::: incremental
+1. Gradient based optimization (e.g., SGD) [$\Rightarrow$ $\quad\textcolor{red}{\mathbf{-}\text{ This can be too slow!}}$]{.fragment}
+2. Simple sampling: $$\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac). $$
+  [$\Rightarrow$ $\quad\textcolor{green}{\mathbf{+}\text{ Very efficient.}}\quad$
+  $\textcolor{green}{\mathbf{+}\text{ Easily parallelized.}}\quad$
+  $\textcolor{red}{\mathbf{-}\text{ Not very accurate.}}$]{.fragment}
+3. Other stochastic optimization techniqes 
+[$\Rightarrow$ $\quad\textcolor{red}{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}$]{.fragment}
+4. Train second network $\pi_\phi: \Sc \to \Ac$ whose output maximizes $Q(s,a)$: $$Q(s,\pi_\phi(s)) \approx \max_{a\in\Ac} Q(s,a).$$
+[$\Rightarrow$ Actor-critic methods (in two lectures)!]{.fragment}
+:::
+
+:::
+
 # Some practical tips
+
+::: small
+Following Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/):
+
+::: columns-6-4
+::: incremental
+- Q learning takes some care to stabilize.
+  - Test on easy, reliable tasks first, make sure your implementation is correct.\
+  ![[@Schaul2015prioritized]](images/08-deep-q-learning/PER_results.png){ width=650px }
+- Large replay buffers help improve stability.
+- Looks more like fitted Q iteration.
+- It takes time, be patient; performance might be no better than random for a while.
+- Start with high exploration ($\epsilon$) and gradually reduce.
+:::
+
+::: incremental
+- Bellman error gradients can be big; clip gradients or use Huber loss.
+- Double Q learning helps a lot in practice: it's simple and has no downsides.
+- $n$-step returns also help a lot, but have some downsides.
+- Schedule exploration (high to low) and learning rates (high to low). The Adam optimizer can help too.
+- Run multiple random seeds, it’s very inconsistent between runs.
+:::
+:::
+:::
 
 ------------------------------------------------------------------------------
 
@@ -516,16 +660,16 @@ $$\begin{align*}
 - Recall the LSTD algorithm from last lecture: batch least squares estimation $V^\pi(s)$ with linear models:
 $$ y = \begin{bmatrix} r_0 \\ \vdots \\ r_{T-1} \end{bmatrix}, \quad 
 \fragment{ \Psi = \begin{bmatrix} \psi_0^\top - \gamma \psi_1^\top\\ \vdots \\ \psi_{T-1}^\top - \gamma \psi_T^\top \end{bmatrix},  \quad }
-\fragment{ J(\theta) = \frac{1}{N} \norm{y - \Psi \theta }_F^2, \quad  }
+\fragment{ L(\theta) = \frac{1}{N} \norm{y - \Psi \theta }_F^2, \quad  }
 \fragment{ \theta^* = (\Psi^\top \Psi)^{-1} \Psi^\top y = \Psi^\dagger y, \quad  }
 \fragment{ V_{\theta^*}(s) = {\theta^*}^\top \psi(s). }$$
 - Let's do the same for Q values $\Rightarrow$ **LS-SARSA** / **LSTD**$\mathbf Q$
 [$$ \begin{align*} 
 Q_\theta(s,a) &= \theta^\top \psi(s,a) = \sum_{i=1}^d \theta_i \psi_i(s,a) \qquad &&\text{(Linear model)} \\
-Q^\pi(s,a) &\approx r + \gamma Q_\theta(s', a') \qquad &&\text{(TD(0) bootstrapping)}
+Q^\pi(s,a) &\approx r + \gamma Q_\theta(s', a') \qquad &&\text{(TD($0$) bootstrapping)}
 \end{align*}$$]{.math-incremental}
 - Loss function: 
-$$ J(\theta) = \sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2, \qquad\text{where}~\psi_t = \psi(s_t,a_t) . $$
+$$ L(\theta) = \sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\top_{t+1}} \theta\big)^2 = \frac{1}{N} \norm{y - \Psi \theta }_F^2, \qquad\text{where}~\psi_t = \psi(s_t,a_t) . $$
 - Same as before, only that the features depend on both states and actions: $\psi(s,a)$.
 :::
 :::

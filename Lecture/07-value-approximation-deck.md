@@ -29,7 +29,7 @@ feedback:
 |   1-5  | Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning |   RL basics in finite dimensions  |
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
-|   [7]{style="color: red;"}  | [Value function approximation]{style="color: red;"}  | [Prediction / Value estimation with function approximation]{style="color: red;"} | 
+|   [7]{style="color: red;"}  | [Value function approximation]{style="color: red;"}  | [Value estimation with function approximation]{style="color: red;"} | 
 |   8  | Deep Q-learning                                           |        | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
@@ -121,7 +121,7 @@ We use $n$ to denote the number of state variables, but this does not mean that 
 ::: {.definition #blubb}
 ### Global impact of experience
 
-Updates due to new experience lead to updates in our model parameter $\phi$. This means that *we modify our value estimate for many states*, in contrast to tabular methods where we update individual states only.
+Updates due to new experience lead to updates in our model parameter $\theta$. This means that *we modify our value estimate for many states*, in contrast to tabular methods where we update individual states only.
 :::
 :::
 :::
@@ -250,7 +250,7 @@ $$\begin{equation}\iterate{\theta}{t+1} = \iterate{\theta}{t} - \frac{1}{2} \alp
 Challenge 1. remains: We do not know $V^\pi(s_t)$ which we need for our prediction objective \eqref{eq:VAL_L}.
 
 [What can we do?]{.fragment}
-[$\Rightarrow$ Use an estimate $U_t$ for $V^\pi(s_t)$ that we can compute from experience!]{.fragment} 
+[$\Rightarrow$ Use an estimate for $V^\pi(s_t)$ that we can compute from experience!]{.fragment} 
 
 [**Possible options for estimates**:]{.fragment}
 
@@ -267,8 +267,8 @@ Monte Carlo estimates for $g_t$, sample from entire trajectories.
 ### Bootstrapped estimates of $V^\pi(s_t)$
 
 ::: incremental
-  - The Dynamic Programming target $$V(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s'\in\Sc} p\agivenb{s'}{s_t, a} \left[ r + \gamma V_\theta(s') \right].$$
-  - TD targets (e.g., TD(0)) $$ V(s_t) \gets V(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].$$
+  - The Dynamic Programming target $$V_\theta(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s'\in\Sc} p\agivenb{s'}{s_t, a} \left[ r + \gamma V_\theta(s') \right].$$
+  - TD targets (e.g., TD($0$)) $$ V_\theta(s_t) \gets V_\theta(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].$$
 :::
 :::
 :::
@@ -315,11 +315,11 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablat
 ::: incremental
 - If bootstrapping is applied, the true target $V^\pi(s_t)$ is approximated by a target depending on the estimate $V_\theta(s_t)$.
 - If $V_\theta(s_t)$ does not fit $V^\pi(s_t)$ (which it does not before convergence), then the update target becomes a *biased estimate*.
-  - For example, in the TD(0) case, we get for \eqref{eq:VAL_L}:
+  - For example, in the TD($0$) case, we get for \eqref{eq:VAL_L}:
   $$L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
   - Taking the gradient of the single-sample version for $L(\theta)$ yields:
   [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
-  &= \theta + \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
+  &= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
   &\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
   \end{align*}$$]{.math-incremental}
   - Application of Eq. \eqref{eq:VAL_SGD-update} is still very common.
@@ -328,7 +328,7 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablat
 
 ::: fragment
 ::: definition
-### TD(0) semi-gradient update of $\theta$
+### TD($0$) semi-gradient update of $\theta$
 
 $$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t). \label{eq:VAL_TDsemigradient} \end{equation}$$
 :::
@@ -342,12 +342,12 @@ $$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_
 :::
 :::
 
-# Algorithm: Semi-gradient TD(0) value estimation
+# Algorithm: Semi-gradient TD($0$) value estimation
 
 ::: small
 ::: columns-6-5
 ::: definition
-### Algorithm: Semi-gradient TD(0) for estimating $V_\theta \approx V^\pi$
+### Algorithm: Semi-gradient TD($0$) for estimating $V_\theta \approx V^\pi$
 
 *Input*: 
 
@@ -368,9 +368,9 @@ $\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** $\STOP$
 
 ::: fragment
 ::: definition
-### Note: $n$-step version TD(n)
+### Note: $n$-step version TD($n$)
 
-The above algorithm can be extended towards $n$-step bootstrapping by replacing the TD(0) target $r_t + \gamma V_\theta(s_{t+1})$ with the $n$-step bootstrapped return 
+The above algorithm can be extended towards $n$-step bootstrapping by replacing the TD($0$) target $r_t + \gamma V_\theta(s_{t+1})$ with the $n$-step bootstrapped return 
 $$ \begin{align*} g_{t:t+n} = &r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots \\ &+ \gamma^{n-1} r_{t+n-1} + \gamma^n V_{\theta}(s_{t+n}) . \end{align*} $$
 The most challenging part in the implementation is the assessment of the remaining number of steps (i.e., when $T-t<n$).
 
@@ -397,7 +397,7 @@ For details, see [@Sutton1998{}, Ch. 9.4].
 
 ::: fragment
 ::: definition
-### Mini-batch semi-gradient TD(0) with experience replay
+### Mini-batch semi-gradient TD($0$) with experience replay
 
 Based on a dataset $\Dc=\set{(s_0, V^\pi(s_0)),\ldots,(s_N, V^\pi(s_N))}$, repeat
 
@@ -434,7 +434,7 @@ $$ \theta \gets \theta + \frac{\alpha}{b} \sum_{(s_i, V^\pi(s_i))\in\Bc} \rbrack
 $$ V_{\theta}(s) = \theta^\top \psi(s) = \sum_{k=1}^d \theta_k \psi_k(s) . $$
 - What's the gradient in this case?
 [$\Rightarrow$ it's simply the feature vector, $$\nablatheta V_\theta(s) = \nablatheta \theta^\top \psi(s) = \psi(s) .$$]{.fragment}
-- Our semi-gradient TD(0) update \eqref{eq:VAL_TDsemigradient} thus simply becomes 
+- Our semi-gradient TD($0$) update \eqref{eq:VAL_TDsemigradient} thus simply becomes 
 [$$\begin{align*} 
 \theta \gets &\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t) \\
 &= \theta + \alpha\rbracket{r_t + \gamma \theta^\top \psi(s_{t+1}) - \theta^\top \psi(s_{t})} \psi(s_{t}) \\

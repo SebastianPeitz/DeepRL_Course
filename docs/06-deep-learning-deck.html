@@ -3561,7 +3561,7 @@ The loss landscape of deep neural networks (with and without skip-connection) <s
 <li class="fragment">The descent direction is computed by taking the derivative of the loss function w.r.t. the weight vector. In terms of the MSE: <span class="math-incremental"><span class="math display">\[\begin{align*} 
 \nabla L(\theta) &amp;= \nabla \left(\frac{1}{N} \sum_{k=1}^N \norm{f_\theta(x_k) - y_k}_2^2 \right) \\
 &amp;= \frac{1}{N} \sum_{k=1}^N \nabla \norm{f_\theta(x_k) - y_k}_2^2 \qquad &amp;&amp;\text{(Linearity of the sum)}\\
-&amp;= \frac{1}{N} \sum_{k=1}^N \left(2 \norm{f_\theta(x_k) - y_k}_2  \nabla f_\theta(x_k)\right) &amp;&amp;\text{(Chain rule of differentiation)}
+&amp;= \frac{1}{N} \sum_{k=1}^N \left(2 \cbracket{f_\theta(x_k) - y_k}  \nabla f_\theta(x_k)\right) &amp;&amp;\text{(Chain rule of differentiation)}
 \end{align*}\]</span></span></li>
 <li class="fragment">This means that we need to <em>propagate</em> the error through our model <span class="math inline">\(f_\theta\)</span>.</li>
 <li class="fragment">Since a neural network is a chain of neurons, we need to apply the <strong>chain rule</strong> of differentiation over the layers.</li>
@@ -4075,7 +4075,7 @@ Gradient descent vs. SGD vs. Mini-batch gradient descent [<a href="https://med
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">What does this mean for learning?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have to learn the same thin in different locations!</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We have to learn the same thing in different locations!</span><br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> An “edge” remains an “edge”, no matter where we are.</span></li>
 <li class="fragment">Instead of training a fully connected layer, we train the weights of a <strong>kernel</strong> that moves over the input</li>
 <li class="fragment">Same weights in every location <span class="math inline">\(\Rightarrow\)</span> weight sharing!</li>

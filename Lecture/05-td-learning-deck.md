@@ -109,7 +109,7 @@ $$]{.fragment}
 
 ::: fragment
 ::: definition
-### One-step TD / TD(0) update
+### One-step TD / TD($0$) update
 
 $$
 \begin{equation}
@@ -118,7 +118,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 $$
 
 ::: incremental
-- Here, the **TD target** is $\textcolor{red}{r_t + \gamma V(s_{t+1})}$.
+- Here, the **TD target** is $\textcolor{red}{y_t = r_t + \gamma V(s_{t+1})}$.
 - TD is *bootstrapping*: estimate $V(s_t)$ based on $V(s_{t+1})$.
 - *Delay time of one* time step; no need to wait until the end of the episode.
 :::
@@ -153,7 +153,7 @@ $\quad\quad$ **if** $s_{t+1}$ is terminal **then** $\STOP$
 Using the target, we can define the **TD error**$^*$ $\delta$ [$\Rightarrow$ the expression inside the bracket of Eq.\ \eqref{eq:TD_TD0-update} we're using to improve our estimate:
 $$ \delta_t = \target - V(s_t) = r_t + \gamma V(s_{t+1}) - V(s_t). $$]{.fragment}
 
-[**Batch mode**: Let's assume that the TD(0) estimate of $V(s)$ does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):]{.fragment}
+[**Batch mode**: Let's assume that the TD($0$) estimate of $V(s)$ does not change within an episode, but that we apply all updates simulatenously once the episode is finished (exactly as we need to do in MC prediction):]{.fragment}
 [$$
 \begin{align*}
 \underbrace{g_t - V(s_t)}_{\text{MC error}} &= r_{t}+\gamma g_{t+1} - V(s_t) \fragment{+\gamma V(s_{t+1}) - \gamma V(s_{t+1})}\\
@@ -164,7 +164,7 @@ $$]{.math-incremental}
 
 ::: incremental
 - The MC error is the discounted sum of TD errors in this case.
-- If $V(s)$ is updated during an episode (as is common in TD(0)), the above identity only holds approximately.
+- If $V(s)$ is updated during an episode (as is common in TD($0$)), the above identity only holds approximately.
 :::
 
 :::
@@ -173,11 +173,11 @@ $$]{.math-incremental}
 $^*$ For sufficiently small step size $\alpha$, it can be shown that the TD error conveges to zero in batch mode [@Sutton1998].
 :::
 
-# Convergence of TD(0)
+# Convergence of TD($0$)
 
 ::: small
 ::: definition
-Given a finite MDP and a fixed policy $\pi$, the state-value estimate $V$ of TD(0) converges to the true $V^\pi$\
+Given a finite MDP and a fixed policy $\pi$, the state-value estimate $V$ of TD($0$) converges to the true $V^\pi$\
 (that is, $\lim_{t\rightarrow\infty} \delta_t = 0$)
 
 ::: incremental
@@ -191,8 +191,8 @@ $$\begin{equation}
 
 ::: incremental
 - In particular, $\alpha_t = \frac{1}{t}$ meets the condition \eqref{eq:stepsize_criterion}.
-- TD(0) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it's faster.
-- TD(0) can be more sensitive to poor initializations $V_0(s)$ compared to MC.
+- TD($0$) often converges faster than MC, as we will see in the following examples. However, there is no guarantee it's faster.
+- TD($0$) can be more sensitive to poor initializations $V_0(s)$ compared to MC.
 :::
 
 :::
@@ -251,7 +251,7 @@ Table: Sample of $K=8$ trajectories, including the rewards following the states.
 
 ::: incremental
 - the MC estimate?
-- the TD(0) estimate?
+- the TD($0$) estimate?
 :::
 
 [Before approaching this, let's try to model the underlying MDP!]{.fragment}
@@ -372,7 +372,7 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 :::
 
 ::: fragment
-![**TD(0) learning** for the random walk. **Left**: Different numbers of iterations ( α=0.1 ). **Middle**: Learning curves for different values of α. **Right**: Batch training.](images/05-td-learning/Example-RandomWalk-2.svg){ .embed width=1280px }
+![**TD($0$) learning** for the random walk. **Left**: Different numbers of iterations ( α=0.1 ). **Middle**: Learning curves for different values of α. **Right**: Batch training.](images/05-td-learning/Example-RandomWalk-2.svg){ .embed width=1280px }
 :::
 :::
 
@@ -382,12 +382,12 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 :::
 
-# Example: MC vs. TD(0) prediction in Gridworld
+# Example: MC vs. TD($0$) prediction in Gridworld
 
 ::: small
 ::: columns-6-4
 
-![](videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD(0) prediction"){ width=600px .controls .autoplay .muted }
+![](videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD($0$) prediction"){ width=600px .controls .autoplay .muted }
 
 ::: platzhalter
 - Fixed policy: $$\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.$$
@@ -395,7 +395,7 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 
 \
 
-[**Why is MC learning faster? Wouldn't we expect TD(0) to be stronger?**]{.fragment}
+[**Why is MC learning faster? Wouldn't we expect TD($0$) to be stronger?**]{.fragment}
 
 <!-- [$\Rightarrow$ Because this is a rather simple case where we find the target relatively quickly with high probability.]{.fragment} -->
 
@@ -423,11 +423,11 @@ $$
 
 ::: fragment
 ::: definition
-### Estimation: TD(0) update of the Q-function
+### Estimation: TD($0$) update of the Q-function
 
 $$
 \begin{equation}
-Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(s_{t+1}, a_{t+1})}^{\mathsf{TD~target}} - Q(s_t, a_t)\big]}_{\mathsf{TD~error}~\delta}. \label{eq:TD_TD0-update-Q}
+Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(s_{t+1}, a_{t+1})}^{\mathsf{TD~target}~y} - Q(s_t, a_t)\big]}_{\mathsf{TD~error}~\delta}. \label{eq:TD_TD0-update-Q}
 \end{equation}
 $$
 :::
@@ -465,7 +465,7 @@ $s,a,r,s',a'$: **S**tate-**A**ction-**R**eward-Next **S**tate-Next **A**ction
 **initialize**
 
 - $Q(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
-- $Q($terminal-state$,\cdot) = 0$
+- $Q(\terminal,\cdot) = 0$
 - $\pi = \epsilon$-greedy$(Q)$
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
@@ -515,7 +515,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 **initialize**
 
 - $Q(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
-- $Q($terminal-state$,\cdot) = 0$
+- $Q(\terminal,\cdot) = 0$
 - $\pi = \epsilon$-greedy$(Q)$
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
@@ -588,7 +588,7 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.6]
 :::
 
 ::: small
-- Discout: $\gamma = 0.9$
+- Discount: $\gamma = 0.9$
 - Exploration: $\epsilon = 0.2$
 - Step size: $\alpha = 0.5$
 :::
@@ -690,7 +690,7 @@ $$Q(s,a^*) \approx Q_2(s,a^*)=Q_2(s,\arg\max_{a\in\Ac} Q_1(s,a)).$$
 **initialize**
 
 - $Q_1(s,a)$ and $Q_2(s,a)$ arbitrarily for $s \in \Sc, a \in \Ac$ 
-- $Q_1($terminal-state$,\cdot) = Q_2($terminal-state$,\cdot) = 0$
+- $Q_1(\terminal,\cdot) = Q_2(\terminal,\cdot) = 0$
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
@@ -734,7 +734,7 @@ $\quad\quad$ $t \gets t+1$\
 ::: incremental
 - $n$-step update: consider $n$ rewards plus estimated value $n$ steps later (bootstrapping).
 - Consequence: Estimate update is available only after an $n$-step delay.
-- TD(0) and MC are special cases included in $n$-step prediction.
+- TD($0$) and MC are special cases included in $n$-step prediction.
 :::
 :::
 
@@ -746,7 +746,7 @@ Recap the **update targets** for the incremental prediction methods:
 - **Monte Carlo**: builds on the complete sampled return series
 $$ g_{t:T} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^T r_T . $$
   - $g_{t:T}$ denotes that all steps until termination at $T$ are considered to estimate a target for step $t$.
-- **TD(0)**: utilizes a one-step bootstrapped return
+- **TD($0$)**: utilizes a one-step bootstrapped return
 $$ g_{t:t+1} = r_t + \gamma V_t(s_{t+1}). $$
   - $g_{t:t+1}$ highlights that only one future sampled reward step is considered before bootstrapping.
   - $V_t$ is an estimate of $V^\pi$ at time step $t$.
@@ -955,7 +955,7 @@ $$ g = \frac{1}{3} g_{t:t+1} + \frac{2}{3} g_{t:t+3}. $$
 # $\lambda$-return (1)
 
 ::: columns-5-5
-![The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD(0) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. [@Sutton1998{}, Figure 12.1]](images/05-td-learning/TDLambda-Return-Backup_v2.svg){ width=500px }
+![The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD($0$) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. [@Sutton1998{}, Figure 12.1]](images/05-td-learning/TDLambda-Return-Backup_v2.svg){ width=500px }
 
 ::: incremental
 - **$\lambda$-return**: is a compound update with exponentially decaying weights:
@@ -979,7 +979,7 @@ g_t^\lambda = (1-\lambda) \left(\sum_{k=1}^{T-t-1} \lambda^{(k-1)} g_{t:t+n}\rig
 \end{equation}$$
 - Return $g_t$ after termination is weighted with residual weight $\lambda^{T-t-1}$.
 - The equation includes two special cases:
-  - If $\lambda = 0$: becomes the TD(0) update.
+  - If $\lambda = 0$: becomes the TD($0$) update.
   - If $\lambda = 1$: becomes the MC update.
 :::
 
