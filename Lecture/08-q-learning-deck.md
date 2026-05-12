@@ -172,7 +172,7 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{Q^\pi(s,a) - Q_\theta(
 - Depending on the control approach, the true target $Q^\pi(s, a)$ is approximated by:
   - Monte Carlo: full episodic return $$Q^\pi(s,a) \approx g,$$
   - SARSA: one-step bootstrapped estimate $$Q^\pi(s,a) \approx r + \gamma Q_\theta(s',a'),$$
-  - n-step SARSA: $$Q^\pi(s_t, a_t) \approx r_t + \gamma r_{t+1} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^n Q_\theta(s_{t+n},a_{t+n}).$$
+  - $n$-step SARSA: $$Q^\pi(s_t, a_t) \approx r_t + \gamma r_{t+1} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^n Q_\theta(s_{t+n},a_{t+n}).$$
 :::
 :::
 
@@ -181,19 +181,19 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{Q^\pi(s,a) - Q_\theta(
 ::: small
 ::: columns-7-3
 ::: definition
-### Algorithm: Gradient Monte Carlo algorithm for estimating $Q^\pi$ / $Q^*$
+### Algorithm: Gradient Monte Carlo algorithm for estimating [$Q^\pi$]{style="color: red;"} / [$Q^*$]{style="color: blue;"}
 
 *Input*: 
 
 - a differentiable, parameter-dependent function $Q_\theta: \Sc \times \Ac \to \R$
 - learning rate $\alpha$
-- **Prediction case**: a policy $\pi$
-- **Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$
+- [**Prediction case**: a policy $\pi$]{style="color: red;"}
+- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: blue;"}
 
 *Initialize*: Value function weights $\theta\in\R^d$ arbitrarily\
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
-$\quad$ Generate a sequence following $\pi$ (or $\epsilon$-greedy$(Q_\theta)$):
+$\quad$ Generate a sequence following [$\pi$]{style="color: red;"} (or [$\epsilon$-greedy$(Q_\theta)$]{style="color: blue;"}):
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ Calculate the every-visit returns $g_t$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
@@ -218,8 +218,8 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \na
 
 - a differentiable, parameter-dependent function $Q_\theta: \Sc \times \Ac \to \R$
 - learning rate $\alpha$
-- **Prediction case**: a policy $\pi$
-- **Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$
+- [**Prediction case**: a policy $\pi$]{style="color: red;"}
+- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: blue;"}
 
 *Initialize*: Value function weights $\theta\in\R^d$ arbitrarily\
 
@@ -472,7 +472,7 @@ $\qquad$
 
 # The general view of Q-learning
 
-![Inspired by the Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
 
 ::: small
 ::: incremental
@@ -568,7 +568,7 @@ $$\begin{align*}
 <!-- [$\Rightarrow$ The **TD error** $$\delta_i = \underbrace{r_i + \gamma Q_{\theta'}(s_i',\arg \max_{a\in\Ac} Q_\theta(s_i',a))}_{=y_i} - Q_\theta(s_i,a_i)$$]{.fragment} -->
 :::
 
-![Inspired by the Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ width=600px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ width=600px }
 :::
 
 ::: incremental
@@ -584,7 +584,7 @@ $$ P(i) = \frac{p_i^\alpha}{\sum_{k=1}^{\abs{\Dc}}p_k^\alpha}, \qquad p_i = \abs
 
 # $n$-step returns
 
-[$\circ$ The concept of TD($n$) can be extended to deep Q-learning in a straightforward fashion:]{.fragment}
+The concept of TD($n$) can be extended to deep Q-learning in a straightforward fashion:
 [$$ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). $$ ]{.fragment}
 
 [$\textcolor{green}{\mathbf{+}\text{ less biased target values when estimates using }Q_\theta\text{ are inaccurate}}$]{.fragment}
@@ -599,7 +599,7 @@ $$ P(i) = \frac{p_i^\alpha}{\sum_{k=1}^{\abs{\Dc}}p_k^\alpha}, \qquad p_i = \abs
 What's the problem with continuous actions in DQN?
 
 ::: incremental
-1. The action selection: $\pias = \begin{cases} 1, & a = \arg\textcolor{red}{\max}_{\hat{a}\in\Ac} Q_\theta(s,\hat{a}) \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
+1. The action selection: $\pias = \begin{cases} 1, & a = \arg\textcolor{red}{\max}_{a'\in\Ac} Q_\theta(s,a') \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
 2. The target calculation: $y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\theta'}(s_i',a)$.
 :::
 
@@ -608,15 +608,14 @@ What's the problem with continuous actions in DQN?
 [**What can we do?**]{.fragment}
 
 ::: incremental
-1. Gradient based optimization (e.g., SGD) [$\Rightarrow$ $\quad\textcolor{red}{\mathbf{-}\text{ This can be too slow!}}$]{.fragment}
-2. Simple sampling: $$\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac). $$
+1. Gradient based optimization (e.g., SGD) [$\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ This can be too slow!}}$]{.fragment}
+2. Simple sampling: $$\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac).$$
   [$\Rightarrow$ $\quad\textcolor{green}{\mathbf{+}\text{ Very efficient.}}\quad$
   $\textcolor{green}{\mathbf{+}\text{ Easily parallelized.}}\quad$
   $\textcolor{red}{\mathbf{-}\text{ Not very accurate.}}$]{.fragment}
 3. Other stochastic optimization techniqes 
-[$\Rightarrow$ $\quad\textcolor{red}{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}$]{.fragment}
-4. Train second network $\pi_\phi: \Sc \to \Ac$ whose output maximizes $Q(s,a)$: $$Q(s,\pi_\phi(s)) \approx \max_{a\in\Ac} Q(s,a).$$
-[$\Rightarrow$ Actor-critic methods (in two lectures)!]{.fragment}
+[$~\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}$]{.fragment}
+4. Train second network $\pi_\phi: \Sc \to \Ac$ whose output maximizes $Q_\theta(s,a)$: $$Q(s,\pi_\phi(s)) \approx \max_{a\in\Ac} Q_\theta(s,a)\fragment{ \qquad\Rightarrow\quad \text{Actor-critic methods (in two lectures)!}\qquad\qquad~~ }$$
 :::
 
 :::

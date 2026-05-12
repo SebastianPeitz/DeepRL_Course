@@ -103,6 +103,7 @@ math:
     Xc: '{\mathcal{X}}'
     Yc: '{\mathcal{Y}}'
     nablatheta: '{\nabla_{\mkern-6mu \theta\mkern+2mu}}'
+    nablaphi: '{\nabla_{\mkern-6mu \phi\mkern+2mu}}'
     aprime: '{a^{\prime}}'
     sprime: '{s^{\prime}}'
     piprime: '{\pi^{\prime}}'
@@ -142,6 +143,7 @@ math:
     dx: '{\,\mathrm{d}x}'
     ds: '{\,\mathrm{d}s}'
     dt: '{\,\mathrm{d}t}'
+    dtau: '{\,\mathrm{d}\tau}'
 
     abs: ['\left\vert #1 \right\vert', 1]
     norm: ['\left\Vert #1 \right\Vert', 1]
