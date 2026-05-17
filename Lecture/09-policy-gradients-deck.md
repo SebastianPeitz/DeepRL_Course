@@ -166,18 +166,22 @@ Here, $p$ is the density according to which $\tau$ is distributed, with $\int p(
 :::
 
 ::: fragment
-::: columns-5-5
+::: columns-6-5
 [$$\begin{align*}
-~&= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau \qquad\qquad \\
-&= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau) \\
-&= \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} 
+~&= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau  \\
+&= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau)
 \end{align*} $$]{.math-incremental}
+[$$\begin{align}
+\quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
+\end{align} $$]{.fragment}
 
 ::: definition
 ### A convenient identity
 
 $$
-\textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} = \textcolor{red}{\nablaphi p_\phi(\tau)}
+\begin{equation}
+\textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} = \textcolor{red}{\nablaphi p_\phi(\tau)} \label{eq:PG_log_identity}
+\end{equation}
 $$
 :::
 :::
@@ -353,37 +357,192 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1}
 :::
 :::
 
-# Understanding
+# Understanding the policy gradient
 
 ::: small
-::: columns-7-3
-
-::: platzhalter
-
-:::
+::: columns-3-7
 
 ![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-visualization.svg){ .embed width=350px }
 
+::: platzhalter
+::: incremental
+- What did we just do?\
+[$\Rightarrow$ let's rewrite the formula a little and *compare against maixmum likelihood*:
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \log \nablatheta \pi_\phi(\tau_i). $$
+]{.fragment}
+- Good experience is made more likely: We increase the proability of the policy to produce similar trajectories
+- Bad experience is made less likely.
+- This simply formalizes the notion of "trial and error"!
+:::
+\
+
+::: fragment
+::: definition
+### A note on partial observability (Without going into details)
+
+The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies $\pi\agivenb{a}{o}$. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.
 :::
 :::
+:::
+:::
+:::
+
+
+------------------------------------------------------------------------------
 
 # Challenges with policy gradients
 
- High variance
+------------------------------------------------------------------------------
 
- # Reducing variance
+# High variance
 
- # Baselines
+::: small
+::: columns-4-6
+
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-variance.svg){ .embed width=500px }
+
+::: platzhalter
+$$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
+
+::: incremental
+- Adding a constant to the reward should not change the optimal policy!
+  - This is true for *any* optimization problem, e.g., $$\arg\min_x f(x) = \arg\min_x \rbracket{f(x) + 1000}.$$
+- In the limit $N\rightarrow\infty$, this is true for policy gradients as well...
+  - ... but it does not hold for finite sample sizes, in particular few sample trajectories.
+- Depending on the sign of $r(\tau)$, we **either increase or decrease** the probability of seeing similar trajectories $\tau_i$ (and their rewards $r(\tau_i)$) in the future.
+- This is an instance of the **high variance** issue with policy gradients.
+- An even more "catastropic" version of this: What if we scale some of the rewards to be exactly zero?
+:::
+:::
+:::
+:::
+
+# Reducing variance -- baselines
+
+::: small
+::: columns-4-6
+::: platzhalter
+$$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
+
+::: incremental
+- **Question**: Is there a systematic way to fix the challenge of reward offsets?\
+[$\Rightarrow$ Let's balance the "weight" of of our likelihood objective in such a way that ...]{.fragment}
+  - Better-than-average rewards *increase* the probability of the respective trajectories.
+  - Worse-than-average rewards *decrease* the probability.
+- Several **advantages**!
+  - This aligns with our intuition that better-than-average is reinforced and worse-than-average is penalized.
+  - This approach makes the policy gradient independent of the actual size of the reward signal.
+:::
+:::
+
+::: platzhalter
+
+::: fragment
+::: definition
+*Approach*: subtract a **baseline** $b$ from the reward signal
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) \rbracket{r(\tau_i) - b}, $$
+[where $b=\frac{1}{N} \sum_{i=1}^N r(\tau_i)$. ]{.fragment}
+:::
+:::
+
+::: fragment
+::: definition
+### Theorem
+
+Subtracting any constant $b$ is *unbiased in expectation*
+:::
+:::
+
+::: fragment
+**Proof**: We start with the exact formulation of the policy gradient,
+$$ \nablaphi L(\phi) \stackrel{\eqref{eq:PG_policy_gradient}}{=} \Expsub{\nablaphi \log p_\phi(\tau) r(\tau) }{\tau\sim p_\phi(\tau)}. $$
+[Unbiased in expectation $\Rightarrow$ baseline term is zero in expectation:]{.fragment}
+[$$\begin{align*}
+&\Expsub{\nablaphi \log p_\phi(\tau) r(\tau) }{\tau\sim p_\phi(\tau)} \fragment{ = \int p_\phi(\tau) \nablaphi \log p_\phi(\tau) b \dtau } \\
+&\stackrel{\eqref{eq:PG_log_identity}}{=} \int \nablaphi p_\phi(\tau) b \dtau \fragment{ = b \nablaphi \int p_\phi(\tau) \dtau } \fragment{ = \cbracket{\nablaphi 1} b } \fragment{ = 0. \qquad \square }
+\end{align*}$$]{.math-incremental}
+:::
+:::
+:::
+:::
 
 
- # Off-policy policy gradients
+# The optimal baseline
 
- # Advanced policy gradients
+::: small
+
+::: columns-6-5-3
+
+::: definition
+$$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. $$
+:::
+
+::: platzhalter
+How do we find the optimal baseline?\
+[$\Rightarrow$ optimization: minimize the variance]{.fragment}
+:::
+
+::: fragment
+::: definition
+$$ \Var{x} = \Exp{x^2} - \Exp{x}^2 $$
+:::
+:::
+:::
+
+[$$\begin{align*} \mathsf{var} &= \E_{\tau\sim p_\phi(\tau)}\big[(\underbrace{\nablaphi \log p_\phi(\tau)}_{=g(\tau)} \cbracket{r(\tau) - b})^2\big] - \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - \textcolor{red}{\cancel{b}}} }{\tau\sim p_\phi(\tau)}^2 \quad\text{(\textcolor{red}{unbiased baseline})} \\
+\diff{\mathsf{var}}{b} &=\diff{\mathsf{}}{b} \Expsub{g(\tau)^2 \cbracket{r(\tau) - b}^2}{\tau\sim p_\phi(\tau)} \fragment{ = \diff{\mathsf{}}{b} \cbracket{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)} - 2\Expsub{g(\tau)^2 r(\tau)b}{\tau\sim p_\phi(\tau)} + \Expsub{g(\tau)^2 b^2}{\tau\sim p_\phi(\tau)} } } \\
+&= \diff{\mathsf{}}{b} \cbracket{\cancel{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)}} - 2b\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} + b^2 \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} }\\
+&= - 2\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} +2 b \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} \fragment{\stackrel{!}{=}0}.
+\end{align*}$$]{.math-incremental}
+
+::: fragment
+::: columns-7-4
+**The optimal baseline** $b^*$ is the expected reward, *weighted by gradient magnitudes*:
+$$ b^* = \frac{\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)}}{\Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)}}. $$
+
+::: fragment
+::: definition
+**Note**: $b^*$ is hard to calculate. In practice, we usually resort to the average reward $$b=\frac{1}{N} \sum_{i=1}^N r(\tau_i).$$
+:::
+:::
+:::
+:::
+
+:::
+
+
+# Reducing variance -- causality
+
+::: small
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}.$$
+
+::: incremental
+- **Causality**: The policy at time $t'$ cannot affect the reward at time $t$ when $t<t'$.
+  - "What you do now, is not going to change the rewards you received in the past."
+- **Question**: Are we making use of causality in the above equation?
+  - Let's rewrite it and make use of the distributive property ($a \cdot (b + c) = a\cdot b + a\cdot c$):
+  $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}. $$
+  [$\Rightarrow$ Past rewards (i.e., $t'<t$) have an impact on the policy $\pi_\phi$!]{.fragment}\
+  - In expectation, these factors have to cancel out (and one can prove this). [**But**: for finite sample sizes, they do not and instead increase the variance.]{.fragment}
+- **Simple fix**: "*reward to go*" $\hat{Q}_{i,t} = \sum_{\textcolor{red}{t'=t}}^{T-1}r_{i,t'}$ (that is, the only change is $0 \to t$),
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. $$
+:::
+:::
+\
+
+::: fragment
+::: footer
+:bulb: Do not confuse causality with the Markov property! The Markov propery (which may hold for a system, but does not have to) says that your future states do not depend on past states, just the present state. Causality is always true: "Rewards in the past are independent of decisions in the present."
+:::
+:::
+
+
+# Off-policy policy gradients
+
+
+# Advanced policy gradients
 
  Covariant/natural PG
-
-
-
 
 
 # References

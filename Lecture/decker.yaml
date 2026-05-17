@@ -117,7 +117,7 @@ math:
     Expsub: ['{\mathbb{E}_{#2}\left[ #1 \right]}', 2]
     ExpC: ['{\mathbb{E}\left[ #1 \middle| #2 \right]}', 2]
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
-    Var: '{\mathbb{E}}'
+    Var: ['{\mathsf{var}\left[ #1 \right]}', 1]
     Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
     th: ['{{#1}^{\mathsf{th}}}', 1]
     Dtrain: '{\mathcal{D}_{\mathsf{train}}}'

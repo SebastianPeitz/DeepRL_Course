@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "12.05.2026 06:47"
+        "17.05.2026 22:47"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -275,52 +275,59 @@
             },
             {
                 "id": false,
-                "src": "11-planning-control-deck.md",
-                "subtitle": "Planning & Optimal Control",
-                "title": "Deep Reinforcement Learning",
-                "url": "11-planning-control-deck.html"
-            },
-            {
-                "id": false,
-                "src": "12-model-based-RL-deck.md",
-                "subtitle": "Model-based Reinforcement Learning",
-                "title": "Deep Reinforcement Learning",
-                "url": "12-model-based-RL-deck.html"
-            },
-            {
-                "id": false,
-                "src": "13-exploration-deck.md",
+                "src": "12-exploration-deck.md",
                 "subtitle": "Exploration",
                 "title": "Deep Reinforcement Learning",
-                "url": "13-exploration-deck.html"
+                "url": "12-exploration-deck.html"
             },
             {
                 "id": false,
-                "src": "14-offline-RL-deck.md",
+                "src": "13-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-offline-RL-deck.md",
                 "subtitle": "Offline Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "14-offline-RL-deck.html"
+                "url": "15-offline-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "15-transfer-learning-deck.md",
+                "src": "16-imitation-learning-deck.md",
+                "subtitle": "Imitation Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-imitation-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-transfer-learning-deck.md",
                 "subtitle": "Transfer Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "15-transfer-learning-deck.html"
+                "url": "17-transfer-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "16-multi-agent-RL-deck.md",
+                "src": "18-multi-agent-RL-deck.md",
                 "subtitle": "Multi-Agent Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "16-multi-agent-RL-deck.html"
+                "url": "18-multi-agent-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "17-behavior-cloning-deck.md",
-                "subtitle": "Behavior Cloning",
+                "src": "19-scientific-standards-deck.md",
+                "subtitle": "Scientific Standards in RL",
                 "title": "Deep Reinforcement Learning",
-                "url": "17-behavior-cloning-deck.html"
+                "url": "19-scientific-standards-deck.html"
             },
             {
                 "id": false,
@@ -417,52 +424,59 @@
             },
             {
                 "id": false,
-                "src": "11-planning-control-deck.md",
-                "subtitle": "Planning & Optimal Control",
-                "title": "Deep Reinforcement Learning",
-                "url": "11-planning-control-deck.html"
-            },
-            {
-                "id": false,
-                "src": "12-model-based-RL-deck.md",
-                "subtitle": "Model-based Reinforcement Learning",
-                "title": "Deep Reinforcement Learning",
-                "url": "12-model-based-RL-deck.html"
-            },
-            {
-                "id": false,
-                "src": "13-exploration-deck.md",
+                "src": "12-exploration-deck.md",
                 "subtitle": "Exploration",
                 "title": "Deep Reinforcement Learning",
-                "url": "13-exploration-deck.html"
+                "url": "12-exploration-deck.html"
             },
             {
                 "id": false,
-                "src": "14-offline-RL-deck.md",
+                "src": "13-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-offline-RL-deck.md",
                 "subtitle": "Offline Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "14-offline-RL-deck.html"
+                "url": "15-offline-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "15-transfer-learning-deck.md",
+                "src": "16-imitation-learning-deck.md",
+                "subtitle": "Imitation Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-imitation-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-transfer-learning-deck.md",
                 "subtitle": "Transfer Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "15-transfer-learning-deck.html"
+                "url": "17-transfer-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "16-multi-agent-RL-deck.md",
+                "src": "18-multi-agent-RL-deck.md",
                 "subtitle": "Multi-Agent Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "16-multi-agent-RL-deck.html"
+                "url": "18-multi-agent-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "17-behavior-cloning-deck.md",
-                "subtitle": "Behavior Cloning",
+                "src": "19-scientific-standards-deck.md",
+                "subtitle": "Scientific Standards in RL",
                 "title": "Deep Reinforcement Learning",
-                "url": "17-behavior-cloning-deck.html"
+                "url": "19-scientific-standards-deck.html"
             },
             {
                 "id": false,
@@ -559,52 +573,59 @@
             },
             {
                 "id": false,
-                "src": "11-planning-control-deck.md",
-                "subtitle": "Planning & Optimal Control",
-                "title": "Deep Reinforcement Learning",
-                "url": "11-planning-control-deck.html"
-            },
-            {
-                "id": false,
-                "src": "12-model-based-RL-deck.md",
-                "subtitle": "Model-based Reinforcement Learning",
-                "title": "Deep Reinforcement Learning",
-                "url": "12-model-based-RL-deck.html"
-            },
-            {
-                "id": false,
-                "src": "13-exploration-deck.md",
+                "src": "12-exploration-deck.md",
                 "subtitle": "Exploration",
                 "title": "Deep Reinforcement Learning",
-                "url": "13-exploration-deck.html"
+                "url": "12-exploration-deck.html"
             },
             {
                 "id": false,
-                "src": "14-offline-RL-deck.md",
+                "src": "13-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-offline-RL-deck.md",
                 "subtitle": "Offline Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "14-offline-RL-deck.html"
+                "url": "15-offline-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "15-transfer-learning-deck.md",
+                "src": "16-imitation-learning-deck.md",
+                "subtitle": "Imitation Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-imitation-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-transfer-learning-deck.md",
                 "subtitle": "Transfer Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "15-transfer-learning-deck.html"
+                "url": "17-transfer-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "16-multi-agent-RL-deck.md",
+                "src": "18-multi-agent-RL-deck.md",
                 "subtitle": "Multi-Agent Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "16-multi-agent-RL-deck.html"
+                "url": "18-multi-agent-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "17-behavior-cloning-deck.md",
-                "subtitle": "Behavior Cloning",
+                "src": "19-scientific-standards-deck.md",
+                "subtitle": "Scientific Standards in RL",
                 "title": "Deep Reinforcement Learning",
-                "url": "17-behavior-cloning-deck.html"
+                "url": "19-scientific-standards-deck.html"
             },
             {
                 "id": false,
@@ -701,52 +722,59 @@
             },
             {
                 "id": false,
-                "src": "11-planning-control-deck.md",
-                "subtitle": "Planning & Optimal Control",
-                "title": "Deep Reinforcement Learning",
-                "url": "11-planning-control-deck.html"
-            },
-            {
-                "id": false,
-                "src": "12-model-based-RL-deck.md",
-                "subtitle": "Model-based Reinforcement Learning",
-                "title": "Deep Reinforcement Learning",
-                "url": "12-model-based-RL-deck.html"
-            },
-            {
-                "id": false,
-                "src": "13-exploration-deck.md",
+                "src": "12-exploration-deck.md",
                 "subtitle": "Exploration",
                 "title": "Deep Reinforcement Learning",
-                "url": "13-exploration-deck.html"
+                "url": "12-exploration-deck.html"
             },
             {
                 "id": false,
-                "src": "14-offline-RL-deck.md",
+                "src": "13-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-offline-RL-deck.md",
                 "subtitle": "Offline Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "14-offline-RL-deck.html"
+                "url": "15-offline-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "15-transfer-learning-deck.md",
+                "src": "16-imitation-learning-deck.md",
+                "subtitle": "Imitation Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-imitation-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-transfer-learning-deck.md",
                 "subtitle": "Transfer Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "15-transfer-learning-deck.html"
+                "url": "17-transfer-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "16-multi-agent-RL-deck.md",
+                "src": "18-multi-agent-RL-deck.md",
                 "subtitle": "Multi-Agent Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "16-multi-agent-RL-deck.html"
+                "url": "18-multi-agent-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "17-behavior-cloning-deck.md",
-                "subtitle": "Behavior Cloning",
+                "src": "19-scientific-standards-deck.md",
+                "subtitle": "Scientific Standards in RL",
                 "title": "Deep Reinforcement Learning",
-                "url": "17-behavior-cloning-deck.html"
+                "url": "19-scientific-standards-deck.html"
             },
             {
                 "id": false,
@@ -843,52 +871,59 @@
             },
             {
                 "id": false,
-                "src": "11-planning-control-deck.md",
-                "subtitle": "Planning & Optimal Control",
-                "title": "Deep Reinforcement Learning",
-                "url": "11-planning-control-deck.html"
-            },
-            {
-                "id": false,
-                "src": "12-model-based-RL-deck.md",
-                "subtitle": "Model-based Reinforcement Learning",
-                "title": "Deep Reinforcement Learning",
-                "url": "12-model-based-RL-deck.html"
-            },
-            {
-                "id": false,
-                "src": "13-exploration-deck.md",
+                "src": "12-exploration-deck.md",
                 "subtitle": "Exploration",
                 "title": "Deep Reinforcement Learning",
-                "url": "13-exploration-deck.html"
+                "url": "12-exploration-deck.html"
             },
             {
                 "id": false,
-                "src": "14-offline-RL-deck.md",
+                "src": "13-planning-control-deck.md",
+                "subtitle": "Planning & Optimal Control",
+                "title": "Deep Reinforcement Learning",
+                "url": "13-planning-control-deck.html"
+            },
+            {
+                "id": false,
+                "src": "14-model-based-RL-deck.md",
+                "subtitle": "Model-based Reinforcement Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "14-model-based-RL-deck.html"
+            },
+            {
+                "id": false,
+                "src": "15-offline-RL-deck.md",
                 "subtitle": "Offline Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "14-offline-RL-deck.html"
+                "url": "15-offline-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "15-transfer-learning-deck.md",
+                "src": "16-imitation-learning-deck.md",
+                "subtitle": "Imitation Learning",
+                "title": "Deep Reinforcement Learning",
+                "url": "16-imitation-learning-deck.html"
+            },
+            {
+                "id": false,
+                "src": "17-transfer-learning-deck.md",
                 "subtitle": "Transfer Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "15-transfer-learning-deck.html"
+                "url": "17-transfer-learning-deck.html"
             },
             {
                 "id": false,
-                "src": "16-multi-agent-RL-deck.md",
+                "src": "18-multi-agent-RL-deck.md",
                 "subtitle": "Multi-Agent Reinforcement Learning",
                 "title": "Deep Reinforcement Learning",
-                "url": "16-multi-agent-RL-deck.html"
+                "url": "18-multi-agent-RL-deck.html"
             },
             {
                 "id": false,
-                "src": "17-behavior-cloning-deck.md",
-                "subtitle": "Behavior Cloning",
+                "src": "19-scientific-standards-deck.md",
+                "subtitle": "Scientific Standards in RL",
                 "title": "Deep Reinforcement Learning",
-                "url": "17-behavior-cloning-deck.html"
+                "url": "19-scientific-standards-deck.html"
             },
             {
                 "id": false,
@@ -1309,7 +1344,10 @@
                 "{\\mathsf{STOP}}"
             ],
             "Sc": "{\\mathcal{S}}",
-            "Var": "{\\mathbb{E}}",
+            "Var": [
+                "{\\mathsf{var}\\left[ #1 \\right]}",
+                1.0
+            ],
             "Vpi": "{V^\\pi}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
@@ -1343,6 +1381,7 @@
             ],
             "ds": "{\\,\\mathrm{d}s}",
             "dt": "{\\,\\mathrm{d}t}",
+            "dtau": "{\\,\\mathrm{d}\\tau}",
             "dx": "{\\,\\mathrm{d}x}",
             "inRed": [
                 "{\\textcolor{red}{\\text{#1}}}",
@@ -1352,6 +1391,7 @@
                 "{{#1}^{(#2)}}",
                 2.0
             ],
+            "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
             "nablatheta": "{\\nabla_{\\mkern-6mu \\theta\\mkern+2mu}}",
             "ndiff": [
                 "{\\frac{\\mathrm{d}^{#3} #1}{\\mathrm{d} {#2}^{#3}}}",

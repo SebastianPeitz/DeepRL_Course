@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "12.05.2026 06:47"
+        "17.05.2026 23:19"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "8",
@@ -601,7 +601,10 @@
                 "{\\mathsf{STOP}}"
             ],
             "Sc": "{\\mathcal{S}}",
-            "Var": "{\\mathbb{E}}",
+            "Var": [
+                "{\\mathsf{var}\\left[ #1 \\right]}",
+                1.0
+            ],
             "Vpi": "{V^\\pi}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
@@ -635,6 +638,7 @@
             ],
             "ds": "{\\,\\mathrm{d}s}",
             "dt": "{\\,\\mathrm{d}t}",
+            "dtau": "{\\,\\mathrm{d}\\tau}",
             "dx": "{\\,\\mathrm{d}x}",
             "inRed": [
                 "{\\textcolor{red}{\\text{#1}}}",
@@ -644,6 +648,7 @@
                 "{{#1}^{(#2)}}",
                 2.0
             ],
+            "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
             "nablatheta": "{\\nabla_{\\mkern-6mu \\theta\\mkern+2mu}}",
             "ndiff": [
                 "{\\frac{\\mathrm{d}^{#3} #1}{\\mathrm{d} {#2}^{#3}}}",
