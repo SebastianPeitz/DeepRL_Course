@@ -1,6 +1,6 @@
 ---
 subtitle:    Transfer Learning
-chapter:     16
+chapter:     17
 feedback:
   deck-id:  'deeprl-transfer-learning'
 ...

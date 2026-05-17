@@ -120,7 +120,7 @@ $\quad\quad$ $t \gets t+1$
 - For training, we need to define a **prediction objective**: 
 $$\begin{equation} L(\theta) = \sum_{k=1}^N \big(V^\pi(s_k) - V_\theta(s_k)\big)^2 \approx \int_\Sc \mu(s) \big(V^\pi(s) - V_\theta(s)\big)^2 \ds = \overline{VE}(\theta). \label{eq:DQL_V_L} \end{equation}$$
 - **Incremental weight updates** via
-  - gradients, e.g., in the Monte Carlos setting: 
+  - gradients, e.g., in the Monte Carlo setting: 
   $$\begin{equation} \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). \label{eq:DQL_V_update_MC} \end{equation}$$
   - semi-gradients in the bootstrapping case: we are not differentiating the target, which also depends on $V_\theta$. For TD learning, we have 
   $$\begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma V_\theta(s') - V_\theta(s)} \nablatheta V_\theta(s). \label{eq:DQL_V_update_TD} \end{equation}$$
@@ -231,8 +231,8 @@ $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then**\
 $\quad\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$\
 $\quad\quad\quad$ Go to next episode $k+1$\
-$\quad\quad$ Choose [$a' \sim \pi\agivenb{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a' \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
-$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a') - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$
+$\quad\quad$ Choose [$a_{t+1} \sim \pi\agivenb{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a_{t+1} \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
+$\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a_{t+1}) - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$
 :::
 :::
 
@@ -365,7 +365,7 @@ L(\theta) &= \sum_{i=1}^{\abs{\Bc}} \big(\underbrace{r_i + \max_{a\in\Ac}Q_{\the
 
 # DQN working principle (2)
 
-![Adapted from [@Abdelwanis2026]](images/08-deep-q-learning/DQN2.svg){ .embed width=800px }
+![Adapted from [@Abdelwanis2026]](images/08-deep-q-learning/DQN.svg){ .embed width=1000px }
 
 # The DQN algorithm
 

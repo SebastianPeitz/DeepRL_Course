@@ -1,8 +1,8 @@
 ---
-subtitle:    Behavior Cloning
-chapter:     17
+subtitle:    Imitation Learning
+chapter:     16
 feedback:
-  deck-id:  'deeprl-behavior-cloning'
+  deck-id:  'deeprl-imitation-learning'
 ...
 
 

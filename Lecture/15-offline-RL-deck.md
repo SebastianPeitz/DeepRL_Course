@@ -1,6 +1,6 @@
 ---
 subtitle:    Offline Reinforcement Learning
-chapter:     14
+chapter:     15
 feedback:
   deck-id:  'deeprl-offline-RL'
 ...

@@ -1,8 +1,8 @@
 ---
-subtitle:    Model-based Reinforcement Learning
-chapter:     12
+subtitle:    Scientific Standards in RL
+chapter:     19
 feedback:
-  deck-id:  'deeprl-model-based-RL'
+  deck-id:  'deeprl-scientific-standards'
 ...
 
 
@@ -12,7 +12,6 @@ feedback:
 
 ------------------------------------------------------------------------------
 
-Look at chapter 8 of [@Sutton1998]
 
 # References
 

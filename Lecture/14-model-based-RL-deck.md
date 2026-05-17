@@ -1,8 +1,8 @@
 ---
-subtitle:    Multi-Agent Reinforcement Learning
-chapter:     16
+subtitle:    Model-based Reinforcement Learning
+chapter:     14
 feedback:
-  deck-id:  'deeprl-multi-agent-RL'
+  deck-id:  'deeprl-model-based-RL'
 ...
 
 
@@ -12,6 +12,7 @@ feedback:
 
 ------------------------------------------------------------------------------
 
+Look at chapter 8 of [@Sutton1998]
 
 # References
 

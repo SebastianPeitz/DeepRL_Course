@@ -51,14 +51,15 @@ templates:
 |         | Actor-critic algorithms                                   |        | <!--   [slides:](10-actor-critic) | -->
 |         | Advanced algorithms                                       |        | <!-- [slides:](11-advanced-algorithms) | -->
 |   **3** | **Model-Based Control**                                   |                                     |
-|         | Planning \& optimal control                               |        | <!-- [slides:](11-planning-control) | -->
-|         | Model-based reinforcement learning                        |        | <!-- [slides:](12-model-based-RL) | -->
-|         | Exploration                                               |        | <!--     [slides:](13-explotaion) | -->
+|         | Exploration                                               |        | <!--     [slides:](12-exploration) | -->
+|         | Planning \& optimal control                               |        | <!-- [slides:](13-planning-control) | -->
+|         | Model-based reinforcement learning                        |        | <!-- [slides:](14-model-based-RL) | -->
 |   **4** | **Advanced Topics**                                       |                                     |
-|         | Offline reinforcement learning                            |        | <!--     [slides:](14-offline-RL) | -->
-|         | Transfer learning                                         |        | <!-- [slides:](15-transfer-learning) | -->
-|         | Multi-agent reinforcement learning                        |        | <!-- [slides:](16-multi-agent-RL) | -->
-|         | Behavior cloning                                          |        | <!-- [slides:](17-behavior-cloning) | -->
+|         | Offline reinforcement learning                            |        | <!--     [slides:](15-offline-RL) | -->
+|         | Imitation learning                                        |        | <!-- [slides:](16-imitation-learning) | -->
+|         | Transfer learning                                         |        | <!-- [slides:](17-transfer-learning) | -->
+|         | Multi-agent reinforcement learning                        |        | <!-- [slides:](18-multi-agent-RL) | -->
+|         | Scientific standards in reinforcement learning            |        | <!-- [slides:](19-scientific-standards) | -->
 |   **∞** | **Notation**                                              |                                     |
 |         | Notation                                                  |              [slides:](99-notation) |
 

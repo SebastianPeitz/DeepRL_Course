@@ -1,6 +1,6 @@
 ---
 subtitle:    Planning \& Optimal Control
-chapter:     11
+chapter:     13
 feedback:
   deck-id:  'deeprl-planning-control'
 ...

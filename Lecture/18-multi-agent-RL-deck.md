@@ -1,8 +1,8 @@
 ---
-subtitle:    Exploration
-chapter:     14
+subtitle:    Multi-Agent Reinforcement Learning
+chapter:     18
 feedback:
-  deck-id:  'deeprl-exploration'
+  deck-id:  'deeprl-multi-agent-RL'
 ...
 
 
