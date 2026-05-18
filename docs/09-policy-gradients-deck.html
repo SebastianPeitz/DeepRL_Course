@@ -2516,9 +2516,9 @@
 <div class="platzhalter">
 <div class="media">
 <figure class="image" style="height:auto;width:350px;">
-<img src="images/08-deep-q-learning/SuttonBarto_GPI.svg" style="height:auto;width:100%;" aria-label="Value-based methods: Generalized Policy Iteration (GPI) (Sutton and Barto 1998)." alt="images/08-deep-q-learning/SuttonBarto_GPI.svg" />
+<img src="images/08-deep-q-learning/SuttonBarto_GPI.svg" style="height:auto;width:100%;" aria-label="Value-based methods: Generalized Policy Iteration (GPI) (R. S. Sutton and Barto 1998)." alt="images/08-deep-q-learning/SuttonBarto_GPI.svg" />
 <figcaption>
-Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span>.
+Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1998">R. S. Sutton and Barto 1998</a>)</span>.
 </figcaption>
 </figure>
 </div>
@@ -2563,7 +2563,7 @@ Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(
 <div class="area">
 <div class="box block">
 <p><span class="math-incremental"><span class="math display">\[ \begin{align*} 
-\phi^* &amp;= \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}\\
+\phi^* &amp;= \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \arg\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}\\
 \text{Infinite horizon case:}\quad\phi^* &amp;= \arg\max_{\phi}\Expsub{r}{(s,a)\sim p_\phi(s,a)}\\
 \text{Finite horizon case:}\quad\phi^* &amp;= \arg\max_{\phi}\sum_{t=0}^{T-1}\Expsub{r_t}{(s_t,a_t)\sim p_\phi(s_t,a_t)}
 \end{align*} \]</span></span></p>
@@ -2598,7 +2598,7 @@ Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(
 <p><span class="math display">\[ \phi^* = \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)} \]</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">First, let’s think about evaluating the <span class="math inline">\(L(\phi)\)</span> for a fixed policy <span class="math inline">\(\pi\)</span>.</li>
+<li class="fragment">First, let’s think about evaluating <span class="math inline">\(L(\phi)\)</span> for a fixed policy <span class="math inline">\(\pi\)</span>.</li>
 <li class="fragment">How do we estimate expectations if we don’t have access to a model?</li>
 </ul>
 </div>
@@ -2726,6 +2726,11 @@ Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(
 </div>
 <p><span class="fragment"><strong>Policy gradient</strong>: Depending on the return, the plan is to increase or reduce the trajectories’ likelihoods by adapting the policy <span class="math inline">\(\pi\)</span>.</span></p>
 </div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> The following <strong>policy gradient theorem</strong> was originally introduced in <span class="citation">(<a href="#ref-Sutton1999policygradient">Richard S. Sutton et al. 1999</a>)</span>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2740,11 +2745,7 @@ Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(
 <div class="area">
 <div class="box block">
 <div class="small">
-<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
-<p><span class="math-incremental"><span class="math display">\[ \begin{align*} \phi^* &amp;= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)}\\ 
-L(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
-\nablaphi L(\phi) &amp;= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}
-\end{align*}\]</span></span></p>
+<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
 <div class="platzhalter">
 <div id="definition-of-the-expectation-in-continuous-spaces" class="definition">
 <h3>Definition of the expectation in continuous spaces</h3>
@@ -2752,25 +2753,33 @@ L(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1
 <p><span class="math display">\[ \Expsub{x(\tau)}{\tau\sim p} = \int p(\tau) x(\tau) \dtau. \]</span></p>
 <p>Here, <span class="math inline">\(p\)</span> is the density according to which <span class="math inline">\(\tau\)</span> is distributed, with <span class="math inline">\(\int p(\tau) \dtau = 1\)</span>.</p>
 </div>
-<p><span class="fragment"><strong>Note</strong>: Both integration and differentiation are <em>linear</em> operations</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We can swap!</span></p>
 </div>
+<p><span class="math-incremental"><span class="math display">\[ \begin{align*} \phi^* &amp;= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)}\\ 
+L(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
+\nablaphi L(\phi) &amp;= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}\\
+&amp;= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau
+\end{align*}\]</span></span></p>
 </div>
 <div class="fragment">
-<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
-<p><span class="math-incremental"><span class="math display">\[\begin{align*}
-~&amp;= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau  \\
-&amp;= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau)
-\end{align*} \]</span></span> <span class="fragment"><span class="math display">\[\begin{align}
-\quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
-\end{align} \]</span></span></p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<p><strong>Note</strong>: Integration and differentiation are <em>linear</em> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We can swap!</span></p>
+<div class="fragment">
 <div id="a-convenient-identity" class="definition">
 <h3>A convenient identity</h3>
 <p><span class="math display">\[
 \begin{equation}
-\textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} = \textcolor{red}{\nablaphi p_\phi(\tau)} \label{eq:PG_log_identity}
+\textcolor{red}{\nablaphi p_\phi(\tau)} \fragment{ = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} } \fragment{ = \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} } \label{eq:PG_log_identity}
 \end{equation}
 \]</span></p>
 </div>
+</div>
+</div>
+<p><span class="math-incremental"><span class="math display">\[\begin{align*}
+&amp;= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau)
+\end{align*} \]</span></span> <span class="fragment"><span class="math display">\[\begin{align}
+\quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
+\end{align} \]</span></span></p>
 </div>
 </div>
 </div>
@@ -5375,6 +5384,9 @@ p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agiven
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Sutton1998" class="csl-entry">
 Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.
+</div>
+<div id="ref-Sutton1999policygradient" class="csl-entry">
+Sutton, Richard S, David McAllester, Satinder Singh, and Yishay Mansour. 1999. <span>“Policy Gradient Methods for Reinforcement Learning with Function Approximation.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by S. Solla, T. Leen, and K. Müller. Vol. 12. MIT Press.
 </div>
 </div>
 </div>

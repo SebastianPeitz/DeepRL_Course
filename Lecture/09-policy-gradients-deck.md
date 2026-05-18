@@ -99,7 +99,7 @@ Table: Lecture contents
 
 # The reinforcement learning objective
 [$$ \begin{align*} 
-\phi^* &= \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}\\
+\phi^* &= \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \arg\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}\\
 \text{Infinite horizon case:}\quad\phi^* &= \arg\max_{\phi}\Expsub{r}{(s,a)\sim p_\phi(s,a)}\\
 \text{Finite horizon case:}\quad\phi^* &= \arg\max_{\phi}\sum_{t=0}^{T-1}\Expsub{r_t}{(s_t,a_t)\sim p_\phi(s_t,a_t)}
 \end{align*} $$]{.math-incremental}
@@ -125,7 +125,7 @@ Table: Lecture contents
 $$ \phi^* = \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)} $$
 
 ::: incremental
-- First, let's think about evaluating the $L(\phi)$ for a fixed policy $\pi$.
+- First, let's think about evaluating $L(\phi)$ for a fixed policy $\pi$.
 - How do we estimate expectations if we don't have access to a model?
 :::
 
@@ -149,15 +149,16 @@ $$L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \approx \frac{1}
 
 :::
 
+::: fragment
+::: footer
+:bulb: The following **policy gradient theorem** was originally introduced in [@Sutton1999policygradient].
+:::
+:::
+
 # Differentiating the policy (1)
 
 ::: small
-::: columns-5-5
-[$$ \begin{align*} \phi^* &= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)}\\ 
-L(\phi) &= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
-\nablaphi L(\phi) &= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}
-\end{align*}$$]{.math-incremental}
-
+::: columns-6-5
 ::: platzhalter
 ::: definition
 ### Definition of the expectation in continuous spaces
@@ -168,30 +169,41 @@ $$ \Expsub{x(\tau)}{\tau\sim p} = \int p(\tau) x(\tau) \dtau. $$
 
 Here, $p$ is the density according to which $\tau$ is distributed, with $\int p(\tau) \dtau = 1$.
 :::
-[**Note**: Both integration and differentiation are *linear* operations]{.fragment}
-[$\Rightarrow$ We can swap!]{.fragment}
 :::
+
+[$$ \begin{align*} \phi^* &= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)}\\ 
+L(\phi) &= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
+\nablaphi L(\phi) &= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}\\
+&= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau
+\end{align*}$$]{.math-incremental}
 :::
 
 ::: fragment
-::: columns-6-5
+::: columns-5-5
+::: platzhalter
+**Note**: Integration and differentiation are *linear*
+[$\Rightarrow$ We can swap!]{.fragment}
+
+::: fragment
+::: definition
+### A convenient identity
+
+$$
+\begin{equation}
+\textcolor{red}{\nablaphi p_\phi(\tau)} \fragment{ = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} } \fragment{ = \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} } \label{eq:PG_log_identity}
+\end{equation}
+$$
+:::
+:::
+:::
+
 [$$\begin{align*}
-~&= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau  \\
 &= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau)
 \end{align*} $$]{.math-incremental}
 [$$\begin{align}
 \quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
 \end{align} $$]{.fragment}
 
-::: definition
-### A convenient identity
-
-$$
-\begin{equation}
-\textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} = \textcolor{red}{\nablaphi p_\phi(\tau)} \label{eq:PG_log_identity}
-\end{equation}
-$$
-:::
 :::
 :::
 
