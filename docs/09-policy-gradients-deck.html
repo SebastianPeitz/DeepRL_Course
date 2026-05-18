@@ -197,9 +197,11 @@
 <li>Understanding and challenges</li>
 <li>Reducing the variance
 <ul>
-<li>Reward to go</li>
 <li>Baselines</li>
+<li>Reward to go</li>
 </ul></li>
+<li>Off-policy policy gradients</li>
+<li>Some implementation details</li>
 </ul>
 </div>
 </div>
@@ -2546,6 +2548,13 @@ Value-based methods: Generalized Policy Iteration (GPI) <span class="citation">(
 </div>
 </div>
 </section>
+<section id="policy-gradients" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Policy gradients</h1>
+</div>
+</div>
+</section>
 <section id="the-reinforcement-learning-objective" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -2803,8 +2812,16 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
 \textcolor{blue}{\nablaphi \log p_\phi(\tau)} &amp;= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\\
  &amp;= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\\
-&amp;= \textcolor{red}{\cancel{\nablaphi \log p(s_0)}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\cancel{\nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}}
-\end{align*}\]</span></span></p>
+&amp;= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}}
+\end{align*}\]</span></span> <!-- [$$\begin{align} 
+\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\notag\\
+ &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\notag\\
+&= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}} \label{eq:PG_grad_log_p}
+\end{align}$$]{.math-incremental} --> <!-- [$$\begin{align*} 
+\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\\
+ &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}
+\end{align*}$$]{.math-incremental}
+[$$\begin{equation}\qquad=\textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}} \label{eq:PG_grad_log_p}\end{equation}$$]{.fragment} --></p>
 <div class="fragment">
 <div id="policy-gradient-theorem-simplified" class="definition">
 <h3>Policy gradient theorem (simplified)</h3>
@@ -2834,7 +2851,7 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <p><span class="fragment"><strong>What does this mean?</strong></span></p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">We want to find a policy that maximizes the value: <span class="math display">\[\max_{\pi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p^\pi} = \max_{\pi}\Expsub{r(\tau)}{\tau\sim p^\pi}.\]</span></li>
+<li class="fragment">Goal: <strong>find a policy that maximizes the value</strong>, <span class="math display">\[\max_{\pi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p^\pi} = \max_{\pi}\Expsub{r(\tau)}{\tau\sim p^\pi}.\]</span></li>
 </ol>
 </div>
 </div>
@@ -2845,9 +2862,8 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 </div>
 <div class="incremental">
 <ol class="incremental" start="2" style="list-style-type: decimal">
-<li class="fragment">Using a neural network approximator <span class="math inline">\(\pi_\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> maximization w.r.t. the policy parameters: <span class="math inline">\(\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \max_{\phi}L(\phi).\)</span></li>
-<li class="fragment">This yields a challenging loss function to optimize: Integration over <span class="math inline">\(\tau\)</span> (i.e., the space of trajectories) is infeasible!<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Approximate via <span style="color: blue;">Monte Carlo sampling</span>:</span> <span class="math display">\[L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau \fragment{ \textcolor{blue}{\approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t}}. }\]</span></li>
+<li class="fragment"><strong>Neural network approximator</strong> <span class="math inline">\(\pi_\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> maximization w.r.t. the policy parameters: <span class="math display">\[\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \max_{\phi}L(\phi).\]</span></li>
+<li class="fragment"><strong>Challenging objective function</strong>: Integration over <span class="math inline">\(\tau\)</span> (i.e., the space of trajectories) is infeasible! <!-- [$\Rightarrow$ Approximation via [Monte Carlo sampling]{style="color: blue;"} becomes possible]{.fragment} --> <span class="math display">\[L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau. \]</span> <!-- \fragment{ \textcolor{blue}{\approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t}}. }$$ --></li>
 <li class="fragment">Use <span class="math inline">\(\log\)</span> identity to derive a formulation of the gradient that we can <em>approximate using sampling</em>: <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}.\]</span></li>
 </ol>
 </div>
@@ -2866,7 +2882,7 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>We now have a formulation of the policy gradient that we can <strong>approximate using <span style="color: blue;">Monte Carlo sampling</span></strong>: <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N} \underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }\]</span></p>
+<p>We now have a formulation of the policy gradient that we can <strong>approximate using <span style="color: blue;">Monte Carlo sampling</span></strong>: <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N} \underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }\]</span></p>
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="platzhalter">
 <p><span class="fragment">(I) This term is simpliy the derivative of the policy network w.r.t. the weights <span class="math inline">\(\Rightarrow\)</span> backpropagation!<br />
@@ -2912,12 +2928,22 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <div class="area">
 <div class="box block">
 <div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Let’s assume that we have a Gaussian policy whose mean is modeled by a neural network: <span class="math display">\[ \pi_\phi\agivenb{a}{s} = \Normal{f_{\mathsf{NN}}(s)}{\Sigma} = \frac{1}{C}\exp\cbracket{-\frac{1}{2}(a - f_{\mathsf{NN}}(s))^\top \Sigma^{-1} (a - f_{\mathsf{NN}}(s))} = \frac{1}{C}\exp\cbracket{-\frac{1}{2}\norm{a - f_{\mathsf{NN}}(s)}_\Sigma^2}.\]</span></li>
-<li class="fragment">Taking the log yields (with <span class="math inline">\(\log C^{-1} = - \log C\)</span>): <span class="math display">\[ \log \pi_\phi\agivenb{a}{s} = -\frac{1}{2}\norm{a - f_{\mathsf{NN}}(s)}_\Sigma^2 - \log C.\]</span></li>
+<li class="fragment">Assume a <strong>Gaussian policy</strong> whose mean is given by a neural network: <span class="math display">\[ \begin{align*} \pi_\phi\agivenb{a}{s} &amp;= \Normal{f_{\mathsf{NN}}(s)}{\Sigma} \\ &amp;= \frac{1}{C}\exp\cbracket{-\frac{1}{2}(a - f_{\mathsf{NN}}(s))^\top \Sigma^{-1} (a - f_{\mathsf{NN}}(s))} \\ &amp;= \frac{1}{C}\exp\cbracket{-\frac{1}{2}\norm{a - f_{\mathsf{NN}}(s)}_\Sigma^2}. \end{align*}\]</span></li>
+<li class="fragment">Taking the log (with <span class="math inline">\(\log C^{-1} = - \log C\)</span>) yields: <span class="math display">\[ \log \pi_\phi\agivenb{a}{s} = -\frac{1}{2}\norm{a - f_{\mathsf{NN}}(s)}_\Sigma^2 - \log C.\]</span></li>
 <li class="fragment">Taking the gradient leads to the following expression: <span class="math display">\[-\frac{1}{2}\Sigma^{-1} (f_{\mathsf{NN}}(s) - a) \pdiff{f_{\mathsf{NN}}}{\phi}.\]</span></li>
 </ul>
+</div>
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:400px;">
+<img src="images/09-policy-gradients/multivariate-normal-distribution.svg" style="height:auto;width:100%;" aria-label="Adapted from Wikipedia" alt="images/09-policy-gradients/multivariate-normal-distribution.svg" />
+<figcaption>
+Adapted from <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">Wikipedia</a>
+</figcaption>
+</figure>
 </div>
 <div id="the-reinforce-algorithm-1" class="definition">
 <h3>The REINFORCE algorithm</h3>
@@ -2926,6 +2952,8 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <li><span class="math inline">\(\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}\)</span>.</li>
 <li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
 </ol>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2958,7 +2986,7 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 </div>
 <div class="fragment">
 <div class="definition">
-<p><strong>Comparison against the policy gradient</strong>:</p>
+<p><strong>Comparison against the policy gradient</strong> (MC sampling):</p>
 <p><span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}.\]</span></p>
 </div>
 <div class="incremental">
@@ -3131,8 +3159,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">What did we just do?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s rewrite the formula a little and <em>compare against maixmum likelihood</em>: <span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \log \nablatheta \pi_\phi(\tau_i). \]</span></span></li>
-<li class="fragment">Good experience is made more likely: We increase the proability of the policy to produce similar trajectories</li>
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s rewrite the formula a little and <em>compare against maixmum likelihood</em>: <span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \log \nablatheta \pi_\phi(\tau_i). \]</span></span></li>
+<li class="fragment">Good experience is made more likely: We increase the proability of the policy to produce similar trajectories.</li>
 <li class="fragment">Bad experience is made less likely.</li>
 <li class="fragment">This simply formalizes the notion of “trial and error”!</li>
 </ul>
@@ -4953,9 +4981,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 <div class="fragment">
-<p><strong>Proof</strong>: We start with the exact formulation of the policy gradient, <span class="math display">\[ \nablaphi L(\phi) \stackrel{\eqref{eq:PG_policy_gradient}}{=} \Expsub{\nablaphi \log p_\phi(\tau) r(\tau) }{\tau\sim p_\phi(\tau)}. \]</span> <span class="fragment">Unbiased in expectation <span class="math inline">\(\Rightarrow\)</span> baseline term is zero in expectation:</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
-&amp;\Expsub{\nablaphi \log p_\phi(\tau) r(\tau) }{\tau\sim p_\phi(\tau)} \fragment{ = \int p_\phi(\tau) \nablaphi \log p_\phi(\tau) b \dtau } \\
-&amp;\stackrel{\eqref{eq:PG_log_identity}}{=} \int \nablaphi p_\phi(\tau) b \dtau \fragment{ = b \nablaphi \int p_\phi(\tau) \dtau } \fragment{ = \cbracket{\nablaphi 1} b } \fragment{ = 0. \qquad \square }
+<p><strong>Proof</strong>: Start with the exact formulation of the policy gradient following <span class="math inline">\(\eqref{eq:PG_policy_gradient}\)</span>, <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. \]</span> <span class="fragment">Unbiased in expectation <span class="math inline">\(\Rightarrow\)</span> baseline term is zero in expectation:</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
+&amp;\Expsub{\nablaphi \log p_\phi(\tau) b }{\tau\sim p_\phi(\tau)} \fragment{ = \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} b \dtau } \\
+&amp;\stackrel{\eqref{eq:PG_log_identity}}{=} \int \textcolor{red}{\nablaphi p_\phi(\tau)} b \dtau \fragment{ = b \nablaphi \int p_\phi(\tau) \dtau } \fragment{ = \cbracket{\nablaphi 1} b } \fragment{ = 0. \qquad \square }
 \end{align*}\]</span></span></p>
 </div>
 </div>
@@ -4989,17 +5017,17 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </div>
-<p><span class="math-incremental"><span class="math display">\[\begin{align*} \mathsf{var} &amp;= \E_{\tau\sim p_\phi(\tau)}\big[(\underbrace{\nablaphi \log p_\phi(\tau)}_{=g(\tau)} \cbracket{r(\tau) - b})^2\big] - \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - \textcolor{red}{\cancel{b}}} }{\tau\sim p_\phi(\tau)}^2 \quad\text{(\textcolor{red}{unbiased baseline})} \\
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} \mathsf{var} &amp;= \E_{\tau\sim p_\phi(\tau)}\big[(\underbrace{\nablaphi \log\, p_\phi(\tau)}_{=g(\tau)} \cbracket{r(\tau) - b})^2\big] - \cbracket{\Expsub{\nablaphi \log\, p_\phi(\tau) \cbracket{r(\tau) - \rcancel{b}} }{\tau\sim p_\phi(\tau)}}^2 \quad\text{(\textcolor{red}{unbiased baseline})} \\
 \diff{\mathsf{var}}{b} &amp;=\diff{\mathsf{}}{b} \Expsub{g(\tau)^2 \cbracket{r(\tau) - b}^2}{\tau\sim p_\phi(\tau)} \fragment{ = \diff{\mathsf{}}{b} \cbracket{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)} - 2\Expsub{g(\tau)^2 r(\tau)b}{\tau\sim p_\phi(\tau)} + \Expsub{g(\tau)^2 b^2}{\tau\sim p_\phi(\tau)} } } \\
 &amp;= \diff{\mathsf{}}{b} \cbracket{\cancel{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)}} - 2b\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} + b^2 \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} }\\
-&amp;= - 2\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} +2 b \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} \fragment{\stackrel{!}{=}0}.
+&amp;= - 2\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} +2 b \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} \fragment{\stackrel{!}{=}0.}
 \end{align*}\]</span></span></p>
 <div class="fragment">
 <div class="grid-layout" style="grid-template-columns: 7fr 4fr;">
 <p><strong>The optimal baseline</strong> <span class="math inline">\(b^*\)</span> is the expected reward, <em>weighted by gradient magnitudes</em>: <span class="math display">\[ b^* = \frac{\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)}}{\Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)}}. \]</span></p>
 <div class="fragment">
 <div class="definition">
-<p><strong>Note</strong>: <span class="math inline">\(b^*\)</span> is hard to calculate. In practice, we usually resort to the average reward <span class="math display">\[b=\frac{1}{N} \sum_{i=1}^N r(\tau_i).\]</span></p>
+<p><strong>Note</strong>: <span class="math inline">\(b^*\)</span> is hard to calculate. In practice, we usually resort to the average reward <span class="math display">\[b=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}\approx\frac{1}{N} \sum_{i=1}^N r(\tau_i).\]</span></p>
 </div>
 </div>
 </div>
@@ -5056,14 +5084,281 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </section>
-<section id="advanced-policy-gradients" class="slide level1">
+<section id="why-policy-gradients-are-on-policy" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Advanced policy gradients</h1>
+<h1>Why policy gradients are on-policy</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Covariant/natural PG</p>
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall the policy gradient optimization problem: <span class="math display">\[ \phi^* = \arg\max_\phi L(\phi) = \arg\max_\phi \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}. \]</span> <!-- = \arg\max_\phi \int p_\phi(\tau) r(\tau) \dtau. $$ --></li>
+<li class="fragment">The corresponding policy gradient (for simplicity, without baseline) is <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. \]</span></li>
+<li class="fragment">The problem: <span class="math inline">\(\Expsub{r(\tau)}{\textcolor{red}{\tau\sim p_\phi(\tau)}}\)</span> requires on-policy sampling!</li>
+<li class="fragment">We cannot skip step 1 of the REINFORCE algorithm.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="the-reinforce-algorithm-2" class="definition">
+<h3>The REINFORCE algorithm</h3>
+<ol style="list-style-type: decimal">
+<li><span style="color: red;">Sample <span class="math inline">\(\set{\tau_i}_{i=1}^N\)</span> using <span class="math inline">\(\pi_\phi\agivenb{a}{s}\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N\)</span>.</span></li>
+<li><span class="math inline">\(\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}\)</span>.</li>
+<li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="platzhalter">
+<p><br />
+<br />
+<br />
+<br />
+<span class="fragment"><strong>The trouble in Deep RL</strong>:</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Neural networks usually require small update steps …</li>
+<li class="fragment">… but a large number of steps!</li>
+<li class="fragment">On-policy learning can become highly inefficient!</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="importance-sampling-continuous-setting" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Importance sampling (continuous setting)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 4fr 6fr;">
+<div class="platzhalter">
+<div id="importance-sampling" class="definition">
+<h3>Importance sampling</h3>
+<p>How do we calculate the expectation <em>w.r.t. a different distribution</em>? <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\Expsub{f(x)}{x\sim p} &amp;= \int p(x) f(x) \dx \\
+&amp;= \int \frac{q(x)}{q(x)} p(x) f(x) \dx \\
+&amp;= \int q(x) \frac{p(x)}{q(x)} f(x) \dx \\
+&amp;= \Expsub{\frac{p(x)}{q(x)} f(x)}{x\sim q}. \\
+\end{align*}\]</span></span> <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> This formula is exact!</span></p>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Back to the reinforcement learning objective <span class="math display">\[L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span></li>
+<li class="fragment">What if we have trajectory samples from <span class="math inline">\(\overline{p}\)</span> instead of <span class="math inline">\(p_\phi\)</span>?
+<ul class="incremental">
+<li class="fragment">Examples are previous policies, expert demonstrations, combinations thereof, …</li>
+</ul></li>
+<li class="fragment">Simply transfer of the importance sampling formula: <span class="math display">\[ L(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. \]</span></li>
+<li class="fragment">Insert definition of trajectory probabilities: <span class="math-incremental"><span class="math display">\[\begin{align} 
+p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}, \notag \\ 
+\frac{p_\phi(\tau)}{\overline{p}(\tau)} &amp;= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
+\end{align}\]</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="off-policy-policy-gradient-with-importance-sampling-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Off-policy policy gradient with importance sampling (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Once more, recall the loss function <span class="math inline">\(L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\)</span></li>
+<li class="fragment"><strong>Question</strong>: Can we estimate <span class="math inline">\(L\)</span> for <span class="math inline">\(\phi&#39;\)</span> using samples according to <span class="math inline">\(p_\phi\)</span>? <span class="fragment"><span class="math display">\[ L(\phi&#39;) = \Expsub{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} \]</span></span></li>
+</ul>
+</div>
+<div class="platzhalter">
+<div id="a-convenient-identity-1" class="definition">
+<h3>A convenient identity</h3>
+<p><span class="math display">\[p_\phi(\tau) \nablaphi \log p_\phi(\tau) = \nablaphi p_\phi(\tau)\]</span></p>
+</div>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Note that only <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> actually depends on the new parameter vector <span class="math inline">\(\phi&#39;\)</span>: <span class="math display">\[ \fragment{ \nablaphiprime L(\phi&#39;) = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} } \fragment{ = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)}} \fragment{ = \Expsub{\textcolor{blue}{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}} \nablaphiprime \log p_{\phi&#39;}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. } \]</span></li>
+<li class="fragment">It’s the policy gradient formula we know, modified by the importance sampling weights!
+<ul class="incremental">
+<li class="fragment">In fact, that’s an alternative way to derive it: introduce importance sampling in the policy gradient formula <span class="math inline">\(\nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}\)</span>.</li>
+</ul></li>
+<li class="fragment">Setting <span class="math inline">\(\theta&#39; = \theta\)</span>, we recover the on-policy policy gradient.</li>
+</ul>
+</div>
+</div>
+<p><br />
+<br />
+</p>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> As derived earlier, using <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> or <span class="math inline">\(\pi_{\phi&#39;}(\tau)\)</span> (i.e., the product over action probabilities along the trajectories) yields the same result <span class="math display">\[\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}} = \nablaphi \log\pi_\phi(\tau).\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="off-policy-policy-gradient-with-importance-sampling-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Off-policy policy gradient with importance sampling (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Now that we have the formula, let’s reformulate and introduce causality again: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\nablaphiprime L(\phi&#39;) &amp;= \Expsub{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)} \nablaphiprime \log \pi_{\phi&#39;}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \\
+&amp;= \E_{\tau\sim p_\phi(\tau)} \Big[\underbrace{\cbracket{\prod_{t=0}^{T-1} \frac{\pi_{\phi&#39;}\agivenb{a_t}{s_t}}{\pi_{\phi}\agivenb{a_t}{s_t}}}}_{\text{Eq. }\eqref{eq:PG_importance_sampling}} \cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi&#39;}\agivenb{a_t}{s_t}} \cbracket{\sum_{t=0}^{T-1} r_t}\Big] \\
+\text{\small (Causality:}~&amp;\text{\small Future actions don&#39;t affect (1) the \textcolor{blue}{current weights} and (2) \textcolor{red}{past rewards}. $\Rightarrow$ Distribute weights!)}\\
+&amp;= \Expsub{\cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi&#39;}\agivenb{a_t}{s_t} \cbracket{\textcolor{blue}{\prod_{t&#39;=0}^{t} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;}}{s_{t&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;}}{s_{t&#39;}}}}}} \cbracket{\sum_{t=0}^{T-1} r_t \cbracket{\textcolor{red}{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}}{\tau\sim p_\phi(\tau)}
+\end{align*}\]</span></span></li>
+<li class="fragment">Ignoring the last term yields some form of policy iteration algorithm (more on this later): <span class="math display">\[ \cbracket{\textcolor{red}{\cancel{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="some-implementation-details" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Some implementation details</h1>
+</div>
+</div>
+</section>
+<section id="policy-gradient-with-automatic-differentiation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Policy gradient with automatic differentiation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 4fr;">
+<div class="platzhalter">
+<p><span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\underbrace{\hat{Q}_{i,t}}_{= \sum_{t&#39;=t}^{T-1}r_{i,t&#39;}}.\]</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Calculation of <span class="math inline">\(\nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\)</span> can be very inefficient!
+<ul class="incremental">
+<li class="fragment">Consider a network with <span class="math inline">\(d=10^6\)</span> weights and a dataset of <span class="math inline">\(N=100\)</span> trajectories of length <span class="math inline">\(T=100\)</span> each.</li>
+<li class="fragment">We would have to calculate a vector with <span class="math inline">\(10^6\)</span> entries <span class="math inline">\(NT = 10^5\)</span> times!</li>
+</ul></li>
+<li class="fragment"><strong>Alternative</strong>: Compute policy gradients using automatic differentiation (e.g., Python’s pyTorch, TensorFlow, JAX).
+<ul class="incremental">
+<li class="fragment">We need a graph such that its gradient is the desired policy gradient.</li>
+<li class="fragment">Recall the maximum likelihood objective from supervised ML: <span class="math display">\[ \nablaphi J_\mathsf{ML}(\phi) \approx \frac{1}{N}\sum_{i=1}^N\sum_{t=0}^{T-1} \nablaphi \log \pi_\phi\agivenb{a_{i,t}}{s_{i,t}}, \fragment{ \quad \Rightarrow \quad J_\mathsf{ML}(\phi) \approx \frac{1}{N}\sum_{i=1}^N\sum_{t=0}^{T-1} \log \pi_\phi\agivenb{a_{i,t}}{s_{i,t}}. }\]</span></li>
+</ul></li>
+<li class="fragment"><strong>Solution</strong>: Just implement a <em>pseudo-loss</em> as a weighted maximum likelihood <span class="math display">\[ \tilde{L}(\phi) \approx \frac{1}{N}\sum_{i=1}^N\sum_{t=0}^{T-1} \log \pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \hat{Q}_{i,t}. \]</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div class="platzhalter">
+<p><strong>Pseudocode example</strong></p>
+<div class="media">
+<figure class="code">
+<div class="sourceCode" id="cb1"><pre class="sourceCode processed python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Define a simple policy network (actor)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="kw">class</span> PolicyNetwork(nn.Module):</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state_dim, action_dim):</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>        <span class="bu">super</span>(PolicyNetwork, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>        <span class="va">self</span>.fc <span class="op">=</span> nn.Sequential(</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>            nn.Linear(state_dim, <span class="dv">64</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>            nn.ReLU(),</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>            nn.Linear(<span class="dv">64</span>, action_dim)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>        )</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>        </span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, state):</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>        logits <span class="op">=</span> <span class="va">self</span>.fc(state)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>        <span class="cf">return</span> Categorical(logits<span class="op">=</span>logits) <span class="co"># Outputs a policy distribution</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co"># Initialize network and optimizer</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>policy <span class="op">=</span> PolicyNetwork(state_dim<span class="op">=</span>n, action_dim<span class="op">=</span>m)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>optimizer <span class="op">=</span> optim.Adam(policy.parameters(), lr<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co"># Forward pass: get the action distribution for the current state</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>dist <span class="op">=</span> policy(state)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co"># Calculate the log probability of the action that was actually taken</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>log_prob <span class="op">=</span> dist.log_prob(action_taken)</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co"># Define the Pseudo-Loss: -log_prob * Reward (&quot;-&quot; due to gradient descent)</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>pseudo_loss <span class="op">=</span> <span class="op">-</span>(log_prob <span class="op">*</span> reward)</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co"># Autodiff calculates the policy gradient</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>pseudo_loss.backward()</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>optimizer.step()</span></code></pre></div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="policy-gradient-in-practice" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Policy gradient in practice</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="some-practical-considerations-differences-to-supervised-learning" class="definition">
+<h3>Some practical considerations / differences to supervised learning</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Remember that the <strong>policy gradient has high variance</strong>.
+<ul class="incremental">
+<li class="fragment">This isn’t the same as supervised learning!</li>
+<li class="fragment">Gradients will be really noisy!</li>
+</ul></li>
+<li class="fragment">Consider using <strong>much larger batches</strong>.
+<ul class="incremental">
+<li class="fragment">Several 1000s is quite common.</li>
+</ul></li>
+<li class="fragment">Tweaking learning rates is very hard.
+<ul class="incremental">
+<li class="fragment">Adaptive step size rules like ADAM can be OK.</li>
+<li class="fragment">More details later.</li>
+</ul></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>

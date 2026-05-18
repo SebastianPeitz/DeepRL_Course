@@ -104,6 +104,7 @@ math:
     Yc: '{\mathcal{Y}}'
     nablatheta: '{\nabla_{\mkern-6mu \theta\mkern+2mu}}'
     nablaphi: '{\nabla_{\mkern-6mu \phi\mkern+2mu}}'
+    nablaphiprime: '{\nabla_{\mkern-6mu \phi\prime \mkern+2mu}}'
     aprime: '{a^{\prime}}'
     sprime: '{s^{\prime}}'
     piprime: '{\pi^{\prime}}'
@@ -151,6 +152,7 @@ math:
     set: ['{\left\{ #1 \right\}}', 1]
     cbracket: ['{\left( #1 \right)}', 1]
     rbracket: ['{\left[ #1 \right]}', 1]
+    rcancel: ['{\textcolor{red}{\cancel{#1}}}', 1]
 
     diff: ['{\frac{\mathrm{d} #1}{\mathrm{d} #2}}', 2]
     ndiff: ['{\frac{\mathrm{d}^{#3} #1}{\mathrm{d} {#2}^{#3}}}', 3]
