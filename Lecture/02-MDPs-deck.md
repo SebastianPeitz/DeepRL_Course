@@ -645,7 +645,7 @@ $$ V^\pi(s_t) = \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. $$
 
 ::: fragment
 In finite MDPs, the state value can be directly linked to the action value:
-$$ V^\pi(s_t)\sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).$$
+$$ V^\pi(s_t) = \sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).$$
 :::
 
 # Bellman expectation equation (2)

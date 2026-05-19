@@ -50,7 +50,7 @@ Table: Lecture contents
 ::: small
 ::: columns-5-5
 ::: platzhalter
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-example-covariant.svg){ .embed width=600px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/11-advanced/PG-example-covariant.svg){ .embed width=600px }
 
 [$$\begin{align*} 
 r_t &= -s_t^2 - a_t^2 \\
@@ -60,7 +60,7 @@ r_t &= -s_t^2 - a_t^2 \\
 :::
 
 ::: fragment
-![Source: [@Peters2008naturalac]](images/09-policy-gradients/Covariant-PG-vanilla.png){ width=400px }
+![Source: [@Peters2008naturalac]](images/11-advanced/Covariant-PG-vanilla.png){ width=400px }
 :::
 
 :::

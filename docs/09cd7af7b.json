@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "18.05.2026 13:34"
+        "19.05.2026 12:47"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "19",
@@ -635,6 +635,10 @@
             "diff": [
                 "{\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}}",
                 2.0
+            ],
+            "dint": [
+                "\\,\\mathrm{d}{#1}",
+                1.0
             ],
             "ds": "{\\,\\mathrm{d}s}",
             "dt": "{\\,\\mathrm{d}t}",

@@ -188,8 +188,8 @@
 <ul>
 <li>Two alternative derivations of the policy gradient theorem
 <ul>
-<li>Sampling with reduced variance</li>
 <li>Bottom-up derivation via the Q-function</li>
+<li>Sampling with reduced variance</li>
 </ul></li>
 <li>Advantage functions</li>
 </ul>
@@ -274,6 +274,224 @@
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-more-detailed-derivation-of-the-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>A more detailed derivation of the policy gradient</h1>
+</div>
+</div>
+</section>
+<section id="the-q-function-version-of-the-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The Q-function version of the policy gradient</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall that we started with the objective of maximizing the value directly by optimizing over our policy network weights: <span class="math-incremental"><span class="math display">\[ \begin{align*} \phi^* &amp;= \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \\ &amp;= \arg\max_{\phi}\Expsub{V_\phi(s_0)}{s_0 \sim p_0}. \end{align*} \]</span></span></li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:700px;">
+<img src="images/09-policy-gradients/CNN-policy.svg" style="height:auto;width:100%;" aria-label="Inspired by Sergey Levine’s CS285 lecture." alt="images/09-policy-gradients/CNN-policy.svg" />
+<figcaption>
+Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Using the definition of the expectation of continuous random variables and the <span class="math inline">\(\log\)</span> derivative trick, we arrived at a formulation of the policy gradient from which we can sample using trajectory data (<span class="math inline">\(\tau=(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_T)\)</span>): <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}} \cbracket{\sum_{t=0}^{T-1}r_{i,t}}.}\]</span></li>
+<li class="fragment"><strong>Goal</strong>: derive the policy gradient a second time, but this time using the Q-function instead of the return <span class="math inline">\(\sum_{t=0}^{T-1}r_{i,t}\)</span>.</li>
+<li class="fragment"><strong>Starting point</strong>: the RL objective and its gradient: <span class="math display">\[\begin{equation} L(\phi)=\Expsub{V_\phi(s_0)}{s_0 \sim p_0} \qquad \Rightarrow \qquad \nablaphi L(\phi)=\Expsub{\nablaphi V_\phi(s_0)}{s_0 \sim p_0} = \int_{\Sc} p_0(s) \nablaphi V_\phi(s) \ds. \label{eq:AC_RL_objective} \end{equation}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-policy-gradient-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the policy gradient (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">To derive the policy gradient, we need to take the <strong>gradient of the value function</strong>, i.e., <span class="math inline">\(\nablaphi V_\phi(s)\)</span>.</li>
+<li class="fragment">Our <strong>goal is to introduce the Q-function</strong> (we will see the reason for this later). <span class="fragment">What’s the relation between the Q-function and the value function for continuous actions?</span> <span class="fragment"><span class="math display">\[ \underbrace{V^\pi(s) = \sum_{a\in\Ac} \pias Q^\pi(s,a)}_{\text{finite }\Ac} \fragment{ \qquad \text{vs.}\qquad \underbrace{V^\pi(s) = \int_\Ac \pi\agivenb{a}{s} Q^\pi(s,a)\dint{a}}_{\text{continuous }\Ac}. } \]</span></span></li>
+<li class="fragment">Now let’s <strong>take the derivative</strong>! <span class="fragment">Both <span class="math inline">\(\pi_\phi\)</span> and <span class="math inline">\(Q_\phi\)</span> depend on <span class="math inline">\(\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> product rule <span style="color: gray;">(<span class="math inline">\(\frac{d}{dx} (f(x)\cdot g(x)) = f(x) \frac{dg}{dx} + \frac{df}{dx} g(x)\)</span>)</span>:</span> <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\nablaphi V_\phi(s) &amp;= \nablaphi \cbracket{\int_\Ac \pi\agivenb{a}{s} Q_\phi(s,a)\dint{a}} \fragment{ = \int_\Ac \nablaphi \rbracket{\pi\agivenb{a}{s} Q_\phi(s,a)}\dint{a} } \fragment{ = \int_\Ac \nablaphi\pi\agivenb{a}{s} Q_\phi(s,a) + \pi\agivenb{a}{s} \nablaphi Q_\phi(s,a)\dint{a}} \\
+&amp;=  \underbrace{\int_\Ac\nablaphi\pi\agivenb{a}{s} Q_\phi(s,a)\dint{a}}_{= \xi(s)} + \int_\Ac\pi\agivenb{a}{s} \nablaphi Q_\phi(s,a)\dint{a}
+\end{align*}\]</span></span></li>
+<li class="fragment">In total, we obtain the following <strong>expression for <span class="math inline">\(\nablaphi V_\phi(s)\)</span></strong>: <span class="math display">\[\begin{equation}
+\nablaphi V_\phi(s) = \xi(s) + \int_\Ac\pi\agivenb{a}{s} \nablaphi Q_\phi(s,a)\dint{a}.
+\label{eq:AC_grad_V}\end{equation}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-policy-gradient-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the policy gradient (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Before we continue with <span class="math inline">\(\eqref{eq:AC_grad_V}\)</span>, let’s study <span class="math inline">\(Q_\phi(s,a)\)</span> in some more detail, with the <strong>goal to find a Bellman recursion</strong> formula: <span class="fragment"><span class="math display">\[\begin{equation}  Q_\phi(s, a) = r + \int_{\Sc} \psprimesa V_\phi(s&#39;) \dint{s&#39;}. \label{eq:AC_Q_definition} \end{equation}\]</span></span></li>
+<li class="fragment">Since neither <span class="math inline">\(r\)</span> nor <span class="math inline">\(\psprimesa\)</span> depend on <span class="math inline">\(\phi\)</span>, taking the gradient of <span class="math inline">\(\eqref{eq:AC_Q_definition}\)</span> yields <span class="math display">\[ \begin{equation} \nablaphi Q_\phi(s, a) = \int_{\Sc} \psprimesa \nablaphi V_\phi(s&#39;) \dint{s&#39;}. \label{eq:AC_grad_Q} \end{equation} \]</span></li>
+<li class="fragment">We can substitute this expression into <span class="math inline">\(\eqref{eq:AC_grad_V}\)</span> and swap integrals due to linearity: <span class="math display">\[ \nablaphi V_\phi(s) = \xi(s) + \int_\Ac\pi\agivenb{a}{s} \underbrace{\rbracket{\int_{\Sc} \psprimesa \nablaphi V_\phi(s&#39;) \dint{s&#39;}}}_{\eqref{eq:AC_grad_Q}}\dint{a} \fragment{ = \xi(s) + \int_{\Sc} \underbrace{\rbracket{\int_\Ac\pi\agivenb{a}{s} \psprimesa \dint{a}}}_{=p\agivenb{s \to s&#39;}{1,\pi_\phi}} \nablaphi V_\phi(s&#39;) \dint{s&#39;}.}\]</span></li>
+<li class="fragment">Here, <span class="math inline">\(p\agivenb{s \to s&#39;}{1,\pi_\phi}\)</span> denotes the probability of moving from <span class="math inline">\(s\)</span> to <span class="math inline">\(s&#39;\)</span> in exactly one step, given the policy <span class="math inline">\(\pi_\phi\)</span>: <span class="math display">\[ \begin{equation} \nablaphi V_\phi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s&#39;}{1,\pi_\phi} \nablaphi V_\phi(s&#39;) \dint{s&#39;}. \label{eq:AC_grad_V_bellman} \end{equation}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-policy-gradient-3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the policy gradient (3)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Equation <span class="math inline">\(\eqref{eq:AC_grad_V_bellman}\)</span> is a Bellman recursion equation, and we can insert the same expression at <span class="math inline">\(s&#39;\)</span> on the right: <span class="math display">\[ \nablaphi V_\phi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s&#39;}{1,\pi_\phi} \underbrace{\rbracket{\xi(s&#39;) + \int_{\Sc} p\agivenb{s&#39; \to s&#39;&#39;}{1,\pi_\phi} \nablaphi V_\phi(s&#39;&#39;) \dint{s&#39;&#39;}}}_{= \nablaphi V_\phi(s&#39;)} \dint{s&#39;}. \]</span></li>
+<li class="fragment">We can unroll this expression for an entire trajectory <span class="math inline">\(\tau\)</span> of length <span class="math inline">\(T\)</span>. <span class="fragment">After some resorting, we obtain: <span class="math display">\[ \nablaphi V_\phi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s&#39;}{1,\pi_\phi} \xi(s&#39;) \dint{s&#39;} + \int_{\Sc} p\agivenb{s \to s&#39;&#39;}{2,\pi_\phi}\xi(s&#39;&#39;) \dint{s&#39;&#39;} + \ldots\]</span></span></li>
+<li class="fragment">We can write this cleanly as a sum over all future timesteps <span class="math inline">\(t\)</span>: <!-- $$ \begin{equation} \nablaphi V_\phi(s) = \int_{\Sc} \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \pi_\phi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} $$ --> <span class="math display">\[ \begin{equation} \nablaphi V_\phi(s) = \int_{\Sc} \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \pi_\phi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} \]</span> <span class="fragment">Note: the previously separate case <span class="math inline">\(\xi(s)\)</span> is included, i.e., <span class="math inline">\(\int_{\Sc} p\agivenb{s \to s}{0, \pi_\phi} \xi(x)\dx =\xi(s)\)</span>.</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-policy-gradient-4" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the policy gradient (4)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We can now insert <span class="math inline">\(\eqref{eq:AC_grad_V_recursion}\)</span> into the gradient of our RL objective (Eq. <span class="math inline">\(\eqref{eq:AC_RL_objective}\)</span>): <!-- $$ \nablaphi L(\phi)=\Expsub{\nablaphi V_\phi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi V_\phi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \pi_\phi} \xi(x) \dx} \ds. }$$ --> <span class="math display">\[ \nablaphi L(\phi)=\Expsub{\nablaphi V_\phi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi V_\phi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \pi_\phi} \xi(x) \dx} \ds. }\]</span></li>
+<li class="fragment">By changing the order of integration, we isolate the total expected time spent in state <span class="math inline">\(x\)</span>: <!-- $$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \pi_\phi} \ds} \xi(x) \dx.$$ --> <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \pi_\phi} \ds} \xi(x) \dx.\]</span></li>
+<li class="fragment">The term inside the brackets is the <strong>undiscounted state visitation frequency</strong> (or the expected number of times state <span class="math inline">\(x\)</span> is visited in an episode), which we denote as <span class="math inline">\(\eta_\phi(s)\)</span>: <!-- $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{\infty} p\agivenb{s_t = s}{p_0, \pi_\phi}. \label{eq:AC_state_visitation_measure} \end{equation}$$ --> <span class="math display">\[\begin{equation} \eta_\phi(s) = \sum_{t=0}^{T-1} p\agivenb{s_t = s}{\pi_\phi}. \label{eq:AC_state_visitation_measure} \end{equation}\]</span></li>
+<li class="fragment">This simplifies our expression to: <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-policy-gradient-5" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the policy gradient (5)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Reintroducing the full definition of <span class="math inline">\(\xi(s) = \int_\Ac\nablaphi\pi\agivenb{a}{s} Q_\phi(s,a)\dint{a}\)</span> (and keeping <span class="math inline">\(s\)</span> as our state variable): <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \int_{\Ac} \nablaphi \pi_\phi\agivenb{a}{s} Q_\phi(s, a) \dint{a}\ds.\]</span></li>
+<li class="fragment">Apply the <span class="math inline">\(\log\)</span>-derivative identity: <span class="math display">\[\nabla_\phi L(\phi) = \textcolor{blue}{\int_{\Sc} \eta_\phi(s)} \textcolor{red}{\int_{\Ac} \pi_\phi\agivenb{a}{s}} \nabla_\phi \log \pi_\phi\agivenb{a}{s} Q_\phi(s, a) \textcolor{red}{\dint{a}} \textcolor{blue}{\ds}.\]</span></li>
+<li class="fragment">In conclusion, the gradient can be expressed using the unnormalized state visitation measure <span class="math inline">\(\eta_\phi(s)\)</span>: <!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\nablaphi \log \pi_\phi\agivenb{a}{s} Q_\phi(s, a)}{s \sim \eta_\phi, a \sim \pi_\phi}. \label{eq:AC_policy_gradient_Q} \end{equation}$$ --> <span class="math display">\[\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \pi_\phi\agivenb{a_t}{s_t} Q_\phi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}\]</span></li>
+</ul>
+</div>
+<div class="platzhalter">
+<div id="expectations-in-continuous-spaces" class="definition">
+<h3>Expectations in continuous spaces</h3>
+<p>The expected value of a function <span class="math inline">\(f(s)\)</span> is</p>
+<p><span class="math display">\[ \Expsub{f(s)}{s\sim p} = \int p(s) f(s) \ds. \]</span></p>
+<p>Here, <span class="math inline">\(p\)</span> is the density according to which <span class="math inline">\(s\)</span> is distributed, with <span class="math inline">\(\int p(s) \ds = 1\)</span>.</p>
+</div>
+<div id="a-convenient-identity" class="definition">
+<h3>A convenient identity</h3>
+<p><span class="math display">\[\nabla_\phi \pi_\phi\agivenb{a}{s} = \pi_\phi\agivenb{a}{s} \nabla_\phi \log \pi_\phi\agivenb{a}{s}\]</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="definition">
+<p><strong>Note</strong>: In the infinite-horizon case, <span class="math inline">\(\eqref{eq:AC_state_visitation_measure}\)</span> becomes <span class="math inline">\(\eta_\phi(s) = \sum_{t=0}^{\infty} p\agivenb{s_t = s}{p_0, \pi_\phi}\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Equation <span class="math inline">\(\eqref{eq:AC_policy_gradient_Q_episodic}\)</span> becomes <!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \pi_\phi\agivenb{a_t}{s_t} Q_\phi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} --> <span class="math display">\[\nabla_\phi L(\phi) = \Expsub{\nablaphi \log \pi_\phi\agivenb{a}{s} Q_\phi(s, a)}{s \sim \eta_\phi, a \sim \pi_\phi}.\]</span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-of-the-two-formulations" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparison of the two formulations</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="fragment">
+<div id="formulation-via-reward-trajectories-sampling-version-in-blue" class="definition">
+<h3>Formulation via reward trajectories (<span style="color: blue;">sampling version in blue</span>),</h3>
+<p><span class="math display">\[ \nablaphi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}\cbracket{\sum_{t&#39;=t}^{T-1}r_{t&#39;}}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t&#39;=t}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} r_{i,t&#39;} }}}. } \]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div id="derivation-via-formal-relation-between-v-and-q-eq." class="definition">
+<h3>Derivation via formal relation between <span class="math inline">\(V\)</span> and <span class="math inline">\(Q\)</span> (Eq. <span class="math inline">\(\eqref{eq:AC_policy_gradient_Q_episodic}\)</span>),</h3>
+<p><span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \pi_\phi\agivenb{a_t}{s_t} Q_\phi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} Q_\phi(s_{i,t},a_{i,t})} }. } \]</span></p>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 2fr 8fr;">
+<p><span class="fragment"><strong>A much simpler way to arrive at this formulation</strong></span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Observe that the <strong>reward-to-go</strong> <span class="math inline">\(\hat{Q}_{i,t}=\sum_{t&#39;=t}^{T-1}r_{i,t&#39;}\)</span> is an <strong>unbiased estimate</strong> of <span class="math inline">\(Q(s_t,a_t)\)</span>.</li>
+<li class="fragment">Also, <span class="math inline">\(\hat{Q}_{i,t}\)</span> is a single-sample estimate, and summing over <span class="math inline">\(N\)</span> samples gives us a <strong>batch estimate</strong>.</li>
+<li class="fragment">To reduce the variance, it would be a lot better to simply use the <strong>true expected reward-to-go</strong>: <span class="math display">\[\sum_{t&#39;=t}^{T-1} \ExpCsub{r_t}{s_{t},a_{t}}{\pi_\phi} = Q_\phi(s_{i,t},a_{i,t}).\]</span></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>

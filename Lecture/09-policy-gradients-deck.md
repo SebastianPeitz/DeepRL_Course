@@ -83,8 +83,8 @@ Table: Lecture contents
 
 ::: platzhalter
 [$$ \begin{align*} 
-&\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}}. \\
-&\Rightarrow\quad \phi^* = \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}.
+&\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}.} \\
+&\Rightarrow\quad \phi^* = \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \fragment{ = \arg\max_{\phi}\Expsub{V^{\pi_\phi}(s_0)}{s_0 \sim p(s_0)}. }
 \end{align*} $$]{.math-incremental}
 :::
 :::
@@ -198,7 +198,7 @@ $$
 :::
 
 [$$\begin{align*}
-&= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau)
+\quad~= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau) \dtau
 \end{align*} $$]{.math-incremental}
 [$$\begin{align}
 \quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
@@ -241,16 +241,6 @@ L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \
  &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\\
 &= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}}
 \end{align*}$$]{.math-incremental}
-<!-- [$$\begin{align} 
-\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\notag\\
- &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\notag\\
-&= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}} \label{eq:PG_grad_log_p}
-\end{align}$$]{.math-incremental} -->
-<!-- [$$\begin{align*} 
-\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\\
- &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}
-\end{align*}$$]{.math-incremental}
-[$$\begin{equation}\qquad=\textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}} \label{eq:PG_grad_log_p}\end{equation}$$]{.fragment} -->
 
 ::: fragment
 ::: definition

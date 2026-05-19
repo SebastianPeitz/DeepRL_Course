@@ -141,6 +141,7 @@ math:
     Vstar: '{V^*}'
     Qstar: '{Q^*}'
 
+    dint: ['\,\mathrm{d}{#1}', 1]
     dx: '{\,\mathrm{d}x}'
     ds: '{\,\mathrm{d}s}'
     dt: '{\,\mathrm{d}t}'

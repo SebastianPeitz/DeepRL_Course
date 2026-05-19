@@ -476,7 +476,7 @@ $\qquad$
 
 ::: small
 ::: incremental
-- **DQN**: Processes 1 and 2 run at the same speed, process 2 is slower.
+- **DQN**: Processes 1 and 3 run at the same speed, process 2 is slower.
 - **Online Q-learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
   - Value or Q-learning as in the last lecture, followed directly by a policy improvement step.
   - Also similar to the value iteration algorithm from dynamic programming.

@@ -5137,7 +5137,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="box block">
 <p>Analog to MRPs, the state value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ V^\pi(s_t) = \ExpCsub{r_{t}+\gamma V^\pi(s_{t+1})}{s_t}{\pi}. \]</span></p>
 <div class="fragment">
-<p>In finite MDPs, the state value can be directly linked to the action value: <span class="math display">\[ V^\pi(s_t)\sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).\]</span></p>
+<p>In finite MDPs, the state value can be directly linked to the action value: <span class="math display">\[ V^\pi(s_t) = \sum_{a\in\Ac} \pi\agivenb{a_t}{s_t} Q^\pi(s_t,a_t).\]</span></p>
 </div>
 </div>
 </div>
