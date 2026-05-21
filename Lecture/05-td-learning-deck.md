@@ -16,8 +16,8 @@ feedback:
 - Prediction using TD learning
 - Policy improvement / control using TD learning 
   - SARSA
-  - Q-learning
-- Double Q-learning
+  - $Q$-learning
+- Double $Q$-learning
 - $n$-step TD learning
   - $n$-step TD prediction
   - $n$-step TD control
@@ -34,7 +34,7 @@ feedback:
 |   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
 |   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
 |   4  | Monte Carlo methods                                       |   *Data-driven learning* from entire episodes |
-|   [5]{style="color: red;"}  | [Temporal difference learning \& Q-learning]{style="color: red;"}                |   [*Data-driven learning* from individual transitions]{style="color: red;"}     |
+|   [5]{style="color: red;"}  | [Temporal difference learning \& $Q$-learning]{style="color: red;"}                |   [*Data-driven learning* from individual transitions]{style="color: red;"}     |
 |      | **Deep-learning-based methods**                           |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
@@ -423,7 +423,7 @@ $$
 
 ::: fragment
 ::: definition
-### Estimation: TD($0$) update of the Q-function
+### Estimation: TD($0$) update of the $Q$-function
 
 $$
 \begin{equation}
@@ -504,13 +504,13 @@ SARSA for finite-state and finite-action MDPs converges to the optimal action-va
 	
 For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 
-# Off-policy TD control: Q-Learning
+# Off-policy TD control: $Q$-learning
 ::: small
 ::: columns-7-3
 
 ::: fragment
 ::: {.definition}
-### Algorithm: Q-Learning.
+### Algorithm: $Q$-learning.
 
 **initialize**
 
@@ -531,7 +531,7 @@ $\quad\quad$ $t \gets t+1$\
 :::
 
 ::: incremental
-- Q-learning is similar but directly estimates $Q^*$.
+- $Q$-learning is similar but directly estimates $Q^*$.
 - *Off-policy update*, since the optimal action-value function is updated independent of a given behavior policy.
 - The policy still determines which state–action pairs are visited and updated.
 - Convergence with probability one to $Q^*$ [@Sutton1998] if 
@@ -558,7 +558,7 @@ $\quad\quad$ $t \gets t+1$\
 [**Outcome**:]{.fragment}
 
 ::: incremental
-- Q-learning learns the optimal path, close along the cliff.
+- $Q$-learning learns the optimal path, close along the cliff.
 - On-policy SARSA learns a much safer path. [*Why do you think that is*?]{.fragment}
 - In the GLIE case (i.e., $\epsilon\to 0$), both policies will converge to the optimal path.
 :::
@@ -569,7 +569,7 @@ $\quad\quad$ $t \gets t+1$\
 :::
 
 ::: fragment
-In our setting, Q-learning is worse than SARSA. [*Why do you think that is*?]{.fragment}
+In our setting, $Q$-learning is worse than SARSA. [*Why do you think that is*?]{.fragment}
 
 [$\Rightarrow$ the combination of falling off randomly and the resulting very large negative reward.]{.fragment}
 :::
@@ -612,7 +612,7 @@ $$
 :::
 
 ::: fragment
-For comparison: Q-learning
+For comparison: $Q$-learning
 $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac} Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
 :::
 :::
@@ -626,7 +626,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac}
 
 ------------------------------------------------------------------------------
 
-# Double Q-learning
+# Double $Q$-learning
 
 ------------------------------------------------------------------------------
 
@@ -636,7 +636,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac}
 All control algorithms discussed so far involve *maximization operations*:
 
 ::: incremental
-- Q-learning: target policy is greedy and directly uses max operator for action-value updates.
+- $Q$-learning: target policy is greedy and directly uses max operator for action-value updates.
 - SARSA: typically uses an $\epsilon$-greedy framework $\rightarrow$ max updates during policy improvement.
 :::
 
@@ -661,7 +661,7 @@ All control algorithms discussed so far involve *maximization operations*:
 :::
 :::
 
-# Double Q-learning approach
+# Double $Q$-learning approach
 
 ::: small
 **Split the learning process**:
@@ -682,10 +682,10 @@ $$Q(s,a^*) \approx Q_2(s,a^*)=Q_2(s,\arg\max_{a\in\Ac} Q_1(s,a)).$$
 :::
 :::
 
-# Double Q-learning algorithm
+# Double $Q$-learning algorithm
 ::: small
 ::: {.definition}
-### Algorithm: Q-Learning.
+### Algorithm: $Q$-learning.
 
 **initialize**
 
@@ -707,7 +707,7 @@ $\quad\quad$ $t \gets t+1$\
 # Maximization bias example
 
 ::: small
-![Comparison of Q-learning and Double Q-learning on a simple episodic MDP [@Sutton1998{}, Ex.\ 6.7]. Q-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the $5\%$ minimum probability enforced by $\epsilon$-greedy action selection with $\epsilon=0.1$. In contrast, Double Q-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.](images/05-td-learning/Example-Maximization-Bias.svg){ width=1000px }
+![Comparison of $Q$-learning and Double $Q$-learning on a simple episodic MDP [@Sutton1998{}, Ex.\ 6.7]. $Q$-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the $5\%$ minimum probability enforced by $\epsilon$-greedy action selection with $\epsilon=0.1$. In contrast, Double $Q$-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.](images/05-td-learning/Example-Maximization-Bias.svg){ width=1000px }
 :::
 
 ------------------------------------------------------------------------------

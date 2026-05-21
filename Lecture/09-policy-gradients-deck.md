@@ -1,6 +1,6 @@
 ---
 subtitle:    Policy Gradients
-chapter:     8
+chapter:     9
 feedback:
   deck-id:  'deeprl-policy-gradients'
 ...
@@ -37,7 +37,7 @@ feedback:
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   7  | Value function approximation                              |    Value estimation with function approximation    | 
-|   8  | Deep Q-learning                                           |   Q-learning with neural networks     | 
+|   8  | Deep $Q$-learning                                           |   $Q$-learning with neural networks     | 
 | [9]{style="color: red;"}  | [Policy gradients]{style="color: red;"} | [Direct optimization of the policy]{style="color: red;"}       | 
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms                                       |        | 
@@ -56,18 +56,21 @@ Table: Lecture contents
 # From value-based methods to direct policy optimization
 
 ::: small
-::: columns-7-3
+::: columns-9-3
 ::: platzhalter
 ::: incremental
 - Until now, all approaches followed the GPI concept.
 - These are all **value-based methods**: Need an estimate of $V^\pi$ or $Q^\pi$ to improve $\pi$.
 - But: what are we after in RL, really? [$\Rightarrow$ The **optimal policy** $\pi^*$!]{.fragment}
-[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/CNN-policy.svg){ .embed width=900px }]{.fragment}
+[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/CNN-policy.svg){ .embed width=850px }]{.fragment}
 :::
 :::
 
 ::: platzhalter
-![Value-based methods: Generalized Policy Iteration (GPI) [@Sutton1998].](images/08-deep-q-learning/SuttonBarto_GPI.svg){ width=350px }
+
+![GPI [@Sutton1998].](images/08-deep-Q-learning/SuttonBarto_GPI.svg){ width=200px }
+
+[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/Concept-1.svg){ .embed width=300px }]{.fragment}
 :::
 :::
 
@@ -134,8 +137,8 @@ $$L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \approx \frac{1}
 
 :::
 
-<!-- [![Source: Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/Samples-trajectory.png){ width=500px }]{.fragment} -->
-[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-visualization_1.svg){ .embed width=500px }]{.fragment}
+<!-- [![Source: Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/Samples-trajectory.png){ width=500px }]{.fragment} -->
+[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/PG-visualization_1.svg){ .embed width=500px }]{.fragment}
 
 :::
 
@@ -299,9 +302,10 @@ $$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi
 [(II) This term is the experience we collect from interactions with the environment.]{.fragment}
 :::
 
-![](images/09-policy-gradients/CNN-policy.svg){ width=600px }
+![](images/09-policy-gradients/CNN-policy.svg){ width=500px }
 :::
 
+::: columns-6-4
 ::: fragment
 ::: definition
 
@@ -312,8 +316,11 @@ $$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi
 2. $\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
 3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
 :::
-
 :::
+:::
+
+![](images/09-policy-gradients/Concept-2.svg){ .embed width=500px }
+
 :::
 :::
 
@@ -389,7 +396,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1}
 ::: small
 ::: columns-3-7
 
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-visualization.svg){ .embed width=350px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/PG-visualization.svg){ .embed width=350px }
 
 ::: platzhalter
 ::: incremental
@@ -426,7 +433,7 @@ The policy gradient also holds for partially observed MDPs (POMDPs). That is, fo
 ::: small
 ::: columns-4-6
 
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/09-policy-gradients/PG-variance.svg){ .embed width=500px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/PG-variance.svg){ .embed width=500px }
 
 ::: platzhalter
 $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
@@ -523,15 +530,20 @@ $$ \Var{x} = \Exp{x^2} - \Exp{x}^2 $$
 \end{align*}$$]{.math-incremental}
 
 ::: fragment
-::: columns-7-4
+::: columns-5-5-3
 **The optimal baseline** $b^*$ is the expected reward, *weighted by gradient magnitudes*:
 $$ b^* = \frac{\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)}}{\Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)}}. $$
 
 ::: fragment
 ::: definition
-**Note**: $b^*$ is hard to calculate. In practice, we usually resort to the average reward $$b=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}\approx\frac{1}{N} \sum_{i=1}^N r(\tau_i).$$
+**Note**: $b^*$ is hard to calculate. In practice: usually take average reward $$b=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}\approx\frac{1}{N} \sum_{i=1}^N r(\tau_i).$$
 :::
 :::
+
+::: fragment
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/Concept-3.svg){ .embed width=400px }
+:::
+
 :::
 :::
 
@@ -541,25 +553,36 @@ $$ b^* = \frac{\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)}}{\Expsub{g(\tau
 # Reducing variance -- causality
 
 ::: small
+::: columns-6-4
+::: platzhalter
 $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}.$$
 
 ::: incremental
-- **Causality**: The policy at time $t'$ cannot affect the reward at time $t$ when $t<t'$.
+- **Causality**: Policy at time $t'$ cannot affect reward at time $t$ when $t<t'$.
   - "What you do now, is not going to change the rewards you received in the past."
 - **Question**: Are we making use of causality in the above equation?
   - Let's rewrite it and make use of the distributive property ($a \cdot (b + c) = a\cdot b + a\cdot c$):
   $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}. $$
   [$\Rightarrow$ Past rewards (i.e., $t'<t$) have an impact on the policy $\pi_\phi$!]{.fragment}\
   - In expectation, these factors have to cancel out (and one can prove this). [**But**: for finite sample sizes, they do not and instead increase the variance.]{.fragment}
-- **Simple fix**: "*reward to go*" $\hat{Q}_{i,t} = \sum_{\textcolor{red}{t'=t}}^{T-1}r_{i,t'}$ (that is, the only change is $0 \to t$),
+- **Simple fix**: "*reward to go*" $\hat{Q}_{i,t} = \sum_{\textcolor{red}{t'=t}}^{T-1}r_{i,t'}$ (the only change is $0 \to t$),
 $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. $$
 :::
 :::
+
+::: platzhalter
+
+[![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/Concept-4.svg){ width=500px }]{.fragment}
+
 \
 
 ::: fragment
-::: footer
+::: definition
 :bulb: Do not confuse causality with the Markov property! The Markov propery (which may hold for a system, but does not have to) says that your future states do not depend on past states, just the present state. Causality is always true: "Rewards in the past are independent of decisions in the present."
+:::
+:::
+:::
+
 :::
 :::
 
@@ -650,7 +673,7 @@ p_\phi(\tau) &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_
 
 # Off-policy policy gradient with importance sampling (1)
 
-:::small
+::: small
 ::: columns-7-3
 ::: incremental
 - Once more, recall the loss function $L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$
@@ -687,7 +710,7 @@ $$\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T
 
 # Off-policy policy gradient with importance sampling (2)
 
-:::small
+::: small
 ::: incremental
 - Now that we have the formula, let's reformulate and introduce causality again:
 [$$\begin{align*} 

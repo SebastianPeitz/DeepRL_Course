@@ -30,7 +30,7 @@ feedback:
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   [7]{style="color: red;"}  | [Value function approximation]{style="color: red;"}  | [Value estimation with function approximation]{style="color: red;"} | 
-|   8  | Deep Q-learning                                           |        | 
+|   8  | Deep $Q$-learning                                           |        | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms                                       |        | 

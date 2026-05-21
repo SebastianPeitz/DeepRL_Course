@@ -32,7 +32,7 @@ feedback:
 |   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
 |   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
 |   [4]{style="color: red;"}  | [Monte Carlo methods]{style="color: red;"}                                    |   [*Data-driven learning* from entire episodes]{style="color: red;"} |
-|   5  | Temporal difference learning \& Q-learning                |        |
+|   5  | Temporal difference learning \& $Q$-learning                |        |
 |      | **Deep-learning-based methods**                           |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |

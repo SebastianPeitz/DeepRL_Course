@@ -14,7 +14,7 @@ feedback:
 # Content
 
 - Recap: 
-  - Tabular SARSA \& Q-learning
+  - Tabular SARSA \& $Q$-learning
   - Value function approximation with NNs
 - On-policy control with gradients and semi-gradients
 - Deep Q networks (DQN)
@@ -31,7 +31,7 @@ feedback:
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   7  | Value function approximation                              |    Value estimation with function approximation    | 
-|   [8]{style="color: red;"}  | [Deep Q-learning]{style="color: red;"}   |   [Q-learning with neural networks]{style="color: red;"}     | 
+|   [8]{style="color: red;"}  | [Deep $Q$-learning]{style="color: red;"}   |   [$Q$-learning with neural networks]{style="color: red;"}     | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms                                       |        | 
@@ -43,11 +43,11 @@ Table: Lecture contents
 
 ------------------------------------------------------------------------------
 
-# Recap: Tabular SARSA and Q-learning
+# Recap: Tabular SARSA and $Q$-learning
 
 ------------------------------------------------------------------------------
 
-# Tabular SARSA and Q-learning
+# Tabular SARSA and $Q$-learning
 
 ::: small
 ::: columns-5-5
@@ -73,7 +73,7 @@ $\quad\quad$ $t \gets t+1$
 :::
 
 ::: {.definition}
-### Algorithm: Q-Learning ([Off-policy]{style="color: red;"}).
+### Algorithm: $Q$-learning ([Off-policy]{style="color: red;"}).
 
 **initialize**
 
@@ -94,12 +94,12 @@ $\quad\quad$ $t \gets t+1$
 :::
 :::
 
-# Tabular SARSA and Q-learning: Gridworld
+# Tabular SARSA and $Q$-learning: Gridworld
 
 ::: columns-5-5
 ![On-policy: SARSA](videos/05-td-learning/GridWorld-SARSA.mp4 "SARSA"){ height=400px .controls .autoplay .muted }
 
-![Off-policy: Q-learning](videos/05-td-learning/GridWorld-Q-Learning.mp4 "Q-learning"){ height=400px .controls .autoplay .muted }
+![Off-policy: $Q$-learning](videos/05-td-learning/GridWorld-Q-Learning.mp4 "Q-learning"){ height=400px .controls .autoplay .muted }
 :::
 
 ::: small
@@ -307,7 +307,7 @@ x_i(s,a)&=\begin{cases} 1 & (s,a)\in\text{ tile \#}i \\ 0 & \text{otherwise} \en
 ::: small
 ::: incremental
 - Introduced in the famous DeepMind paper [@Mnih2015humanlevelcontrol].
-- Same off-policy strategy as in the *classical/tabular* Q-learning algorithm:
+- Same off-policy strategy as in the *classical/tabular* $Q$-learning algorithm:
 $$Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{a'\in\Ac} Q(s',a')- Q(s,a)\right].$$
 - Now: incremental learning using semi-gradients (Eq.\ \eqref{eq:DQL_Q_update}) and TD($0$) bootstrapping:
 $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in\Ac} Q_\theta(s',a') - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \label{eq:DQL_DQN-gradient} \end{equation} $$
@@ -470,15 +470,15 @@ $\qquad$
 
 ![Human-level control [@Mnih2015humanlevelcontrol]](images/08-deep-q-learning/DQN_Atari_Results.png){ width=850px }
 
-# The general view of Q-learning
+# The general view of $Q$-learning
 
 ![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
 
 ::: small
 ::: incremental
 - **DQN**: Processes 1 and 3 run at the same speed, process 2 is slower.
-- **Online Q-learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
-  - Value or Q-learning as in the last lecture, followed directly by a policy improvement step.
+- **Online $Q$-learning**: evict immediately, Process 1, 2 and 3 all run at the same speed.
+  - Value or $Q$-learning as in the last lecture, followed directly by a policy improvement step.
   - Also similar to the value iteration algorithm from dynamic programming.
 - Many variations: data collection and eviction strategies, frequencies and repetitions of the individual process steps, ...
 :::
@@ -517,10 +517,10 @@ $\qquad$
 ::: small
 ::: columns-5-5
 ::: platzhalter
-Remember the *maximization bias* and double Q-learning?\
+Remember the *maximization bias* and double $Q$-learning?\
 [$\Rightarrow$ Don't use same network to choose the action and estimate the value!]{.fragment}
 
-[**Double deep Q-learning**: ]{.fragment}
+[**Double deep $Q$-learning**: ]{.fragment}
 
 ::: incremental
 - Just use the [current network]{style="color: blue;"} ($\theta$) to evaluate the action.
@@ -584,7 +584,7 @@ $$ P(i) = \frac{p_i^\alpha}{\sum_{k=1}^{\abs{\Dc}}p_k^\alpha}, \qquad p_i = \abs
 
 # $n$-step returns
 
-The concept of TD($n$) can be extended to deep Q-learning in a straightforward fashion:
+The concept of TD($n$) can be extended to deep $Q$-learning in a straightforward fashion:
 [$$ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). $$ ]{.fragment}
 
 [$\textcolor{green}{\mathbf{+}\text{ less biased target values when estimates using }Q_\theta\text{ are inaccurate}}$]{.fragment}
@@ -750,7 +750,7 @@ Example: Pendulum on a cart [@Abdelwanis2026]
   - Performance trade-offs between different parts of state-action space could emerge.
 - Off-policy batch learning approaches allow for efficient data usage.
   - LSPI uses LS-SARSA on linear function approximation.
-  - DQN extends Q-learning on non-linear approximation with additional tweaks (experience replay, target networks,...).
+  - DQN extends $Q$-learning on non-linear approximation with additional tweaks (experience replay, target networks,...).
   - However, a prediction bias results (off-policy sampling distribution).
 
 <!-- 

@@ -140,6 +140,9 @@ math:
     Qpi: '{Q^\pi}'
     Vstar: '{V^*}'
     Qstar: '{Q^*}'
+    Vpiphi: '{V^{\pi_\phi}}'
+    Qpiphi: '{Q^{\pi_\phi}}'
+    piphi: '{\pi_\phi}'
 
     dint: ['\,\mathrm{d}{#1}', 1]
     dx: '{\,\mathrm{d}x}'
