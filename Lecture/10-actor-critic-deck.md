@@ -398,6 +398,10 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
 :::
 :::
+::: fragment
+:bulb: We already know what's wrong with this approach!\
+[$\Rightarrow$ The target changes along with the fitted value function in step 2.]{.fragment}
+:::
 :::
 :::
 :::
@@ -417,6 +421,50 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } $$]{.fragment}
 [where point 1. is "hidden" in $A^\pi$ and point 2. is "hidden" in the distribution $\tau\sim p_\phi(\tau)$.]{.fragment}
 :::
+:::
+
+# Re-introducing the discount factor (2)
+
+::: small
+- Talk about the two versions of introducing discount
+- Discuss the differences between the two approaches and why the "wrong" one is actually used
+:::
+
+# Batch and online AC with discount
+
+::: small
+
+:::
+
+
+# Design decisions
+
+::: small
+
+:::
+
+# Online AC in practice
+
+::: small
+
+:::
+
+# Fixing the value function
+
+::: small
+
+:::
+
+# Fixing the policy update
+
+::: small
+
+:::
+
+# Critics as baselines
+
+::: small
+
 :::
 
 
