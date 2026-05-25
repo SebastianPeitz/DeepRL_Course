@@ -18,7 +18,9 @@ feedback:
   - Bottom-up derivation via the $Q$-function
   - Sampling with reduced variance
 - Advantage functions
-
+- Design decisions
+- Off-policy actor-critic
+- Critics as baselines
 
 # Where are we?
 
@@ -266,6 +268,12 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 
 :::
 
+------------------------------------------------------------------------------
+
+# Advantage functions
+
+------------------------------------------------------------------------------
+
 # A very good baseline for policy gradients
 
 ::: small
@@ -393,8 +401,8 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 ::: incremental
 1. Sample $\set{s_i,a_i,s'_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$.
 2. Fit $V_\theta(s)$ to the sampled rewards.
-3. Compute advantage: $$\hat{A}_\theta(s_i,a_i) = r_{i} + V_\theta(s'_i) - V_\theta(s_i).$$
-4. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \hat{A}_\theta(s_i,a_i).$$
+3. Compute advantage: $$A_\theta(s_i,a_i) = r_{i} + V_\theta(s'_i) - V_\theta(s_i).$$
+4. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
 5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
 :::
 :::
@@ -426,48 +434,241 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 # Re-introducing the discount factor (2)
 
 ::: small
-- Talk about the two versions of introducing discount
-- Discuss the differences between the two approaches and why the "wrong" one is actually used
+::: incremental
+- For a better understanding, let's make an ad-hoc introduction of discount factors and see where this leads us.
+- We start with version one of the policy gradient, i.e., Monte Carlo sampling of rewards using causality:
+  $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}. \label{eq:AC_discount_v1} \end{equation} $$
+- Alternatively, we can start with the version without considering causality:
+$$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
+[:zap: Which one is right? There clearly is a different discount for the rewards in \eqref{eq:AC_discount_v1} and \eqref{eq:AC_discount_v2}!]{.fragment}
+- Let's reformulate \eqref{eq:AC_discount_v2} and introduce causality again:
+[$$\begin{align} \nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
+&= \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \label{eq:AC_discount_v3}
+\end{align}$$]{.math-incremental}
 :::
+:::
+
+# Re-introducing the discount factor (3)
+
+::: small
+<!-- Which version is correct? -->
+<!-- $$\begin{align} 
+\text{Option 1:}\quad\nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }} \tag{\ref{eq:AC_discount_v1}} \\
+\text{Option 2:}\quad\nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \tag{\ref{eq:AC_discount_v3}} \end{align}$$ -->
+$$
+\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
+\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
+$$
+
+::: incremental
+- Option 2 (Equation \eqref{eq:AC_discount_v3}) is mathematically correct.
+- This makes a lot of sense. [Since later rewards are less important due to the discount, later actions should also matter less!]{.fragment}
+- But: **In practice, we use Option 1** (Equation \eqref{eq:AC_discount_v1})
+  - In many tasks, we do care about the long-term behavior.
+  - Additional discounting of the policy often leads to deterioration of long-term performance (e.g., in infinite-horizon problems).
+:::
+
+::: fragment
+::: definition
+### Common versions of the policy gradient with discount $\textcolor{red}{\gamma}$
+
+$$
+\begin{align*} 
+\text{MC reward sampling:}\quad\nabla_\phi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \\
+\text{Advantage function:}\quad\nabla_\phi L(\phi) &\approx\frac{1}{N} \sum_{i=1}^N \Big(\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \underbrace{\cbracket{r_{i,t} + \textcolor{red}{\gamma} V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}}_{A_\theta(s_{i,t},a_{i,t})} \Big) \end{align*}
+$$
+:::
+:::
+
+:::
+
 
 # Batch and online AC with discount
 
 ::: small
+::: columns-2-4-4
 
+![Actor-critic framework [[Source](http://incompleteideas.net/book/ebook/node66.html)]](images/10-actor-critic/actor-critic.png){width=280px}
+
+
+::: fragment
+::: definition
+### Algorithm: Batch actor-critic with discount
+
+::: incremental
+1. Sample $\set{s_i,a_i,s'_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$.
+2. Fit $V_\theta(s)$ to the sampled reward sums.\
+$~$
+3. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
+4. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
+5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+:::
+:::
 :::
 
+::: fragment
+::: definition
+### Algorithm: Online actor-critic with discount
+
+::: incremental
+1. Action $a\sim\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $(s,a,r,s')$.
+2. Update $V_\theta(s)$ using the TD error:\
+$\quad\delta = r + \gamma V_\theta(s') - V_\theta(s)$.
+3. Compute advantage: $$A_\theta(s,a) = r + \gamma V_\theta(s') - V_\theta(s).$$
+4. Gradient: $$\nablaphi L(\phi) \approx \nablaphi \log\pi_\phi\agivenb{a}{s} A_\theta(s,a). \vphantom{\frac{1}{N} \sum_{i=1}^N}$$
+5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+:::
+:::
+:::
+:::
+
+<!-- ::: fragment
+:bulb: Again, we already know what's wrong with this approach! 
+$\Rightarrow$ The target changes along with the fitted value function in step 2.
+::: -->
+
+:::
+------------------------------------------------------------------------------
+
+# Design decisions
+
+------------------------------------------------------------------------------
 
 # Design decisions
 
 ::: small
+::: columns-3-2-2
+::: platzhalter
+### Choice of neural networks
 
+Now that we need to fit two functions, $\pi_\phi$ and $V_\theta$, how do we do this in practice?\
+
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/NN-architectures-2.svg){ .embed width=500px }
 :::
 
-# Online AC in practice
+::: platzhalter
+::: fragment
+### Data collection and parallelism
+
+::: incremental
+- Online AC works best with batches instead of single samples.
+  - Option 1: parallel workers, *synchronous* updates.
+  - Option 2: parallel workers, *asynchronous* (but *closely aligned*) updates.
+  - Option 3: training from a replay buffer, with data *collected at different times* and *under different policies*.
+- The last option requires off-policy training, even though policy gradients are originally on-policy!
+:::
+
+:::
+:::
+
+::: fragment
+\
+
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/parallelism-1.svg){ .embed width=290px }
+:::
+:::
+:::
+
+------------------------------------------------------------------------------
+
+# Off-policy actor-critic
+
+------------------------------------------------------------------------------
+
+# Online AC using off-policy data
 
 ::: small
+::: columns-5-5
+::: definition
+### Algorithm: Off-policy actor-critic with discount
+
+1. Action $a\sim\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $(s,a,r,s')$ $\Rightarrow$ store in $\Dc$.
+2. [Sample batch $\Bc \subset \Dc$ (size $N$) from the buffer.]{.fragment data-fragment-index=1 style="color: red;"}
+3. Update $V_\theta(s)$ using the TD error:\
+$$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma V_\theta(s'_i) - V_\theta(s_i)}_{=\delta_i}\|_2^2.$$
+4. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
+5. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
+6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+:::
+
+::: fragment
+The algorithm is broken in two places! [Can you spot them?]{.fragment}The algorithm is broken in two places! [Can you spot them?]{.fragment}
+
+::: incremental
+1. **Step 3**: We are using the wrong target value.\
+[$V_\theta$ is *on-policy* and only valid for the policy $\pi$ whose data it was trained on!]{.fragment}
+2. **Step 5**: $\pi_\phi\agivenb{a}{s}$ does not yield the action we would have selected.
+:::
+
+[$\Rightarrow$ To make actor-critic an off-policy algorithm, we need to fix both!]{.fragment}
 
 :::
 
-# Fixing the value function
+:::
+:::
+
+# Online AC: Fixing the value function and policy
 
 ::: small
+::: columns-5-5
+::: definition
+### Algorithm: Off-policy actor-critic with discount
 
+1. Action $a\sim\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $(s,a,r,s')$ $\Rightarrow$ store in $\Dc$.
+2. Sample batch $\Bc \subset \Dc$ (size $N$) from the buffer.
+3. [Update $Q_\theta(s)$ using the TD error:\
+$$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma \max_a Q_\theta(s'_i, a'_i) - Q_\theta(s_i)}_{=\delta_i}\|_2^2.$$]{.fragment data-fragment-index=1 style="color: red;"}
+4. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
+5. [Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).$$]{.fragment data-fragment-index=5 style="color: red;"}
+6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
 :::
 
-# Fixing the policy update
+::: platzhalter
+**Step 3**: Use the $Q$-function instead of the value function!
 
-::: small
+[$\circ$ To approximate the value function of the current policy $\pi_\phi$, we can simply sample $a'_i\sim \pi_\phi\agivenb{\cdot}{s'_i}$.]{.fragment data-fragment-index=2}
+
+[$\circ$ Recall: $V^\pi(s_i) = \Expsub{Q(s_i,a_i)}{a_i \sim \pi\agivenb{\cdot}{s_i}}$.]{.fragment data-fragment-index=3}
+
+[**Step 5**: Sample the actions from the current policy, **not from the replay buffer!**]{.fragment data-fragment-index=4}
+
+[$\circ$ $a^{\pi_\phi}_{i} \sim \pi_\phi\agivenb{\cdot}{s_i}$. ]{.fragment data-fragment-index=6}
+
+[**Note 1**: The data is still sampled from the "wrong" distribution, i.e., it is not from $p_\phi(s)$!]{.fragment data-fragment-index=7}
+
+[$\Rightarrow$ There is nothing we can do about this. However, we can see this as positive, as we train a policy on a *broader* distribution.]{.fragment data-fragment-index=8}
+
+[**Note 2**: It is very common to use $Q_\theta$ instead of $A_\theta$, even though skipping the baseline leads to higher variance.]{.fragment data-fragment-index=9}
+
+[$\Rightarrow$ Skipping the baseline is a good tradeoff, as we can simply sample additional samples for the gradient, and thus shrink tha variance arbitrarily!]{.fragment data-fragment-index=10}
+:::
 
 :::
+:::
+
+------------------------------------------------------------------------------
 
 # Critics as baselines
 
+------------------------------------------------------------------------------
+
+# Critics as state-dependent baselines
+
 ::: small
 
 :::
 
+# Control variates: action dependent baselines
 
+::: small
+
+:::
+
+# Generalized advantage estimation
+
+::: small
+
+:::
 
 # References
 
