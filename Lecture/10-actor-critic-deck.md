@@ -364,16 +364,16 @@ Two assumptions that lead to the following approximation:
 $$Q^\pi(s_t, a_t) = \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p\agivenb{\cdot}{s_t,a_t}} \fragment{ \approx r_{t} + V^\pi(s_{t+1}). }$$
 
 ::: incremental
-1. We just take the next reward we experience, instead of considering the expectation: 
+1. We just **take the next reward instead of considering the expectation**: 
 $$r_{t} \approx \ExpCsub{r_{t}}{s_t,a_t}{\pi}.$$
   [$\circ$ This is often very reasonable.]{.fragment}\
   [$\circ$ If the rewards depends deterministically on the state $s_t$ and the action $a_t$, then this isn't even an approximation.]{.fragment}\
   [:bulb: In this case, people often use the notation $r(s,a)$ to denote that the reward is a deterministic function.]{.fragment}
-2. Instead of considering the expectation over all next possible states, we take the value of the next state we see in our executed trajectory as a representative:
+2. Instead of considering the expectation over all next possible states, we **take the value of the next state we see in our executed trajectory as a representative**:
 $$ \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p\agivenb{\cdot}{s_t,a_t}} \approx V^\pi(s_{t+1}). $$
   [$\circ$ This is an assumption that introduces bias.]{.fragment}\
   [$\circ$ But it is often still a very reasonable assumption.]{.fragment}\
-  [$\circ$ The strong reduction in variance justifies such a biased (and simple-to-assess) estimator.]{.fragment}
+  [$\circ$ The strong reduction in variance justifies such a biased (but simple-to-assess) estimator.]{.fragment}
 :::
 :::
 
@@ -408,7 +408,8 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 :::
 ::: fragment
 :bulb: We already know what's wrong with this approach!\
-[$\Rightarrow$ The target changes along with the fitted value function in step 2.]{.fragment}
+[$\Rightarrow$ The target changes along with the fitted value function in step 2.]{.fragment}\
+[$\Rightarrow$ Use target network $\theta'$?]{.fragment}
 :::
 :::
 :::
@@ -425,7 +426,7 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
   [:bulb: The same obviously holds for $V$ and $A$.]{.fragment}
   2. The subtle one: The state distribution ("state visitation probability") changes: $$\eta_\phi(s) = \sum_{t=0}^{T-1} \gamma^t p\agivenb{s_t = s}{\piphi}.$$
   [:bulb: The proof is quite technical and requires swapping the sum over the time steps $t$ and the integration over $\Sc$ in the policy gradient derivation.]{.fragment}
-- When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. [We thus obtain the same formulation (here using $A$):
+- When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. [We thus obtain the same formulation (here using $A^\pi$):
 $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } $$]{.fragment}
 [where point 1. is "hidden" in $A^\pi$ and point 2. is "hidden" in the distribution $\tau\sim p_\phi(\tau)$.]{.fragment}
 :::
@@ -442,7 +443,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
 [:zap: Which one is right? There clearly is a different discount for the rewards in \eqref{eq:AC_discount_v1} and \eqref{eq:AC_discount_v2}!]{.fragment}
 - Let's reformulate \eqref{eq:AC_discount_v2} and introduce causality again:
-[$$\begin{align} \nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
+[$$\begin{align} \nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
 &= \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \label{eq:AC_discount_v3}
 \end{align}$$]{.math-incremental}
 :::
@@ -488,7 +489,7 @@ $$
 ::: small
 ::: columns-2-4-4
 
-![Actor-critic framework [[Source](http://incompleteideas.net/book/ebook/node66.html)]](images/10-actor-critic/actor-critic.png){width=280px}
+![Actor-critic framework [[Source](http://incompleteideas.net/book/ebook/node66.html)].](images/10-actor-critic/actor-critic.png){width=280px}
 
 
 ::: fragment
@@ -543,7 +544,7 @@ $\Rightarrow$ The target changes along with the fitted value function in step 2.
 
 Now that we need to fit two functions, $\pi_\phi$ and $V_\theta$, how do we do this in practice?\
 
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/NN-architectures-2.svg){ .embed width=500px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/NN-architectures.svg){ .embed width=500px }
 :::
 
 ::: platzhalter
@@ -564,7 +565,7 @@ Now that we need to fit two functions, $\pi_\phi$ and $V_\theta$, how do we do t
 ::: fragment
 \
 
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/parallelism-1.svg){ .embed width=290px }
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/parallelism.svg){ .embed width=290px }
 :::
 :::
 :::
@@ -617,7 +618,7 @@ The algorithm is broken in two places! [Can you spot them?]{.fragment}
 1. Action $a\sim\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $(s,a,r,s')$ $\Rightarrow$ store in $\Dc$.
 2. Sample batch $\Bc \subset \Dc$ (size $N$) from the buffer.
 3. [Update $Q_\theta(s)$ using the TD error:\
-$$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma \max_a Q_\theta(s'_i, a'_i) - Q_\theta(s_i)}_{=\delta_i}\|_2^2.$$]{.fragment data-fragment-index=1 style="color: red;"}
+$$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma Q_\theta(s'_i, a'_i) - Q_\theta(s_i,a_i)}_{=\delta_i}\|_2^2.$$]{.fragment data-fragment-index=1 style="color: red;"}
 4. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
 5. [Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).$$]{.fragment data-fragment-index=5 style="color: red;"}
 6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
@@ -628,7 +629,7 @@ $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma \max_a Q_\thet
 
 [$\circ$ To approximate the value function of the current policy $\pi_\phi$, we can simply sample $a'_i\sim \pi_\phi\agivenb{\cdot}{s'_i}$.]{.fragment data-fragment-index=2}
 
-[$\circ$ Recall: $V^\pi(s_i) = \Expsub{Q(s_i,a_i)}{a_i \sim \pi\agivenb{\cdot}{s_i}}$.]{.fragment data-fragment-index=3}
+[$\circ$ Recall (for Step 4.): $V^\pi(s_i) = \Expsub{Q(s_i,a_i)}{a_i \sim \pi\agivenb{\cdot}{s_i}}$.]{.fragment data-fragment-index=3}
 
 [**Step 5**: Sample the actions from the current policy, **not from the replay buffer!**]{.fragment data-fragment-index=4}
 
@@ -806,7 +807,7 @@ $$ A^{\mathsf{GAE}}_\theta(s_t,a_t) = \sum_{n}^\infty w_n A^n_\theta(s_t,a_t). $
 :::
 :::
 
-![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4]](images/05-td-learning/TDLambda-Forward-View.svg){ width=600px }
+![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4].](images/05-td-learning/TDLambda-Forward-View.svg){ width=600px }
 
 :::
 

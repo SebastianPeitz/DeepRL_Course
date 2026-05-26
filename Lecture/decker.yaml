@@ -153,6 +153,8 @@ math:
     abs: ['\left\vert #1 \right\vert', 1]
     norm: ['\left\Vert #1 \right\Vert', 1]
 
+    KLdiv: ['D_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
+
     set: ['{\left\{ #1 \right\}}', 1]
     cbracket: ['{\left( #1 \right)}', 1]
     rbracket: ['{\left[ #1 \right]}', 1]

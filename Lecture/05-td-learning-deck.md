@@ -224,7 +224,7 @@ Table: Overview of elapsed time and your predictions of time to go and total tim
 :::
 
 [
-![MC vs.\ TD estimate](images/05-td-learning/Example-drivng-home-v2.svg){ .embed width=200 }
+![MC vs.\ TD estimate.](images/05-td-learning/Example-drivng-home-v2.svg){ .embed width=200 }
 ]{.fragment data-fragment-index=1 }
 :::
 :::
@@ -266,7 +266,7 @@ Table: Sample of $K=8$ trajectories, including the rewards following the states.
 :::
 
 ::: fragment
-![Option 2. for modeling the MDP [@Sutton1998{}, Ex.\ 6.4]](images/05-td-learning/Example-AB.svg){ width=150 }
+![Option 2. for modeling the MDP [@Sutton1998{}, Ex.\ 6.4].](images/05-td-learning/Example-AB.svg){ width=150 }
 :::
 ::: fragment
 Answer 1. is the MC estimate, answer 2. is the TD estimate!
@@ -1010,7 +1010,7 @@ $$ g_{t:h}^\lambda = (1-\lambda) \left(\sum_{k=1}^{h-t-1} \lambda^{(k-1)} g_{t:t
 :::
 
 ::: fragment
-![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4]](images/05-td-learning/TDLambda-Forward-View.svg){ width=800px }
+![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4].](images/05-td-learning/TDLambda-Forward-View.svg){ width=800px }
 :::
 
 # Backward view of TD($\lambda$)
@@ -1032,7 +1032,7 @@ $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1})
 :::
 
 ::: columns-6-4
-![Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. [@Sutton1998{}, Figure 12.5]](images/05-td-learning/TDLambda-Backward-View.svg){ width=450px }
+![Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. [@Sutton1998{}, Figure 12.5].](images/05-td-learning/TDLambda-Backward-View.svg){ width=450px }
 
 ::: fragment
 
@@ -1040,7 +1040,7 @@ $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1})
 
 \
 
-![Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP [@Abdelwanis2026{}]](images/05-td-learning/Eligibility-Trace-State-Visits.svg){ width=650 }
+![Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP [@Abdelwanis2026{}].](images/05-td-learning/Eligibility-Trace-State-Visits.svg){ width=650 }
 :::
 :::
 :::

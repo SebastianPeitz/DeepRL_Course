@@ -343,7 +343,7 @@ $$ \begin{align*} \pi_\phi\agivenb{a}{s} &= \Normal{f_{\mathsf{NN}}(s)}{\Sigma} 
 :::
 
 ::: platzhalter
-![Adapted from [Wikipedia](https://en.wikipedia.org/wiki/Multivariate_normal_distribution)](images/09-policy-gradients/multivariate-normal-distribution.svg){ width=400px }
+![Adapted from [Wikipedia](https://en.wikipedia.org/wiki/Multivariate_normal_distribution).](images/09-policy-gradients/multivariate-normal-distribution.svg){ width=400px }
 
 ::: definition
 ### The REINFORCE algorithm
@@ -370,7 +370,7 @@ $$ \log L(\theta) = \log \cbracket{\prod_{i=1}^N p_\theta\agivenb{y_i}{x_i}}= \s
 ::: fragment
 ::: definition
 **Maximum likelihood gradient**:
-$$\nablatheta \log L(\theta) = \sum_{i=1}^N \log \nablatheta p_\theta\agivenb{y_i}{x_i}.$$
+$$\nablatheta \log L(\theta) = \sum_{i=1}^N \nablatheta \log p_\theta\agivenb{y_i}{x_i}.$$
 :::
 :::
 :::
@@ -402,7 +402,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1}
 ::: incremental
 - What did we just do?\
 [$\Rightarrow$ let's rewrite the formula a little and *compare against maixmum likelihood*:
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \log \nablatheta \pi_\phi(\tau_i). $$
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \nablatheta \log \pi_\phi(\tau_i). $$
 ]{.fragment}
 - Good experience is made more likely: We increase the proability of the policy to produce similar trajectories.
 - Bad experience is made less likely.
@@ -412,7 +412,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log
 
 ::: fragment
 ::: definition
-### A note on partial observability (Without going into details)
+### A note on partial observability (without going into details)
 
 The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies $\pi\agivenb{a}{o}$. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.
 :::
