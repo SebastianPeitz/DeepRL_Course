@@ -193,9 +193,9 @@
 <li>Policy improvement / control using TD learning
 <ul>
 <li>SARSA</li>
-<li>Q-learning</li>
+<li><span class="math inline">\(Q\)</span>-learning</li>
 </ul></li>
-<li>Double Q-learning</li>
+<li>Double <span class="math inline">\(Q\)</span>-learning</li>
 <li><span class="math inline">\(n\)</span>-step TD learning
 <ul>
 <li><span class="math inline">\(n\)</span>-step TD prediction</li>
@@ -255,7 +255,7 @@
 </tr>
 <tr>
 <td align="center"><span style="color: red;">5</span></td>
-<td align="left"><span style="color: red;">Temporal difference learning &amp; Q-learning</span></td>
+<td align="left"><span style="color: red;">Temporal difference learning &amp; <span class="math inline">\(Q\)</span>-learning</span></td>
 <td align="left"><span style="color: red;"><em>Data-driven learning</em> from individual transitions</span></td>
 </tr>
 <tr>
@@ -1013,7 +1013,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 \]</span></p>
 <div class="fragment">
 <div id="estimation-td0-update-of-the-q-function" class="definition">
-<h3>Estimation: TD(<span class="math inline">\(0\)</span>) update of the Q-function</h3>
+<h3>Estimation: TD(<span class="math inline">\(0\)</span>) update of the <span class="math inline">\(Q\)</span>-function</h3>
 <p><span class="math display">\[
 \begin{equation}
 Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(s_{t+1}, a_{t+1})}^{\mathsf{TD~target}~y} - Q(s_t, a_t)\big]}_{\mathsf{TD~error}~\delta}. \label{eq:TD_TD0-update-Q}
@@ -1101,7 +1101,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <section id="off-policy-td-control-q-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Off-policy TD control: Q-Learning</h1>
+<h1>Off-policy TD control: <span class="math inline">\(Q\)</span>-learning</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -1109,7 +1109,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="fragment">
 <div id="algorithm-q-learning." class="definition">
-<h3>Algorithm: Q-Learning.</h3>
+<h3>Algorithm: <span class="math inline">\(Q\)</span>-learning.</h3>
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
@@ -1128,7 +1128,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Q-learning is similar but directly estimates <span class="math inline">\(Q^*\)</span>.</li>
+<li class="fragment"><span class="math inline">\(Q\)</span>-learning is similar but directly estimates <span class="math inline">\(Q^*\)</span>.</li>
 <li class="fragment"><em>Off-policy update</em>, since the optimal action-value function is updated independent of a given behavior policy.</li>
 <li class="fragment">The policy still determines which state–action pairs are visited and updated.</li>
 <li class="fragment">Convergence with probability one to <span class="math inline">\(Q^*\)</span> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span> if
@@ -1170,7 +1170,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <p><span class="fragment"><strong>Outcome</strong>:</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Q-learning learns the optimal path, close along the cliff.</li>
+<li class="fragment"><span class="math inline">\(Q\)</span>-learning learns the optimal path, close along the cliff.</li>
 <li class="fragment">On-policy SARSA learns a much safer path. <span class="fragment"><em>Why do you think that is</em>?</span></li>
 <li class="fragment">In the GLIE case (i.e., <span class="math inline">\(\epsilon\to 0\)</span>), both policies will converge to the optimal path.</li>
 </ul>
@@ -1241,7 +1241,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 </div>
 </div>
 <div class="fragment">
-<p>In our setting, Q-learning is worse than SARSA. <span class="fragment"><em>Why do you think that is</em>?</span></p>
+<p>In our setting, <span class="math inline">\(Q\)</span>-learning is worse than SARSA. <span class="fragment"><em>Why do you think that is</em>?</span></p>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the combination of falling off randomly and the resulting very large negative reward.</span></p>
 </div>
 </div>
@@ -1316,7 +1316,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 \]</span></p>
 </div>
 <div class="fragment">
-<p>For comparison: Q-learning <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac} Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span></p>
+<p>For comparison: <span class="math inline">\(Q\)</span>-learning <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac} Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span></p>
 </div>
 </div>
 <div class="fragment">
@@ -1337,7 +1337,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <section id="double-q-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Double Q-learning</h1>
+<h1>Double <span class="math inline">\(Q\)</span>-learning</h1>
 </div>
 </div>
 </section>
@@ -1352,7 +1352,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <p>All control algorithms discussed so far involve <em>maximization operations</em>:</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Q-learning: target policy is greedy and directly uses max operator for action-value updates.</li>
+<li class="fragment"><span class="math inline">\(Q\)</span>-learning: target policy is greedy and directly uses max operator for action-value updates.</li>
 <li class="fragment">SARSA: typically uses an <span class="math inline">\(\epsilon\)</span>-greedy framework <span class="math inline">\(\rightarrow\)</span> max updates during policy improvement.</li>
 </ul>
 </div>
@@ -1386,7 +1386,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <section id="double-q-learning-approach" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Double Q-learning approach</h1>
+<h1>Double <span class="math inline">\(Q\)</span>-learning approach</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -1416,13 +1416,13 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <section id="double-q-learning-algorithm" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Double Q-learning algorithm</h1>
+<h1>Double <span class="math inline">\(Q\)</span>-learning algorithm</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
 <div id="algorithm-q-learning.-1" class="definition">
-<h3>Algorithm: Q-Learning.</h3>
+<h3>Algorithm: <span class="math inline">\(Q\)</span>-learning.</h3>
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q_1(s,a)\)</span> and <span class="math inline">\(Q_2(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
@@ -1454,7 +1454,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 <figure class="image" style="height:auto;width:1000px;">
 <img src="images/05-td-learning/Example-Maximization-Bias.svg" style="height:auto;width:100%;" aria-label="Comparison of Q-learning and Double Q-learning on a simple episodic MDP (Sutton and Barto 1998, Ex. 6.7). Q-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the 5\% minimum probability enforced by \epsilon-greedy action selection with \epsilon=0.1. In contrast, Double Q-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero." alt="images/05-td-learning/Example-Maximization-Bias.svg" />
 <figcaption>
-Comparison of Q-learning and Double Q-learning on a simple episodic MDP <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ex. 6.7)</span>. Q-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the <span class="math inline">\(5\%\)</span> minimum probability enforced by <span class="math inline">\(\epsilon\)</span>-greedy action selection with <span class="math inline">\(\epsilon=0.1\)</span>. In contrast, Double Q-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.
+Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span class="math inline">\(Q\)</span>-learning on a simple episodic MDP <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ex. 6.7)</span>. <span class="math inline">\(Q\)</span>-learning initially learns to take the left action much more often than the right action, and always takes it significantly more often than the <span class="math inline">\(5\%\)</span> minimum probability enforced by <span class="math inline">\(\epsilon\)</span>-greedy action selection with <span class="math inline">\(\epsilon=0.1\)</span>. In contrast, Double <span class="math inline">\(Q\)</span>-learning is essentially unaffected by maximization bias. These data are averaged over 10,000 runs. The initial action-value estimates were zero.
 </figcaption>
 </figure>
 </div>

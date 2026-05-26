@@ -188,7 +188,7 @@
 <ul>
 <li>Recap:
 <ul>
-<li>Tabular SARSA &amp; Q-learning</li>
+<li>Tabular SARSA &amp; <span class="math inline">\(Q\)</span>-learning</li>
 <li>Value function approximation with NNs</li>
 </ul></li>
 <li>On-policy control with gradients and semi-gradients</li>
@@ -249,8 +249,8 @@
 </tr>
 <tr>
 <td align="center"><span style="color: red;">8</span></td>
-<td align="left"><span style="color: red;">Deep Q-learning</span></td>
-<td align="left"><span style="color: red;">Q-learning with neural networks</span></td>
+<td align="left"><span style="color: red;">Deep <span class="math inline">\(Q\)</span>-learning</span></td>
+<td align="left"><span style="color: red;"><span class="math inline">\(Q\)</span>-learning with neural networks</span></td>
 </tr>
 <tr>
 <td align="center">9</td>
@@ -289,14 +289,14 @@
 <section id="recap-tabular-sarsa-and-q-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Recap: Tabular SARSA and Q-learning</h1>
+<h1>Recap: Tabular SARSA and <span class="math inline">\(Q\)</span>-learning</h1>
 </div>
 </div>
 </section>
 <section id="tabular-sarsa-and-q-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Tabular SARSA and Q-learning</h1>
+<h1>Tabular SARSA and <span class="math inline">\(Q\)</span>-learning</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -319,7 +319,7 @@
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span></p>
 </div>
 <div id="algorithm-q-learning-off-policy." class="definition">
-<h3>Algorithm: Q-Learning (<span style="color: red;">Off-policy</span>).</h3>
+<h3>Algorithm: <span class="math inline">\(Q\)</span>-learning (<span style="color: red;">Off-policy</span>).</h3>
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
@@ -345,7 +345,7 @@
 <section id="tabular-sarsa-and-q-learning-gridworld" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Tabular SARSA and Q-learning: Gridworld</h1>
+<h1>Tabular SARSA and <span class="math inline">\(Q\)</span>-learning: Gridworld</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -366,7 +366,7 @@ On-policy: SARSA
 
 </video>
 <figcaption>
-Off-policy: Q-learning
+Off-policy: <span class="math inline">\(Q\)</span>-learning
 </figcaption>
 </figure>
 </div>
@@ -2191,7 +2191,7 @@ Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Introduced in the famous DeepMind paper <span class="citation">(<a href="#ref-Mnih2015humanlevelcontrol">Mnih et al. 2015</a>)</span>.</li>
-<li class="fragment">Same off-policy strategy as in the <em>classical/tabular</em> Q-learning algorithm: <span class="math display">\[Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{a&#39;\in\Ac} Q(s&#39;,a&#39;)- Q(s,a)\right].\]</span></li>
+<li class="fragment">Same off-policy strategy as in the <em>classical/tabular</em> <span class="math inline">\(Q\)</span>-learning algorithm: <span class="math display">\[Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{a&#39;\in\Ac} Q(s&#39;,a&#39;)- Q(s,a)\right].\]</span></li>
 <li class="fragment">Now: incremental learning using semi-gradients (Eq. <span class="math inline">\(\eqref{eq:DQL_Q_update}\)</span>) and TD(<span class="math inline">\(0\)</span>) bootstrapping: <span class="math display">\[ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a&#39;\in\Ac} Q_\theta(s&#39;,a&#39;) - Q_\theta(s,a)} \nablatheta Q_\theta(s,a). \label{eq:DQL_DQN-gradient} \end{equation} \]</span></li>
 </ul>
 </div>
@@ -4434,7 +4434,7 @@ Human-level control <span class="citation">(<a href="#ref-Mnih2015humanlevelcont
 <section id="the-general-view-of-q-learning" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>The general view of Q-learning</h1>
+<h1>The general view of <span class="math inline">\(Q\)</span>-learning</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -6802,9 +6802,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment"><strong>DQN</strong>: Processes 1 and 3 run at the same speed, process 2 is slower.</li>
-<li class="fragment"><strong>Online Q-learning</strong>: evict immediately, Process 1, 2 and 3 all run at the same speed.
+<li class="fragment"><strong>Online <span class="math inline">\(Q\)</span>-learning</strong>: evict immediately, Process 1, 2 and 3 all run at the same speed.
 <ul class="incremental">
-<li class="fragment">Value or Q-learning as in the last lecture, followed directly by a policy improvement step.</li>
+<li class="fragment">Value or <span class="math inline">\(Q\)</span>-learning as in the last lecture, followed directly by a policy improvement step.</li>
 <li class="fragment">Also similar to the value iteration algorithm from dynamic programming.</li>
 </ul></li>
 <li class="fragment">Many variations: data collection and eviction strategies, frequencies and repetitions of the individual process steps, …</li>
@@ -8351,9 +8351,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="platzhalter">
-<p>Remember the <em>maximization bias</em> and double Q-learning?<br />
+<p>Remember the <em>maximization bias</em> and double <span class="math inline">\(Q\)</span>-learning?<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Don’t use same network to choose the action and estimate the value!</span></p>
-<p><span class="fragment"><strong>Double deep Q-learning</strong>:</span></p>
+<p><span class="fragment"><strong>Double deep <span class="math inline">\(Q\)</span>-learning</strong>:</span></p>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Just use the <span style="color: blue;">current network</span> (<span class="math inline">\(\theta\)</span>) to evaluate the action.</li>
@@ -8439,7 +8439,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>The concept of TD(<span class="math inline">\(n\)</span>) can be extended to deep Q-learning in a straightforward fashion: <span class="fragment"><span class="math display">\[ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). \]</span></span></p>
+<p>The concept of TD(<span class="math inline">\(n\)</span>) can be extended to deep <span class="math inline">\(Q\)</span>-learning in a straightforward fashion: <span class="fragment"><span class="math display">\[ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). \]</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ less biased target values when estimates using }Q_\theta\text{ are inaccurate}}\)</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ typically faster learning, especially early on}}\)</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ only actually correct when learning on policy}}\)</span></span></p>
@@ -8676,7 +8676,7 @@ Balancing steps before episode termination with a clipping of maximum 3000 steps
 <li>Off-policy batch learning approaches allow for efficient data usage.
 <ul>
 <li>LSPI uses LS-SARSA on linear function approximation.</li>
-<li>DQN extends Q-learning on non-linear approximation with additional tweaks (experience replay, target networks,…).</li>
+<li>DQN extends <span class="math inline">\(Q\)</span>-learning on non-linear approximation with additional tweaks (experience replay, target networks,…).</li>
 <li>However, a prediction bias results (off-policy sampling distribution).</li>
 </ul></li>
 </ul>

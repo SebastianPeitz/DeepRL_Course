@@ -592,7 +592,7 @@ $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma V_\theta(s'_i)
 :::
 
 ::: fragment
-The algorithm is broken in two places! [Can you spot them?]{.fragment}The algorithm is broken in two places! [Can you spot them?]{.fragment}
+The algorithm is broken in two places! [Can you spot them?]{.fragment}
 
 ::: incremental
 1. **Step 3**: We are using the wrong target value.\
@@ -638,9 +638,9 @@ $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma \max_a Q_\thet
 
 [$\Rightarrow$ There is nothing we can do about this. However, we can see this as positive, as we train a policy on a *broader* distribution.]{.fragment data-fragment-index=8}
 
-[**Note 2**: It is very common to use $Q_\theta$ instead of $A_\theta$, even though skipping the baseline leads to higher variance.]{.fragment data-fragment-index=9}
+[**Note 2**: It is very common to use $Q_\theta$ instead of $A_\theta$ in Step 5, even though skipping the baseline leads to higher variance.]{.fragment data-fragment-index=9}
 
-[$\Rightarrow$ Skipping the baseline is a good tradeoff, as we can simply sample additional samples for the gradient, and thus shrink tha variance arbitrarily!]{.fragment data-fragment-index=10}
+[$\Rightarrow$ Skipping the baseline is a good tradeoff, as we can simply sample additional actions (which does **not** require acquiring new states(!)), and thus shrink the variance arbitrarily!]{.fragment data-fragment-index=10}
 :::
 
 :::
@@ -656,17 +656,172 @@ $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma \max_a Q_\thet
 
 ::: small
 
+Let's directly compare the policy gradient from the last lecture against our actor-critic procedure from today:
+
+::: fragment
+
+::: columns-7-3
+
+::: platzhalter
+### Policy gradient
+
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - b}\quad$$
+:::
+
+::: platzhalter
+\
+
+[$\textcolor{green}{\mathbf{+}\text{ no bias}}$]{.fragment}
+
+[$\textcolor{red}{\mathbf{-}\text{ high variance (single-sample estiamte)}}$]{.fragment}
+:::
+:::
+
+
+::: columns-7-3
+
+::: platzhalter
+### Actor-critic
+
+ $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \cbracket{r_{i,t} + \gamma V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}$$
+:::
+
+::: platzhalter
+\
+
+[$\textcolor{green}{\mathbf{+}\text{ lower variance (due to critic)}}$]{.fragment}
+
+[$\textcolor{red}{\mathbf{-}\text{ not unbiased (if critic is imperfect)}}$]{.fragment}
+:::
+:::
+
+[**Question**: Can we use a critic (i.e., $V_\theta$) and still keep the esimator unbiased?]{.fragment}
+
+[$\Rightarrow$ we can make the baseline $b$ state-dependent (proof very similar to the one from last week)!]{.fragment}
+
+::: fragment
+::: columns-7-3
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - V_\theta(s_{i,t})} $$
+
+::: platzhalter
+\
+
+[$\textcolor{green}{\mathbf{+}\text{ no bias}}$]{.fragment}
+
+[$\textcolor{green}{\mathbf{+}\text{ lower variance}}$]{.fragment}
+:::
+
+:::
+:::
+
+:::
 :::
 
 # Control variates: action dependent baselines
 
 ::: small
+A natural follow-up question is: If a state-dependent baseline is stronger than a constant one, wouldn't a baseline depending on states **and** actions be even better? 
+
+[$\Rightarrow$ The answer is **yes**! ]{.fragment} [We can take the $Q$-function as the baseline as well. We call these approaches *control variates*.]{.fragment}
+
+::: fragment
+::: columns-6-4
+::: platzhalter
+### (Non-bootstrapped) state-dependent baseline
+
+$$ A_\theta(s_t,a_t) = \cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{t'}} - V_\theta(s_{t}) $$
+:::
+
+::: platzhalter
+\
+
+[$\textcolor{green}{\mathbf{+}\text{ no bias}}$]{.fragment}
+
+[$\textcolor{red}{\mathbf{-}\text{ higher variance (single-sample)}}$]{.fragment}
+:::
 
 :::
+:::
+
+
+::: fragment
+::: columns-6-4
+::: platzhalter
+### (Non-bootstrapped) state-action-dependent baseline
+
+$$ A_\theta(s_t,a_t) = \cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{t'}} - Q_\theta(s_{t},a_t) $$
+:::
+
+::: platzhalter
+\
+
+[$\textcolor{green}{\mathbf{+}\text{ goes to zero in expectation (if critic correct)}}$]{.fragment}
+
+[$\textcolor{red}{\mathbf{-}\text{ formula is incorrect!}}$]{.fragment}
+:::
+
+:::
+:::
+
+::: fragment
+**The term that was neglected above**:
+$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\hat{Q}_{i,t} - Q_\theta(s_{i,t}, a_{i,t})} \textcolor{blue}{+ \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \Expsub{Q_\theta(s_{i,t},a_{t})}{a_t \sim \pi_\theta\agivenb{\cdot}{s_{i,t}}}}. $$
+:::
+[$\Rightarrow$ This one is often easier to estimate.]{.fragment} [**Finite $\Ac$**: compute sum!]{.fragment} [**Continuous $\Ac$**: sampling actions is easy!]{.fragment}
+:::
+
+# $n$-step advantage estimation
+
+::: small
+Similar to standard TD learning, we can again find some middle ground between the one-step estimate and the MC estimate:
+[$$\begin{align*} 
+\text{One-step TD estimate:}\qquad A_\theta(s_t,a_t) &= r_{t} + \gamma V_\theta(s_{t+1}) - V_\theta(s_t), \\
+\text{MC estimate:}\qquad A_\theta(s_t,a_t) &= \cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{t'}} - V_\theta(s_{t}).
+\end{align*}$$]{.math-incremental}
+
+[Just as before, we can simulate $n$ steps, before bootstrapping the non-simulated piece of our trajectory:]{.fragment}
+[$$\qquad\qquad\qquad\qquad\text{$n$-step estimate:}\qquad A^n_\theta(s_t,a_t) = \cbracket{\sum_{t'=t}^{t+n}\gamma^{t'-t} r_{t'}} + \gamma^n V_\theta(s_{t+n}) - V_\theta(s_{t}).$$]{.fragment}
+
+::: incremental
+- Near into the future (i.e., $t'\leq t+n$), we often have a small variance, such that a single trajectory gives us a good and unbiased estimate.
+- Further into the future (i.e., $t'>t+n$), we likely have a higher variance, such that a single trajectory is not as helpful.
+- There, using a bootstrapped estimate of the expected return ($V_\theta(s_{t+n})$) helps us to reduce the variance.
+- $n>1$ often works better, it is a better trade-off between bias and variance.
+:::
+
+:::
+
 
 # Generalized advantage estimation
 
 ::: small
+::: columns-5-5
+::: platzhalter
+From the $n$-step estimate, the next step in TD learning was to average over all possible $n$-step estimates
+[$\Rightarrow$ TD($\lambda$)!]{.fragment}
+
+::: incremental
+- In the actor-critic setting, this is known as **generalized advantage estimation** (**GAE**):
+$$ A^{\mathsf{GAE}}_\theta(s_t,a_t) = \sum_{n}^\infty w_n A^n_\theta(s_t,a_t). $$
+:::
+:::
+
+![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4]](images/05-td-learning/TDLambda-Forward-View.svg){ width=600px }
+
+:::
+
+::: incremental
+- How to weight the individual $A^n_\theta$? 
+  - put more importance to earlier (low-variance) data.
+  - $w_n \propto \lambda^{n-1}$ (exponentiall fall-off).
+:::
+
+[$$\begin{align*} 
+A^{\mathsf{GAE}}_\theta(s_t,a_t) &= r_t + \gamma \Big((1-\lambda) V_\theta(s_{t+1}) + \lambda \big(r_{t+1} + \gamma \cbracket{(1-\lambda) V_\theta(s_{t+2}) + \lambda (r_{t+2} + \ldots)}\big)\Big), \\
+A^{\mathsf{GAE}}_\theta(s_t,a_t) &= \sum_{t'=t}^\infty (\gamma\lambda)^{t'-t} \delta_{t'}, \qquad \text{with TD error}\quad\delta_{t'} = r_{t'} + \gamma V_\theta(s_{t'+1}) - V_\theta(s_{t'}). 
+\end{align*}$$]{.math-incremental}
+
+[$\Rightarrow$ The discount factor serves as a means to trade off bias and variance!]{.fragment}
 
 :::
 

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "19.05.2026 12:47"
+        "20.05.2026 19:20"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -1334,6 +1334,7 @@
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
             "Qpi": "{Q^\\pi}",
+            "Qpiphi": "{Q^{\\pi_\\phi}}",
             "Qstar": "{Q^*}",
             "R": "{\\mathbb{R}}",
             "Re": [
@@ -1349,6 +1350,7 @@
                 1.0
             ],
             "Vpi": "{V^\\pi}",
+            "Vpiphi": "{V^{\\pi_\\phi}}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
             "Yc": "{\\mathcal{Y}}",
@@ -1415,6 +1417,7 @@
                 2.0
             ],
             "pias": "{\\pi\\left( a  \\middle| s \\right)}",
+            "piphi": "{\\pi_\\phi}",
             "piprime": "{\\pi^{\\prime}}",
             "policy": [
                 "{\\pi\\left( #1  \\middle|#2 \\right)}",
