@@ -143,7 +143,7 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 ::: small
 ::: columns-5-5
 ::: platzhalter
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/11-advanced/PG-example-covariant.svg){ .embed width=600px }
+![A simple exemplary MDP. Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/11-advanced/PG-example-covariant.svg){ .embed width=600px }
 
 [$$\begin{align*} 
 r_t &= -s_t^2 - a_t^2 \\
@@ -297,7 +297,7 @@ $$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\p
 :::
 :::
 
-# Naturla policy gradient
+# Natural policy gradient
 
 ::: small
 ::: columns-7-3
@@ -310,6 +310,9 @@ $$\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi).$$
 - **Intuition** behind the inverse FIM $F^{-1}$:
   - Parameters with a high impact have high Fisher information.
   - Scaling by the inverse "normalizes" the individual impacts.
+- This techinque is known as the **natural policy gradient** (also **covariant policy gradient**).
+  - Preconditioning steps of this type are very common in optimization in general.
+  - Drawback: $F\in\R^{d \times d}$ can be very expensive to calculate (and invert) for very large parameter vectors.
 :::
 
 ::: platzhalter

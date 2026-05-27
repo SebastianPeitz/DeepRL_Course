@@ -167,7 +167,7 @@ $\Rightarrow$ we are not bootstrapping, i.e., building estimates based on other 
 3. As a consequence, we can estimate parts of the value function that are of particular interest.
 :::
 
-# Example: Gridworld (same as in the DP lecture)
+# Example: Gridworld (same as in the DP lecture) {menu-title="Example: Gridworld"}
 
 ::: small
 ::: columns-6-2-2
@@ -458,7 +458,7 @@ We will cover the topic on-policy versus off-policy in more detail later in this
 Table: Key differences at a glance:
 :::
 
-# $\epsilon$-greedy as an on-policy alternative (1)
+# $\epsilon$-greedy as an on-policy alternative (1) {menu-title="ε-greedy as an on-policy alternative (1)"}
 
 ::: small
 **Motivating question**: How do we get rid of the restrictive (and often not achievable) requirement of *exploring starts (ES)*?
@@ -487,7 +487,7 @@ Table: Key differences at a glance:
 :::
 :::
 
-# $\epsilon$-greedy as an on-policy alternative (2)
+# $\epsilon$-greedy as an on-policy alternative (2) {menu-title="ε-greedy as an on-policy alternative (2)"}
 ::: small
 ::: {.definition}
 ### Algorithm: $\epsilon$-greedy on-policy first-visit MC control.
@@ -514,7 +514,7 @@ $\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs
 :::
 :::
 
-# $\epsilon$-greedy policy improvement
+# $\epsilon$-greedy policy improvement {menu-title="ε-greedy policy improvement"}
 
 ::: small
 ::: definition

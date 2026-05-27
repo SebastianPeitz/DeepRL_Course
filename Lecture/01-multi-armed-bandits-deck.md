@@ -129,7 +129,7 @@ $$a_t=\arg\max_a Q_t(a),$$
 
 ------------------------------------------------------------------------------
 
-# The $k$-armed testbed
+# The $k$-armed testbed {menu-title="The k-armed testbed"}
 ::: small
 ::: incremental
 - Let's study a large number of randomly generated $k$-armed bandit problems (here: $k = 10$).
@@ -140,7 +140,7 @@ $$a_t=\arg\max_a Q_t(a),$$
 :::
 :::
 
-# The $k$-armed testbed: rewards
+# The $k$-armed testbed: rewards {menu-title="The k-armed testbed: rewards"}
 
 ::: columns-3-6
 ::: platzhalter
@@ -167,7 +167,7 @@ What is $\epsilon$'s job? [$\Rightarrow$ the **exploration**]{.fragment}
 :::
 :::
 
-# The $k$-armed testbed: optimal actions
+# The $k$-armed testbed: optimal actions {menu-title="The k-armed testbed: optimal actions"}
 
 ![](images/01-multi-armed-bandits/mab-actions.svg){ .embed width=800px }
 
@@ -210,7 +210,7 @@ Caption: A simple version of the $\epsilon$ greedy bandit
 
 ------------------------------------------------------------------------------
 
-# Computing $Q(a)$ on the fly 
+# Computing $Q(a)$ on the fly {menu-title="Computing Q(a) on the fly"}
 
 ::: small
 

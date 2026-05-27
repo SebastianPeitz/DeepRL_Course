@@ -342,7 +342,7 @@ $$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_
 :::
 :::
 
-# Algorithm: Semi-gradient TD($0$) value estimation
+# Algorithm: Semi-gradient TD($0$) value estimation {menu-title="Algorithm: Semi-gradient TD(0) value estimation"}
 
 ::: small
 ::: columns-6-5

@@ -253,17 +253,27 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 # What about the baseline?
 
 ::: small
-::: incremental
-- We would like to reduce the variance of the new formulation using a baseline $b$:
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. $$
-- How do we choose $b$?
-  - A natural choice (analogous to the baseline for version one) might be the average the $Q^\pi$ value over our samples: $$b=\frac{1}{N} Q^\pi(s_{i,t},a_{i,t}).$$
-  - Unfortunately, an action-dependent average leads to a biased policy gradient (i.e., leads to the wrong gradient) :weary:
-- An alternative (and even lower-variance) approach:
-  - Average over **all the possibilities starting in the state $s_t$** (not just in the time step $t$)!
-  - How do we do this? 
-  $$\fragment{b = \Expsub{Q^\pi(s_t,a_t)}{a_t\sim \pi\agivenb{\cdot}{s_t}} } \fragment{ = V^\pi(s_t). } $$
 
+We would like to reduce the variance of the new formulation using a baseline $b$:
+$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. $$
+
+::: fragment
+### How do we choose $b$?
+:::
+
+::: incremental
+- A natural choice (analogous to the baseline for version one) might be the average the $Q^\pi$ value over our samples: $$b=\frac{1}{N} Q^\pi(s_{i,t},a_{i,t}).$$
+- Unfortunately, an action-dependent average leads to a biased policy gradient (i.e., leads to the wrong gradient) :weary:
+:::
+
+::: fragment
+### An alternative (and even lower-variance) approach:
+:::
+
+::: incremental
+- Average over **all the possibilities starting in the state $s_t$** (not just in the time step $t$)!
+- How do we do this? 
+  $$\fragment{b = \Expsub{Q^\pi(s_t,a_t)}{a_t\sim \pi\agivenb{\cdot}{s_t}} } \fragment{ = V^\pi(s_t). } $$
 :::
 
 :::
@@ -290,7 +300,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ### Policy gradient with advantage function
 
 The *advantage function* $A^\pi(s,a)$ describes how much better the action $a$ is over the average action when following $\pi$:
-$$ A^\pi(s,t) = Q^\pi(s,t) - V^\pi(s,t). $$
+$$ A^\pi(s,a) = Q^\pi(s,a) - V^\pi(s). $$
 <!-- $$ A^\pi(s,t) = Q^\pi(s,t) - V^\pi(s,t) \fragment{ = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi} - \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}. } $$ -->
 
 [*Policy gradient with value baseline*: "maximize the policy likelihood, weighted by the advantage function":
@@ -414,6 +424,14 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 :::
 :::
 :::
+
+------------------------------------------------------------------------------
+
+# Re-introducing the discount factor
+
+------------------------------------------------------------------------------
+
+
 
 # Re-introducing the discount factor (1)
 

@@ -173,7 +173,7 @@ $$]{.math-incremental}
 $^*$ For sufficiently small step size $\alpha$, it can be shown that the TD error conveges to zero in batch mode [@Sutton1998].
 :::
 
-# Convergence of TD($0$)
+# Convergence of TD($0$) {menu-title="Convergence of TD(0)"}
 
 ::: small
 ::: definition
@@ -504,7 +504,7 @@ SARSA for finite-state and finite-action MDPs converges to the optimal action-va
 	
 For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 
-# Off-policy TD control: $Q$-learning
+# Off-policy TD control: $Q$-learning {menu-title="Off-policy TD control: Q-learning"}
 ::: small
 ::: columns-7-3
 
@@ -626,7 +626,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathbf{\max_{a\in\Ac}
 
 ------------------------------------------------------------------------------
 
-# Double $Q$-learning
+# Double $Q$-learning {menu-title="Double Q-learning"}
 
 ------------------------------------------------------------------------------
 
@@ -661,7 +661,7 @@ All control algorithms discussed so far involve *maximization operations*:
 :::
 :::
 
-# Double $Q$-learning approach
+# Double $Q$-learning approach {menu-title="Double Q-learning approach"}
 
 ::: small
 **Split the learning process**:
@@ -682,7 +682,8 @@ $$Q(s,a^*) \approx Q_2(s,a^*)=Q_2(s,\arg\max_{a\in\Ac} Q_1(s,a)).$$
 :::
 :::
 
-# Double $Q$-learning algorithm
+# Double $Q$-learning algorithm {menu-title="Double Q-learning algorithm"}
+
 ::: small
 ::: {.definition}
 ### Algorithm: $Q$-learning.
@@ -712,7 +713,7 @@ $\quad\quad$ $t \gets t+1$\
 
 ------------------------------------------------------------------------------
 
-# $n$-step TD learning
+# $n$-step TD learning {menu-title="n-step TD learning"}
 
 ------------------------------------------------------------------------------
 
@@ -727,7 +728,7 @@ $\quad\quad$ $t \gets t+1$\
 :::
 :::
 
-# $n$-step bootstrapping idea
+# $n$-step bootstrapping idea {menu-title="n-step bootstrapping idea"}
 ::: columns-6-4
 ![[@Sutton1998{}, Figure 7.1]](images/05-td-learning/Back_Up_n_Step_Methods.svg){ .embed width=500px }
 
@@ -783,7 +784,7 @@ $$ V_{t+n}(s_t) = V_{t+n-1}(s_t) + \alpha \left[ g_{t:t+n} - V_{t+n-1}(s_{t}) \r
 
 :::
 
-# $n$-step TD prediction: Algorithmic implementation 
+# $n$-step TD prediction: Algorithmic implementation {menu-title="n-step TD prediction: Algorithmic implementation"}
 
 ::: small
 ::: {.definition}
@@ -829,11 +830,11 @@ $\quad\quad$ **if** $\tau = T − 1$ **then** $\STOP$
 
 ------------------------------------------------------------------------------
 
-# $n$-step TD control
+# $n$-step TD control {menu-title="n-step TD control"}
 
 ------------------------------------------------------------------------------
 
-# Transfer the $n$-step approach to state-action values (1)
+# Transfer the $n$-step approach to state-action values (1) {menu-title="Transfer the n-step approach to state-action values (1)"}
 
 ::: small
 ::: incremental
@@ -878,7 +879,7 @@ $g_{t:t+n} = g_t$.
 :::
 :::
 
-# Transfer the $n$-step approach to state-action values (2)
+# Transfer the $n$-step approach to state-action values (2) {menu-title="Transfer the n-step approach to state-action values (2)"}
 
 ::: small
 
@@ -908,7 +909,7 @@ For more details, see [@Sutton1998{}, Chapter 7.3].
 :::
 :::
 
-# $n$-step bootstrapping for state-action values
+# $n$-step bootstrapping for state-action values {menu-title="n-step bootstrapping for state-action values"}
 
 ![[@Sutton1998{}, Figure 7.3]](images/05-td-learning/Back_Up_n_Step_Sarsa.svg){ .embed width=500px }
 
@@ -932,7 +933,7 @@ For more details, see [@Sutton1998{}, Chapter 7.3].
 
 ------------------------------------------------------------------------------
 
-# TD($\lambda$)
+# TD($\lambda$) {menu-title="TD(λ)"}
 
 ------------------------------------------------------------------------------
 
@@ -952,7 +953,7 @@ $$ g = \frac{1}{3} g_{t:t+1} + \frac{2}{3} g_{t:t+3}. $$
 
 :::
 
-# $\lambda$-return (1)
+# $\lambda$-return (1) {menu-title="λ-return (1)"}
 
 ::: columns-5-5
 ![The backup diagram for TD(λ). If λ = 0, then the overall update reduces to its first component, the one-step TD($0$) update, whereas if λ = 1, then the overall update reduces to its last component, the Monte Carlo update. [@Sutton1998{}, Figure 12.1]](images/05-td-learning/TDLambda-Return-Backup_v2.svg){ width=500px }
@@ -969,7 +970,7 @@ $$ (1-\lambda) \sum_{k=1}^\infty \lambda^{(k-1)} = 1.$$
 
 :::
 
-# $\lambda$-return (2)
+# $\lambda$-return (2) {menu-title="λ-return (2)"}
 
 ::: small
 ::: incremental
@@ -990,7 +991,7 @@ g_t^\lambda = (1-\lambda) \left(\sum_{k=1}^{T-t-1} \lambda^{(k-1)} g_{t:t+n}\rig
 :::
 :::
 
-# Truncated $\lambda$-returns for continuing tasks
+# Truncated $\lambda$-returns for continuing tasks {menu-title="Truncated λ-returns for continuing tasks"}
 
 ::: incremental
 - Using $\lambda$-returns as in \eqref{eq:TD_infinite-td-lambda} is not feasible for continuing tasks.
@@ -1001,7 +1002,7 @@ $$ g_{t:h}^\lambda = (1-\lambda) \left(\sum_{k=1}^{h-t-1} \lambda^{(k-1)} g_{t:t
 - Horizon $h$ divides continuing tasks in rolling episodes.
 :::
 
-# Forward view of TD($\lambda$)
+# Forward view of TD($\lambda$) {menu-title="Forward view of TD(λ)"}
 
 ::: incremental
 - Both, $n$-step and $λ$-return updates, are based on a *forward view*.
@@ -1013,7 +1014,7 @@ $$ g_{t:h}^\lambda = (1-\lambda) \left(\sum_{k=1}^{h-t-1} \lambda^{(k-1)} g_{t:t
 ![The forward view. We decide how to update each state by looking forward to future rewards and states. [@Sutton1998{}, Figure 12.4].](images/05-td-learning/TDLambda-Forward-View.svg){ width=800px }
 :::
 
-# Backward view of TD($\lambda$)
+# Backward view of TD($\lambda$) {menu-title="Backward view of TD(λ)"}
 
 ::: small
 ::: columns-2-16

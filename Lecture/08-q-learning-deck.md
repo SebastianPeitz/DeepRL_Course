@@ -43,11 +43,11 @@ Table: Lecture contents
 
 ------------------------------------------------------------------------------
 
-# Recap: Tabular SARSA and $Q$-learning
+# Recap: Tabular SARSA and $Q$-learning {menu-title="Recap: Tabular SARSA and Q-learning"}
 
 ------------------------------------------------------------------------------
 
-# Tabular SARSA and $Q$-learning
+# Tabular SARSA and $Q$-learning {menu-title="Recap: Tabular SARSA and Q-learning"}
 
 ::: small
 ::: columns-5-5
@@ -94,7 +94,7 @@ $\quad\quad$ $t \gets t+1$
 :::
 :::
 
-# Tabular SARSA and $Q$-learning: Gridworld
+# Tabular SARSA and $Q$-learning: Gridworld {menu-title="Recap: Tabular SARSA and Q-learning: Gridworld"}
 
 ::: columns-5-5
 ![On-policy: SARSA](videos/05-td-learning/GridWorld-SARSA.mp4 "SARSA"){ height=400px .controls .autoplay .muted }
@@ -137,7 +137,7 @@ $$ \begin{equation} \theta^* = (\Psi^\top \Psi)^{-1} \Psi^\top y = \Psi^\dagger 
 
 ------------------------------------------------------------------------------
 
-# Value-based control: Q function approximation
+# Value-based control: $Q$-function approximation {menu-title="Value-based control: Q-function approximation"}
 
 ::: small
 ::: columns-5-5
@@ -298,7 +298,7 @@ x_i(s,a)&=\begin{cases} 1 & (s,a)\in\text{ tile \#}i \\ 0 & \text{otherwise} \en
 
 ------------------------------------------------------------------------------
 
-# Deep Q networks (DQN)
+# Deep $Q$ networks (DQN) {menu-title="Deep Q networks (DQN)"}
 
 ------------------------------------------------------------------------------
 
@@ -470,7 +470,7 @@ $\qquad$
 
 ![Human-level control [@Mnih2015humanlevelcontrol]](images/08-deep-q-learning/DQN_Atari_Results.png){ width=850px }
 
-# The general view of $Q$-learning
+# The general view of $Q$-learning {menu-title="The general view of Q-learning"}
 
 ![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ .embed width=1100px }
 
@@ -512,7 +512,7 @@ $\qquad$
 :::
 :::
 
-# Double Q networks [@vanHasselt2016ddqn]
+# Double $Q$ networks [@vanHasselt2016ddqn] {menu-title="Double Q networks"}
 
 ::: small
 ::: columns-5-5
@@ -556,7 +556,7 @@ $$\begin{align*}
 
 :::
 
-# Prioritized experience replay [@Schaul2015prioritized]
+# Prioritized experience replay [@Schaul2015prioritized] {menu-title="Prioritized experience replay"}
 
 ::: small
 ::: columns-7-3
@@ -582,7 +582,7 @@ $$ P(i) = \frac{p_i^\alpha}{\sum_{k=1}^{\abs{\Dc}}p_k^\alpha}, \qquad p_i = \abs
 
 :::
 
-# $n$-step returns
+# $n$-step returns {menu-title="n-step returns"}
 
 The concept of TD($n$) can be extended to deep $Q$-learning in a straightforward fashion:
 [$$ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). $$ ]{.fragment}
