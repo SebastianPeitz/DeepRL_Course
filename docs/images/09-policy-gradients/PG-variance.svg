@@ -24,35 +24,16 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="2.0654268"
-     inkscape:cx="396.52821"
-     inkscape:cy="689.2038"
-     inkscape:window-width="1512"
-     inkscape:window-height="854"
-     inkscape:window-x="0"
-     inkscape:window-y="33"
-     inkscape:window-maximized="0"
+     inkscape:cx="396.28613"
+     inkscape:cy="495.29715"
+     inkscape:window-width="3200"
+     inkscape:window-height="1675"
+     inkscape:window-x="1512"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g55" />
   <defs
      id="defs1">
-    <marker
-       style="overflow:visible"
-       id="ArrowTriangleStylized"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Stylized triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
-         id="path4" />
-    </marker>
     <marker
        style="overflow:visible"
        id="marker86"
@@ -75,63 +56,6 @@
     </marker>
     <marker
        style="overflow:visible"
-       id="marker85"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path85" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker84"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path84" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Square"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Square"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M -5,-5 V 5 H 5 V -5 Z"
-         id="path18" />
-    </marker>
-    <marker
-       style="overflow:visible"
        id="marker82"
        refX="0"
        refY="0"
@@ -149,157 +73,6 @@
          d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
          style="fill:context-stroke;fill-rule:evenodd;stroke:none"
          id="path82" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker81"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path81" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="ColoredTriangle"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Colored triangle"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-fill;fill-rule:evenodd;stroke:context-stroke;stroke-width:2"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path80" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker79"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Concave triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="path79" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker78"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Concave triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="path78" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="ArrowWideHeavy"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Wide, heavy arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="m 1,0 -3,3 h -2 l 3,-3 -3,-3 h 2 z"
-         id="path77" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker76"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path76" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="DartArrow"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path75" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135" />
     </marker>
     <marker
        style="overflow:visible"
@@ -552,6 +325,22 @@
             <path
                d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
                id="id-838549bd-abe9-4376-8336-cb6b5c1572a8"
+               style="fill:#aa0000" />
+          </g>
+        </g>
+        <g
+           fill="#000000"
+           fill-opacity="1"
+           id="g44"
+           transform="matrix(1.00682,0,0,1.00682,-81.23282,18.504208)"
+           style="fill:#aa0000">
+          <g
+             transform="translate(171.728,158.675)"
+             id="g43"
+             style="fill:#aa0000">
+            <path
+               d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
+               id="path14"
                style="fill:#aa0000" />
           </g>
         </g>
@@ -822,7 +611,7 @@
       </g>
       <g
          id="g1"
-         transform="translate(-30.409636,-157.95705)"
+         transform="translate(-28.292968,-157.95705)"
          style="fill:#008000">
         <g
            fill="#000000"
@@ -891,7 +680,7 @@
       </g>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.523419;stroke-dasharray:none;stroke-opacity:0.996255"
-         d="M 31.680443,10.947811 33.896245,0.56939733"
+         d="M 33.797111,10.947811 36.012913,0.56939733"
          id="path2" />
       <path
          style="fill:none;stroke:#008000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
@@ -1077,7 +866,7 @@
        class="fragment">
       <g
          id="g42"
-         transform="translate(-30.409636,-15.08202)"
+         transform="translate(-28.292968,-15.08202)"
          style="fill:#ffcc00">
         <g
            fill="#000000"
@@ -1146,7 +935,7 @@
       </g>
       <path
          style="fill:#808000;stroke:#000000;stroke-width:0.523419;stroke-dasharray:none;stroke-opacity:0.996255"
-         d="m 31.680443,153.82284 2.215802,-10.37841"
+         d="m 33.797111,153.82284 2.215802,-10.37841"
          id="path42" />
       <g
          id="g51">
@@ -1689,6 +1478,22 @@
               <path
                  d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
                  id="path68"
+                 style="fill:#aa0000" />
+            </g>
+          </g>
+          <g
+             fill="#000000"
+             fill-opacity="1"
+             id="g48"
+             transform="matrix(1.00682,0,0,1.00682,-81.23282,18.504208)"
+             style="fill:#aa0000">
+            <g
+               transform="translate(171.728,158.675)"
+               id="g47"
+               style="fill:#aa0000">
+              <path
+                 d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
+                 id="path47"
                  style="fill:#aa0000" />
             </g>
           </g>

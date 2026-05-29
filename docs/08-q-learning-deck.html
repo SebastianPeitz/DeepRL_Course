@@ -264,7 +264,12 @@
 </tr>
 <tr>
 <td align="center">11</td>
-<td align="left">Advanced algorithms</td>
+<td align="left">Advanced algorithms (Part I): From policy gradient to PPO</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -286,14 +291,14 @@
 </div>
 </div>
 </section>
-<section id="recap-tabular-sarsa-and-q-learning" class="slide level1">
+<section id="recap-tabular-sarsa-and-q-learning" class="slide level1" menu-title="Recap: Tabular SARSA and Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>Recap: Tabular SARSA and <span class="math inline">\(Q\)</span>-learning</h1>
 </div>
 </div>
 </section>
-<section id="tabular-sarsa-and-q-learning" class="slide level1">
+<section id="tabular-sarsa-and-q-learning" class="slide level1" menu-title="Recap: Tabular SARSA and Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>Tabular SARSA and <span class="math inline">\(Q\)</span>-learning</h1>
@@ -342,7 +347,7 @@
 </div>
 </div>
 </section>
-<section id="tabular-sarsa-and-q-learning-gridworld" class="slide level1">
+<section id="tabular-sarsa-and-q-learning-gridworld" class="slide level1" menu-title="Recap: Tabular SARSA and Q-learning: Gridworld">
 <div class="decker">
 <div class="alignment">
 <h1>Tabular SARSA and <span class="math inline">\(Q\)</span>-learning: Gridworld</h1>
@@ -421,10 +426,10 @@ Off-policy: <span class="math inline">\(Q\)</span>-learning
 </div>
 </div>
 </section>
-<section id="value-based-control-q-function-approximation" class="slide level1">
+<section id="value-based-control-q-function-approximation" class="slide level1" menu-title="Value-based control: Q-function approximation">
 <div class="decker">
 <div class="alignment">
-<h1>Value-based control: Q function approximation</h1>
+<h1>Value-based control: <span class="math inline">\(Q\)</span>-function approximation</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -2045,12 +2050,12 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> Obtain <span class="math inline">\(\textcolor{red}{a_t \sim \pi\agivenb{\cdot}{s_t}}\)</span> (or <span style="color: blue;"><span class="math inline">\(a_t \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_t,\cdot))\)</span></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Obtain <span class="math inline">\(\textcolor{red}{a_t \sim \policy{\cdot}{s_t}}\)</span> (or <span style="color: blue;"><span class="math inline">\(a_t \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_t,\cdot))\)</span></span>)<br />
 <span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\terminal\)</span> <strong>then</strong><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> Go to next episode <span class="math inline">\(k+1\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> Choose <span style="color: red;"><span class="math inline">\(a_{t+1} \sim \pi\agivenb{\cdot}{s_{t+1}}\)</span></span> (or <span style="color: blue;"><span class="math inline">\(a_{t+1} \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_{t+1},\cdot))\)</span></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Choose <span style="color: red;"><span class="math inline">\(a_{t+1} \sim \policy{\cdot}{s_{t+1}}\)</span></span> (or <span style="color: blue;"><span class="math inline">\(a_{t+1} \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_{t+1},\cdot))\)</span></span>)<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a_{t+1}) - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)\)</span></p>
 </div>
 </div>
@@ -2173,10 +2178,10 @@ Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1
 </div>
 </div>
 </section>
-<section id="deep-q-networks-dqn" class="slide level1">
+<section id="deep-q-networks-dqn" class="slide level1" menu-title="Deep Q networks (DQN)">
 <div class="decker">
 <div class="alignment">
-<h1>Deep Q networks (DQN)</h1>
+<h1>Deep <span class="math inline">\(Q\)</span> networks (DQN)</h1>
 </div>
 </div>
 </section>
@@ -4431,7 +4436,7 @@ Human-level control <span class="citation">(<a href="#ref-Mnih2015humanlevelcont
 </div>
 </div>
 </section>
-<section id="the-general-view-of-q-learning" class="slide level1">
+<section id="the-general-view-of-q-learning" class="slide level1" menu-title="The general view of Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>The general view of <span class="math inline">\(Q\)</span>-learning</h1>
@@ -8341,10 +8346,10 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </section>
-<section id="double-q-networks-vanhasselt2016ddqn" class="slide level1">
+<section id="double-q-networks-vanhasselt2016ddqn" class="slide level1" menu-title="Double Q networks">
 <div class="decker">
 <div class="alignment">
-<h1>Double Q networks <span class="citation">(<a href="#ref-vanHasselt2016ddqn">Hasselt, Guez, and Silver 2016</a>)</span></h1>
+<h1>Double <span class="math inline">\(Q\)</span> networks <span class="citation">(<a href="#ref-vanHasselt2016ddqn">Hasselt, Guez, and Silver 2016</a>)</span></h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -8389,7 +8394,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </section>
-<section id="prioritized-experience-replay-schaul2015prioritized" class="slide level1">
+<section id="prioritized-experience-replay-schaul2015prioritized" class="slide level1" menu-title="Prioritized experience replay">
 <div class="decker">
 <div class="alignment">
 <h1>Prioritized experience replay <span class="citation">(<a href="#ref-Schaul2015prioritized">Schaul et al. 2016</a>)</span></h1>
@@ -8432,7 +8437,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </section>
-<section id="n-step-returns" class="slide level1">
+<section id="n-step-returns" class="slide level1" menu-title="n-step returns">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step returns</h1>

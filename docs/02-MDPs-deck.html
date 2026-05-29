@@ -1324,8 +1324,8 @@ Reinforcement Learning framework <span class="citation">(<a href="#ref-Sutton199
 <p>In the literature, we often also find <em>capital letters</em> for state, action and reward to properly account for the probabilistic nature</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(p\agivenb{S_{t+1}=s&#39;}{S_{t}=s, A_{t}=a}\)</span> is the precise formulation for our short form <span class="math inline">\(\psprimesa\)</span>.</li>
-<li class="fragment"><span class="math inline">\(\pi\agivenb{A_t=a}{S_t=s}\)</span> is the precise formulation for our short form <span class="math inline">\(\pias\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\pC{S_{t+1}=s&#39;}{S_{t}=s, A_{t}=a}\)</span> is the precise formulation for our short form <span class="math inline">\(\psprimesa\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\policy{A_t=a}{S_t=s}\)</span> is the precise formulation for our short form <span class="math inline">\(\pias\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -1454,7 +1454,7 @@ Source: <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 
 <p>A <strong>finite Markov chain</strong> is a tuple <span class="math inline">\((\Sc, p)\)</span>, where</p>
 <ul>
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
-<li><span class="math inline">\(p\agivenb{s&#39;}{s}\)</span> is the <strong>state transition probability</strong><span class="math inline">\(^*\)</span>.</li>
+<li><span class="math inline">\(\pC{s&#39;}{s}\)</span> is the <strong>state transition probability</strong><span class="math inline">\(^*\)</span>.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1466,7 +1466,7 @@ Source: <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 
 <li class="fragment">It is <strong>memoryless</strong>:
 <ul class="incremental">
 <li class="fragment">the next state only depends on the current state,</li>
-<li class="fragment">but it is <em>independent of past states</em>: <span class="math display">\[p\agivenb{s_{t+1}}{s_t,s_{t-1},\ldots,s_0} = p\agivenb{s_{t+1}}{s_t}.\]</span> <!-- - In continuous time: **Markov process** (though this leads to inconsistencies with Markov decision/reard ``processes'') --></li>
+<li class="fragment">but it is <em>independent of past states</em>: <span class="math display">\[\pC{s_{t+1}}{s_t,s_{t-1},\ldots,s_0} = \pC{s_{t+1}}{s_t}.\]</span> <!-- - In continuous time: **Markov process** (though this leads to inconsistencies with Markov decision/reard ``processes'') --></li>
 </ul></li>
 </ul>
 </div>
@@ -1916,7 +1916,7 @@ Source: <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 
 </div>
 </div>
 <div class="footer">
-<p><span class="math inline">\(^*\)</span> <span class="math inline">\(p\agivenb{s&#39;}{s}\)</span> meaning <span class="math inline">\(p\agivenb{S_{t+1}=s&#39;}{S_t=s}\)</span> in extended notation.</p>
+<p><span class="math inline">\(^*\)</span> <span class="math inline">\(\pC{s&#39;}{s}\)</span> meaning <span class="math inline">\(\pC{S_{t+1}=s&#39;}{S_t=s}\)</span> in extended notation.</p>
 </div>
 </div>
 </div>
@@ -3085,8 +3085,8 @@ Source: <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 
 <p>A <strong>finite Markov reward process</strong> (<strong>MRP</strong>) is a tuple <span class="math inline">\((\Sc, p, \textcolor{red}{r}, \textcolor{red}{\gamma})\)</span>, where</p>
 <ul>
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
-<li><span class="math inline">\(p\agivenb{s&#39;}{s}\)</span> is the state <strong>transition probability</strong>,</li>
-<li><span style="color: red;"><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(r_{t} \sim p\agivenb{r}{s_t}\)</span>),</span></li>
+<li><span class="math inline">\(\pC{s&#39;}{s}\)</span> is the state <strong>transition probability</strong>,</li>
+<li><span style="color: red;"><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(r_{t} \sim \pC{r}{s_t}\)</span>),</span></li>
 <li><span style="color: red;"><span class="math inline">\(\gamma\in[0,1]\)</span> is a <strong>discount factor</strong>.</span></li>
 </ul>
 </div>
@@ -3251,10 +3251,10 @@ V(s_t) = &amp; \,\ExpC{g_t }{s_t} \\
 = &amp;\, \ExpC{r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \dots }{s_t} \\
 = &amp;\, \ExpC{r_t + \gamma ( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
 = &amp;\, \ExpC{r_t}{s_t} + \gamma \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
-\overset{\text{Law of total expectation}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot p\agivenb{s_{t+1}}{s_t} \\
-\overset{\text{Markov property}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
-= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
-= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot p\agivenb{s_{t+1}}{s_t} \\
+\overset{\text{Law of total expectation}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot \pC{s_{t+1}}{s_t} \\
+\overset{\text{Markov property}}{=} &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot \pC{s_{t+1}}{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot \pC{s_{t+1}}{s_t} \\
+= &amp;\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot \pC{s_{t+1}}{s_t} \\
 = &amp;\, \ExpC{r_t}{s_t} + \gamma \ExpC{V(s_{t+1}) }{s_t} \\[0.5em]
 \big( = &amp;\, \ExpC{r_t}{s_t} + \gamma \mathbb{E}_{s_{t+1} \sim p(\cdot \mid s_t)}[V(s_{t+1})] \big)
 \end{align*}
@@ -5002,7 +5002,7 @@ V_\Sc &amp;= \hat r_\Sc + \gamma P V_\Sc \\
 <li><span class="math inline">\(\Sc\)</span> is a finite set of discrete-time <strong>states</strong> <span class="math inline">\(s_t\in\Sc\)</span>,</li>
 <li><span style="color: red;"><span class="math inline">\(\Ac\)</span> is a finite set of discrete-time <strong>actions</strong> <span class="math inline">\(a_t\in\Ac\)</span></span>,</li>
 <li><span class="math inline">\(\textcolor{red}{\psprimesa}\)</span> is the <strong>state transition probability</strong>,</li>
-<li><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(\textcolor{red}{r_{t} \sim p\agivenb{r}{s_t,a_t}}\)</span>),</li>
+<li><span class="math inline">\(r\)</span> is a <strong>reward function</strong> (a random variable with realization <span class="math inline">\(\textcolor{red}{r_{t} \sim \pC{r}{s_t,a_t}}\)</span>),</li>
 <li><span class="math inline">\(\gamma\in[0,1]\)</span> is a <strong>discount factor</strong>.</li>
 </ul>
 </div>
@@ -5056,7 +5056,7 @@ V_\Sc &amp;= \hat r_\Sc + \gamma P V_\Sc \\
 <div class="area">
 <div class="box block">
 <div class="definition">
-<p>In an MDP environment, a <strong>policy</strong> is a distribution over actions given states: <span class="math display">\[ \pi\agivenb{a_t}{s_t} = p\agivenb{a_t}{s_t}.^* \]</span></p>
+<p>In an MDP environment, a <strong>policy</strong> is a distribution over actions given states: <span class="math display">\[ \policy{a_t}{s_t} = \pC{a_t}{s_t}.^* \]</span></p>
 </div>
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="incremental">
@@ -5077,7 +5077,7 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 </div>
 </div>
 <div class="footer">
-<p><span class="math inline">\(^*\)</span> In extended notation: <span class="math inline">\(p\agivenb{A_t=a_t}{S_t=s_t}\)</span>.</p>
+<p><span class="math inline">\(^*\)</span> In extended notation: <span class="math inline">\(\pC{A_t=a_t}{S_t=s_t}\)</span>.</p>
 </div>
 </div>
 </div>
@@ -5096,7 +5096,7 @@ What’s your policy in chess? [<a href="https://commons.wikimedia.org/wiki/File
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">The state sequence <span class="math inline">\(s_t, s_{t+1}, \ldots\)</span> is a <em>Markov chain</em> <span class="math inline">\(\left(\Sc, p^\pi\right)\)</span> since the state transition probability only depends on the state: <span class="math display">\[ p^\pi\agivenb{s&#39;}{s} = \sum_{a\in\Ac} \pias \psprimesa \]</span></li>
-<li class="fragment">Consequently, the sequence <span class="math inline">\((s_t,r_t),(s_{t+1},r_{t+1}),\ldots\)</span> of states and rewards is a <em>Markov reward process</em> <span class="math inline">\(\left(\Sc, p^\pi, r^\pi, \gamma\right)\)</span>: <span class="math display">\[ r^\pi = \sum_{a\in\Ac} \pias p\agivenb{r}{s,a} \]</span></li>
+<li class="fragment">Consequently, the sequence <span class="math inline">\((s_t,r_t),(s_{t+1},r_{t+1}),\ldots\)</span> of states and rewards is a <em>Markov reward process</em> <span class="math inline">\(\left(\Sc, p^\pi, r^\pi, \gamma\right)\)</span>: <span class="math display">\[ r^\pi = \sum_{a\in\Ac} \pias \pC{r}{s,a} \]</span></li>
 </ul>
 </div>
 </div>
@@ -5154,7 +5154,7 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="box block">
 <p>Likewise, the action value of an MDP can be decomposed into a Bellman notation: <span class="math display">\[ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi}. \]</span></p>
 <div class="fragment">
-<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}\]</span></p>
+<p>In finite MDPs, the action value can be directly linked to the state value: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = \Exp{\pC{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}\]</span></p>
 </div>
 </div>
 </div>
@@ -5174,8 +5174,8 @@ Q^\pi(s,a) = \ExpCsub{g_t}{s_t=s, a_t=a}{\pi} = \ExpCsub{\sum_{k=0}^{\infty}\gam
 <div class="fragment">
 <p>Applied to the given environment behavior <span class="math-incremental"><span class="math display">\[
 \begin{align*}
-p\agivenb{s&#39;}{s,a=\text{cut}} &amp;= \begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}, &amp; \quad 
-p\agivenb{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp; 0 &amp; \alpha \\ 0 &amp; 0 &amp; 1-\alpha &amp; \alpha \\ 0 &amp; 0 &amp; 1-\alpha &amp; \alpha \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \\
+\pC{s&#39;}{s,a=\text{cut}} &amp;= \begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix}, &amp; \quad 
+\pC{s&#39;}{s,a=\text{wait}} &amp;= \begin{bmatrix} 0 &amp; 1-\alpha &amp; 0 &amp; \alpha \\ 0 &amp; 0 &amp; 1-\alpha &amp; \alpha \\ 0 &amp; 0 &amp; 1-\alpha &amp; \alpha \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \\
 \hat r^{a=\text{cut}}&amp;=\begin{bmatrix} 1 &amp; 2 &amp; 3 &amp; 0 \end{bmatrix}^\top, &amp; \qquad \hat r^{a=\text{wait}}&amp;=\begin{bmatrix} 0 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix}^\top,
 \end{align*}
 \]</span></span></p>
@@ -5324,7 +5324,7 @@ V^*(s_t) &amp;= \max_a Q^{\pi^*}(s_t,a) \\
 \end{align*}
 \]</span></span></li>
 <li class="fragment">for a finite MDP: <span class="math display">\[
-V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t,a} V^*(s_{t+1}).
 \]</span></li>
 </ul>
 </div>

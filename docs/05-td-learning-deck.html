@@ -452,7 +452,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 </div>
 </div>
 </section>
-<section id="convergence-of-td0" class="slide level1">
+<section id="convergence-of-td0" class="slide level1" menu-title="Convergence of TD(0)">
 <div class="decker">
 <div class="alignment">
 <h1>Convergence of TD(<span class="math inline">\(0\)</span>)</h1>
@@ -554,7 +554,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 </ul>
 </div>
 </div>
-<p><span class="fragment" data-fragment-index="1"><span class="media"><span class="figure embed svg embedded" style="height:auto;width:200;"><span aria-label="MC vs. TD estimate" style="height:auto;width:100%;"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<p><span class="fragment" data-fragment-index="1"><span class="media"><span class="figure embed svg embedded" style="height:auto;width:200;"><span aria-label="MC vs. TD estimate." style="height:auto;width:100%;"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
@@ -612,7 +612,7 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
          id="image1-8"
          x="226.06642"
          y="24.294132" /></g></g></svg>
-</span><span class="figcaption"><span>MC vs. TD estimate</span></span></span></span></span></p>
+</span><span class="figcaption"><span>MC vs. TD estimate.</span></span></span></span></span></p>
 </div>
 </div>
 </div>
@@ -687,9 +687,9 @@ V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(
 <div class="fragment">
 <div class="media">
 <figure class="image" style="height:auto;width:150;">
-<img src="images/05-td-learning/Example-AB.svg" style="height:auto;width:100%;" aria-label="Option 2. for modeling the MDP (Sutton and Barto 1998, Ex. 6.4)" alt="images/05-td-learning/Example-AB.svg" />
+<img src="images/05-td-learning/Example-AB.svg" style="height:auto;width:100%;" aria-label="Option 2. for modeling the MDP (Sutton and Barto 1998, Ex. 6.4)." alt="images/05-td-learning/Example-AB.svg" />
 <figcaption>
-Option 2. for modeling the MDP <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ex. 6.4)</span>
+Option 2. for modeling the MDP <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Ex. 6.4)</span>.
 </figcaption>
 </figure>
 </div>
@@ -975,7 +975,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 </div>
 <div class="platzhalter">
 <ul>
-<li>Fixed policy: <span class="math display">\[\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.\]</span></li>
+<li>Fixed policy: <span class="math display">\[\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.\]</span></li>
 <li>Discount: <span class="math inline">\(\gamma = 0.9\)</span>.</li>
 </ul>
 <p><br />
@@ -1098,7 +1098,7 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 </div>
 </div>
 </section>
-<section id="off-policy-td-control-q-learning" class="slide level1">
+<section id="off-policy-td-control-q-learning" class="slide level1" menu-title="Off-policy TD control: Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>Off-policy TD control: <span class="math inline">\(Q\)</span>-learning</h1>
@@ -1311,7 +1311,7 @@ Off-policy: Q-learning
 <p>Let’s take the expectation of Q <span class="math inline">\(\rightarrow\)</span> <strong>expected SARSA</strong>: <span class="math display">\[
 \begin{align*}
 Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
-&amp;= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
+&amp;= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \policy{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
 \end{align*}
 \]</span></p>
 </div>
@@ -1334,7 +1334,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 </div>
 </div>
 </section>
-<section id="double-q-learning" class="slide level1">
+<section id="double-q-learning" class="slide level1" menu-title="Double Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>Double <span class="math inline">\(Q\)</span>-learning</h1>
@@ -1383,7 +1383,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 </div>
 </div>
 </section>
-<section id="double-q-learning-approach" class="slide level1">
+<section id="double-q-learning-approach" class="slide level1" menu-title="Double Q-learning approach">
 <div class="decker">
 <div class="alignment">
 <h1>Double <span class="math inline">\(Q\)</span>-learning approach</h1>
@@ -1413,7 +1413,7 @@ Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\E
 </div>
 </div>
 </section>
-<section id="double-q-learning-algorithm" class="slide level1">
+<section id="double-q-learning-algorithm" class="slide level1" menu-title="Double Q-learning algorithm">
 <div class="decker">
 <div class="alignment">
 <h1>Double <span class="math inline">\(Q\)</span>-learning algorithm</h1>
@@ -1465,7 +1465,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 </div>
 </div>
 </section>
-<section id="n-step-td-learning" class="slide level1">
+<section id="n-step-td-learning" class="slide level1" menu-title="n-step TD learning">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step TD learning</h1>
@@ -1501,7 +1501,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 </div>
 </div>
 </section>
-<section id="n-step-bootstrapping-idea" class="slide level1">
+<section id="n-step-bootstrapping-idea" class="slide level1" menu-title="n-step bootstrapping idea">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step bootstrapping idea</h1>
@@ -3254,7 +3254,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 </div>
 </div>
 </section>
-<section id="n-step-td-prediction-algorithmic-implementation" class="slide level1">
+<section id="n-step-td-prediction-algorithmic-implementation" class="slide level1" menu-title="n-step TD prediction: Algorithmic implementation">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step TD prediction: Algorithmic implementation</h1>
@@ -3271,7 +3271,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(T \leftarrow \infty\)</span>, <span class="math inline">\(\tau \leftarrow 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t=1,2,3,\ldots\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(t&lt;T\)</span> <strong>then</strong><br />
-<span class="math inline">\(\quad\quad\quad\)</span> take action <span class="math inline">\(a_t \sim \pi\agivenb{\cdot}{s_t}\)</span>, observe and store <span class="math inline">\(s_{t+1}\)</span> and <span class="math inline">\(r_{t+1}\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> take action <span class="math inline">\(a_t \sim \policy{\cdot}{s_t}\)</span>, observe and store <span class="math inline">\(s_{t+1}\)</span> and <span class="math inline">\(r_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\terminal\)</span> <strong>then</strong> <span class="math inline">\(T \leftarrow k + 1\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\tau\leftarrow t-n-1\)</span> (<span class="math inline">\(\tau\)</span> is the time index for the estimate update)<br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\tau\geq 0\)</span> <strong>then</strong><br />
@@ -3327,14 +3327,14 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 </div>
 </div>
 </section>
-<section id="n-step-td-control" class="slide level1">
+<section id="n-step-td-control" class="slide level1" menu-title="n-step TD control">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step TD control</h1>
 </div>
 </div>
 </section>
-<section id="transfer-the-n-step-approach-to-state-action-values-1" class="slide level1">
+<section id="transfer-the-n-step-approach-to-state-action-values-1" class="slide level1" menu-title="Transfer the n-step approach to state-action values (1)">
 <div class="decker">
 <div class="alignment">
 <h1>Transfer the <span class="math inline">\(n\)</span>-step approach to state-action values (1)</h1>
@@ -3351,7 +3351,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 <div class="fragment">
 <div id="definition-n-step-state-action-value-prediction-target." class="definition">
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
-<p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
+<p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\policy{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
 \begin{equation} 
 g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
@@ -3363,7 +3363,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>For <span class="math inline">\(n\)</span>-step expected SARSA, the update is similar but we’re considering the expected value at <span class="math inline">\(t+n\)</span>: <span class="math display">\[ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -3380,7 +3380,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 </div>
 </div>
 </section>
-<section id="transfer-the-n-step-approach-to-state-action-values-2" class="slide level1">
+<section id="transfer-the-n-step-approach-to-state-action-values-2" class="slide level1" menu-title="Transfer the n-step approach to state-action values (2)">
 <div class="decker">
 <div class="alignment">
 <h1>Transfer the <span class="math inline">\(n\)</span>-step approach to state-action values (2)</h1>
@@ -3398,7 +3398,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 <div id="remark-off-policy-n-step-sarsa." class="definition">
 <h3>Remark: Off-policy <span class="math inline">\(n\)</span>-step SARSA.</h3>
 <p>For the off-policy version of <span class="math inline">\(n\)</span>-step SARSA, we need to adapt the importance sampling weights we have seen in MC off-policy control to the <span class="math inline">\(n\)</span>-step case, i.e., for various prediction lengths <span class="math inline">\(h\in\{t+1,\ldots,t+n-1\}\)</span>: <span class="math display">\[
-\rho_{t:h} = \prod_{k=t}^{\min(t+h, T)}\frac{\pi\agivenb{a_k}{s_k}}{b\agivenb{a_k}{s_k}}.
+\rho_{t:h} = \prod_{k=t}^{\min(t+h, T)}\frac{\policy{a_k}{s_k}}{b\agivenb{a_k}{s_k}}.
 \]</span> For more details, see <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Chapter 7.3)</span>.</p>
 </div>
 </div>
@@ -3409,7 +3409,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 </div>
 </div>
 </section>
-<section id="n-step-bootstrapping-for-state-action-values" class="slide level1">
+<section id="n-step-bootstrapping-for-state-action-values" class="slide level1" menu-title="n-step bootstrapping for state-action values">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(n\)</span>-step bootstrapping for state-action values</h1>
@@ -5696,7 +5696,7 @@ Executed updates (highlighted by arrows) for one-step and ten-step SARSA impleme
 </div>
 </div>
 </section>
-<section id="tdlambda" class="slide level1">
+<section id="tdlambda" class="slide level1" menu-title="TD(λ)">
 <div class="decker">
 <div class="alignment">
 <h1>TD(<span class="math inline">\(\lambda\)</span>)</h1>
@@ -5735,7 +5735,7 @@ Exemplary averaging of one- and three-step returns. <span class="citation">(<a h
 </div>
 </div>
 </section>
-<section id="lambda-return-1" class="slide level1">
+<section id="lambda-return-1" class="slide level1" menu-title="λ-return (1)">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(\lambda\)</span>-return (1)</h1>
@@ -5767,7 +5767,7 @@ g_t^\lambda = (1-\lambda) \sum_{k=1}^\infty \lambda^{(k-1)} g_{t:t+n}. \label{eq
 </div>
 </div>
 </section>
-<section id="lambda-return-2" class="slide level1">
+<section id="lambda-return-2" class="slide level1" menu-title="λ-return (2)">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(\lambda\)</span>-return (2)</h1>
@@ -5807,7 +5807,7 @@ Weighting given in the λ-return to each of the n-step returns. <span class="cit
 </div>
 </div>
 </section>
-<section id="truncated-lambda-returns-for-continuing-tasks" class="slide level1">
+<section id="truncated-lambda-returns-for-continuing-tasks" class="slide level1" menu-title="Truncated λ-returns for continuing tasks">
 <div class="decker">
 <div class="alignment">
 <h1>Truncated <span class="math inline">\(\lambda\)</span>-returns for continuing tasks</h1>
@@ -5829,7 +5829,7 @@ Weighting given in the λ-return to each of the n-step returns. <span class="cit
 </div>
 </div>
 </section>
-<section id="forward-view-of-tdlambda" class="slide level1">
+<section id="forward-view-of-tdlambda" class="slide level1" menu-title="Forward view of TD(λ)">
 <div class="decker">
 <div class="alignment">
 <h1>Forward view of TD(<span class="math inline">\(\lambda\)</span>)</h1>
@@ -5846,9 +5846,9 @@ Weighting given in the λ-return to each of the n-step returns. <span class="cit
 <div class="fragment">
 <div class="media">
 <figure class="image" style="height:auto;width:800px;">
-<img src="images/05-td-learning/TDLambda-Forward-View.svg" style="height:auto;width:100%;" aria-label="The forward view. We decide how to update each state by looking forward to future rewards and states. (Sutton and Barto 1998, Figure 12.4)" alt="images/05-td-learning/TDLambda-Forward-View.svg" />
+<img src="images/05-td-learning/TDLambda-Forward-View.svg" style="height:auto;width:100%;" aria-label="The forward view. We decide how to update each state by looking forward to future rewards and states. (Sutton and Barto 1998, Figure 12.4)." alt="images/05-td-learning/TDLambda-Forward-View.svg" />
 <figcaption>
-The forward view. We decide how to update each state by looking forward to future rewards and states. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.4)</span>
+The forward view. We decide how to update each state by looking forward to future rewards and states. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.4)</span>.
 </figcaption>
 </figure>
 </div>
@@ -5859,7 +5859,7 @@ The forward view. We decide how to update each state by looking forward to futur
 </div>
 </div>
 </section>
-<section id="backward-view-of-tdlambda" class="slide level1">
+<section id="backward-view-of-tdlambda" class="slide level1" menu-title="Backward view of TD(λ)">
 <div class="decker">
 <div class="alignment">
 <h1>Backward view of TD(<span class="math inline">\(\lambda\)</span>)</h1>
@@ -5882,9 +5882,9 @@ The forward view. We decide how to update each state by looking forward to futur
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="media">
 <figure class="image" style="height:auto;width:450px;">
-<img src="images/05-td-learning/TDLambda-Backward-View.svg" style="height:auto;width:100%;" aria-label="Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. (Sutton and Barto 1998, Figure 12.5)" alt="images/05-td-learning/TDLambda-Backward-View.svg" />
+<img src="images/05-td-learning/TDLambda-Backward-View.svg" style="height:auto;width:100%;" aria-label="Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. (Sutton and Barto 1998, Figure 12.5)." alt="images/05-td-learning/TDLambda-Backward-View.svg" />
 <figcaption>
-Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.5)</span>
+Backward view of TD(λ). Updates depend on the current TD error combined with the current eligibility traces of past events. <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>, Figure 12.5)</span>.
 </figcaption>
 </figure>
 </div>
@@ -5895,9 +5895,9 @@ Backward view of TD(λ). Updates depend on the current TD error combined with th
 </p>
 <div class="media">
 <figure class="image" style="height:auto;width:650;">
-<img src="images/05-td-learning/Eligibility-Trace-State-Visits.svg" style="height:auto;width:100%;" aria-label="Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP (Abdelwanis et al. 2026)" alt="images/05-td-learning/Eligibility-Trace-State-Visits.svg" />
+<img src="images/05-td-learning/Eligibility-Trace-State-Visits.svg" style="height:auto;width:100%;" aria-label="Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP (Abdelwanis et al. 2026)." alt="images/05-td-learning/Eligibility-Trace-State-Visits.svg" />
 <figcaption>
-Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 2026</a>)</span>
+Simplified representation of updating an eligibility trace of an arbitrary state in a finite MDP <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et al. 2026</a>)</span>.
 </figcaption>
 </figure>
 </div>

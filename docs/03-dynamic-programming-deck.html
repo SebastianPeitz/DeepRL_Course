@@ -358,14 +358,14 @@ V^\pi(s_t) &amp;=&amp; \ExpCsub{g_t}{s_t}{\pi} = \ExpC{r_{t}}{s_t} + \gamma\ExpC
 <p>From this, we derived the <em>Bellman optimality equation</em> <span class="citation">(<a href="#ref-Bellman1954">Bellman 1954</a>)</span>: <span class="math display">\[
 \begin{align}
 V^*(s) &amp;= \max_{a\in\Ac} \ExpC{r_{t}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
+ &amp;= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 \]</span></p>
 <div class="fragment">
 <p>Similarly, we can derive an optimal Q-function: <span class="math display">\[
 \begin{align}
 Q^*(s,a) &amp;= \ExpC{r_{t}+\gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;)}{s_t = s, a_t = a} \notag \\
- &amp;= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:DP_BellmanQstar}
+ &amp;= \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a&#39;\in\Ac} Q^*(s_{t+1}, a&#39;) \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 \]</span></p>
 </div>
@@ -963,7 +963,7 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <p><span class="fragment" data-fragment-index="1"><span class="math inline">\(\bullet\)</span> <strong>Initial state <span class="math inline">\(s_0\)</span></strong>: a random valid field.</span><br />
 <span class="fragment" data-fragment-index="2"><span class="math inline">\(\bullet\)</span> <strong>Goal</strong>: reach the battery (<span class="math inline">\(r=1\)</span>, otherwise <span class="math inline">\(r=0\)</span>).</span><br />
 <span class="fragment" data-fragment-index="3"><span class="math inline">\(\bullet\)</span> <span class="math inline">\(\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}\)</span> (<em>leaving</em> or <em>invalid field</em> <span class="math inline">\(\Rightarrow\)</span> no movement).</span><br />
-<span class="fragment"><span class="math inline">\(\bullet\)</span> <span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\bullet\)</span> <span class="math inline">\(\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</span><br />
 <span class="fragment"><span class="math inline">\(\bullet\)</span> <strong>Discount factor</strong>: <span class="math inline">\(\gamma = 0.8\)</span>.</span></p>
 </div>
 <div class="media">

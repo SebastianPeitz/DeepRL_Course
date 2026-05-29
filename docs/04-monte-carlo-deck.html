@@ -310,7 +310,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </div>
 </div>
 </section>
-<section id="example-estimating-the-value-for-pi" class="slide level1">
+<section id="example-estimating-the-value-for-pi" class="slide level1" menu-title="Example: Estimating the value for π">
 <div class="decker">
 <div class="alignment">
 <h1>Example: Estimating the value for <span class="math inline">\(\pi\)</span></h1>
@@ -560,7 +560,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 </div>
 </div>
 </section>
-<section id="example-gridworld-same-as-in-the-dp-lecture" class="slide level1">
+<section id="example-gridworld-same-as-in-the-dp-lecture" class="slide level1" menu-title="Example: Gridworld">
 <div class="decker">
 <div class="alignment">
 <h1>Example: Gridworld (same as in the DP lecture)</h1>
@@ -575,7 +575,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <li>Initial state <span class="math inline">\(s_0\)</span>: a random valid field.</li>
 <li>Goal: reach the battery (<span class="math inline">\(r=1\)</span>, otherwise <span class="math inline">\(r=0\)</span>).</li>
 <li><span class="math inline">\(\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}\)</span> (<em>leaving</em> or <em>invalid field</em> <span class="math inline">\(\Rightarrow\)</span> no movement).</li>
-<li><span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</li>
+<li><span class="math inline">\(\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</li>
 <li>Discount: <span class="math inline">\(\gamma = 0.8\)</span>.</li>
 </ul>
 </div>
@@ -623,7 +623,7 @@ DP: In-place iterative policy evaluation
 <div class="layout">
 <div class="area">
 <div class="box block">
-<p>Now: Every-visit MC prediction of <span class="math inline">\(V^\pi\)</span>, for <span class="math inline">\(\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</p>
+<p>Now: Every-visit MC prediction of <span class="math inline">\(V^\pi\)</span>, for <span class="math inline">\(\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc\)</span>.</p>
 <div class="media">
 <figure class="video" style="height:auto;width:auto;">
 <video aria-label="Every-visit MC prediction" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:400px;width:auto;" data-src="videos/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4">
@@ -1913,7 +1913,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 </div>
 </div>
 </section>
-<section id="epsilon-greedy-as-an-on-policy-alternative-1" class="slide level1">
+<section id="epsilon-greedy-as-an-on-policy-alternative-1" class="slide level1" menu-title="ε-greedy as an on-policy alternative (1)">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(\epsilon\)</span>-greedy as an on-policy alternative (1)</h1>
@@ -1950,7 +1950,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 </div>
 </div>
 </section>
-<section id="epsilon-greedy-as-an-on-policy-alternative-2" class="slide level1">
+<section id="epsilon-greedy-as-an-on-policy-alternative-2" class="slide level1" menu-title="ε-greedy as an on-policy alternative (2)">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(\epsilon\)</span>-greedy as an on-policy alternative (2)</h1>
@@ -1977,7 +1977,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></span><br />
-<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, &amp; a = \tilde{a} \\ \epsilon/\abs{\Ac}, &amp; a \neq \tilde{a} \end{cases}\)</span></span></p>
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: red;"><span class="math inline">\(\policy{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, &amp; a = \tilde{a} \\ \epsilon/\abs{\Ac}, &amp; a \neq \tilde{a} \end{cases}\)</span></span></p>
 </div>
 </div>
 </div>
@@ -1986,7 +1986,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 </div>
 </div>
 </section>
-<section id="epsilon-greedy-policy-improvement" class="slide level1">
+<section id="epsilon-greedy-policy-improvement" class="slide level1" menu-title="ε-greedy policy improvement">
 <div class="decker">
 <div class="alignment">
 <h1><span class="math inline">\(\epsilon\)</span>-greedy policy improvement</h1>
@@ -2277,17 +2277,17 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <div class="small">
 <p>Given a starting state <span class="math inline">\(s_t\)</span>, the probability of the subsequent state–action trajectory <span class="math inline">\((a_t, s_{t+1},a_{t+1}, \ldots ,s_T)\)</span> under a policy <span class="math inline">\(\pi\)</span> is <span class="math-incremental"><span class="math display">\[
 \begin{align*}
-p\agivenb{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &amp;= \pi\agivenb{a_t}{s_t}p\agivenb{s_{t+1}}{s_t,a_t}\fragment{\pi\agivenb{a_{t+1}}{s_{t+1}}p\agivenb{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots p\agivenb{s_{T}}{s_{T-1},a_{T-1}}}\\
-&amp;= \prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}.
+\pC{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &amp;= \policy{a_t}{s_t}\pC{s_{t+1}}{s_t,a_t}\fragment{\policy{a_{t+1}}{s_{t+1}}\pC{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots \pC{s_{T}}{s_{T-1},a_{T-1}}}\\
+&amp;= \prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}.
 \end{align*}
 \]</span></span></p>
 <div class="fragment">
 <div id="importance-sampling-ratio" class="definition">
 <h3>Importance sampling ratio</h3>
 <p>The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step <span class="math inline">\(k\)</span> to <span class="math inline">\(T\)</span> is <span class="math display">\[
-\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
-\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}}
-\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
 \]</span></p>
 </div>
 </div>
@@ -2426,14 +2426,14 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}\)</span></p>
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}\)</span></p>
 </div>
 <div class="platzhalter">
 <p><span class="fragment"><strong>Variation</strong>: On-policy</span></p>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(b=\pi\)</span> .</li>
-<li class="fragment"><span class="math inline">\(\frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1\)</span>.</li>
 <li class="fragment"><span class="math inline">\(w=1\)</span>.</li>
 <li class="fragment"><span class="math inline">\(c(s,a)\)</span> becomves the counter for the number of visits (i.e., <span class="math inline">\(n(s,a)\)</span>).</li>
 </ul>

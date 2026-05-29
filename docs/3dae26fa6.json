@@ -3,10 +3,10 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "12.05.2026 20:42"
+        "29.05.2026 09:37"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
-    "chapter": "14",
+    "chapter": "12",
     "chart": {
         "colors": [
             "#f5871f",
@@ -582,6 +582,18 @@
                 "{\\mathrm{Im}\\!\\left( #1 \\right)}",
                 1.0
             ],
+            "KLdiv": [
+                "D_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivavg": [
+                "\\bar{D}_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivmax": [
+                "D_{\\mathsf{KL}}^{\\mathsf{max}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
             "N": "{\\mathbb{N}}",
             "Nc": "{\\mathcal{N}}",
             "Normal": [
@@ -591,6 +603,7 @@
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
             "Qpi": "{Q^\\pi}",
+            "Qpiphi": "{Q^{\\pi_\\phi}}",
             "Qstar": "{Q^*}",
             "R": "{\\mathbb{R}}",
             "Re": [
@@ -601,8 +614,12 @@
                 "{\\mathsf{STOP}}"
             ],
             "Sc": "{\\mathcal{S}}",
-            "Var": "{\\mathbb{E}}",
+            "Var": [
+                "{\\mathsf{var}\\left[ #1 \\right]}",
+                1.0
+            ],
             "Vpi": "{V^\\pi}",
+            "Vpiphi": "{V^{\\pi_\\phi}}",
             "Vstar": "{V^*}",
             "Xc": "{\\mathcal{X}}",
             "Yc": "{\\mathcal{Y}}",
@@ -633,6 +650,10 @@
                 "{\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}}",
                 2.0
             ],
+            "dint": [
+                "\\,\\mathrm{d}{#1}",
+                1.0
+            ],
             "ds": "{\\,\\mathrm{d}s}",
             "dt": "{\\,\\mathrm{d}t}",
             "dtau": "{\\,\\mathrm{d}\\tau}",
@@ -646,6 +667,7 @@
                 2.0
             ],
             "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
+            "nablaphiprime": "{\\nabla_{\\mkern-6mu \\phi\\prime \\mkern+2mu}}",
             "nablatheta": "{\\nabla_{\\mkern-6mu \\theta\\mkern+2mu}}",
             "ndiff": [
                 "{\\frac{\\mathrm{d}^{#3} #1}{\\mathrm{d} {#2}^{#3}}}",
@@ -656,7 +678,7 @@
                 1.0
             ],
             "pC": [
-                "{p\\left( #1  \\middle|#2 \\right)}",
+                "{p\\left( #1  \\middle| #2 \\right)}",
                 2.0
             ],
             "pdiff": [
@@ -664,15 +686,20 @@
                 2.0
             ],
             "pias": "{\\pi\\left( a  \\middle| s \\right)}",
+            "piphi": "{\\pi_\\phi}",
             "piprime": "{\\pi^{\\prime}}",
             "policy": [
-                "{\\pi\\left( #1  \\middle|#2 \\right)}",
+                "{\\pi\\left( #1  \\middle| #2 \\right)}",
                 2.0
             ],
             "psprimesa": "{p\\left( s^{\\prime} \\middle| s, a \\right)}",
             "pstplusstat": "{p\\left( s_{t+1} \\middle| s_t, a_t \\right)}",
             "rbracket": [
                 "{\\left[ #1 \\right]}",
+                1.0
+            ],
+            "rcancel": [
+                "{\\textcolor{red}{\\cancel{#1}}}",
                 1.0
             ],
             "rt": [
@@ -695,6 +722,14 @@
             ],
             "submin": [
                 "{{#1}_{\\mathsf{min}}}",
+                1.0
+            ],
+            "subnew": [
+                "{{#1}_{\\mathsf{new}}}",
+                1.0
+            ],
+            "subold": [
+                "{{#1}_{\\mathsf{old}}}",
                 1.0
             ],
             "target": [

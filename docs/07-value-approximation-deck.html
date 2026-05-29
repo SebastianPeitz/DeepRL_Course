@@ -260,7 +260,12 @@ approximation</title>
 </tr>
 <tr>
 <td align="center">11</td>
-<td align="left">Advanced algorithms</td>
+<td align="left">Advanced algorithms (Part I): From policy gradient to PPO</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -574,7 +579,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <h3>Bootstrapped estimates of <span class="math inline">\(V^\pi(s_t)\)</span></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The Dynamic Programming target <span class="math display">\[V_\theta(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s&#39;\in\Sc} p\agivenb{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
+<li class="fragment">The Dynamic Programming target <span class="math display">\[V_\theta(s_t) \gets \sum_{a\in\Ac} \policy{a}{s_t} \sum_{s&#39;\in\Sc} \pC{s&#39;}{s_t, a} \left[ r + \gamma V_\theta(s&#39;) \right].\]</span></li>
 <li class="fragment">TD targets (e.g., TD(<span class="math inline">\(0\)</span>)) <span class="math display">\[ V_\theta(s_t) \gets V_\theta(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].\]</span></li>
 </ul>
 </div>
@@ -669,7 +674,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 </div>
 </div>
 </section>
-<section id="algorithm-semi-gradient-td0-value-estimation" class="slide level1">
+<section id="algorithm-semi-gradient-td0-value-estimation" class="slide level1" menu-title="Algorithm: Semi-gradient TD(0) value estimation">
 <div class="decker">
 <div class="alignment">
 <h1>Algorithm: Semi-gradient TD(<span class="math inline">\(0\)</span>) value estimation</h1>
@@ -691,7 +696,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> Apply action <span class="math inline">\(a_t\sim \pi\agivenb{\cdot}{s_t}\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Apply action <span class="math inline">\(a_t\sim \policy{\cdot}{s_t}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t)\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\mathsf{terminal}\)</span> <strong>then</strong> <span class="math inline">\(\STOP\)</span></p>

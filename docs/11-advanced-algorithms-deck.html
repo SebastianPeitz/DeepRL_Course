@@ -186,8 +186,20 @@
 <div class="area">
 <div class="box block">
 <ul>
-<li>TRPO / PPO</li>
-<li>DDPG / TD3 / SAC</li>
+<li>The evolution of modern RL algorithms</li>
+<li>Approach (I): Improving policy gradient methods
+<ul>
+<li>Natural PG</li>
+<li>TRPO</li>
+<li>PPO</li>
+</ul></li>
+<li>Approach (II): Improving <span class="math inline">\(Q\)</span>-learning
+<ul>
+<li>Deterministic Policy Gradient</li>
+<li>DDPG</li>
+<li>TD3</li>
+<li>Soft Actor-Critic</li>
+</ul></li>
 <li>Dueling DQN?</li>
 </ul>
 </div>
@@ -256,8 +268,13 @@
 </tr>
 <tr>
 <td align="center"><span style="color: red;">11</span></td>
-<td align="left"><span style="color: red;">Advanced algorithms</span></td>
-<td align="left"></td>
+<td align="left"><span style="color: red;">Advanced algorithms (Part I): From policy gradient to PPO</span></td>
+<td align="left"><span style="color: red;">The evolution of modern RL algorithms</span></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
+<td align="left">The evolution of moderl RL algorithms</td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -278,10 +295,99 @@
 </div>
 </div>
 </section>
-<section id="natural-covariant-policy-gradients-trpo" class="slide level1">
+<section id="the-evolution-of-modern-rl-algorithms" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Natural / covariant policy gradients (TRPO)</h1>
+<h1>The evolution of modern RL algorithms</h1>
+</div>
+</div>
+</section>
+<section id="the-evolution-of-modern-rl-algorithms-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The evolution of modern RL algorithms</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<!-- We have covered most of the foundations of RL methods. [Let's look at the **two main branches** we have seen so far.]{.fragment} -->
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div id="i-policy-gradient-methods" class="platzhalter">
+<h2>(I) Policy gradient methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
+<li class="fragment">Gradient descent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L(\phi)\)</span>.</li>
+<li class="fragment">Methods are typically <strong>on-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: REINFORCE <span class="math inline">\(\rightarrow\)</span> Actor-Critic <span class="math inline">\(\rightarrow\)</span> Natural Policy Gradient <span class="math inline">\(\rightarrow\)</span> Trust-region policy optimization (TRPO) <span class="math inline">\(\rightarrow\)</span> Proximal policy optimization (PPO).</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h2 id="ii-value-based-methods">(II) Value-based methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Approximation of the <span class="math inline">\(Q\)</span>-function:<br />
+<span class="math display">\[Q^*(s,a) = r + \max_{a&#39;\in\Ac}Q^*(s&#39;,a&#39;).\]</span></li>
+<li class="fragment">Extract implicit policy: <span class="math inline">\(\pi(s) = \arg\max_{a\in\Ac} Q^*(s,a)\)</span>.</li>
+<li class="fragment">Typically <strong>off-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: Q-learning <span class="math inline">\(\rightarrow\)</span> DQN <span class="math inline">\(\rightarrow\)</span> Deep deterministic policy gradient (DDPG) <span class="math inline">\(\rightarrow\)</span> TD3 <span class="math inline">\(\rightarrow\)</span> Soft actor-critic (SAC).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="shortcomings"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">High variance gradients.</span></li>
+<li class="fragment"><span style="color: red;">Unstable policy updates.</span></li>
+<li class="fragment"><span style="color: red;">Catastrophic performance collapse.</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h3 id="shortcomings-1"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">Instability from bootstrapping.</span></li>
+<li class="fragment"><span style="color: red;">Overestimation bias.</span></li>
+<li class="fragment"><span style="color: red;">Maximization over actions / continuous action spaces.</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="improvement-strategy"><span style="color: blue;">Improvement strategy</span></h3>
+<ul>
+<li><span style="color: blue;">How to safely update policies.</span></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="improvement-strategy-1"><span style="color: blue;">Improvement strategy</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: blue;">Stabilizing <span class="math inline">\(Q\)</span>-learning with function approximation.</span></li>
+<li class="fragment"><span style="color: blue;">Solving the continuous argmax problem.</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="approach-i-improving-policy-gradient-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Approach (I): Improving policy gradient methods</h1>
 </div>
 </div>
 </section>
@@ -297,7 +403,7 @@
 <div class="platzhalter">
 <div class="media">
 <figure class="embed svg embedded" style="height:auto;width:600px;">
-<div aria-label="Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;">
+<div aria-label="A simple exemplary MDP. Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;">
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
@@ -550,7 +656,7 @@
 
 </div>
 <figcaption>
-Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
+A simple exemplary MDP. Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
 </figcaption>
 </figure>
 </div>
@@ -592,6 +698,597 @@ Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Sc
 </div>
 </div>
 </section>
+<section id="constraining-the-ascent-direction" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Constraining the ascent direction</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 9fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall the policy gradient update: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">A natural idea: <strong>Constrain the length of our update step</strong>!
+<ul class="incremental">
+<li class="fragment">Linearization of our optimization problem around <span class="math inline">\(\phi\)</span> using <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a>: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi_i) + \Oc((\phi&#39; - \phi)^2) \\
+&amp;= L(\phi) + (\phi&#39; - \phi)^\top \nablaphi L(\phi).
+\end{align*}\]</span></span></li>
+<li class="fragment">Constrained optimization of <span class="math inline">\(\phi&#39;\)</span> along the steepest ascent direction: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon. } \]</span></li>
+</ul></li>
+<li class="fragment"><strong>But</strong>: We just saw that some parameters change probabilities <em>a lot more than others</em>!</li>
+</ul>
+</div>
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:350px;"><img src="images/11-advanced/Covariant-PG-vanilla.png" style="height:auto;width:100%;" aria-label="Source: (Peters and Schaal 2008)" alt="images/11-advanced/Covariant-PG-vanilla.png" /><span class="figcaption"><span>Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span></span></span></span></span></span></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Alternative</strong>: Rescale the gradient so that this does not happen!</li>
+<li class="fragment">A better way to constrain the update distance: The <strong>change in distribution</strong> via the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence"><strong>Kullback-Leibler (KL) divergence</strong></a>! <span class="math display">\[ \KLdiv{\pi_\phi}{\pi_\phi&#39;}. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-kl-divergence-and-fisher-information-matrix-1" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>Aside: KL-divergence and Fisher information matrix (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The <strong>Kullback-Leibler divergence</strong> (or <strong>KL divergence</strong>) measures the “distance” between two distributions (e.g., <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>) <span class="math display">\[ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} &amp; \text{if}~\Xc~\text{is finite} \\ \int{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx &amp; \text{if}~\Xc~\text{is continuous} \end{cases}. \]</span>
+<ul class="incremental">
+<li class="fragment">It is zero if and only if <span class="math inline">\(p(x) = q(x)\)</span>.</li>
+</ul></li>
+<li class="fragment"><strong>Intuition</strong>: Imagine you have two different maps of the exact same city.
+<ul class="incremental">
+<li class="fragment">Map A is completely accurate. Every street, etc., is exactly where it should be.</li>
+<li class="fragment">Map B was drawn from memory by a friend. It’s mostly right with some minor flaws.</li>
+<li class="fragment">If you use Map B to navigate the city, you are going to make some mistakes.</li>
+<li class="fragment">The KL divergence answers the question: “How much extra ‘gas’ (or information) will I waste if I use Map B instead of Map A?”</li>
+</ul></li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:450px;">
+<img src="images/11-advanced/KLdivergence-example.png" style="height:auto;width:100%;" aria-label="[Source]." alt="images/11-advanced/KLdivergence-example.png" />
+<figcaption>
+[<a href="https://medium.com/@yian.chen261/introduction-to-kullback-leibler-divergence-2d76979d1d8c">Source</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">KL Divergence measures the <em>surprise</em> or <em>unfair penalty</em> you get when you use <span class="math inline">\(q\)</span> to predict something that actually follows <span class="math inline">\(p\)</span>. If <span class="math inline">\(q\)</span> is a perfect match for <span class="math inline">\(p\)</span> (i.e., <span class="math inline">\(q=p\)</span>), your surprise is zero. The worse your guess (<span class="math inline">\(q\)</span>) is, the higher the KL divergence.</li>
+<li class="fragment"><strong>Question</strong>: What happens if our “model” <span class="math inline">\(q\)</span> is absolutely certain that something is <strong>not</strong> going to happen (<span class="math inline">\(q(x)=0\)</span> for some <span class="math inline">\(x\)</span>)?</li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> The KL divergence is not a real distance. For instance, it it not symmetric (i.e., <span class="math inline">\(\KLdiv{p}{q} \neq \KLdiv{q}{p}\)</span> in general), which means that it also does not satisfy the triangle inequality. Still, it gives us a measure of how far two distributions are apart.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-kl-divergence-and-fisher-information-matrix-2" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>Aside: KL-divergence and Fisher information matrix (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The <strong>Fisher information matrix</strong> (<strong>FIM</strong>) measures how much information an observable random variable <span class="math inline">\(x\)</span> carries about an unknown parameter <span class="math inline">\(\phi\)</span> (e.g., the weights of a neural network).</li>
+<li class="fragment">Mathematically, if we have a log-likelihood function <span class="math inline">\(\log p(x|\theta)\)</span>, the FIM (denoted as <span class="math inline">\(F\)</span>) is the variance of its gradient (the “<em>score</em>”): <span class="math display">\[F = \Exp{\cbracket{\nablaphi \log\, \pC{x}{\phi}} \cbracket{\nablaphi \log\, \pC{x}{\phi}}^\top}.\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="definition">
+<p><strong>In simpler terms</strong>: How do variations of <span class="math inline">\(\phi\)</span> influence the resulting probability distribution?</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">High Fisher Information: Small change in <span class="math inline">\(\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> large shift in the distribution.</li>
+<li class="fragment">Low Fisher Information: Change in <span class="math inline">\(\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> only small shift in the distribution.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<h3 id="relation-to-the-kl-divergence">Relation to the KL divergence</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Consider a very small change in <span class="math inline">\(\phi\)</span> by <span class="math inline">\(\delta\phi\)</span>, and study the KL divergence <span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \delta\phi}}\)</span>.</li>
+<li class="fragment">If we perform a Taylor series expansion of <span class="math inline">\(D_{\mathsf{KL}}\)</span> around <span class="math inline">\(\delta\phi=0\)</span>, then the first two terms are zero (<span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0\)</span> and since <span class="math inline">\(\delta\phi=0\)</span> is the minimum, the first derivative is zero as well).</li>
+<li class="fragment">The second order term is thus the leading term! <span class="math inline">\(\Rightarrow\)</span> for small <span class="math inline">\(\delta\phi\)</span>, we have <span class="math display">\[\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \delta\phi}} \approx \frac{1}{2} \delta\phi^\top F \delta\phi.\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-kl-divergence-and-fisher-information-matrix-3" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>Aside: KL-divergence and Fisher information matrix (3)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">When using the KL divergence or the Fisher information matrix in RL, we often do so in terms of different policies.</li>
+<li class="fragment">This means that we consider the difference in the <strong>action distribution</strong> <span class="math inline">\(\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}\)</span>.</li>
+<li class="fragment">However, this expression is incomplete or even misleading.</li>
+<li class="fragment">Instead, we consider either <span class="math display">\[ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi&#39;}\agivenb{a}{s}}}\dint{a}\]</span> for a fixed <span class="math inline">\(s\)</span>, <span class="fragment">or the expectation over the state space, i.e., <span class="math display">\[\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}}}{s \sim p_\phi}. \]</span></span></li>
+<li class="fragment">The relation between KL divergence and FIM for small changes can be derived analogously to the previous slide and reads <span class="math display">\[\Expsub{\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}}{s \sim p_\phi} \approx \frac{1}{2} \delta\phi^\top \big( \underbrace{\Expsub{F(s)}{s \sim p_\phi}}_{=F} \big) \delta\phi \fragment{ = \frac{1}{2} \delta\phi^\top F \delta\phi.}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="back-to-constrained-ascent-directions" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Back to constrained ascent directions</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall: constraining w.r.t. the parameter <span class="math inline">\(\phi\)</span> does not solve the issue of strongly different impacts of individual parameters: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad \]</span></li>
+<li class="fragment"><strong>Question</strong>: What is a good alternative to avoid too large (and thus, harmful) steps?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the KL divergence! <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi&#39;}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. \]</span></span>
+<ul class="incremental">
+<li class="fragment">Constraining the KL divergence means that we automatically treat different parameters differently!</li>
+<li class="fragment">If a change in on of the entries of <span class="math inline">\(\theta\)</span> results in large policy changes, then the constraint does not allow large changes in that entry.</li>
+</ul></li>
+<li class="fragment">Since we want to have small updates (constrained by <span class="math inline">\(\epsilon\)</span>): approximation via the Fisher information matrix, <span class="math display">\[\begin{align*} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad &amp;\text{subject to}\qquad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi), \\
+&amp;\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
+\end{align*} \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="natural-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Natural policy gradient</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: <span class="math display">\[\begin{equation} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi). \label{eq:Adv_Natural_PG} \end{equation}\]</span></li>
+<li class="fragment">What remains is the question of solving <span class="math inline">\(\eqref{eq:Adv_Natural_PG}\)</span>.</li>
+<li class="fragment">Without going into further details (e.g., <span class="citation">(<a href="#ref-Kakade2001npg">S. M. Kakade 2001</a>; <a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span>)<br />
+<span class="math inline">\(\Rightarrow\)</span> Solution: <strong>scale</strong> the policy gradient <strong>by the inverse Fisher information matrix</strong>, <span class="math display">\[\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi).\]</span></li>
+<li class="fragment"><strong>Intuition</strong> behind the inverse FIM <span class="math inline">\(F^{-1}\)</span>:
+<ul class="incremental">
+<li class="fragment">Parameters with a high impact have high Fisher information.</li>
+<li class="fragment">Scaling by the inverse “normalizes” the individual impacts.</li>
+</ul></li>
+<li class="fragment">This techinque is known as the <strong>natural policy gradient</strong> (also <strong>covariant policy gradient</strong>).
+<ul class="incremental">
+<li class="fragment">Preconditioning steps of this type are very common in optimization in general.</li>
+<li class="fragment">Drawback: <span class="math inline">\(F\in\R^{d \times d}\)</span> can be very expensive to calculate (and invert) for very large parameter vectors.</li>
+</ul></li>
+</ul>
+</div>
+<div class="platzhalter">
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:300px;"><img src="images/11-advanced/Covariant-PG-vanilla.png" style="height:auto;width:100%;" alt="images/11-advanced/Covariant-PG-vanilla.png" /></span></span></span></p>
+<p><br />
+</p>
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:300px;"><img src="images/11-advanced/Covariant-PG.png" style="height:auto;width:100%;" aria-label="Source: (Peters and Schaal 2008)" alt="images/11-advanced/Covariant-PG.png" /><span class="figcaption"><span>Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span></span></span></span></span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="limitations-of-the-natural-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Limitations of the natural policy gradient</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p><span class="math display">\[\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)\]</span><br />
+</p>
+<div class="grid-layout" style="grid-template-columns: 4fr 6fr;">
+<div class="fragment">
+<div id="the-step-size-alpha-is-hard-to-choose" style="background-color: AliceBlue;">
+<h2>1. The step size <span class="math inline">\(\alpha\)</span> is hard to choose!</h2>
+<ul>
+<li>Scaling doesn’t prevent the step from changing the policy too much.</li>
+<li>Large steps can collapse performance.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="no-explicit-control-of-policy-change." style="background-color: LightCoral;">
+<h2>2. No explicit control of policy change.</h2>
+<ul>
+<li>NPG does not explicitly constrain the distance between <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span>.</li>
+<li>Data for gradient estimation is sampled from <span class="math inline">\(\subold{\pi}\)</span>​​.</li>
+<li>If new policy differs too much, gradient estimate becomes unreliable.</li>
+</ul>
+</div>
+</div>
+</div>
+<p><br />
+</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<div id="inversion-of-the-fisher-matrix." style="background-color: DarkSeaGreen;">
+<h2>3. Inversion of the Fisher matrix.</h2>
+<ul>
+<li>NPG requires inversion of the Fisher Information Matrix.</li>
+<li>If our network has <span class="math inline">\(d\)</span> parameters, the FIM is a <span class="math inline">\(d \times d\)</span> matrix.</li>
+<li>For a modest deep learning network with 100,000 parameters, <span class="math inline">\(F\)</span> contains 10 billion elements.</li>
+<li>Storing this in memory and computing its exact inverse (<span class="math inline">\(\Oc(d^3)\)</span> complexity) <span class="math inline">\(\Rightarrow\)</span> computationally impossible.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="performance-guarantees-require-small-policy-changes." style="background-color: LemonChiffon;">
+<h2>4. Performance guarantees require small policy changes.</h2>
+<ul>
+<li>NPG does not provide a mathematical guarantee that <span class="math inline">\(\subnew{\pi}\)</span> will actually be better than (or at least as good as) <span class="math inline">\(\subold{\pi}\)</span>.</li>
+<li>Theory shows that small policy updates should improve performance <span class="citation">(<a href="#ref-Kakade2002approximately">S. Kakade and Langford 2002</a>)</span> …</li>
+<li>… but the basic NPG update does not enforce the required small change condition.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="performance-measures-of-policies" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Performance measures of policies</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Let’s introduce a new (and yet <em>already known</em> quantity): the <strong>performance measure</strong> of a policy, <span class="math display">\[ \eta(\pi) = \Expsub{\sum_{t=0}^{T-1}\gamma^t r_t}{\tau\sim \pi} = \Expsub{V^\pi(s_0)}{s_0 \sim p_0}. \]</span></li>
+<li class="fragment">Remember our reinforcement learning objective <span class="math display">\[ L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? \]</span></li>
+<li class="fragment">If we consider a policy parameterized by <span class="math inline">\(\phi\)</span>, i.e., <span class="math inline">\(\pi_\phi\)</span>, then the two equations are the same, <span class="math display">\[\eta(\pi_\phi) = L(\phi).\]</span></li>
+<li class="fragment">The difference is more in terms of the <em>motivation</em>, not the definition:
+<ul class="incremental">
+<li class="fragment">We use <span class="math inline">\(L(\phi)\)</span> in policy gradients, since we want to find ascent directions for the network paraemters.</li>
+<li class="fragment">We use <span class="math inline">\(\eta(\pi)\)</span> as a global quantity to establish mathematical lower-bounds so that an algorithm can compute a safe step size (the trust region).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Can we relate two policies <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span> using advantage functions?</li>
+<li class="fragment">Let’s use <span class="math inline">\(\gamma=1\)</span> for simplicity (but one can work this out with <span class="math inline">\(\gamma\)</span> as well).</li>
+<li class="fragment">Consider the advantage function under the old policy <span class="math inline">\(\subold{\pi}\)</span>, <span class="math display">\[ A_{\subold{\pi}}(s_t,a_t) = r_t + V^{\subold{\pi}}(s_{t+1}) - V^{\subold{\pi}}(s_{t}). \]</span></li>
+<li class="fragment">Now sample a trajectory under the new policy <span class="math inline">\(\subnew{\pi}\)</span> (i.e., <span class="math inline">\((s_0,a_0) \to \ldots \to (s_{T-1},a_{T-1})\)</span>) and calculate the advantages: <span class="math-incremental"><span class="math display">\[\begin{align*}
+A_{\subold{\pi}}(s_0,a_0) &amp;= r_0 + V^{\subold{\pi}}(s_{1}) - V^{\subold{\pi}}(s_{0}) \\
+A_{\subold{\pi}}(s_1,a_1) &amp;= r_1 + V^{\subold{\pi}}(s_{2}) - V^{\subold{\pi}}(s_{1}) \\
+&amp;~ ~ \vdots \\
+A_{\subold{\pi}}(s_{T-2},a_{T-2}) &amp;= r_{T-2} + V^{\subold{\pi}}(s_{T-1}) - V^{\subold{\pi}}(s_{T-2}) \\
+A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(s_{T})}_{=0 \text{ (terminal)}} - V^{\subold{\pi}}(s_{T-1})
+\end{align*}\]</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Take the sum: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &amp;= \underbrace{r_0 \textcolor{blue}{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \textcolor{blue}{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \textcolor{red}{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \textcolor{red}{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
+&amp;= r_0 + r_1 + \ldots + r_{T-2} + r_{T-1} - V^{\subold{\pi}}(s_{0}) \fragment{ = \cbracket{\sum_{t=0}^{T-1} r_t} - V^{\subold{\pi}}(s_{0}) .}
+\end{align*}\]</span></span></li>
+<li class="fragment">Shift around and take the expectation with respect to the new policy <span class="fragment">(in the case of <span class="math inline">\(V^{\subold{\pi}}\)</span>, this reduces to <span class="math inline">\(s_0 \sim p_0\)</span>):</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
+\Expsub{\cbracket{\sum_{t=0}^{T-1} r_t}}{s\sim \subnew{p}, a\sim\subnew{\pi}} = \Expsub{V^{\subold{\pi}}(s_{0})}{s_0 \sim p_0} + \Expsub{\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t)}{s\sim \subnew{p}, a\sim\subnew{\pi}}
+\end{align*}\]</span></span></li>
+</ul>
+</div>
+<!-- ::: columns-5-5 -->
+<div class="fragment">
+<div id="relation-between-the-performance-measures-including-the-discounted-case-gammaneq-1" class="definition">
+<h3>Relation between the performance measures (including the discounted case <span class="math inline">\(\gamma\neq 1\)</span>)</h3>
+<!-- $$\eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t)}{s\sim \subnew{p}, a\sim\subnew{\pi}}$$ -->
+<p><span class="math display">\[\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim \subnew{p}, a\sim\subnew{\pi}} \label{eq:Adv_performance_measures} \end{equation}\]</span></p>
+</div>
+</div>
+<!-- ::: fragment
+::: definition 
+### The discounted case $\gamma\neq 1$
+$$\eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim \subnew{p}, a\sim\subnew{\pi}}$$
+:::
+:::
+
+::: -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (3)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p><span class="math display">\[\eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim \subnew{p}, a\sim\subnew{\pi}}\]</span></p>
+<h3 id="whats-so-surprising-about-this-equation">What’s so surprising about this equation?</h3>
+<p>When you first see this equation, it feels like it shouldn’t be true. Why? Because the Advantage function is built entirely out of the old policy’s values, yet when we weight it by the new policy’s state distribution, it perfectly calculates the new policy’s total return.</p>
+<p>Every single intermediate value function completely vanishes, leaving behind only two things:</p>
+<ol style="list-style-type: decimal">
+<li>The sum of all the actual rewards gathered by the new policy (which equals <span class="math inline">\(\eta(\pi_{new})\)</span>).</li>
+<li>The very first value function at the start state (which equals <span class="math inline">\(\eta(\pi_{old})\)</span>).</li>
+</ol>
+<p>This identity is a double-edged sword, and understanding it explains why TRPO exists:</p>
+<p>The Good: It proves that if you can find a new policy whose actions have a positive expected advantage under the old policy, your policy will get better.</p>
+<p>The Bad: It is still a Catch-22. To compute the exact value, we must sample states from the new policy (<span class="math inline">\(s \sim \rho_{\pi_{new}}\)</span>).</p>
+<p>TRPO’s entire breakthrough was saying: “If <span class="math inline">\(\pi_{new}\)</span> is very close to <span class="math inline">\(\pi_{old}\)</span> (enforced by the KL-constraint), we can swap <span class="math inline">\(\rho_{\pi_{new}}\)</span> for <span class="math inline">\(\rho_{\pi_{old}}\)</span> and optimize an approximation safely without our math collapsing.”</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-derivation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO derivation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<ol style="list-style-type: decimal">
+<li>construct local approximation of <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span></li>
+<li>Quantify the approximation error <span class="citation">(<a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>)</span></li>
+<li>Also, show that the gradient of the surrogate loss is exactly the gradient of the original loss for <span class="math inline">\(\eta\)</span>. Also, the function values are the same (1st order approximation)</li>
+<li>Turn this into a practical problem by creating a constraint with hyperparameter <span class="math inline">\(\delta\)</span></li>
+<li>Importance sampling (ratio <span class="math inline">\(r\)</span>) for the expectation <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\hat L\)</span></li>
+<li>Show that the gradient of this loss function is exactly the standard policy gradient</li>
+<li>Solving a quadratic approximation of the problem <span class="math inline">\(\Rightarrow\)</span> NPG with optimal step length (Lagrange multiplier approach)</li>
+<li>Scalability: Avoid <span class="math inline">\(F^{-1} g\)</span> by using CG instead</li>
+<li>Backtracking linesearch to find a step length that reduces <span class="math inline">\(L\)</span> and does not violate the constraint</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trust-region-policy-optimization-trpo" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Trust-region policy optimization (TRPO)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Derive the TRPO objective, with a hint towards <span class="citation">(<a href="#ref-Kakade2002approximately">S. Kakade and Langford 2002</a>)</span> (see Gemini / ChatGPT)
+<ul class="incremental">
+<li class="fragment">Also discuss the theoretical guarantees involved (and why they hold)</li>
+<li class="fragment">Hard constraint replaces soft constraint</li>
+<li class="fragment">Also make use of the ChatGPT explanation how NPG und TRPO are related (“This is exactly the natural gradient direction, but with a step size chosen to satisfy the KL constraint.”)</li>
+</ul></li>
+<li class="fragment">Conjugate gradient replaces FIM inversion</li>
+<li class="fragment">Backtracking line search</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="proximal-policy-optimization-ppo" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Proximal policy optimization (PPO)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">TRPO solves <span class="math inline">\(\max_\theta L(\theta)\)</span> subject to <span class="math inline">\(D_{KL}(\pi_{\subold{\theta}},\pi_\theta) \le \delta\)</span>. To do this it requires:
+<ul class="incremental">
+<li class="fragment">second‑order information (Fisher matrix)</li>
+<li class="fragment">conjugate gradient</li>
+<li class="fragment">a line search</li>
+<li class="fragment">KL constraint checks</li>
+</ul></li>
+<li class="fragment">Most deep learning uses first‑order optimizers (Adam, SGD). TRPO instead requires solving <span class="math inline">\(F^{-1} g\)</span>, which means special optimization code rather than standard gradient descent.</li>
+<li class="fragment">Because of the line search and constraint checks, each update is more expensive and harder to integrate into large-scale training pipelines. Researchers wanted something that:
+<ul class="incremental">
+<li class="fragment">keeps small policy updates</li>
+<li class="fragment">but uses simple gradient descent</li>
+</ul></li>
+</ul>
+</div>
+<p>Two possible approaches: ::: incremental 1. Turn constraint into penalty term (tuning constant is hard). 2. Clipped objective (the one people use)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="evolution-of-policy-gradient-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Evolution of policy gradient methods</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<ul>
+<li>policy gradient</li>
+<li>natural policy gradient</li>
+<li>TRPO: maximize surrogate objectivesubject to KL trust region</li>
+<li>PPO: replace hard trust region with clipped objective</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="approach-ii-improving-q-learning" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Approach (II): Improving <span class="math inline">\(Q\)</span>-learning</h1>
+</div>
+</div>
+</section>
+<section id="deterministic-policy-gradients" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deterministic policy gradients</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deep-deterministic-policy-gradient-ddpg" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deep deterministic policy gradient (DDPG)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="td3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TD3</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="soft-actor-critic-sac" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Soft actor-critic (SAC)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="references" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -600,8 +1297,17 @@ Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Sc
 <div class="area">
 <div class="box block">
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Kakade2001npg" class="csl-entry">
+Kakade, Sham M. 2001. <span>“A Natural Policy Gradient.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by T. Dietterich, S. Becker, and Z. Ghahramani. Vol. 14. MIT Press. <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf</a>.
+</div>
+<div id="ref-Kakade2002approximately" class="csl-entry">
+Kakade, Sham, and John Langford. 2002. <span>“Approximately Optimal Approximate Reinforcement Learning.”</span> In <em>Proceedings of the Nineteenth International Conference on Machine Learning</em>, 267–74. ICML ’02. San Francisco, CA, USA: Morgan Kaufmann Publishers Inc.
+</div>
 <div id="ref-Peters2008naturalac" class="csl-entry">
 Peters, Jan, and Stefan Schaal. 2008. <span>“Natural Actor-Critic.”</span> <em>Neurocomputing</em> 71 (7): 1180–90.
+</div>
+<div id="ref-Schulman2015trpo" class="csl-entry">
+Schulman, John, Sergey Levine, Pieter Abbeel, Michael Jordan, and Philipp Moritz. 2015. <span>“Trust Region Policy Optimization.”</span> In <em>Proceedings of the 32nd International Conference on Machine Learning</em>, edited by Francis Bach and David Blei, 37:1889–97. Proceedings of Machine Learning Research. Lille, France: PMLR.
 </div>
 </div>
 </div>

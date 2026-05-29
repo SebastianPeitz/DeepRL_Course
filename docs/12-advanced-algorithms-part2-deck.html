@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Prof. Dr. Sebastian Peitz">
+  <title> Deep Reinforcement Learning:  Advanced Algorithms</title>
+
+  <!-- PWA stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="support/pwa/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#84b819" />
+  <link rel="manifest" href="support/pwa/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <link rel="shortcut icon" href="support/assets/favicon.ico">
+
+  <script type="module">
+    /* Store JSON encoded Pandoc meta data in a global variable. */
+    import initializeDecker from "./support/js/decker.js";
+    initializeDecker("9c93b9400.json");
+  </script>
+
+    <!-- Default values for CSS variables can live here. They can be overridden by
+    meta data values. -->
+    <link rel="stylesheet" href="support/css/variables.css">
+
+    <!-- Transfer meta data values from keys `palette.colors` and `css-variables`
+    into a style sheet. Default values can come from `variables.css`. -->
+    <style class="css-declarations">
+      :root {
+                --shade7: #1d1f21;
+                --shade6: #282a2e;
+                --shade5: #4d4d4c;
+                --shade4: #969896;
+                --shade3: #8e908c;
+                --shade2: #d6d6d6;
+                --shade1: #eeeeee;
+                --shade0: #ffffff;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #8959a8;
+                --base0D: #2a9ddf;
+                --base0C: #3e999f;
+                --base0B: #84b819;
+                --base0A: #eab700;
+                --base09: #f5871f;
+                --base08: #c82829;
+                --base07: #1d1f21;
+                --base06: #282a2e;
+                --base05: #4d4d4c;
+                --base04: #969896;
+                --base03: #8e908c;
+                --base02: #d6d6d6;
+                --base01: #eeeeee;
+                --base00: #ffffff;
+                --accent7: #a3685a;
+                --accent6: #8959a8;
+                --accent5: #2a9ddf;
+                --accent4: #3e999f;
+                --accent3: #84b819;
+                --accent2: #eab700;
+                --accent1: #f5871f;
+                --accent0: #c82829;
+            }
+      :root.dark {
+                --shade7: #ffffff;
+                --shade6: #e0e0e0;
+                --shade5: #c5c8c6;
+                --shade4: #b4b7b4;
+                --shade3: #969896;
+                --shade2: #373b41;
+                --shade1: #282a2e;
+                --shade0: #1d1f21;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #b294bb;
+                --base0D: #81a2be;
+                --base0C: #8abeb7;
+                --base0B: #7da72a;
+                --base0A: #f0c674;
+                --base09: #de935f;
+                --base08: #cc6666;
+                --base07: #ffffff;
+                --base06: #e0e0e0;
+                --base05: #c5c8c6;
+                --base04: #b4b7b4;
+                --base03: #969896;
+                --base02: #373b41;
+                --base01: #282a2e;
+                --base00: #1d1f21;
+                --accent7: #a3685a;
+                --accent6: #b294bb;
+                --accent5: #81a2be;
+                --accent4: #8abeb7;
+                --accent3: #7da72a;
+                --accent2: #f0c674;
+                --accent1: #de935f;
+                --accent0: #cc6666;
+            }
+      :root {
+            }
+    </style>
+
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reset.css">
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reveal.css">
+    <link rel="stylesheet" href="support/components/components.css">
+    <link rel="stylesheet" href="support/plugins/decker/ui-anchors.css">
+    <link rel="stylesheet" href="support/plugins/whiteboard/whiteboard.css">
+    <link rel="stylesheet" href="support/plugins/menu/menu.css">
+    <link rel="stylesheet" href="support/plugins/feedback/feedback.css">
+    <link rel="stylesheet" href="support/vendor/videojs/video-js.min.css">
+    <link rel="stylesheet" href="support/plugins/explain/explain.css">
+      <link rel="stylesheet" href="support/plugins/quiz-wue/quiz-wue.css">
+    <link rel="stylesheet" href="support/plugins/quizzer/quizzer.css">
+    <link rel="stylesheet" href="support/css/deck.css">
+    <link rel="stylesheet" href="support/css/tudo-deck.css">
+      <link rel="stylesheet" href="support/fonts/lato.css">
+      <link rel="stylesheet" href="support/plugins/handout/handout.css">
+        <link rel="stylesheet" href="styles/mafi-deck.css">
+    
+</head>
+
+<body >
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title-slide">
+  <div class="decker">
+    <div class="alignment">
+      <header class="background-on-accent">
+        <h1 class="title">
+        <span class="title-title">Deep Reinforcement Learning</span>
+        </h1>
+        <h2 class="subtitle">
+        <span class="title-subtitle">Advanced Algorithms</span>
+        </h2>
+      </header>
+
+      
+            
+            <div class="author">
+                
+              <p>
+                Prof. Dr. Sebastian Peitz
+              </p>
+              </div>
+      
+            <div class="affiliation">
+              <p>
+                Chair of Safe Autonomous Systems, TU Dortmund
+              </p>
+              </div>
+      
+              <div class="date">Summer term 2026</div>
+      
+      
+      <div class="logos">
+                <div class="logo">
+          <img src="./support/assets/tu-logo-light.svg" alt="Logo der TU Dortmund">
+        </div>
+                                    <div class="logo">
+            <img class="title-image" src="assets/inf-logo.svg" alt="Logo">
+
+          </div>
+                          </div>
+            <a class="decker-link" href="https://github.com/decker-edu/decker/">🚀 by Decker</a>
+          </div>
+  </div>
+</section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>The evolution of modern RL algorithms</li>
+<li>Part (II): Improving <span class="math inline">\(Q\)</span>-learning
+<ul>
+<li>Deterministic policy gradient</li>
+<li>Deep deterministic policy gradient (DDPG)</li>
+<li>TD3</li>
+<li>Soft Actor-Critic</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-are-we" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Where are we?</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<caption>Lecture contents</caption>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Topic</th>
+<th align="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Basics &amp; tabular methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">1-5</td>
+<td align="left">Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning</td>
+<td align="left">RL basics in finite dimensions</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Deep-learning-based methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Brief introduction to deep learning</td>
+<td align="left">The basics for what comes next</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">Value function approximation</td>
+<td align="left">Value estimation with function approximation</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">Deep Q-learning</td>
+<td align="left">Q-learning with neural networks</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">Policy gradients</td>
+<td align="left">Direct optimization of the policy</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">Actor-critic algorithms</td>
+<td align="left">Improved policy gradients via value functions</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">Advanced algorithms (Part I): From policy gradient to PPO</td>
+<td align="left">The evolution of moderl RL algorithms</td>
+</tr>
+<tr>
+<td align="center"><span style="color: red;">12</span></td>
+<td align="left"><span style="color: red;">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</span></td>
+<td align="left"><span style="color: red;">The evolution of moderl RL algorithms</span></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Advanced Topics</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-evolution-of-modern-rl-algorithms" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The evolution of modern RL algorithms</h1>
+</div>
+</div>
+</section>
+<section id="the-evolution-of-modern-rl-algorithms-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The evolution of modern RL algorithms</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<!-- We have covered most of the foundations of RL methods. [Let's look at the **two main branches** we have seen so far.]{.fragment} -->
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div id="i-policy-gradient-methods" class="platzhalter">
+<h2>(I) Policy gradient methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
+<li class="fragment">Gradient descent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L(\phi)\)</span>.</li>
+<li class="fragment">Methods are typically <strong>on-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: REINFORCE <span class="math inline">\(\rightarrow\)</span> Actor-Critic <span class="math inline">\(\rightarrow\)</span> Natural Policy Gradient <span class="math inline">\(\rightarrow\)</span> Trust-region policy optimization (TRPO) <span class="math inline">\(\rightarrow\)</span> Proximal policy optimization (PPO).</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h2 id="ii-value-based-methods">(II) Value-based methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Approximation of the <span class="math inline">\(Q\)</span>-function:<br />
+<span class="math display">\[Q^*(s,a) = r + \max_{a&#39;\in\Ac}Q^*(s&#39;,a&#39;).\]</span></li>
+<li class="fragment">Extract implicit policy: <span class="math inline">\(\pi(s) = \arg\max_{a\in\Ac} Q^*(s,a)\)</span>.</li>
+<li class="fragment">Typically <strong>off-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: Q-learning <span class="math inline">\(\rightarrow\)</span> DQN <span class="math inline">\(\rightarrow\)</span> Deep deterministic policy gradient (DDPG) <span class="math inline">\(\rightarrow\)</span> TD3 <span class="math inline">\(\rightarrow\)</span> Soft actor-critic (SAC).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="shortcomings"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">High variance gradients.</span></li>
+<li class="fragment"><span style="color: red;">Unstable policy updates.</span></li>
+<li class="fragment"><span style="color: red;">Catastrophic performance collapse.</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h3 id="shortcomings-1"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">Instability from bootstrapping.</span></li>
+<li class="fragment"><span style="color: red;">Overestimation bias.</span></li>
+<li class="fragment"><span style="color: red;">Maximization over actions / continuous action spaces.</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="improvement-strategy"><span style="color: blue;">Improvement strategy</span></h3>
+<ul>
+<li><span style="color: blue;">How to safely update policies.</span></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="improvement-strategy-1"><span style="color: blue;">Improvement strategy</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: blue;">Stabilizing <span class="math inline">\(Q\)</span>-learning with function approximation.</span></li>
+<li class="fragment"><span style="color: blue;">Solving the continuous argmax problem.</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-ii-improving-q-learning" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Part (II): Improving <span class="math inline">\(Q\)</span>-learning</h1>
+</div>
+</div>
+</section>
+<section id="deterministic-policy-gradients" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deterministic policy gradients</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deep-deterministic-policy-gradient-ddpg" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Deep deterministic policy gradient (DDPG)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="td3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TD3</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="soft-actor-critic-sac" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Soft actor-critic (SAC)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>References</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="refs">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<code class="sourceCode markdown" style="display:none;"></code>
+
+    </div>
+  </div>
+  
+  <script src="support/vendor/videojs/video.min.js"></script>
+  <script src="support/vendor/chartjs/chart.umd.js"></script>
+  <script src="support/plugins/quizzer/wordcloud2.js"></script>
+  <script src="support/plugins/quizzer/d3-sankey.min.js"></script>
+  <script type="module" src="support/components/custom-dialog.js"></script>
+  <script type="module" src="./support/js/color-scheme.js"></script>
+
+<script type="module">
+  // import Reveal and all plugins
+  import Reveal from './support/vendor/reveal/dist/reveal.esm.js';
+  import deckerPlugin from './support/plugins/decker/decker.js';
+  import uiAnchorsPlugin from './support/plugins/decker/ui-anchors.js'
+  import mathPlugin from './support/plugins/math/math.js';
+  import whiteboardPlugin from './support/plugins/whiteboard/whiteboard.js';
+  import sagePlugin from './support/plugins/sage/sage.js';
+  import searchPlugin from './support/plugins/search/search.js';
+  import zoomPlugin from './support/plugins/zoom/zoom.js';
+  import printPlugin from './support/plugins/print/print.js';
+  import jinglesPlugin from './support/plugins/jingles/jingles.js';
+  import quizPlugin from './support/plugins/quiz/quiz.js';
+  import quizWuePlugin from './support/plugins/quiz-wue/quiz-wue.js';
+  import quizzerPlugin from './support/plugins/quizzer/quizzer.js'
+  import explainPlugin from './support/plugins/explain/explain.js';
+  import chartsPlugin from './support/plugins/charts/charts.js';
+  import menuPlugin from './support/plugins/menu/menu.js';
+  import feedbackPlugin from './support/plugins/feedback/feedback.js';
+  import notesPlugin from './support/vendor/reveal/plugin/notes/notes.esm.js';
+      import a11yPlugin from './support/plugins/a11y/a11y.js';
+  import handoutPlugin from './support/plugins/handout/handout.js';
+  import chattyPlugin from './support/plugins/chatty/chatty.js';
+
+  let revealConfig = { 
+    // reveal configuration (see https://revealjs.com/config/)
+    ...Decker.meta.reveal,
+
+    // plugin configuration
+    math: { mathjax: String.raw`support/vendor/mathjax/`, ...Decker.meta.math },
+    chart: Decker.meta.chart,
+    menu: Decker.meta.menu,
+    explain: Decker.meta.explain,
+    feedback: Decker.meta.feedback || Decker.meta["decker-engine"],
+    jingles: Decker.meta.jingles,
+    whiteboard: Decker.meta.whiteboard,
+    
+    // list of plugins
+    plugins: [
+      deckerPlugin,
+      uiAnchorsPlugin,
+      sagePlugin,
+      mathPlugin,
+      chartsPlugin,
+      whiteboardPlugin,
+      searchPlugin,
+      zoomPlugin,
+      printPlugin,
+      jinglesPlugin,
+      quizPlugin,
+      quizWuePlugin,
+      quizzerPlugin,
+      explainPlugin,
+      menuPlugin,
+      chattyPlugin,
+      feedbackPlugin,
+      notesPlugin,
+              a11yPlugin,
+      handoutPlugin
+    ]
+  };
+
+  Reveal.initialize(revealConfig);
+</script>
+  
+
+</body>
+</html>

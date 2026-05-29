@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Prof. Dr. Sebastian Peitz">
+  <title> Deep Reinforcement Learning:  Advanced Algorithms (Part
+I)</title>
+
+  <!-- PWA stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="support/pwa/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#84b819" />
+  <link rel="manifest" href="support/pwa/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <link rel="shortcut icon" href="support/assets/favicon.ico">
+
+  <script type="module">
+    /* Store JSON encoded Pandoc meta data in a global variable. */
+    import initializeDecker from "./support/js/decker.js";
+    initializeDecker("7df064c1c.json");
+  </script>
+
+    <!-- Default values for CSS variables can live here. They can be overridden by
+    meta data values. -->
+    <link rel="stylesheet" href="support/css/variables.css">
+
+    <!-- Transfer meta data values from keys `palette.colors` and `css-variables`
+    into a style sheet. Default values can come from `variables.css`. -->
+    <style class="css-declarations">
+      :root {
+                --shade7: #1d1f21;
+                --shade6: #282a2e;
+                --shade5: #4d4d4c;
+                --shade4: #969896;
+                --shade3: #8e908c;
+                --shade2: #d6d6d6;
+                --shade1: #eeeeee;
+                --shade0: #ffffff;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #8959a8;
+                --base0D: #2a9ddf;
+                --base0C: #3e999f;
+                --base0B: #84b819;
+                --base0A: #eab700;
+                --base09: #f5871f;
+                --base08: #c82829;
+                --base07: #1d1f21;
+                --base06: #282a2e;
+                --base05: #4d4d4c;
+                --base04: #969896;
+                --base03: #8e908c;
+                --base02: #d6d6d6;
+                --base01: #eeeeee;
+                --base00: #ffffff;
+                --accent7: #a3685a;
+                --accent6: #8959a8;
+                --accent5: #2a9ddf;
+                --accent4: #3e999f;
+                --accent3: #84b819;
+                --accent2: #eab700;
+                --accent1: #f5871f;
+                --accent0: #c82829;
+            }
+      :root.dark {
+                --shade7: #ffffff;
+                --shade6: #e0e0e0;
+                --shade5: #c5c8c6;
+                --shade4: #b4b7b4;
+                --shade3: #969896;
+                --shade2: #373b41;
+                --shade1: #282a2e;
+                --shade0: #1d1f21;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #b294bb;
+                --base0D: #81a2be;
+                --base0C: #8abeb7;
+                --base0B: #7da72a;
+                --base0A: #f0c674;
+                --base09: #de935f;
+                --base08: #cc6666;
+                --base07: #ffffff;
+                --base06: #e0e0e0;
+                --base05: #c5c8c6;
+                --base04: #b4b7b4;
+                --base03: #969896;
+                --base02: #373b41;
+                --base01: #282a2e;
+                --base00: #1d1f21;
+                --accent7: #a3685a;
+                --accent6: #b294bb;
+                --accent5: #81a2be;
+                --accent4: #8abeb7;
+                --accent3: #7da72a;
+                --accent2: #f0c674;
+                --accent1: #de935f;
+                --accent0: #cc6666;
+            }
+      :root {
+            }
+    </style>
+
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reset.css">
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reveal.css">
+    <link rel="stylesheet" href="support/components/components.css">
+    <link rel="stylesheet" href="support/plugins/decker/ui-anchors.css">
+    <link rel="stylesheet" href="support/plugins/whiteboard/whiteboard.css">
+    <link rel="stylesheet" href="support/plugins/menu/menu.css">
+    <link rel="stylesheet" href="support/plugins/feedback/feedback.css">
+    <link rel="stylesheet" href="support/vendor/videojs/video-js.min.css">
+    <link rel="stylesheet" href="support/plugins/explain/explain.css">
+      <link rel="stylesheet" href="support/plugins/quiz-wue/quiz-wue.css">
+    <link rel="stylesheet" href="support/plugins/quizzer/quizzer.css">
+    <link rel="stylesheet" href="support/css/deck.css">
+    <link rel="stylesheet" href="support/css/tudo-deck.css">
+      <link rel="stylesheet" href="support/fonts/lato.css">
+      <link rel="stylesheet" href="support/plugins/handout/handout.css">
+        <link rel="stylesheet" href="styles/mafi-deck.css">
+    
+</head>
+
+<body >
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title-slide">
+  <div class="decker">
+    <div class="alignment">
+      <header class="background-on-accent">
+        <h1 class="title">
+        <span class="title-title">Deep Reinforcement Learning</span>
+        </h1>
+        <h2 class="subtitle">
+        <span class="title-subtitle">Advanced Algorithms (Part I)</span>
+        </h2>
+      </header>
+
+      
+            
+            <div class="author">
+                
+              <p>
+                Prof. Dr. Sebastian Peitz
+              </p>
+              </div>
+      
+            <div class="affiliation">
+              <p>
+                Chair of Safe Autonomous Systems, TU Dortmund
+              </p>
+              </div>
+      
+              <div class="date">Summer term 2026</div>
+      
+      
+      <div class="logos">
+                <div class="logo">
+          <img src="./support/assets/tu-logo-light.svg" alt="Logo der TU Dortmund">
+        </div>
+                                    <div class="logo">
+            <img class="title-image" src="assets/inf-logo.svg" alt="Logo">
+
+          </div>
+                          </div>
+            <a class="decker-link" href="https://github.com/decker-edu/decker/">🚀 by Decker</a>
+          </div>
+  </div>
+</section>            
+<section id="content" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+</div>
+</div>
+</section>
+<section id="content-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Content</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li>The evolution of modern RL algorithms</li>
+<li>Part (I): Improving policy gradient methods
+<ul>
+<li>Natural policy gradient</li>
+<li>Trust-region policy optimization (TRPO)</li>
+<li>Proximal policy optimization (PPO)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-are-we" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Where are we?</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<caption>Lecture contents</caption>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Topic</th>
+<th align="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Basics &amp; tabular methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">1-5</td>
+<td align="left">Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning</td>
+<td align="left">RL basics in finite dimensions</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Deep-learning-based methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Brief introduction to deep learning</td>
+<td align="left">The basics for what comes next</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">Value function approximation</td>
+<td align="left">Value estimation with function approximation</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">Deep Q-learning</td>
+<td align="left">Q-learning with neural networks</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">Policy gradients</td>
+<td align="left">Direct optimization of the policy</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">Actor-critic algorithms</td>
+<td align="left">Improved policy gradients via value functions</td>
+</tr>
+<tr>
+<td align="center"><span style="color: red;">11</span></td>
+<td align="left"><span style="color: red;">Advanced algorithms (Part I): From policy gradient to PPO</span></td>
+<td align="left"><span style="color: red;">The evolution of modern RL algorithms</span></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
+<td align="left">The evolution of moderl RL algorithms</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Model-Based Control</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Advanced Topics</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-evolution-of-modern-rl-algorithms" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The evolution of modern RL algorithms</h1>
+</div>
+</div>
+</section>
+<section id="the-evolution-of-modern-rl-algorithms-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The evolution of modern RL algorithms</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<!-- We have covered most of the foundations of RL methods. [Let's look at the **two main branches** we have seen so far.]{.fragment} -->
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div id="i-policy-gradient-methods" class="platzhalter">
+<h2>(I) Policy gradient methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
+<li class="fragment">Gradient descent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L(\phi)\)</span>.</li>
+<li class="fragment">Methods are typically <strong>on-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: REINFORCE <span class="math inline">\(\rightarrow\)</span> Actor-Critic <span class="math inline">\(\rightarrow\)</span> Natural Policy Gradient <span class="math inline">\(\rightarrow\)</span> Trust-region policy optimization (TRPO) <span class="math inline">\(\rightarrow\)</span> Proximal policy optimization (PPO).</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h2 id="ii-value-based-methods">(II) Value-based methods</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Approximation of the <span class="math inline">\(Q\)</span>-function:<br />
+<span class="math display">\[Q^*(s,a) = r + \max_{a&#39;\in\Ac}Q^*(s&#39;,a&#39;).\]</span></li>
+<li class="fragment">Extract implicit policy: <span class="math inline">\(\pi(s) = \arg\max_{a\in\Ac} Q^*(s,a)\)</span>.</li>
+<li class="fragment">Typically <strong>off-policy</strong>.</li>
+<li class="fragment"><strong>Algorithms</strong>: Q-learning <span class="math inline">\(\rightarrow\)</span> DQN <span class="math inline">\(\rightarrow\)</span> Deep deterministic policy gradient (DDPG) <span class="math inline">\(\rightarrow\)</span> TD3 <span class="math inline">\(\rightarrow\)</span> Soft actor-critic (SAC).</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="shortcomings"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">High variance gradients.</span></li>
+<li class="fragment"><span style="color: red;">Unstable policy updates.</span></li>
+<li class="fragment"><span style="color: red;">Catastrophic performance collapse.</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<h3 id="shortcomings-1"><span style="color: red;">Shortcomings</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: red;">Instability from bootstrapping.</span></li>
+<li class="fragment"><span style="color: red;">Overestimation bias.</span></li>
+<li class="fragment"><span style="color: red;">Maximization over actions / continuous action spaces.</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<h3 id="improvement-strategy"><span style="color: blue;">Improvement strategy</span></h3>
+<ul>
+<li><span style="color: blue;">How to safely update policies.</span></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="improvement-strategy-1"><span style="color: blue;">Improvement strategy</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><span style="color: blue;">Stabilizing <span class="math inline">\(Q\)</span>-learning with function approximation.</span></li>
+<li class="fragment"><span style="color: blue;">Solving the continuous argmax problem.</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="part-i-improving-policy-gradient-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Part (I): Improving policy gradient methods</h1>
+</div>
+</div>
+</section>
+<section id="ill-conditioned-gradients" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Ill-conditioned gradients</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<div class="media">
+<figure class="embed svg embedded" style="height:auto;width:600px;">
+<div aria-label="A simple exemplary MDP. Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   width="502.81628"
+   height="131.437"
+   id="svg2"
+   xml:space="preserve"
+   sodipodi:docname="PG-example-covariant.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.1683019"
+     inkscape:cx="222.97319"
+     inkscape:cy="19.686693"
+     inkscape:window-width="1920"
+     inkscape:window-height="955"
+     inkscape:window-x="30"
+     inkscape:window-y="56"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" /><metadata
+     id="metadata8"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs6"><marker
+   style="overflow:visible"
+   id="marker21"
+   refX="0"
+   refY="0"
+   orient="auto-start-reverse"
+   inkscape:stockid="Concave triangle arrow"
+   markerWidth="1"
+   markerHeight="1"
+   viewBox="0 0 1 1"
+   inkscape:isstock="true"
+   inkscape:collect="always"
+   preserveAspectRatio="xMidYMid"><path
+     transform="scale(0.7)"
+     d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+     style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+     id="path21" /></marker><marker
+   style="overflow:visible"
+   id="marker17"
+   refX="0"
+   refY="0"
+   orient="auto-start-reverse"
+   inkscape:stockid="Concave triangle arrow"
+   markerWidth="2"
+   markerHeight="2"
+   viewBox="0 0 1 1"
+   inkscape:isstock="true"
+   inkscape:collect="always"
+   preserveAspectRatio="xMidYMid"
+   markerUnits="userSpaceOnUse"><path
+     transform="scale(0.7)"
+     d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+     style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+     id="path17" /></marker><marker
+   style="overflow:visible"
+   id="marker15"
+   refX="0"
+   refY="0"
+   orient="auto-start-reverse"
+   inkscape:stockid="Concave triangle arrow"
+   markerWidth="1"
+   markerHeight="1"
+   viewBox="0 0 1 1"
+   inkscape:isstock="true"
+   inkscape:collect="always"
+   preserveAspectRatio="xMidYMid"
+   markerUnits="strokeWidth"><path
+     transform="scale(0.7)"
+     d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+     style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+     id="path15" /></marker><clipPath
+   id="clipPath18"><path
+     d="M 7.5,0 H 5300 V 4000 H 7.5 Z"
+     inkscape:connector-curvature="0"
+     id="path20" /></clipPath><defs
+   id="id-6a1ed1a7-0cb8-40a1-98e0-ae71edc5ddab">
+    <g
+   id="id-3dcb85b1-ab11-46c8-922f-66cc98d6137b">
+      <g
+   id="id-b8c94f39-12f7-4031-9a6f-e49755b9248f">
+        <path
+   d="M 3.71875,-3.765625 C 3.53125,-4.140625 3.25,-4.40625 2.796875,-4.40625 c -1.15625,0 -2.390625,1.46875 -2.390625,2.921875 0,0.9375 0.546875,1.59375 1.3125,1.59375 0.203125,0 0.703125,-0.046875 1.296875,-0.75 0.078125,0.421875 0.4375,0.75 0.90625,0.75 0.359375,0 0.578125,-0.234375 0.75,-0.546875 0.15625,-0.359375 0.296875,-0.96875 0.296875,-0.984375 0,-0.109375 -0.09375,-0.109375 -0.125,-0.109375 -0.09375,0 -0.109375,0.046875 -0.140625,0.1875 -0.171875,0.640625 -0.34375,1.234375 -0.75,1.234375 -0.28125,0 -0.296875,-0.265625 -0.296875,-0.453125 0,-0.21875 0.015625,-0.3125 0.125,-0.75 C 3.890625,-1.71875 3.90625,-1.828125 4,-2.203125 L 4.359375,-3.59375 c 0.0625,-0.28125 0.0625,-0.296875 0.0625,-0.34375 0,-0.171875 -0.109375,-0.265625 -0.28125,-0.265625 -0.25,0 -0.390625,0.21875 -0.421875,0.4375 z M 3.078125,-1.1875 C 3.015625,-1 3.015625,-0.984375 2.875,-0.8125 2.4375,-0.265625 2.03125,-0.109375 1.75,-0.109375 c -0.5,0 -0.640625,-0.546875 -0.640625,-0.9375 0,-0.5 0.3125,-1.71875 0.546875,-2.1875 0.3125,-0.578125 0.75,-0.953125 1.15625,-0.953125 0.640625,0 0.78125,0.8125 0.78125,0.875 0,0.0625 -0.015625,0.125 -0.03125,0.171875 z m 0,0"
+   id="id-c05b530d-4ba7-4c1a-9bce-67e56dfd0872" />
+      </g>
+      <g
+   id="id-cdcb7e86-bf0c-4f80-8abb-da969bb9eabd">
+        <path
+   d="m 2.640625,-3.71875 h 1.125 C 3.4375,-2.25 3.34375,-1.8125 3.34375,-1.140625 c 0,0.140625 0,0.40625 0.078125,0.75 0.109375,0.4375 0.21875,0.5 0.359375,0.5 0.203125,0 0.421875,-0.171875 0.421875,-0.375 0,-0.0625 0,-0.078125 -0.0625,-0.21875 -0.296875,-0.71875 -0.296875,-1.375 -0.296875,-1.65625 0,-0.515625 0.078125,-1.0625 0.1875,-1.578125 h 1.125 c 0.140625,0 0.5,0 0.5,-0.34375 0,-0.234375 -0.21875,-0.234375 -0.40625,-0.234375 H 1.90625 c -0.21875,0 -0.59375,0 -1.03125,0.46875 -0.34375,0.390625 -0.609375,0.84375 -0.609375,0.890625 0,0.015625 0,0.109375 0.125,0.109375 0.078125,0 0.09375,-0.046875 0.15625,-0.125 C 1.03125,-3.71875 1.609375,-3.71875 1.8125,-3.71875 H 2.375 C 2.0625,-2.515625 1.53125,-1.3125 1.109375,-0.40625 1.03125,-0.25 1.03125,-0.234375 1.03125,-0.15625 c 0,0.1875 0.15625,0.265625 0.28125,0.265625 0.296875,0 0.375,-0.28125 0.5,-0.640625 C 1.953125,-1 1.953125,-1.015625 2.078125,-1.515625 Z m 0,0"
+   id="id-4cab23e8-0b51-4e81-b3b3-515ca8ee36cf" />
+      </g>
+      <g
+   id="id-11e2864b-4a89-48b6-b785-70edb3058c52">
+        <path
+   d="M 3.890625,-3.734375 C 3.625,-3.71875 3.421875,-3.5 3.421875,-3.28125 c 0,0.140625 0.09375,0.296875 0.3125,0.296875 0.21875,0 0.453125,-0.171875 0.453125,-0.5625 C 4.1875,-4 3.765625,-4.40625 3,-4.40625 c -1.3125,0 -1.6875,1.015625 -1.6875,1.453125 0,0.78125 0.734375,0.921875 1.03125,0.984375 0.515625,0.109375 1.03125,0.21875 1.03125,0.765625 0,0.25 -0.21875,1.09375 -1.421875,1.09375 -0.140625,0 -0.90625,0 -1.140625,-0.53125 0.390625,0.046875 0.640625,-0.25 0.640625,-0.53125 0,-0.21875 -0.171875,-0.34375 -0.375,-0.34375 -0.265625,0 -0.5625,0.203125 -0.5625,0.65625 0,0.5625 0.578125,0.96875 1.421875,0.96875 1.625,0 2.015625,-1.203125 2.015625,-1.65625 0,-0.359375 -0.1875,-0.609375 -0.3125,-0.71875 -0.265625,-0.28125 -0.5625,-0.34375 -1,-0.421875 -0.359375,-0.078125 -0.75,-0.15625 -0.75,-0.609375 C 1.890625,-3.578125 2.125,-4.1875 3,-4.1875 c 0.25,0 0.75,0.078125 0.890625,0.453125 z m 0,0"
+   id="id-4af0e662-120b-42a6-b4db-aa7ef1da3060" />
+      </g>
+      <g
+   id="id-4ef31ac9-12b3-42e9-9677-d4c571774c61">
+        <path
+   d="m 3.65625,-3.984375 h 0.859375 c 0.203125,0 0.296875,0 0.296875,-0.203125 0,-0.109375 -0.09375,-0.109375 -0.265625,-0.109375 H 3.71875 L 3.921875,-5.4375 c 0.046875,-0.203125 0.1875,-0.90625 0.25,-1.03125 0.078125,-0.1875 0.25,-0.34375 0.46875,-0.34375 0.03125,0 0.296875,0 0.484375,0.1875 -0.4375,0.03125 -0.546875,0.390625 -0.546875,0.53125 0,0.234375 0.1875,0.359375 0.375,0.359375 C 5.21875,-5.734375 5.5,-5.96875 5.5,-6.34375 c 0,-0.453125 -0.453125,-0.6875 -0.859375,-0.6875 -0.34375,0 -0.96875,0.1875 -1.265625,1.171875 -0.0625,0.203125 -0.09375,0.3125 -0.328125,1.5625 h -0.6875 c -0.203125,0 -0.3125,0 -0.3125,0.1875 0,0.125 0.09375,0.125 0.28125,0.125 h 0.65625 L 2.25,-0.046875 c -0.1875,0.96875 -0.359375,1.875 -0.875,1.875 -0.046875,0 -0.28125,0 -0.484375,-0.1875 C 1.359375,1.609375 1.453125,1.25 1.453125,1.109375 1.453125,0.875 1.265625,0.75 1.078125,0.75 0.8125,0.75 0.53125,0.984375 0.53125,1.359375 c 0,0.4375 0.4375,0.6875 0.84375,0.6875 0.546875,0 0.953125,-0.59375 1.125,-0.96875 0.328125,-0.625 0.546875,-1.828125 0.5625,-1.90625 z m 0,0"
+   id="id-2233f752-e23f-4abb-b072-7e7b496dde53" />
+      </g>
+      <g
+   id="id-01950f60-c565-4f26-9582-a702fc7fb341">
+        <path
+   d="m 2.328125,-4.4375 c 0,-0.1875 0,-0.1875 -0.203125,-0.1875 -0.453125,0.4375 -1.078125,0.4375 -1.359375,0.4375 v 0.25 c 0.15625,0 0.625,0 1,-0.1875 v 3.546875 c 0,0.234375 0,0.328125 -0.6875,0.328125 H 0.8125 V 0 c 0.125,0 0.984375,-0.03125 1.234375,-0.03125 0.21875,0 1.09375,0.03125 1.25,0.03125 V -0.25 H 3.03125 c -0.703125,0 -0.703125,-0.09375 -0.703125,-0.328125 z m 0,0"
+   id="id-74d9d0b1-23ee-4664-aadf-59eb96008ddc" />
+      </g>
+      <g
+   id="id-748584d3-3bfd-4f1b-8e12-7416d7546397">
+        <path
+   d="M 3.515625,-1.265625 H 3.28125 c -0.015625,0.15625 -0.09375,0.5625 -0.1875,0.625 C 3.046875,-0.59375 2.515625,-0.59375 2.40625,-0.59375 H 1.125 c 0.734375,-0.640625 0.984375,-0.84375 1.390625,-1.171875 0.515625,-0.40625 1,-0.84375 1,-1.5 0,-0.84375 -0.734375,-1.359375 -1.625,-1.359375 -0.859375,0 -1.453125,0.609375 -1.453125,1.25 0,0.34375 0.296875,0.390625 0.375,0.390625 0.15625,0 0.359375,-0.125 0.359375,-0.375 0,-0.125 -0.046875,-0.375 -0.40625,-0.375 C 0.984375,-4.21875 1.453125,-4.375 1.78125,-4.375 c 0.703125,0 1.0625,0.546875 1.0625,1.109375 0,0.609375 -0.4375,1.078125 -0.65625,1.328125 L 0.515625,-0.265625 C 0.4375,-0.203125 0.4375,-0.1875 0.4375,0 h 2.875 z m 0,0"
+   id="id-118ef830-6c76-437c-a8f7-793af3aad762" />
+      </g>
+      <g
+   id="id-6db75b76-0f7e-45d2-a8c4-6ec4ee13a217">
+        <path
+   d="m 3.421875,-4.75 c 0,-0.09375 -0.078125,-0.09375 -0.109375,-0.09375 -0.109375,0 -0.109375,0.046875 -0.140625,0.15625 L 2.78125,-3.09375 c -1.234375,0.0625 -2.296875,0.953125 -2.296875,1.875 0,0.796875 0.71875,1.265625 1.5,1.296875 C 1.921875,0.296875 1.875,0.515625 1.8125,0.734375 1.734375,1.0625 1.671875,1.3125 1.671875,1.34375 c 0,0.078125 0.09375,0.078125 0.109375,0.078125 0.109375,0 0.109375,-0.015625 0.15625,-0.171875 L 2.21875,0.078125 c 1.203125,-0.046875 2.296875,-0.921875 2.296875,-1.875 0,-0.71875 -0.640625,-1.25 -1.5,-1.28125 z M 2.03125,-0.125 C 1.484375,-0.140625 1,-0.4375 1,-1.09375 1,-1.796875 1.53125,-2.78125 2.71875,-2.890625 Z m 0.9375,-2.765625 C 3.5,-2.859375 4,-2.578125 4,-1.90625 c 0,0.75 -0.59375,1.6875 -1.734375,1.78125 z m 0,0"
+   id="id-85f84f7d-034b-46a2-8a48-5bf14535ab6d" />
+      </g>
+      <g
+   id="id-c3576f43-a184-4eb4-a14d-f62d4f980e86">
+        <path
+   d="m 3.296875,2.390625 c 0,-0.03125 0,-0.046875 -0.171875,-0.21875 C 1.890625,0.921875 1.5625,-0.96875 1.5625,-2.5 c 0,-1.734375 0.375,-3.46875 1.609375,-4.703125 0.125,-0.125 0.125,-0.140625 0.125,-0.171875 0,-0.078125 -0.03125,-0.109375 -0.09375,-0.109375 -0.109375,0 -1,0.6875 -1.59375,1.953125 -0.5,1.09375 -0.625,2.203125 -0.625,3.03125 0,0.78125 0.109375,1.984375 0.65625,3.125 C 2.25,1.84375 3.09375,2.5 3.203125,2.5 c 0.0625,0 0.09375,-0.03125 0.09375,-0.109375 z m 0,0"
+   id="id-1c88ade4-ccd1-46f3-b23a-842eb5ac7089" />
+      </g>
+      <g
+   id="id-24680b77-1c66-41ca-bccd-8906b711c1ab">
+        <path
+   d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
+   id="id-5d37021d-321d-4343-a548-d20f9a9c2f47" />
+      </g>
+      <g
+   id="id-f17c9cd2-5d0c-4fb5-9ea4-f54775e42059">
+        <path
+   d="m 1.578125,-7.125 c 0,-0.171875 0,-0.359375 -0.1875,-0.359375 -0.203125,0 -0.203125,0.1875 -0.203125,0.359375 v 9.265625 c 0,0.171875 0,0.359375 0.203125,0.359375 0.1875,0 0.1875,-0.1875 0.1875,-0.359375 z m 0,0"
+   id="id-f8eabe4a-acb9-4ffb-8a78-bde5b9e30e18" />
+      </g>
+      <g
+   id="id-09faa247-d580-424a-afe2-d0dc495de9b4">
+        <path
+   d="m 1.640625,-4.84375 h -0.9375 V 0 H 1.28125 V -4.28125 H 1.296875 L 3.578125,0 h 0.9375 V -4.84375 H 3.9375 v 4.296875 z m 0,0"
+   id="id-2d2dabde-329f-4af1-982a-5a7ac20b4bfe" />
+      </g>
+    </g>
+  </defs>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</defs><path
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255;marker-start:url(#marker15);marker-end:url(#marker15)"
+     d="M 12.6,106.69943 H 490.21628"
+     id="path8" /><g
+     id="g21"
+     class="fragment"
+     transform="translate(0,4)"><path
+       style="opacity:1;fill:#2a7fff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255"
+       id="path10"
+       sodipodi:type="arc"
+       sodipodi:cx="175.44286"
+       sodipodi:cy="102.69944"
+       sodipodi:rx="10.271317"
+       sodipodi:ry="10.057332"
+       sodipodi:start="0.0010633213"
+       sodipodi:end="0.0010616929"
+       sodipodi:open="true"
+       sodipodi:arc-type="arc"
+       d="m 185.71417,102.71013 a 10.271317,10.057332 0 0 1 -10.28223,10.04664 10.271317,10.057332 0 0 1 -10.26039,-10.06802 10.271317,10.057332 0 0 1 10.28221,-10.046636 10.271317,10.057332 0 0 1 10.26041,10.068006" /></g><g
+     id="g23"
+     class="fragment"
+     transform="translate(0,4)"><path
+       sodipodi:type="star"
+       style="opacity:1;fill:#ffcc00;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255"
+       id="path14"
+       inkscape:flatsided="false"
+       sodipodi:sides="5"
+       sodipodi:cx="296.15634"
+       sodipodi:cy="192.5872"
+       sodipodi:r1="25.039881"
+       sodipodi:r2="9.7592535"
+       sodipodi:arg1="-0.31290791"
+       sodipodi:arg2="0.31541062"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 319.98035,184.87926 -14.54619,10.73533 5.41489,17.2487 -14.70492,-10.51684 -14.7312,10.48001 5.45804,-17.2351 -14.51927,-10.7717 18.07818,-0.13503 5.7578,-17.13729 5.71488,17.15165 z"
+       inkscape:transform-center-x="-0.28884427"
+       inkscape:transform-center-y="-1.5870059"
+       transform="translate(102.73084,-90.70197)" /></g><g
+     id="g22"
+     class="fragment"
+     transform="translate(0,4)"><g
+       id="g13"
+       transform="matrix(1.0001287,0,0,0.57549582,-16.526768,-89.00367)"
+       style="stroke-width:1.31811;stroke-dasharray:none"><path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.31811;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255"
+         d="m 19.457553,333.81787 c 84.842357,-0.71792 102.825987,-22.10818 117.692197,-62.05588 18.2139,-48.94346 27.64243,-71.11874 54.78035,-71.47125"
+         id="path12"
+         sodipodi:nodetypes="csc" /><path
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.31811;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255"
+         d="M 364.4323,333.71701 C 279.59281,333.00017 261.60978,311.64223 246.74407,271.75488 228.53078,222.88535 219.10258,200.74357 191.96557,200.39159"
+         id="path13"
+         sodipodi:nodetypes="csc" /></g></g><g
+     id="g24"
+     class="fragment"
+     transform="translate(0,4)"><path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#008000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255;marker-end:url(#marker17)"
+       d="M 176.08514,80.87288 H 311.32416"
+       id="path16" /><path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#008000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255;marker-end:url(#marker17)"
+       d="M 176.08514,68.46171 H 40.84612"
+       id="path18" /></g><g
+     id="g25"
+     class="fragment"
+     transform="translate(0,4)"><path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#aa0000;stroke-width:1;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.996255;marker-end:url(#marker21)"
+       d="m 128.58029,61.61416 c 4.39101,-0.006 28.42967,1.92611 22.6825,-8.13146 -8.87395,-15.52941 -59.878417,-2.14577 -59.060077,-11.9832 0.57333,-6.89205 12.716127,-6.34553 22.254517,-6.84755 26.40346,-1.98059 60.66861,7.2646 86.45026,2.56783 1.98373,-0.44083 14.28281,-2.45935 15.83495,-5.56363 1.9226,-3.84521 -9.86879,-4.38042 -19.6867,-4.70769 -10.27873,-0.34262 -59.19561,6.57649 -62.48385,0 -2.43179,-4.86359 29.30607,-1.73492 30.172,-5.34964 1.58498,-6.61638 -44.42242,-4.1378 -40.22933,-11.9832102 5.91358,-6.67527 42.56905,4.1797902 47.93282,1.4979002 11.71942,-5.8597102 -12.82716,-4.0280602 -19.47271,-5.1356502 -1.11183,-0.18531 -9.379,-2.17623 -7.70349,-3.85175 2.62411,-2.62410995 21.44217,-1.28390995 24.39438,-1.28390995 15.28784,0 32.30814,-1.00685 47.07688,3.42376995 C 238.69309,10.85117 230.91663,18.14948 265.5312,21.81281"
+       id="path19"
+       sodipodi:nodetypes="csssssssscsssssc" /></g></svg>
+
+</div>
+<figcaption>
+A simple exemplary MDP. Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
+</figcaption>
+</figure>
+</div>
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} 
+r_t &amp;= -s_t^2 - a_t^2 \\
+\log\pi_\phi\agivenb{a_t}{s_t} &amp;= -\frac{1}{2\sigma^2}(k s_t - a_t)^2 + C, \fragment{ \qquad \phi=(k,\sigma). } \\
+\nablaphi\log\pi_\phi\agivenb{a_t}{s_t} &amp;= \begin{pmatrix} -\frac{(k s_t - a_t)s_t}{\sigma^2} \\ \frac{(k s_t - a_t)^2}{\sigma^3} \end{pmatrix}
+\end{align*}\]</span></span></p>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:400px;">
+<img src="images/11-advanced/Covariant-PG-vanilla.png" style="height:auto;width:100%;" aria-label="Source: (Peters and Schaal 2008)" alt="images/11-advanced/Covariant-PG-vanilla.png" />
+<figcaption>
+Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Optimum</strong>: <span class="math inline">\(\phi^*=(-1,0)\)</span>.</li>
+<li class="fragment"><strong>Issue</strong>: The gradients do not point towards the optimum for smaller <span class="math inline">\(\sigma\)</span>!
+<ul class="incremental">
+<li class="fragment">The <span class="math inline">\(\sigma^{-3}\)</span> term blows up.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Closely related to ill-conditioned optimization problems: <span class="media"><span class="figure image" style="height:auto;width:600px;"><img src="images/09-policy-gradients/zig-zag.png" style="height:auto;width:100%;" alt="images/09-policy-gradients/zig-zag.png" /></span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="constraining-the-ascent-direction" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Constraining the ascent direction</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 9fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall the policy gradient update: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">A natural idea: <strong>Constrain the length of our update step</strong>!
+<ul class="incremental">
+<li class="fragment">Linearization of our optimization problem around <span class="math inline">\(\phi\)</span> using <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a>: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi_i) + \Oc((\phi&#39; - \phi)^2) \\
+&amp;= L(\phi) + (\phi&#39; - \phi)^\top \nablaphi L(\phi).
+\end{align*}\]</span></span></li>
+<li class="fragment">Constrained optimization of <span class="math inline">\(\phi&#39;\)</span> along the steepest ascent direction: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon. } \]</span></li>
+</ul></li>
+<li class="fragment"><strong>But</strong>: We just saw that some parameters change probabilities <em>a lot more than others</em>!</li>
+</ul>
+</div>
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:350px;"><img src="images/11-advanced/Covariant-PG-vanilla.png" style="height:auto;width:100%;" aria-label="Source: (Peters and Schaal 2008)" alt="images/11-advanced/Covariant-PG-vanilla.png" /><span class="figcaption"><span>Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span></span></span></span></span></span></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Alternative</strong>: Rescale the gradient so that this does not happen!</li>
+<li class="fragment">A better way to constrain the update distance: The <strong>change in distribution</strong> via the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence"><strong>Kullback-Leibler (KL) divergence</strong></a>! <span class="math display">\[ \KLdiv{\pi_\phi}{\pi_\phi&#39;}. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-kl-divergence-and-fisher-information-matrix" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Aside: KL-divergence and Fisher information matrix</h1>
+</div>
+</div>
+</section>
+<section id="kullback-leibler-divergence" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>Kullback-Leibler divergence</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The <strong>Kullback-Leibler divergence</strong> (or <strong>KL divergence</strong>) measures the “distance” between two distributions (e.g., <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>) <span class="math display">\[ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} &amp; \text{if}~\Xc~\text{is finite} \\ \int{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx &amp; \text{if}~\Xc~\text{is continuous} \end{cases}. \]</span>
+<ul class="incremental">
+<li class="fragment">It is zero if and only if <span class="math inline">\(p(x) = q(x)\)</span>.</li>
+</ul></li>
+<li class="fragment"><strong>Intuition</strong>: Imagine you have two different maps of the exact same city.
+<ul class="incremental">
+<li class="fragment">Map A is completely accurate. Every street, etc., is exactly where it should be.</li>
+<li class="fragment">Map B was drawn from memory by a friend. It’s mostly right with some minor flaws.</li>
+<li class="fragment">If you use Map B to navigate the city, you are going to make some mistakes.</li>
+<li class="fragment">The KL divergence answers the question: “How much extra ‘gas’ (or information) will I waste if I use Map B instead of Map A?”</li>
+</ul></li>
+</ul>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:450px;">
+<img src="images/11-advanced/KLdivergence-example.png" style="height:auto;width:100%;" aria-label="[Source]." alt="images/11-advanced/KLdivergence-example.png" />
+<figcaption>
+[<a href="https://medium.com/@yian.chen261/introduction-to-kullback-leibler-divergence-2d76979d1d8c">Source</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">KL Divergence measures the <em>surprise</em> or <em>unfair penalty</em> you get when you use <span class="math inline">\(q\)</span> to predict something that actually follows <span class="math inline">\(p\)</span>. If <span class="math inline">\(q\)</span> is a perfect match for <span class="math inline">\(p\)</span> (i.e., <span class="math inline">\(q=p\)</span>), your surprise is zero. The worse your guess (<span class="math inline">\(q\)</span>) is, the higher the KL divergence.</li>
+<li class="fragment"><strong>Question</strong>: What happens if our “model” <span class="math inline">\(q\)</span> is absolutely certain that something is <strong>not</strong> going to happen (<span class="math inline">\(q(x)=0\)</span> for some <span class="math inline">\(x\)</span>)?</li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> The KL divergence is not a real distance. For instance, it it not symmetric (i.e., <span class="math inline">\(\KLdiv{p}{q} \neq \KLdiv{q}{p}\)</span> in general), which means that it also does not satisfy the triangle inequality. Still, it gives us a measure of how far two distributions are apart.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fisher-information-matrix" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>Fisher information matrix</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The <strong>Fisher information matrix</strong> (<strong>FIM</strong>) measures how much information an observable random variable <span class="math inline">\(x\)</span> carries about an unknown parameter <span class="math inline">\(\phi\)</span> (e.g., the weights of a neural network).</li>
+<li class="fragment">Mathematically, if we have a log-likelihood function <span class="math inline">\(\log p(x|\phi)\)</span>, the FIM (denoted as <span class="math inline">\(F\)</span>) is the variance of its gradient (the “<em>score</em>”): <span class="math display">\[\begin{equation} F = \Exp{\cbracket{\nablaphi \log\, \pC{x}{\phi}} \cbracket{\nablaphi \log\, \pC{x}{\phi}}^\top}. \label{eq:Adv_Fisher_Information_Matrix} \end{equation}\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="definition">
+<p><strong>In simpler terms</strong>: How do variations of <span class="math inline">\(\phi\)</span> influence the resulting probability distribution?</p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">High Fisher Information: Small change in <span class="math inline">\(\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> large shift in the distribution.</li>
+<li class="fragment">Low Fisher Information: Change in <span class="math inline">\(\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> only small shift in the distribution.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<h3 id="relation-to-the-kl-divergence">Relation to the KL divergence</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Consider a very small change in <span class="math inline">\(\phi\)</span> by <span class="math inline">\(\Delta\phi\)</span>, and study the KL divergence <span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}}\)</span>.</li>
+<li class="fragment">If we perform a <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> of <span class="math inline">\(D_{\mathsf{KL}}\)</span> around <span class="math inline">\(\Delta\phi=0\)</span>, then the first two terms are zero (<span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0\)</span> and since <span class="math inline">\(\Delta\phi=0\)</span> is the minimum, the first derivative is zero as well).</li>
+<li class="fragment">The second order term is thus the leading term! <span class="math inline">\(\Rightarrow\)</span> for small <span class="math inline">\(\Delta\phi\)</span>, we have <span class="math display">\[\begin{equation} \KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}} \approx \frac{1}{2} \Delta\phi^\top F \Delta\phi. \label{eq:Adv_KLdiv_Fisher} \end{equation}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="kl-divergence-and-fisher-information-in-rl" class="slide level1" style="background-color: aliceblue;">
+<div class="decker">
+<div class="alignment">
+<h1>KL-divergence and Fisher information in RL</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">When using the KL divergence or the Fisher information matrix in RL, we often do so in terms of different policies.</li>
+<li class="fragment">This means that we consider the difference in the <strong>action distribution</strong> <span class="math inline">\(\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}\)</span>.</li>
+<li class="fragment">However, this expression is incomplete or even misleading.</li>
+<li class="fragment">Instead, we consider either <span class="math display">\[ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi&#39;}\agivenb{a}{s}}}\dint{a}\]</span> for a fixed <span class="math inline">\(s\)</span>, <span class="fragment">or the expectation over the state space, i.e., <span class="math display">\[\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}}}{s \sim p_\phi}. \]</span></span></li>
+<li class="fragment">The relation between KL divergence and FIM for small changes can be derived analogously to the previous slide and reads <span class="math display">\[\Expsub{\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}}{s \sim p_\phi} \approx \frac{1}{2} \Delta\phi^\top \big( \underbrace{\Expsub{F(s)}{s \sim p_\phi}}_{=F} \big) \Delta\phi \fragment{ = \frac{1}{2} \Delta\phi^\top F \Delta\phi.}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="natural-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Natural policy gradient</h1>
+</div>
+</div>
+</section>
+<section id="back-to-constrained-ascent-directions" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Back to constrained ascent directions</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Recall: constraining w.r.t. the parameter <span class="math inline">\(\phi\)</span> does not solve the issue of strongly different impacts of individual parameters: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad \]</span></li>
+<li class="fragment"><strong>Question</strong>: What is a good alternative to avoid too large (and thus, harmful) steps?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the KL divergence! <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi&#39;}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. \]</span></span>
+<ul class="incremental">
+<li class="fragment">Constraining the KL divergence means that we automatically treat different parameters differently!</li>
+<li class="fragment">If a change in one of the entries of <span class="math inline">\(\phi\)</span> results in large policy changes, then the constraint does not allow large changes in that entry.</li>
+</ul></li>
+<li class="fragment">Since we want to have small updates (constrained by <span class="math inline">\(\epsilon\)</span>): approximation via the Fisher information matrix, <span class="math display">\[\begin{align*} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad &amp;\text{subject to}\qquad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi), \\
+&amp;\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
+\end{align*} \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="natural-policy-gradient-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Natural policy gradient</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: <span class="math display">\[\begin{equation} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi). \label{eq:Adv_Natural_PG} \end{equation}\]</span></li>
+<li class="fragment">What remains is the question of solving <span class="math inline">\(\eqref{eq:Adv_Natural_PG}\)</span>.</li>
+<li class="fragment">Without going into further details (e.g., <span class="citation">(<a href="#ref-Kakade2001npg">S. M. Kakade 2001</a>; <a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span>)<br />
+<span class="math inline">\(\Rightarrow\)</span> Solution: <strong>scale</strong> the policy gradient <strong>by the inverse Fisher information matrix</strong>, <span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi). \label{eq:Adv_NPG} \end{equation}\]</span></li>
+<li class="fragment"><strong>Intuition</strong> behind the inverse FIM <span class="math inline">\(F^{-1}\)</span>:
+<ul class="incremental">
+<li class="fragment">Parameters with a high impact have high Fisher information.</li>
+<li class="fragment">Scaling by the inverse “normalizes” the individual impacts.</li>
+</ul></li>
+<li class="fragment">This techinque is known as the <strong>natural policy gradient</strong> (also <strong>covariant policy gradient</strong>).
+<ul class="incremental">
+<li class="fragment">Preconditioning steps of this type are very common in optimization in general.</li>
+<li class="fragment">Drawback: <span class="math inline">\(F\in\R^{d \times d}\)</span> can be very expensive to calculate (and invert) for very large parameter vectors.</li>
+</ul></li>
+</ul>
+</div>
+<div class="platzhalter">
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:300px;"><img src="images/11-advanced/Covariant-PG-vanilla.png" style="height:auto;width:100%;" alt="images/11-advanced/Covariant-PG-vanilla.png" /></span></span></span></p>
+<p><br />
+</p>
+<p><span class="fragment"><span class="media"><span class="figure image" style="height:auto;width:300px;"><img src="images/11-advanced/Covariant-PG.png" style="height:auto;width:100%;" aria-label="Source: (Peters and Schaal 2008)" alt="images/11-advanced/Covariant-PG.png" /><span class="figcaption"><span>Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span></span></span></span></span></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="limitations-of-the-natural-policy-gradient" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Limitations of the natural policy gradient</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="definition">
+<p><span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}\]</span></p>
+</div>
+<div class="grid-layout" style="grid-template-columns: 4fr 6fr;">
+<div class="fragment">
+<div id="the-step-size-alpha-is-hard-to-choose" style="background-color: AliceBlue;">
+<h2>1. The step size <span class="math inline">\(\alpha\)</span> is hard to choose!</h2>
+<ul>
+<li>Scaling doesn’t prevent the step from changing the policy too much.</li>
+<li>Large steps can collapse performance.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="no-explicit-control-of-policy-change." style="background-color: LightCoral;">
+<h2>2. No explicit control of policy change.</h2>
+<ul>
+<li>NPG does not explicitly constrain the distance between <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span>.</li>
+<li>Data for gradient estimation is sampled from <span class="math inline">\(\subold{\pi}\)</span>​​.</li>
+<li>If new policy differs too much, gradient estimate becomes unreliable.</li>
+</ul>
+</div>
+</div>
+</div>
+<p><br />
+</p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<div id="inversion-of-the-fisher-matrix." style="background-color: DarkSeaGreen;">
+<h2>3. Inversion of the Fisher matrix.</h2>
+<ul>
+<li>NPG requires inversion of the Fisher Information Matrix.</li>
+<li>If our network has <span class="math inline">\(d\)</span> parameters, the FIM is a <span class="math inline">\(d \times d\)</span> matrix.</li>
+<li>For a modest deep learning network with 100,000 parameters, <span class="math inline">\(F\)</span> contains 10 billion elements.</li>
+<li>Storing this in memory and computing its exact inverse (<span class="math inline">\(\Oc(d^3)\)</span> complexity) <span class="math inline">\(\Rightarrow\)</span> computationally impossible.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="performance-guarantees-require-small-policy-changes." style="background-color: LemonChiffon;">
+<h2>4. Performance guarantees require small policy changes.</h2>
+<ul>
+<li>NPG does not provide a mathematical guarantee that <span class="math inline">\(\subnew{\pi}\)</span> will actually be better than (or at least as good as) <span class="math inline">\(\subold{\pi}\)</span>.</li>
+<li>Theory shows that small policy updates should improve performance <span class="citation">(<a href="#ref-Kakade2002approximately">S. Kakade and Langford 2002</a>)</span> …</li>
+<li>… but the basic NPG update does not enforce the required small change condition.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trust-region-policy-optimization" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Trust-region policy optimization</h1>
+</div>
+</div>
+</section>
+<section id="performance-measures-of-policies" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Performance measures of policies</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Let’s introduce a new (and yet <em>already known</em> quantity): the <strong>performance measure</strong> of a policy, <span class="math display">\[ \eta(\pi) = \Expsub{\sum_{t=0}^{T-1}\gamma^t r_t}{\tau\sim \pi} = \Expsub{V^\pi(s_0)}{s_0 \sim p_0}. \]</span></li>
+<li class="fragment">Remember our reinforcement learning objective <span class="math display">\[ L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? \]</span></li>
+<li class="fragment">If we consider a policy parameterized by <span class="math inline">\(\phi\)</span>, i.e., <span class="math inline">\(\pi_\phi\)</span>, then the two equations are the same, <span class="math display">\[\eta(\pi_\phi) = L(\phi).\]</span></li>
+<li class="fragment">The difference is more in terms of the <em>motivation</em>, not the definition:
+<ul class="incremental">
+<li class="fragment">We use <span class="math inline">\(L(\phi)\)</span> in policy gradients, since we want to find ascent directions for the network paraemters.</li>
+<li class="fragment">We use <span class="math inline">\(\eta(\pi)\)</span> as a global quantity to establish mathematical lower-bounds so that an algorithm can compute a safe step size (the trust region).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> For more details on this matter, see <span class="citation">(<a href="#ref-Kakade2002approximately">S. Kakade and Langford 2002</a>; <a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Can we relate two policies <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span> using advantage functions?</li>
+<li class="fragment">Let’s use <span class="math inline">\(\gamma=1\)</span> for simplicity (but one can work this out with <span class="math inline">\(\gamma\)</span> as well).</li>
+<li class="fragment">Consider the advantage function under the old policy <span class="math inline">\(\subold{\pi}\)</span>, <span class="math display">\[ A_{\subold{\pi}}(s_t,a_t) = r_t + V^{\subold{\pi}}(s_{t+1}) - V^{\subold{\pi}}(s_{t}). \]</span></li>
+<li class="fragment">Now sample a trajectory under the new policy <span class="math inline">\(\subnew{\pi}\)</span> (i.e., <span class="math inline">\((s_0,a_0) \to \ldots \to (s_{T-1},a_{T-1})\)</span>) and calculate the advantages: <span class="math-incremental"><span class="math display">\[\begin{align*}
+A_{\subold{\pi}}(s_0,a_0) &amp;= r_0 + V^{\subold{\pi}}(s_{1}) - V^{\subold{\pi}}(s_{0}) \\
+A_{\subold{\pi}}(s_1,a_1) &amp;= r_1 + V^{\subold{\pi}}(s_{2}) - V^{\subold{\pi}}(s_{1}) \\
+&amp;~ ~ \vdots \\
+A_{\subold{\pi}}(s_{T-2},a_{T-2}) &amp;= r_{T-2} + V^{\subold{\pi}}(s_{T-1}) - V^{\subold{\pi}}(s_{T-2}) \\
+A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(s_{T})}_{=0 \text{ (terminal)}} - V^{\subold{\pi}}(s_{T-1})
+\end{align*}\]</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Take the sum: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &amp;= \underbrace{r_0 \textcolor{blue}{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \textcolor{blue}{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \textcolor{red}{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \textcolor{red}{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
+&amp;= r_0 + r_1 + \ldots + r_{T-2} + r_{T-1} - V^{\subold{\pi}}(s_{0}) \fragment{ = \cbracket{\sum_{t=0}^{T-1} r_t} - V^{\subold{\pi}}(s_{0}) .}
+\end{align*}\]</span></span></li>
+<li class="fragment">Shift around and take the expectation with respect to the new policy <span class="fragment">(in the case of <span class="math inline">\(V^{\subold{\pi}}\)</span>, this reduces to <span class="math inline">\(s_0 \sim p_0\)</span>):</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
+\Expsub{\cbracket{\sum_{t=0}^{T-1} r_t}}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}} &amp;= \Expsub{V^{\subold{\pi}}(s_{0})}{s_0 \sim p_0} + \Expsub{\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t)}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}} \\
+\Leftrightarrow \qquad\eta(\subnew{\pi}) &amp;= \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}}
+\end{align*}\]</span></span></li>
+<li class="fragment">Right now, the expectation is written over an entire lifetime trajectory (<span class="math inline">\(\tau \sim \subnew{\pi}\)</span>).</li>
+<li class="fragment">To be useful for an optimization algorithm, we need to break it down step-by-step and look at individual states and actions.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-3" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (3)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Let’s consider the continual case (<span class="math inline">\(T=\infty\)</span>) such that we can disect the expectation into individual steps: <span class="math-incremental"><span class="math display">\[\begin{align*} 
+\Expsub{\sum_{t=0}^{\infty} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}} &amp;= \sum_{t=0}^{\infty} \gamma^t \Expsub{A_{\subold{\pi}}(s_t,a_t)}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}} \\
+&amp;=\sum_{t=0}^{\infty}\int_\Sc p_{\subnew{\pi}}(s) \int_\Ac \subnew{\pi}\agivenb{a}{s} A_{\subold{\pi}}(s,a) \dint{a} \dint{s}\\
+&amp;=\int_\Sc \underbrace{\cbracket{\sum_{t=0}^{\infty} \gamma^t p_{\subnew{\pi}}(s)}}_{\fragment{ =\rho_{\subnew{\pi}}(s) }} \cbracket{\int_\Ac \subnew{\pi}\agivenb{a}{s} A_{\subold{\pi}}(s,a) \dint{a}} \dint{s} \\
+&amp;= \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}}.
+\end{align*}\]</span></span></li>
+<li class="fragment">Here, we have introduced the <strong>discounted state distribution</strong> <span class="math inline">\(\rho_{\subnew{\pi}}(s)\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="relation-between-the-performance-measures" class="definition">
+<h3>Relation between the performance measures</h3>
+<p><span class="math display">\[\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \label{eq:Adv_performance_measures} \end{equation}\]</span></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> When sampling, the data will automatically be distributed according to <span class="math inline">\(\rho_{\subnew{\pi}}(s)\)</span>. See also the discussion in the actor-critic lecture.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-the-performance-measure-of-two-policies-4" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparing the performance measure of two policies (4)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="relation-between-the-performance-measures-1" class="definition">
+<h3>Relation between the performance measures</h3>
+<p><span class="math display">\[\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}\]</span></p>
+</div>
+<div class="fragment">
+<h3 id="whats-so-surprising-about-this-equation">What’s so surprising about this equation?</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The Advantage function is built entirely out of the old policy’s values,</li>
+<li class="fragment">yet when we weight it by the new policy’s state distribution,</li>
+<li class="fragment">it perfectly calculates the new policy’s total return.</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="upside-and-downside-of-this-identity" class="definition">
+<h3>Upside and downside of this identity</h3>
+<p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Proof that if you can find a new policy with a positive expected advantage under the old policy, your policy will get better.}}\)</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ To compute the exact value, we must sample states from the new policy (}s \sim p_{\subnew{\pi}}\text{), which we do not yet know!}}\)</span></span></p>
+<p><span class="fragment"><strong>Solution approach in TRPO</strong>: “If <span class="math inline">\(\subnew{\pi}\)</span> is very close to <span class="math inline">\(\subold{\pi}\)</span> (enforced by a KL-constraint), we can swap the state distribution <span class="math inline">\(p_{\subnew{\pi}}\)</span> for <span class="math inline">\(p_{\subnew{\pi}}\)</span> and safely optimize an approximation (i.e., a <em>surrogate objective</em>).”</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-turn-this-into-an-algorithm" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>How to turn this into an algorithm</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="relation-between-the-performance-measures-2" class="definition">
+<h3>Relation between the performance measures</h3>
+<p><span class="math display">\[\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}\]</span></p>
+</div>
+<p>Starting with <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span>, we need to take the several steps to arrive at an algorithm that we can actually implement.</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Construct a local approximation of <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span> (the <em>surrogate loss</em>) which we can estimate using samples.</li>
+<li class="fragment">Ensure that this approximation is sufficiently accurate.</li>
+<li class="fragment">Turn he surrogate loss function into a practical optimization problem.</li>
+<li class="fragment">Make sure that it scales to large problems.</li>
+</ol>
+</div>
+<div class="fragment">
+<div id="trust-region-policy-optimization-trpo" class="definition">
+<h3>Trust-region policy optimization (TRPO)</h3>
+<p>The first realization of these steps resulted in the TRPO algorithm, which was derived in <span class="citation">(<a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-the-surrogate-loss-function" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: The surrogate loss function</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="relation-between-the-performance-measures-3" class="definition">
+<h3>Relation between the performance measures</h3>
+<p><span class="math display">\[\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}\]</span></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">In principle, this equation shows us a way to guarantee policy improvement.</li>
+<li class="fragment">If we can ensure positive expected advantages, then we improve!</li>
+<li class="fragment"><strong>But</strong>: Sampling under the new policy (<span class="math inline">\(s\sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}\)</span>) is infeasible, as we do not have it yet!</li>
+</ul>
+</div>
+<div class="fragment">
+<div id="a-surrogate-loss-function" class="definition">
+<h2>A surrogate loss function</h2>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Simple trick: just sample the state <span class="math inline">\(s\)</span> under the <em>old</em> policy! <span class="math display">\[\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\textcolor{red}{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}\]</span></li>
+<li class="fragment">Under the assumption that <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span> do not differ too much, this is a reasonable assumption.</li>
+<li class="fragment">In the limit case <span class="math inline">\(\subold{\pi} = \subnew{\pi}\)</span>, we have equality of <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span> and <span class="math inline">\(\eqref{eq:Adv_surrogate_loss}\)</span>, as well as their gradients <span class="citation">(<a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>, Eq. (4))</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-approximation-error" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Approximation error</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>In <span class="citation">(<a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>)</span>, it was shown that error between the two expressions <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span> and <span class="math inline">\(\eqref{eq:Adv_surrogate_loss}\)</span> can be bounded <span class="math display">\[\eta(\pi) \ge L_\subold{\pi}(\pi) - C \cdot \KLdivmax{\subold{\pi}}{\pi}, \qquad \text{with}\quad\KLdivmax{\subold{\pi}}{\pi}=\max_{s\in\Sc}\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}},\]</span> and <span class="math inline">\(C\)</span> is a constant derived from the environment’s transition dynamics and the maximum bounds of the advantage function.</p>
+<p><span class="fragment"><strong>Central message</strong>: If we maximize the right-hand side of this inequality, we are guaranteed to improve (or at least maintain) our true performance <span class="math inline">\(\eta(\pi)\)</span>!</span></p>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="fragment">
+<p><strong>Maximizing the surrogate loss</strong> <span class="math inline">\(\Rightarrow\)</span> introducing a parametric policy <span class="math inline">\(\pi_\phi\)</span>, our surrogate-based optimization problem is <span class="math display">\[ \max_\phi L_\subold{\pi}(\pi_\phi) - C \cdot \KLdivmax{\subold{\pi}}{\pi_\phi}, \]</span> or, if we consider two iterates <span class="math inline">\(\phi\)</span> and <span class="math inline">\(\phi&#39;\)</span> <span class="math display">\[ \max_{\phi&#39;} L_{\pi_\phi}(\pi_{\phi&#39;}) - C \cdot \KLdivmax{\pi_\phi}{\pi_{\phi&#39;}}. \]</span></p>
+</div>
+<div class="fragment">
+<p><strong>Challenges</strong>:</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">The constant <span class="math inline">\(C\)</span> is usually large and thus restrictive<br />
+<span class="fragment"><strong>Solution</strong>: Transfer to a constraint with hyperparameter <span class="math inline">\(\delta\)</span>.</span></li>
+<li class="fragment">Computing the maximum KL divergence over all possible states (<span class="math inline">\(\KLdivmax{\pi_{\subold{\phi}}}{\pi_{\phi}}\)</span>) is impossible.<br />
+<span class="fragment"><strong>Solution</strong>: Replace by the average KL divergence over the states that were actually observed: <span class="math display">\[\KLdivavg{\pi_\phi}{\pi_{\subold{\phi}}} = \Expsub{\KLdiv{\pi_{\subold{\phi}}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\pi_\subold{\phi}}}.\]</span></span></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-sampling-the-correct-expectation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Sampling the correct expectation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>Our final observation is that in our surrogate loss function <span class="math inline">\(L_\subold{\pi}\)</span> (Eq. <span class="math inline">\(\eqref{eq:Adv_surrogate_loss}\)</span>), the “old” performance measure <span class="math inline">\(\eta(\subold{\pi})\)</span> serves as a constant <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> we can neglect it!</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Overall, we obtain the following surrogate optimization problem: <span class="math display">\[
+\max_{\phi} \underbrace{\Expsub{A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim{\pi_\phi}}}_{=L_\subold{\pi}(\pi_\phi) - \eta(\subold{\pi})} \quad\text{subject to}\quad \underbrace{\Expsub{\KLdiv{\subold{\pi}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\subold{\pi}}}}_{=\KLdivavg{\subold{\pi}}{\pi_{\phi}}} \leq \delta.\]</span></li>
+<li class="fragment">What’s wrong with this equation?<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> In the loss, we’re compute expectations over the new policy <span class="math inline">\(\pi_\phi\)</span>, but the data was collected under <span class="math inline">\(\subold{\pi}\)</span>! <span class="math display">\[\Expsub{A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim{\pi_\phi}} = \int_\Sc \rho_{\subold{\pi}}(s) \int_\Ac \pi_\phi\agivenb{a}{s} A_{\subold{\pi}}(s,a) \dint{a} \dint{s}. \]</span></span></li>
+<li class="fragment"><strong>Solution</strong>: Importance sampling! <span class="math display">\[ \int_\Sc \rho_{\subold{\pi}}(s) \int_\Ac \subold{\pi}\agivenb{a}{s}\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}} A_{\subold{\pi}}(s,a) \dint{a} \dint{s} = \Expsub{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}} A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}}. \]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-the-surrogate-optimization-problem" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: The surrogate optimization problem</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div id="trust-region-policy-optimization-trpo-optimization-problem" class="definition">
+<h3>Trust-region policy optimization (TRPO) optimization problem</h3>
+<p><span class="math display">\[\begin{equation}
+\max_{\phi} \underbrace{\Expsub{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}}}_{=L_\mathsf{TRPO}(\phi)} \quad\text{subject to}\quad \underbrace{\Expsub{\KLdiv{\subold{\pi}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\subold{\pi}}}}_{=\KLdivavg{\subold{\pi}}{\pi_{\phi}}} \leq \delta. \label{eq:Adv_TRPO_Opt} 
+\end{equation}\]</span></p>
+</div>
+<p><span class="fragment"><strong>Next question</strong>: How do we solve it efficiently?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Let’s start with the gradient!</span></p>
+<p><span class="fragment"><span class="math display">\[
+\nablaphi L_\mathsf{TRPO}(\phi) = \nablaphi \Expsub{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}} \fragment{ = \Expsub{\frac{\nablaphi \pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}} }
+\]</span></span></p>
+<div class="fragment">
+<div id="the-policy-gradient-for-the-trpo-surrogate-loss" class="definition">
+<h3>The Policy gradient for the TRPO surrogate loss</h3>
+<p><span class="math-incremental"><span class="math display">\[\begin{equation} \begin{aligned}
+g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=\subold{\phi}}} } \fragment{ =\Expsub{\frac{\nablaphi \pi_{\phi}\agivenb{a}{s}\big|_{\phi=\subold{\phi}}}{\pi_\subold{\phi}\agivenb{a}{s}}A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} } \\
+&amp;=\Expsub{\nablaphi \log \pi_\phi\agivenb{a}{s}\big|_{\phi=\subold{\phi}} A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} \quad\textcolor{grey}{\text{\textit{(Log-identity trick)}}} \end{aligned}
+\label{eq:Adv_TRPO_gradient}\end{equation}\]</span></span> <span class="fragment">is the standard policy gradient with value baseline!</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-solving-the-optimization-problem" class="slide level1" menu-title="TRPO: Solving the optimization problem">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Solving the optimization problem <span class="math inline">\(\eqref{eq:Adv_TRPO_Opt}\)</span></h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>To solve Problem <span class="math inline">\(\eqref{eq:Adv_TRPO_Opt}\)</span> efficiently, we need two steps:</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Linearize the objective function: First-order <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> around <span class="math inline">\(\subold{\phi}\)</span> using the gradient <span class="math inline">\(g\)</span> (Eq. <span class="math inline">\(\eqref{eq:Adv_TRPO_gradient}\)</span>). <span class="math display">\[ L_\mathsf{TRPO}(\phi) \approx L_\mathsf{TRPO}(\subold{\phi}) + g^\top(\phi - \subold{\phi}) \fragment{ = g^\top(\phi - \subold{\phi}). } \]</span> <span class="fragment">(The term <span class="math inline">\(L_\mathsf{TRPO}(\subold{\phi})\)</span> drops out because it is exactly zero at <span class="math inline">\(\subold{\phi}\)</span>: No advantage and sampling ratio is one.)</span></li>
+<li class="fragment">Quadratic approximation of the KL constraint for small <span class="math inline">\(\Delta\phi=(\phi - \subold{\phi})\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Fisher information matrix (Eq. <span class="math inline">\(\eqref{eq:Adv_KLdiv_Fisher}\)</span>)!</span></li>
+</ol>
+</div>
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="fragment">
+<div id="linear-quadratic-approximation-of-the-trpo-problem" class="definition">
+<h2>Linear-quadratic approximation of the TRPO problem <span class="math inline">\(\eqref{eq:Adv_TRPO_Opt}\)</span></h2>
+<p><span class="math display">\[\begin{equation}
+\max_{\Delta\phi} g^\top\Delta\phi \quad\text{subject to}\quad \frac{1}{2}\Delta\phi^\top F \Delta\phi \leq \delta, \label{eq:Adv_TRPO_LQOpt} 
+\end{equation}\]</span> where, according to <span class="math inline">\(\eqref{eq:Adv_Fisher_Information_Matrix}\)</span>, <span class="math display">\[F(\phi) = \Expsub{ \rbracket{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}_{\phi=\subold{\phi}}}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}}.\]</span></p>
+</div>
+</div>
+<div class="fragment">
+<div id="solution-to" class="definition">
+<h3>Solution to <span class="math inline">\(\eqref{eq:Adv_TRPO_LQOpt}\)</span></h3>
+<p>The solution (via <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>) yields <span class="math display">\[\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g. \label{eq:Adv_TRPO_step} \end{equation}\]</span> <span class="fragment"><strong>Note</strong>: This is NPG <span class="math inline">\(\eqref{eq:Adv_NPG}\)</span> with automatic step size selection <span class="math inline">\(\alpha=\sqrt{\frac{2\delta}{g^\top F^{-1} g}}\)</span>!</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> In classical optimization, the local approximation <span class="math inline">\(\eqref{eq:Adv_TRPO_LQOpt}\)</span> is solved repeatedly. The solution can be shown to converge to the optimum of <span class="math inline">\(\eqref{eq:Adv_TRPO_Opt}\)</span>, which is known as <strong>Sequential Quadratic Programming</strong> (<strong>SQP</strong>). In TRPO, we solve the approximation <span class="math inline">\(\eqref{eq:Adv_TRPO_LQOpt}\)</span> just once before collecting new data.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-avoiding-matrix-inversion" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Avoiding matrix inversion</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="definition">
+<p><span class="math display">\[\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g \tag{\ref{eq:Adv_TRPO_step}} \end{equation}\]</span></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Matrix inversion scales cubically. <span class="fragment">That is, for a <span class="math inline">\(d\)</span>-dimensional parameter <span class="math inline">\(\phi\in\R^d\)</span>, we have <span class="math inline">\(\Oc(d^3)\)</span>.</span></li>
+<li class="fragment">Solution: Use the <a href="https://en.wikipedia.org/wiki/Conjugate_gradient_method">conjugate gradient (CG) method</a> for solving linear systems of the form <span class="math inline">\(F x = g\)</span>.
+<ul class="incremental">
+<li class="fragment">Usually, CG scales according to <span class="math inline">\(\Oc(d^2)\)</span> per iteration.</li>
+<li class="fragment">However, in TRPO, we can avoid calculating <span class="math inline">\(F\in\R^{d\times d}\)</span> entirely using automatic differentiation <span class="math inline">\(\Rightarrow\)</span> scales linearly with the number of weights (i.e., <span class="math inline">\(\Oc(d)\)</span>).</li>
+<li class="fragment">This is as fast as it gets!</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="approach">Approach</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Compute <span class="math inline">\(x = F^{-1}g\)</span> using the CG method (<span class="math inline">\(\Oc(d)\)</span> if we use autodiff).</li>
+<li class="fragment">Calculate the denominator in <span class="math inline">\(\eqref{eq:Adv_TRPO_step}\)</span> (Note that <span class="math inline">\(F^\top = F\)</span>, since the FIM is symmetric): <span class="math display">\[ \nu = g^\top F^{-1} g \fragment{ = (Fx)^\top F^{-1} Fx } \fragment{ = x^\top F^\top F^{-1} Fx } \fragment{ = x^\top F x } \fragment{ = x^\top g. } \]</span></li>
+<li class="fragment">Compute the step size <span class="math inline">\(\beta = \sqrt{\frac{2\delta}{\nu}} F^{-1} g\)</span>.</li>
+<li class="fragment">Compute the update <span class="math inline">\(\Delta \phi = \beta x\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-step-size-selection" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Step size selection</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<div id="trpo-surrogate-problem" class="definition">
+<h3>TRPO surrogate problem</h3>
+<p><span class="math display">\[\begin{equation}\begin{aligned} 
+\max_{\phi} L_\mathsf{TRPO}(\phi) \quad\text{s.t.}\quad \KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta. \end{aligned} \tag{\ref{eq:Adv_TRPO_Opt}} 
+\end{equation}\]</span></p>
+</div>
+</div>
+<div class="platzhalter">
+<div id="linear-quadratic-approximation" class="definition">
+<h3>Linear-quadratic approximation</h3>
+<p><span class="math display">\[\begin{equation}
+\max_{\Delta\phi} g^\top\Delta\phi \quad\text{subject to}\quad \frac{1}{2}\Delta\phi^\top F \Delta\phi \leq \delta, \tag{\ref{eq:Adv_TRPO_LQOpt}} 
+\end{equation}\]</span></p>
+</div>
+</div>
+</div>
+<p><span class="fragment"><strong>Issue</strong>: Even though we have selected an optimal step size for <span class="math inline">\(\eqref{eq:Adv_TRPO_LQOpt}\)</span> in <span class="math inline">\(\eqref{eq:Adv_TRPO_step}\)</span>, we are not guaranteed that in <span class="math inline">\(\eqref{eq:Adv_TRPO_Opt}\)</span>, we</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">actually get a descent in <span class="math inline">\(L_\mathsf{TRPO}(\phi)\)</span>,</li>
+<li class="fragment">satisfy the constraint <span class="math inline">\(\KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="definition">
+<p><strong>Step length selection via <a href="https://en.wikipedia.org/wiki/Backtracking_line_search">backtracking</a>.</strong> <span class="fragment">Define a <em>shrinkage parameter</em> <span class="math inline">\(\alpha\in(0,1)\)</span> and</span></p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Get <span class="math inline">\(\Delta\phi\)</span> by solving <span class="math inline">\(\eqref{eq:Adv_TRPO_LQOpt}\)</span>.</li>
+<li class="fragment">Calculate candidate <span class="math inline">\(\phi&#39; = \subold{\phi} + \Delta\phi\)</span> for the next iterate.</li>
+<li class="fragment">Check the following two conditions (recall that <span class="math inline">\(L_\mathsf{TRPO}(\subold{\phi})=0\)</span>): <span class="math display">\[(I)\quad L_\mathsf{TRPO}(\phi&#39;) &gt;0 ~ ? \qquad\text{and}\qquad (II)\quad \KLdivavg{\subold{\pi}}{\pi_{\phi&#39;}} \leq \delta ~ ?\]</span></li>
+<li class="fragment"><strong>if</strong> (I) and (II) are satisfied <strong>then</strong> set <span class="math inline">\(\subnew{\phi}=\phi&#39;\)</span> and <span class="math inline">\(\STOP\)</span>. <span class="math inline">\(\qquad\)</span> <span class="fragment"><strong>else:</strong> set <span class="math inline">\(\Delta\phi \gets \alpha \Delta\phi\)</span> and go back to 2.</span></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-final-algorithm" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO: Final algorithm</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="definition">
+<!-- ### Algorithm: Trust-Region Policy Optimization (TRPO) -->
+<p><strong>Input:</strong> Initial policy parameters <span class="math inline">\(\iterate{\phi}{0}\)</span>, trust-region bound <span class="math inline">\(\delta\)</span>, backtracking parameter <span class="math inline">\(\alpha \in (0, 1)\)</span>, acceptance threshold <span class="math inline">\(\epsilon &gt; 0\)</span>.</p>
+<p>For iterations <span class="math inline">\(k = 0, 1, 2, \dots\)</span> until convergence:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Data collection:</strong> Run the current policy <span class="math inline">\(\pi_{\iterate{\phi}{k}}\)</span> in the environment to collect a batch of trajectories <span class="math inline">\(\Bc = \{(s_t, a_t, r_t)\}\)</span>.</li>
+<li><strong>Advantage estimation:</strong> Estimate the advantage values <span class="math inline">\(A_{\iterate{\phi}{k}}(s, a)\)</span> for all sampled steps.</li>
+<li><strong>Compute policy gradient (<span class="math inline">\(g\)</span>):</strong> Evaluate the standard policy gradient vector <span class="math inline">\(g\)</span> using the collected samples: <span class="math display">\[g = \frac{1}{\abs{\Bc}} \sum_{s,a \in \Bc} \nablaphi \log \pi_\phi\agivenb{a}{s}\Big|_{\phi=\iterate{\phi}{k}} A_{\iterate{\phi}{k}}(s,a)\]</span></li>
+<li><strong>Compute Step Direction (<span class="math inline">\(x\)</span>) via Truncated CG</strong> (<span class="math inline">\(10\)</span> to <span class="math inline">\(20\)</span> iterations) to solve the linear system <span class="math inline">\(Fx = g\)</span> for <span class="math inline">\(x \approx F^{-1}g\)</span>. <!-- (*Note: The matrix-vector product $Fx$ is computed matrix-free via automatic differentiation.*) --></li>
+<li><strong>Maximal step size (<span class="math inline">\(\beta\)</span>):</strong> Compute <span class="math inline">\(\beta = \sqrt{\frac{2\delta}{x^T F x}}\)</span>. Set the full proposed step direction: <span class="math inline">\(\Delta \phi = \beta x\)</span>.</li>
+<li><strong>Backtracking:</strong> Find largest factor <span class="math inline">\(\gamma = \alpha^j\)</span> (for <span class="math inline">\(j = 0, 1, 2, \dots\)</span>) such that <span class="math inline">\(\subnew{\phi} = \iterate{\phi}{k} + \gamma \Delta \phi\)</span> satisfies: <span class="math display">\[L_\mathsf{TRPO}(\subnew{\phi}) &gt;0 \qquad\text{and}\qquad \KLdivavg{\iterate{\phi}{k}}{\subnew{\phi}} \leq \delta \]</span></li>
+<li><strong>Policy Update:</strong> Update parameters to the safe, verified step: <span class="math inline">\(\iterate{\phi}{k+1} = \iterate{\phi}{k} + \gamma \Delta \phi\)</span> (or <em>reject</em> if no <span class="math inline">\(\gamma\)</span> can be found).</li>
+</ol>
+</div>
+</div>
+<!-- # TITLE
+
+### The Big Picture Structure
+
+```
+ Collect Data ──► Compute Gradient (g) ──► CG Loop (F⁻¹g) ──► Line Search (KL ≤ δ) ──► Update θ
+      ▲                                                                                     │
+      └─────────────────────────────────────────────────────────────────────────────────────┘
+
+``` -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-half-cheetah" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Half-Cheetah</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 3fr 2fr 2fr;">
+<div class="platzhalter">
+<p>As an example, we study the <a href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/">Half Cheetah</a> example from the MuJoCo library.</p>
+<ul>
+<li><span class="math inline">\(\Sc\)</span>: 17 states.</li>
+<li><span class="math inline">\(\Ac\)</span>: 6 actions.</li>
+<li>Reward: Forward-Cost - Control-Cost.</li>
+</ul>
+</div>
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:350px;">
+<img src="images/11-advanced/half_cheetah.png" style="height:auto;width:100%;" alt="images/11-advanced/half_cheetah.png" />
+</figure>
+</div>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:200px;">
+<img src="images/11-advanced/half_cheetah.gif" style="height:auto;width:100%;" alt="images/11-advanced/half_cheetah.gif" />
+</figure>
+</div>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div id="results-with-trpo" class="platzhalter">
+<h3>Results with TRPO</h3>
+<div class="media">
+<figure class="image" style="height:auto;width:650px;">
+<img src="images/11-advanced/half_cheetah_trpo.svg" style="height:auto;width:100%;" alt="images/11-advanced/half_cheetah_trpo.svg" />
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><br />
+</p>
+<div class="media">
+<figure class="video" style="height:auto;width:300px;">
+<video controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/11-advanced/trpo.mp4">
+
+</video>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="proximal-policy-optimization-ppo" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Proximal policy optimization (PPO)</h1>
+</div>
+</div>
+</section>
+<section id="proximal-policy-optimization-ppo-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Proximal policy optimization (PPO)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">TRPO solves <span class="math inline">\(\max_\theta L(\theta)\)</span> subject to <span class="math inline">\(D_{KL}(\pi_{\subold{\theta}},\pi_\theta) \le \delta\)</span>. To do this it requires:
+<ul class="incremental">
+<li class="fragment">second‑order information (Fisher matrix)</li>
+<li class="fragment">conjugate gradient</li>
+<li class="fragment">a line search</li>
+<li class="fragment">KL constraint checks</li>
+</ul></li>
+<li class="fragment">Most deep learning uses first‑order optimizers (Adam, SGD). TRPO instead requires solving <span class="math inline">\(F^{-1} g\)</span>, which means special optimization code rather than standard gradient descent.</li>
+<li class="fragment">Because of the line search and constraint checks, each update is more expensive and harder to integrate into large-scale training pipelines. Researchers wanted something that:
+<ul class="incremental">
+<li class="fragment">keeps small policy updates</li>
+<li class="fragment">but uses simple gradient descent</li>
+</ul></li>
+</ul>
+</div>
+<p>Two possible approaches: ::: incremental 1. Turn constraint into penalty term (tuning constant is hard). 2. Clipped objective (the one people use)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="evolution-of-policy-gradient-methods" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Evolution of policy gradient methods</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<ul>
+<li>policy gradient</li>
+<li>natural policy gradient</li>
+<li>TRPO: maximize surrogate objectivesubject to KL trust region</li>
+<li>PPO: replace hard trust region with clipped objective</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="references" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>References</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Kakade2001npg" class="csl-entry">
+Kakade, Sham M. 2001. <span>“A Natural Policy Gradient.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by T. Dietterich, S. Becker, and Z. Ghahramani. Vol. 14. MIT Press. <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2001/file/4b86abe48d358ecf194c56c69108433e-Paper.pdf</a>.
+</div>
+<div id="ref-Kakade2002approximately" class="csl-entry">
+Kakade, Sham, and John Langford. 2002. <span>“Approximately Optimal Approximate Reinforcement Learning.”</span> In <em>Proceedings of the Nineteenth International Conference on Machine Learning</em>, 267–74. ICML ’02. San Francisco, CA, USA: Morgan Kaufmann Publishers Inc.
+</div>
+<div id="ref-Peters2008naturalac" class="csl-entry">
+Peters, Jan, and Stefan Schaal. 2008. <span>“Natural Actor-Critic.”</span> <em>Neurocomputing</em> 71 (7): 1180–90.
+</div>
+<div id="ref-Schulman2015trpo" class="csl-entry">
+Schulman, John, Sergey Levine, Pieter Abbeel, Michael Jordan, and Philipp Moritz. 2015. <span>“Trust Region Policy Optimization.”</span> In <em>Proceedings of the 32nd International Conference on Machine Learning</em>, edited by Francis Bach and David Blei, 37:1889–97. Proceedings of Machine Learning Research. Lille, France: PMLR.
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<code class="sourceCode markdown" style="display:none;"></code>
+
+    </div>
+  </div>
+  
+  <script src="support/vendor/videojs/video.min.js"></script>
+  <script src="support/vendor/chartjs/chart.umd.js"></script>
+  <script src="support/plugins/quizzer/wordcloud2.js"></script>
+  <script src="support/plugins/quizzer/d3-sankey.min.js"></script>
+  <script type="module" src="support/components/custom-dialog.js"></script>
+  <script type="module" src="./support/js/color-scheme.js"></script>
+
+<script type="module">
+  // import Reveal and all plugins
+  import Reveal from './support/vendor/reveal/dist/reveal.esm.js';
+  import deckerPlugin from './support/plugins/decker/decker.js';
+  import uiAnchorsPlugin from './support/plugins/decker/ui-anchors.js'
+  import mathPlugin from './support/plugins/math/math.js';
+  import whiteboardPlugin from './support/plugins/whiteboard/whiteboard.js';
+  import sagePlugin from './support/plugins/sage/sage.js';
+  import searchPlugin from './support/plugins/search/search.js';
+  import zoomPlugin from './support/plugins/zoom/zoom.js';
+  import printPlugin from './support/plugins/print/print.js';
+  import jinglesPlugin from './support/plugins/jingles/jingles.js';
+  import quizPlugin from './support/plugins/quiz/quiz.js';
+  import quizWuePlugin from './support/plugins/quiz-wue/quiz-wue.js';
+  import quizzerPlugin from './support/plugins/quizzer/quizzer.js'
+  import explainPlugin from './support/plugins/explain/explain.js';
+  import chartsPlugin from './support/plugins/charts/charts.js';
+  import menuPlugin from './support/plugins/menu/menu.js';
+  import feedbackPlugin from './support/plugins/feedback/feedback.js';
+  import notesPlugin from './support/vendor/reveal/plugin/notes/notes.esm.js';
+      import a11yPlugin from './support/plugins/a11y/a11y.js';
+  import handoutPlugin from './support/plugins/handout/handout.js';
+  import chattyPlugin from './support/plugins/chatty/chatty.js';
+
+  let revealConfig = { 
+    // reveal configuration (see https://revealjs.com/config/)
+    ...Decker.meta.reveal,
+
+    // plugin configuration
+    math: { mathjax: String.raw`support/vendor/mathjax/`, ...Decker.meta.math },
+    chart: Decker.meta.chart,
+    menu: Decker.meta.menu,
+    explain: Decker.meta.explain,
+    feedback: Decker.meta.feedback || Decker.meta["decker-engine"],
+    jingles: Decker.meta.jingles,
+    whiteboard: Decker.meta.whiteboard,
+    
+    // list of plugins
+    plugins: [
+      deckerPlugin,
+      uiAnchorsPlugin,
+      sagePlugin,
+      mathPlugin,
+      chartsPlugin,
+      whiteboardPlugin,
+      searchPlugin,
+      zoomPlugin,
+      printPlugin,
+      jinglesPlugin,
+      quizPlugin,
+      quizWuePlugin,
+      quizzerPlugin,
+      explainPlugin,
+      menuPlugin,
+      chattyPlugin,
+      feedbackPlugin,
+      notesPlugin,
+              a11yPlugin,
+      handoutPlugin
+    ]
+  };
+
+  Reveal.initialize(revealConfig);
+</script>
+  
+
+</body>
+</html>

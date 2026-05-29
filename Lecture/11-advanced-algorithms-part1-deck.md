@@ -238,7 +238,7 @@ $$ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x
 ::: columns-5-4
 ::: incremental
 - The **Fisher information matrix** (**FIM**) measures how much information an observable random variable $x$ carries about an unknown parameter $\phi$ (e.g., the weights of a neural network).
-- Mathematically, if we have a log-likelihood function $\log p(x|\theta)$, the FIM (denoted as $F$) is the variance of its gradient (the "*score*"):
+- Mathematically, if we have a log-likelihood function $\log p(x|\phi)$, the FIM (denoted as $F$) is the variance of its gradient (the "*score*"):
 $$\begin{equation} F = \Exp{\cbracket{\nablaphi \log\, \pC{x}{\phi}} \cbracket{\nablaphi \log\, \pC{x}{\phi}}^\top}. \label{eq:Adv_Fisher_Information_Matrix} \end{equation}$$
 :::
 
@@ -299,7 +299,7 @@ $$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \tex
 [$\Rightarrow$ the KL divergence!
 $$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi'}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. $$]{.fragment} 
   - Constraining the KL divergence means that we automatically treat different parameters differently!
-  - If a change in on of the entries of $\theta$ results in large policy changes, then the constraint does not allow large changes in that entry.
+  - If a change in one of the entries of $\phi$ results in large policy changes, then the constraint does not allow large changes in that entry.
 - Since we want to have small updates (constrained by $\epsilon$): approximation via the Fisher information matrix,
 $$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad &\text{subject to}\qquad (\phi'-\phi)^\top F (\phi'-\phi), \\
 &\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
@@ -318,7 +318,7 @@ $$\begin{equation} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(
 - What remains is the question of solving \eqref{eq:Adv_Natural_PG}.
 - Without going into further details (e.g., [@Kakade2001npg;@Peters2008naturalac])\
 $\Rightarrow$ Solution: **scale** the policy gradient **by the inverse Fisher information matrix**,
-$$\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi).$$
+$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi). \label{eq:Adv_NPG} \end{equation}$$
 - **Intuition** behind the inverse FIM $F^{-1}$:
   - Parameters with a high impact have high Fisher information.
   - Scaling by the inverse "normalizes" the individual impacts.
@@ -342,8 +342,9 @@ $$\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi).$$
 # Limitations of the natural policy gradient
 
 ::: small
-$$\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)$$
-\
+::: definition
+$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}$$
+:::
 
 ::: columns-4-6
 ::: fragment 
@@ -490,7 +491,9 @@ $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{
 $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}$$
 :::
 
+::: fragment
 ### What's so surprising about this equation?
+:::
 
 ::: incremental
 - The Advantage function is built entirely out of the old policy's values, 
@@ -515,10 +518,15 @@ $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{
 # How to turn this into an algorithm
 
 ::: small
+::: definition 
+### Relation between the performance measures
+$$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}$$
+:::
+
 Starting with \eqref{eq:Adv_performance_measures}, we need to take the several steps to arrive at an algorithm that we can actually implement.
 
 ::: incremental
-1. Construct local approximation of \eqref{eq:Adv_performance_measures} which we can estimate using samples.
+1. Construct a local approximation of \eqref{eq:Adv_performance_measures} (the *surrogate loss*) which we can estimate using samples.
 1. Ensure that this approximation is sufficiently accurate.
 1. Turn he surrogate loss function into a practical optimization problem.
 1. Make sure that it scales to large problems.
@@ -536,8 +544,10 @@ The first realization of these steps resulted in the TRPO algorithm, which was d
 # TRPO: The surrogate loss function
 
 ::: small
-<!-- $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{\sum_{t=0}^{T-1} \gamma^t A_{\subold{\pi}}(s_t,a_t)}{s\sim p_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}$$ -->
+::: definition 
+### Relation between the performance measures
 $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{s \sim \rho_{\subnew{\pi}}, a\sim\subnew{\pi}} \tag{\ref{eq:Adv_performance_measures}} \end{equation}$$
+:::
 
 ::: incremental
 - In principle, this equation shows us a way to guarantee policy improvement.
@@ -553,7 +563,7 @@ $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{
 - Simple trick: just sample the state $s$ under the *old* policy!
 $$\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\textcolor{red}{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}$$
 - Under the assumption that $\subold{\pi}$ and $\subnew{\pi}$ do not differ too much, this is a reasonable assumption.
-- In the limit case $\subold{\pi} = \subnew{\pi}$, we have equality of \eqref{eq:Adv_performance_measures} and \eqref{eq:Adv_surrogate_loss}, as well as the gradients [@Schulman2015trpo{}, Eq. (4)].
+- In the limit case $\subold{\pi} = \subnew{\pi}$, we have equality of \eqref{eq:Adv_performance_measures} and \eqref{eq:Adv_surrogate_loss}, as well as their gradients [@Schulman2015trpo{}, Eq. (4)].
 :::
 :::
 :::
@@ -582,8 +592,10 @@ $$ \max_{\phi'} L_{\pi_\phi}(\pi_{\phi'}) - C \cdot \KLdivmax{\pi_\phi}{\pi_{\ph
 ::: incremental
 1. The constant $C$ is usually large and thus restrictive\
 [**Solution**: Transfer to a constraint with hyperparameter $\delta$.]{.fragment}
-2. Computing the maximum KL divergence over all possible states ($\KLdivmax{\pi_\phi}{\pi_{\phi'}}$) is impossible.\
-[**Solution**: Replace by the average KL divergence ($\KLdivavg{\pi_\phi}{\pi_{\phi'}}$) over the states that were actually observed.]{.fragment}
+2. Computing the maximum KL divergence over all possible states ($\KLdivmax{\pi_{\subold{\phi}}}{\pi_{\phi}}$) is impossible.\
+[**Solution**: Replace by the average KL divergence over the states that were actually observed:
+$$\KLdivavg{\pi_\phi}{\pi_{\subold{\phi}}} = \Expsub{\KLdiv{\pi_{\subold{\phi}}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\pi_\subold{\phi}}}.$$
+]{.fragment}
 :::
 :::
 :::
@@ -611,7 +623,7 @@ $$ \int_\Sc \rho_{\subold{\pi}}(s) \int_\Ac \subold{\pi}\agivenb{a}{s}\frac{\pi_
 
 ::: small
 ::: definition
-## Trust-region policy optimization (TRPO) optimization problem
+### Trust-region policy optimization (TRPO) optimization problem
 
 $$\begin{equation}
 \max_{\phi} \underbrace{\Expsub{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}}}_{=L_\mathsf{TRPO}(\phi)} \quad\text{subject to}\quad \underbrace{\Expsub{\KLdiv{\subold{\pi}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\subold{\pi}}}}_{=\KLdivavg{\subold{\pi}}{\pi_{\phi}}} \leq \delta. \label{eq:Adv_TRPO_Opt} 
@@ -651,17 +663,28 @@ $$ L_\mathsf{TRPO}(\phi) \approx L_\mathsf{TRPO}(\subold{\phi}) + g^\top(\phi - 
 2. Quadratic approximation of the KL constraint for small $\Delta\phi=(\phi - \subold{\phi})$ [$\Rightarrow$ Fisher information matrix (Eq. \eqref{eq:Adv_KLdiv_Fisher})!]{.fragment}
 :::
 
+::: columns-6-4
 ::: fragment
 ::: definition
-## Linear-quadratic approximation of the TRPO optimization problem
+## Linear-quadratic approximation of the TRPO problem \eqref{eq:Adv_TRPO_Opt}
 
 $$\begin{equation}
 \max_{\Delta\phi} g^\top\Delta\phi \quad\text{subject to}\quad \frac{1}{2}\Delta\phi^\top F \Delta\phi \leq \delta, \label{eq:Adv_TRPO_LQOpt} 
 \end{equation}$$
-where $F(\phi) = \Expsub{ \rbracket{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}_{\phi=\subold{\phi}}}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}}$ (see Eq. \eqref{eq:Adv_Fisher_Information_Matrix}).
+where, according to \eqref{eq:Adv_Fisher_Information_Matrix}, $$F(\phi) = \Expsub{ \rbracket{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}_{\phi=\subold{\phi}}}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}}.$$
 :::
 :::
 
+::: fragment
+::: definition
+### Solution to \eqref{eq:Adv_TRPO_LQOpt}
+
+The solution (via [Lagrange multipliers](https://en.wikipedia.org/wiki/Lagrange_multiplier)) yields
+$$\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g. \label{eq:Adv_TRPO_step} \end{equation}$$
+[**Note**: This is NPG \eqref{eq:Adv_NPG} with automatic step size selection $\alpha=\sqrt{\frac{2\delta}{g^\top F^{-1} g}}$!]{.fragment}
+:::
+:::
+:::
 :::
 
 ::: fragment
@@ -670,47 +693,166 @@ where $F(\phi) = \Expsub{ \rbracket{\cbracket{\nablaphi \log\, \pi_{\phi}\agiven
 :::
 :::
 
+
+
+
 # TRPO: Avoiding matrix inversion
 
 ::: small
+::: definition
+$$\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g \tag{\ref{eq:Adv_TRPO_step}} \end{equation}$$
+:::
 
+::: incremental
+- Matrix inversion scales cubically. [That is, for a $d$-dimensional parameter $\phi\in\R^d$, we have $\Oc(d^3)$.]{.fragment}
+- Solution: Use the [conjugate gradient (CG) method](https://en.wikipedia.org/wiki/Conjugate_gradient_method) for solving linear systems of the form $F x = g$.
+  - Usually, CG scales according to $\Oc(d^2)$ per iteration.
+  - However, in TRPO, we can avoid calculating $F\in\R^{d\times d}$ entirely using automatic differentiation $\Rightarrow$ scales linearly with the number of weights (i.e., $\Oc(d)$).
+  - This is as fast as it gets!
+:::
+
+::: fragment
+### Approach
+:::
+
+::: incremental
+- Compute $x = F^{-1}g$ using the CG method ($\Oc(d)$ if we use autodiff).
+- Calculate the denominator in \eqref{eq:Adv_TRPO_step} (Note that $F^\top = F$, since the FIM is symmetric):
+$$ \nu = g^\top F^{-1} g \fragment{ = (Fx)^\top F^{-1} Fx } \fragment{ = x^\top F^\top F^{-1} Fx } \fragment{ = x^\top F x } \fragment{ = x^\top g. } $$
+- Compute the step size $\beta = \sqrt{\frac{2\delta}{\nu}} F^{-1} g$.
+- Compute the update $\Delta \phi = \beta x$.
+:::
 :::
 
 # TRPO: Step size selection
 
 ::: small
+::: columns-5-5
+::: platzhalter
+::: definition
+### TRPO surrogate problem
 
+$$\begin{equation}\begin{aligned} 
+\max_{\phi} L_\mathsf{TRPO}(\phi) \quad\text{s.t.}\quad \KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta. \end{aligned} \tag{\ref{eq:Adv_TRPO_Opt}} 
+\end{equation}$$
+:::
+:::
+
+::: platzhalter
+::: definition
+### Linear-quadratic approximation
+$$\begin{equation}
+\max_{\Delta\phi} g^\top\Delta\phi \quad\text{subject to}\quad \frac{1}{2}\Delta\phi^\top F \Delta\phi \leq \delta, \tag{\ref{eq:Adv_TRPO_LQOpt}} 
+\end{equation}$$
+:::
+:::
+:::
+
+[**Issue**: Even though we have selected an optimal step size for \eqref{eq:Adv_TRPO_LQOpt} in \eqref{eq:Adv_TRPO_step}, we are not guaranteed that in \eqref{eq:Adv_TRPO_Opt}, we]{.fragment}
+
+::: incremental
+- actually get a descent in $L_\mathsf{TRPO}(\phi)$,
+- satisfy the constraint $\KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta$.
+:::
+
+::: fragment
+::: definition
+**Step length selection via [backtracking](https://en.wikipedia.org/wiki/Backtracking_line_search).**
+[Define a *shrinkage parameter* $\alpha\in(0,1)$ and]{.fragment}
+
+::: incremental
+1. Get $\Delta\phi$ by solving \eqref{eq:Adv_TRPO_LQOpt}.
+1. Calculate candidate $\phi' = \subold{\phi} + \Delta\phi$ for the next iterate.
+1. Check the following two conditions (recall that $L_\mathsf{TRPO}(\subold{\phi})=0$):
+$$(I)\quad L_\mathsf{TRPO}(\phi') >0 ~ ? \qquad\text{and}\qquad (II)\quad \KLdivavg{\subold{\pi}}{\pi_{\phi'}} \leq \delta ~ ?$$
+1. **if** (I) and (II) are satisfied **then** set $\subnew{\phi}=\phi'$ and $\STOP$. $\qquad$
+[**else:** set $\Delta\phi \gets \alpha \Delta\phi$ and go back to 2.]{.fragment}
+:::
+:::
+:::
 :::
 
 # TRPO: Final algorithm
 
 ::: small
+::: definition
 
+<!-- ### Algorithm: Trust-Region Policy Optimization (TRPO) -->
+
+**Input:** Initial policy parameters $\iterate{\phi}{0}$, trust-region bound $\delta$, backtracking parameter $\alpha \in (0, 1)$, acceptance threshold $\epsilon > 0$.
+
+For iterations $k = 0, 1, 2, \dots$ until convergence:
+
+1. **Data collection:**
+Run the current policy $\pi_{\iterate{\phi}{k}}$ in the environment to collect a batch of trajectories $\Bc = \{(s_t, a_t, r_t)\}$.
+2. **Advantage estimation:**
+Estimate the advantage values $A_{\iterate{\phi}{k}}(s, a)$ for all sampled steps.
+3. **Compute policy gradient ($g$):**
+Evaluate the standard policy gradient vector $g$ using the collected samples:
+$$g = \frac{1}{\abs{\Bc}} \sum_{s,a \in \Bc} \nablaphi \log \pi_\phi\agivenb{a}{s}\Big|_{\phi=\iterate{\phi}{k}} A_{\iterate{\phi}{k}}(s,a)$$
+4. **Compute Step Direction ($x$) via Truncated CG** ($10$ to $20$ iterations) to solve the linear system $Fx = g$ for $x \approx F^{-1}g$. 
+<!-- (*Note: The matrix-vector product $Fx$ is computed matrix-free via automatic differentiation.*) -->
+5. **Maximal step size ($\beta$):**
+Compute $\beta = \sqrt{\frac{2\delta}{x^T F x}}$. Set the full proposed step direction: $\Delta \phi = \beta x$.
+6. **Backtracking:**
+Find largest factor $\gamma = \alpha^j$ (for $j = 0, 1, 2, \dots$) such that $\subnew{\phi} = \iterate{\phi}{k} + \gamma \Delta \phi$ satisfies:
+$$L_\mathsf{TRPO}(\subnew{\phi}) >0 \qquad\text{and}\qquad \KLdivavg{\iterate{\phi}{k}}{\subnew{\phi}} \leq \delta $$
+7. **Policy Update:**
+Update parameters to the safe, verified step:
+$\iterate{\phi}{k+1} = \iterate{\phi}{k} + \gamma \Delta \phi$ (or *reject* if no $\gamma$ can be found).
 :::
+:::
+
+<!-- # TITLE
+
+### The Big Picture Structure
+
+```
+ Collect Data ──► Compute Gradient (g) ──► CG Loop (F⁻¹g) ──► Line Search (KL ≤ δ) ──► Update θ
+      ▲                                                                                     │
+      └─────────────────────────────────────────────────────────────────────────────────────┘
+
+``` -->
 
 # Example: Half-Cheetah
 
 ::: small
+::: columns-3-2-2
+::: platzhalter
+As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/) example from the MuJoCo library.
 
+- $\Sc$: 17 states.
+- $\Ac$: 6 actions.
+- Reward: Forward-Cost - Control-Cost.
+:::
+
+::: platzhalter
+![](images/11-advanced/half_cheetah.png){width=350px}
 :::
 
 
+![](images/11-advanced/half_cheetah.gif){width=200px}
 
+:::
+\
 
-# TRPO derivation
-
-::: small
-1. construct local approximation of \eqref{eq:Adv_performance_measures}
-2. Quantify the approximation error [@Schulman2015trpo]
-2. Also, show that the gradient of the surrogate loss is exactly the gradient of the original loss for $\eta$. Also, the function values are the same (1st order approximation)
-3. Turn this into a practical problem by creating a constraint with hyperparameter $\delta$
-4. Importance sampling (ratio $r$) for the expectation $\Rightarrow$ $\hat L$
-5. Show that the gradient of this loss function is exactly the standard policy gradient
-6. Solving a quadratic approximation of the problem $\Rightarrow$ NPG with optimal step length (Lagrange multiplier approach)
-7. Scalability: Avoid $F^{-1} g$ by using CG instead
-8. Backtracking linesearch to find a step length that reduces $L$ and does not violate the constraint
+::: fragment
+::: columns-7-3
+::: platzhalter
+### Results with TRPO
+![](images/11-advanced/half_cheetah_trpo.svg){width=650px}
 :::
 
+::: fragment
+\
+
+![](videos/11-advanced/trpo.mp4){width=300px .controls .autoplay .muted }
+:::
+:::
+
+:::
+
+:::
 
 ------------------------------------------------------------------------------
 

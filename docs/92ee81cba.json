@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "21.05.2026 12:57"
+        "29.05.2026 09:37"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "7",
@@ -582,6 +582,18 @@
                 "{\\mathrm{Im}\\!\\left( #1 \\right)}",
                 1.0
             ],
+            "KLdiv": [
+                "D_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivavg": [
+                "\\bar{D}_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivmax": [
+                "D_{\\mathsf{KL}}^{\\mathsf{max}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
             "N": "{\\mathbb{N}}",
             "Nc": "{\\mathcal{N}}",
             "Normal": [
@@ -666,7 +678,7 @@
                 1.0
             ],
             "pC": [
-                "{p\\left( #1  \\middle|#2 \\right)}",
+                "{p\\left( #1  \\middle| #2 \\right)}",
                 2.0
             ],
             "pdiff": [
@@ -677,7 +689,7 @@
             "piphi": "{\\pi_\\phi}",
             "piprime": "{\\pi^{\\prime}}",
             "policy": [
-                "{\\pi\\left( #1  \\middle|#2 \\right)}",
+                "{\\pi\\left( #1  \\middle| #2 \\right)}",
                 2.0
             ],
             "psprimesa": "{p\\left( s^{\\prime} \\middle| s, a \\right)}",
@@ -710,6 +722,14 @@
             ],
             "submin": [
                 "{{#1}_{\\mathsf{min}}}",
+                1.0
+            ],
+            "subnew": [
+                "{{#1}_{\\mathsf{new}}}",
+                1.0
+            ],
+            "subold": [
+                "{{#1}_{\\mathsf{old}}}",
                 1.0
             ],
             "target": [

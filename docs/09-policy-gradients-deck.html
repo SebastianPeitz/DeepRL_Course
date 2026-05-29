@@ -269,7 +269,12 @@
 </tr>
 <tr>
 <td align="center">11</td>
-<td align="left">Advanced algorithms</td>
+<td align="left">Advanced algorithms (Part I): From policy gradient to PPO</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -3557,7 +3562,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">R. S. Sutton and Barto 199
 </div>
 <div class="platzhalter">
 <p><span class="math-incremental"><span class="math display">\[ \begin{align*} 
-&amp;\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}.} \\
+&amp;\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}.} \\
 &amp;\Rightarrow\quad \phi^* = \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \fragment{ = \arg\max_{\phi}\Expsub{V^{\pi_\phi}(s_0)}{s_0 \sim p(s_0)}. }
 \end{align*} \]</span></span></p>
 </div>
@@ -3831,18 +3836,18 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <div class="fragment">
 <div class="definition">
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
-\underbrace{p_\phi(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T})}_{=p_\phi(\tau)} &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t} \\ 
+\underbrace{p_\phi(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T})}_{=p_\phi(\tau)} &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t} \\ 
 \text{take log on both sides!}\quad &amp;\Downarrow \quad\fragment{ \textcolor{gray}{(\log(a\cdot b) = \log(a) + \log(b))} }  \\
-\log p_\phi(\tau) = \log p(s_0) + &amp;\sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}
+\log p_\phi(\tau) = \log p(s_0) + &amp;\sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}
 \end{align*}\]</span></span></p>
 </div>
 </div>
 </div>
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
-\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &amp;= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\\
- &amp;= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\\
-&amp;= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}}
+\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &amp;= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}}\\
+ &amp;= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log \pC{s_{t+1}}{s_t,a_t}}\\
+&amp;= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}}}_{=0}}
 \end{align*}\]</span></span></p>
 <div class="fragment">
 <div id="policy-gradient-theorem-simplified" class="definition">
@@ -5353,9 +5358,9 @@ L(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\ta
 <div class="platzhalter">
 <div class="media">
 <figure class="image" style="height:auto;width:400px;">
-<img src="images/09-policy-gradients/multivariate-normal-distribution.svg" style="height:auto;width:100%;" aria-label="Adapted from Wikipedia" alt="images/09-policy-gradients/multivariate-normal-distribution.svg" />
+<img src="images/09-policy-gradients/multivariate-normal-distribution.svg" style="height:auto;width:100%;" aria-label="Adapted from Wikipedia." alt="images/09-policy-gradients/multivariate-normal-distribution.svg" />
 <figcaption>
-Adapted from <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">Wikipedia</a>
+Adapted from <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">Wikipedia</a>.
 </figcaption>
 </figure>
 </div>
@@ -5394,7 +5399,7 @@ Adapted from <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribu
 </div>
 <div class="fragment">
 <div class="definition">
-<p><strong>Maximum likelihood gradient</strong>: <span class="math display">\[\nablatheta \log L(\theta) = \sum_{i=1}^N \log \nablatheta p_\theta\agivenb{y_i}{x_i}.\]</span></p>
+<p><strong>Maximum likelihood gradient</strong>: <span class="math display">\[\nablatheta \log L(\theta) = \sum_{i=1}^N \nablatheta \log p_\theta\agivenb{y_i}{x_i}.\]</span></p>
 </div>
 </div>
 </div>
@@ -5573,7 +5578,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">What did we just do?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s rewrite the formula a little and <em>compare against maixmum likelihood</em>: <span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \log \nablatheta \pi_\phi(\tau_i). \]</span></span></li>
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> let’s rewrite the formula a little and <em>compare against maixmum likelihood</em>: <span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \nablatheta \log \pi_\phi(\tau_i). \]</span></span></li>
 <li class="fragment">Good experience is made more likely: We increase the proability of the policy to produce similar trajectories.</li>
 <li class="fragment">Bad experience is made less likely.</li>
 <li class="fragment">This simply formalizes the notion of “trial and error”!</li>
@@ -5583,8 +5588,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </p>
 <div class="fragment">
 <div id="a-note-on-partial-observability-without-going-into-details" class="definition">
-<h3>A note on partial observability (Without going into details)</h3>
-<p>The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies <span class="math inline">\(\pi\agivenb{a}{o}\)</span>. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.</p>
+<h3>A note on partial observability (without going into details)</h3>
+<p>The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies <span class="math inline">\(\policy{a}{o}\)</span>. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.</p>
 </div>
 </div>
 </div>
@@ -5641,35 +5646,16 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="2.0654268"
-     inkscape:cx="396.52821"
-     inkscape:cy="689.2038"
-     inkscape:window-width="1512"
-     inkscape:window-height="854"
-     inkscape:window-x="0"
-     inkscape:window-y="33"
-     inkscape:window-maximized="0"
+     inkscape:cx="396.28613"
+     inkscape:cy="495.29715"
+     inkscape:window-width="3200"
+     inkscape:window-height="1675"
+     inkscape:window-x="1512"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g55" />
   <defs
      id="defs1">
-    <marker
-       style="overflow:visible"
-       id="ArrowTriangleStylized"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Stylized triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
-         id="path4" />
-    </marker>
     <marker
        style="overflow:visible"
        id="marker86"
@@ -5692,63 +5678,6 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
     </marker>
     <marker
        style="overflow:visible"
-       id="marker85"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path85" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker84"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path84" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Square"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="Square"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M -5,-5 V 5 H 5 V -5 Z"
-         id="path18" />
-    </marker>
-    <marker
-       style="overflow:visible"
        id="marker82"
        refX="0"
        refY="0"
@@ -5766,157 +5695,6 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
          d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
          style="fill:context-stroke;fill-rule:evenodd;stroke:none"
          id="path82" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker81"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path81" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="ColoredTriangle"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Colored triangle"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-fill;fill-rule:evenodd;stroke:context-stroke;stroke-width:2"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path80" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker79"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Concave triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="path79" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker78"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Concave triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.7)"
-         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         id="path78" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="ArrowWideHeavy"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Wide, heavy arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="m 1,0 -3,3 h -2 l 3,-3 -3,-3 h 2 z"
-         id="path77" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker76"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path76" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="DartArrow"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Dart arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
-         d="M 0,0 5,-5 -12.5,0 5,5 Z"
-         transform="scale(-0.5)"
-         id="path75" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="1"
-       markerHeight="1"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135" />
     </marker>
     <marker
        style="overflow:visible"
@@ -6169,6 +5947,22 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
             <path
                d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
                id="id-838549bd-abe9-4376-8336-cb6b5c1572a8"
+               style="fill:#aa0000" />
+          </g>
+        </g>
+        <g
+           fill="#000000"
+           fill-opacity="1"
+           id="g44"
+           transform="matrix(1.00682,0,0,1.00682,-81.23282,18.504208)"
+           style="fill:#aa0000">
+          <g
+             transform="translate(171.728,158.675)"
+             id="g43"
+             style="fill:#aa0000">
+            <path
+               d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
+               id="path14"
                style="fill:#aa0000" />
           </g>
         </g>
@@ -6439,7 +6233,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
       </g>
       <g
          id="g1"
-         transform="translate(-30.409636,-157.95705)"
+         transform="translate(-28.292968,-157.95705)"
          style="fill:#008000">
         <g
            fill="#000000"
@@ -6508,7 +6302,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
       </g>
       <path
          style="fill:none;stroke:#000000;stroke-width:0.523419;stroke-dasharray:none;stroke-opacity:0.996255"
-         d="M 31.680443,10.947811 33.896245,0.56939733"
+         d="M 33.797111,10.947811 36.012913,0.56939733"
          id="path2" />
       <path
          style="fill:none;stroke:#008000;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:0.996255"
@@ -6694,7 +6488,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
        class="fragment">
       <g
          id="g42"
-         transform="translate(-30.409636,-15.08202)"
+         transform="translate(-28.292968,-15.08202)"
          style="fill:#ffcc00">
         <g
            fill="#000000"
@@ -6763,7 +6557,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
       </g>
       <path
          style="fill:#808000;stroke:#000000;stroke-width:0.523419;stroke-dasharray:none;stroke-opacity:0.996255"
-         d="m 31.680443,153.82284 2.215802,-10.37841"
+         d="m 33.797111,153.82284 2.215802,-10.37841"
          id="path42" />
       <g
          id="g51">
@@ -7306,6 +7100,22 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
               <path
                  d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
                  id="path68"
+                 style="fill:#aa0000" />
+            </g>
+          </g>
+          <g
+             fill="#000000"
+             fill-opacity="1"
+             id="g48"
+             transform="matrix(1.00682,0,0,1.00682,-81.23282,18.504208)"
+             style="fill:#aa0000">
+            <g
+               transform="translate(171.728,158.675)"
+               id="g47"
+               style="fill:#aa0000">
+              <path
+                 d="m 2.875,-2.5 c 0,-0.765625 -0.109375,-1.96875 -0.65625,-3.109375 -0.59375,-1.21875 -1.453125,-1.875 -1.546875,-1.875 -0.0625,0 -0.109375,0.046875 -0.109375,0.109375 0,0.03125 0,0.046875 0.1875,0.234375 0.984375,0.984375 1.546875,2.5625 1.546875,4.640625 0,1.71875 -0.359375,3.46875 -1.59375,4.71875 C 0.5625,2.34375 0.5625,2.359375 0.5625,2.390625 0.5625,2.453125 0.609375,2.5 0.671875,2.5 0.765625,2.5 1.671875,1.8125 2.25,0.546875 2.765625,-0.546875 2.875,-1.65625 2.875,-2.5 Z m 0,0"
+                 id="path47"
                  style="fill:#aa0000" />
             </g>
           </g>
@@ -9285,8 +9095,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </ul></li>
 <li class="fragment">Simply transfer of the importance sampling formula: <span class="math display">\[ L(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. \]</span></li>
 <li class="fragment">Insert definition of trajectory probabilities: <span class="math-incremental"><span class="math display">\[\begin{align} 
-p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}, \notag \\ 
-\frac{p_\phi(\tau)}{\overline{p}(\tau)} &amp;= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
+p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}, \notag \\ 
+\frac{p_\phi(\tau)}{\overline{p}(\tau)} &amp;= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
 \end{align}\]</span></span></li>
 </ul>
 </div>
@@ -9336,7 +9146,7 @@ p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agiven
 </p>
 <div class="fragment">
 <div class="footer">
-<p><span class="emoji" data-emoji="bulb">💡</span> As derived earlier, using <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> or <span class="math inline">\(\pi_{\phi&#39;}(\tau)\)</span> (i.e., the product over action probabilities along the trajectories) yields the same result <span class="math display">\[\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}} = \nablaphi \log\pi_\phi(\tau).\]</span></p>
+<p><span class="emoji" data-emoji="bulb">💡</span> As derived earlier, using <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> or <span class="math inline">\(\pi_{\phi&#39;}(\tau)\)</span> (i.e., the product over action probabilities along the trajectories) yields the same result <span class="math display">\[\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}} = \nablaphi \log\pi_\phi(\tau).\]</span></p>
 </div>
 </div>
 </div>
