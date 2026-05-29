@@ -40,7 +40,8 @@ feedback:
 |   8  | Deep $Q$-learning                                           |   $Q$-learning with neural networks     | 
 | [9]{style="color: red;"}  | [Policy gradients]{style="color: red;"} | [Direct optimization of the policy]{style="color: red;"}       | 
 |  10  | Actor-critic algorithms                                   |        | 
-|  11  | Advanced algorithms                                       |        | 
+|  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
+|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -86,7 +87,7 @@ Table: Lecture contents
 
 ::: platzhalter
 [$$ \begin{align*} 
-&\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}.} \\
+&\Rightarrow\quad p_\phi(\underbrace{s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T}}_{=\tau}) \fragment{= p_\phi(\tau)} \fragment{= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}.} \\
 &\Rightarrow\quad \phi^* = \arg\max_{\phi}\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \fragment{ = \arg\max_{\phi}\Expsub{V^{\pi_\phi}(s_0)}{s_0 \sim p(s_0)}. }
 \end{align*} $$]{.math-incremental}
 :::
@@ -230,9 +231,9 @@ L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \
 ::: fragment
 ::: definition
 [$$\begin{align*} 
-\underbrace{p_\phi(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T})}_{=p_\phi(\tau)} &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t} \\ 
+\underbrace{p_\phi(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_{T})}_{=p_\phi(\tau)} &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t} \\ 
 \text{take log on both sides!}\quad &\Downarrow \quad\fragment{ \textcolor{gray}{(\log(a\cdot b) = \log(a) + \log(b))} }  \\
-\log p_\phi(\tau) = \log p(s_0) + &\sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}
+\log p_\phi(\tau) = \log p(s_0) + &\sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}
 \end{align*}$$]{.math-incremental}
 :::
 :::
@@ -240,9 +241,9 @@ L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \
 
 ::: columns-6-4
 [$$\begin{align*} 
-\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log p\agivenb{s_{t+1}}{s_t,a_t}}}\\
- &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log p\agivenb{s_{t+1}}{s_t,a_t}}\\
-&= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}}}_{=0}}
+\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}}\\
+ &= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log \pC{s_{t+1}}{s_t,a_t}}\\
+&= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}}}_{=0}}
 \end{align*}$$]{.math-incremental}
 
 ::: fragment
@@ -414,7 +415,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log
 ::: definition
 ### A note on partial observability (without going into details)
 
-The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies $\pi\agivenb{a}{o}$. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.
+The policy gradient also holds for partially observed MDPs (POMDPs). That is, for policies $\policy{a}{o}$. In simple terms, the reason is that the policy gradient theorem does not make use of the Markov property.
 :::
 :::
 :::
@@ -663,8 +664,8 @@ How do we calculate the expectation *w.r.t. a different distribution*?
 - Simply transfer of the importance sampling formula: $$ L(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. $$
 - Insert definition of trajectory probabilities:
 [$$\begin{align} 
-p_\phi(\tau) &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} p\agivenb{s_{t+1}}{s_t,a_t}, \notag \\ 
-\frac{p_\phi(\tau)}{\overline{p}(\tau)} &= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{p\agivenb{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
+p_\phi(\tau) &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}, \notag \\ 
+\frac{p_\phi(\tau)}{\overline{p}(\tau)} &= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
 \end{align}$$]{.math-incremental}
 :::
 
@@ -704,7 +705,7 @@ $$ \fragment{ \nablaphiprime L(\phi') = \Expsub{\frac{\nablaphiprime p_{\phi'}(\
 ::: fragment
 ::: footer
 :bulb: As derived earlier, using $p_{\phi'}(\tau)$ or $\pi_{\phi'}(\tau)$ (i.e., the product over action probabilities along the trajectories) yields the same result
-$$\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \cancel{\nablaphi \log\, p\agivenb{s_{t+1}}{s_t,a_t}} = \nablaphi \log\pi_\phi(\tau).$$
+$$\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}} = \nablaphi \log\pi_\phi(\tau).$$
 :::
 :::
 

@@ -49,7 +49,8 @@ templates:
 |         | Deep Q-learning                                           |        [slides:](08-q-learning) |
 |         | Policy gradients                                          |        [slides:](09-policy-gradients) |
 |         | Actor-critic algorithms                                   |        [slides:](10-actor-critic) | 
-|         | Advanced algorithms                                       |        [slides:](11-advanced-algorithms) |
+|         | Advanced algorithms (I): From policy gradient to PPO  |        [slides:](11-advanced-algorithms-part1) |
+|         | Advanced algorithms (II): From Q-learning to Soft Actor-Critic  |        [slides:](12-advanced-algorithms-part2) |
 |   **3** | **Model-Based Control**                                   |                                     |
 |         | Exploration                                               |        | <!--     [slides:](12-exploration) | -->
 |         | Planning \& optimal control                               |        | <!-- [slides:](13-planning-control) | -->

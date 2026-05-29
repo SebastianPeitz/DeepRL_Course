@@ -33,7 +33,8 @@ feedback:
 |   8  | Deep $Q$-learning                                           |        | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
-|  11  | Advanced algorithms                                       |        | 
+|  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
+|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -267,7 +268,7 @@ Monte Carlo estimates for $g_t$, sample from entire trajectories.
 ### Bootstrapped estimates of $V^\pi(s_t)$
 
 ::: incremental
-  - The Dynamic Programming target $$V_\theta(s_t) \gets \sum_{a\in\Ac} \pi\agivenb{a}{s_t} \sum_{s'\in\Sc} p\agivenb{s'}{s_t, a} \left[ r + \gamma V_\theta(s') \right].$$
+  - The Dynamic Programming target $$V_\theta(s_t) \gets \sum_{a\in\Ac} \policy{a}{s_t} \sum_{s'\in\Sc} \pC{s'}{s_t, a} \left[ r + \gamma V_\theta(s') \right].$$
   - TD targets (e.g., TD($0$)) $$ V_\theta(s_t) \gets V_\theta(s_t) + \alpha \left[r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\right].$$
 :::
 :::
@@ -360,7 +361,7 @@ $$\begin{equation} \theta \gets\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_0$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
-$\quad\quad$ Apply action $a_t\sim \pi\agivenb{\cdot}{s_t}$\
+$\quad\quad$ Apply action $a_t\sim \policy{\cdot}{s_t}$\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \nablatheta V_\theta(s_t)$\
 $\quad\quad$ **if** $s_{t+1}$ is $\mathsf{terminal}$ **then** $\STOP$

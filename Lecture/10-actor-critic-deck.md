@@ -35,7 +35,8 @@ feedback:
 |   8  | Deep $Q$-learning                                           |   $Q$-learning with neural networks     | 
 | 9    | Policy gradients                                          | Direct optimization of the policy      | 
 |  [10]{style="color: red;"}  | [Actor-critic algorithms]{style="color: red;"} | [Improved policy gradients via value functions]{style="color: red;"} | 
-|  11  | Advanced algorithms                                       |        | 
+|  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
+|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -101,9 +102,9 @@ $$\begin{equation}
 - Since neither $r$ nor $\psprimesa$ depend on $\phi$, taking the gradient of \eqref{eq:AC_Q_definition} yields
 $$ \begin{equation} \nablaphi \Qpiphi(s, a) = \int_{\Sc} \psprimesa \nablaphi \Vpiphi(s') \dint{s'}. \label{eq:AC_grad_Q} \end{equation} $$
 - We can substitute this expression into \eqref{eq:AC_grad_V} and swap integrals due to linearity:
-$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_\Ac\piphi\agivenb{a}{s} \underbrace{\rbracket{\int_{\Sc} \psprimesa \nablaphi \Vpiphi(s') \dint{s'}}}_{\eqref{eq:AC_grad_Q}}\dint{a} \fragment{ = \xi(s) + \int_{\Sc} \underbrace{\rbracket{\int_\Ac\piphi\agivenb{a}{s} \psprimesa \dint{a}}}_{=p\agivenb{s \to s'}{1,\piphi}} \nablaphi \Vpiphi(s') \dint{s'}.}$$
-- Here, $p\agivenb{s \to s'}{1,\piphi}$ denotes the probability of moving from $s$ to $s'$ in exactly one step, given the policy $\piphi$:
-  $$ \begin{equation} \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s'}{1,\piphi} \nablaphi \Vpiphi(s') \dint{s'}. \label{eq:AC_grad_V_bellman} \end{equation}$$
+$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_\Ac\piphi\agivenb{a}{s} \underbrace{\rbracket{\int_{\Sc} \psprimesa \nablaphi \Vpiphi(s') \dint{s'}}}_{\eqref{eq:AC_grad_Q}}\dint{a} \fragment{ = \xi(s) + \int_{\Sc} \underbrace{\rbracket{\int_\Ac\piphi\agivenb{a}{s} \psprimesa \dint{a}}}_{=\pC{s \to s'}{1,\piphi}} \nablaphi \Vpiphi(s') \dint{s'}.}$$
+- Here, $\pC{s \to s'}{1,\piphi}$ denotes the probability of moving from $s$ to $s'$ in exactly one step, given the policy $\piphi$:
+  $$ \begin{equation} \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} \pC{s \to s'}{1,\piphi} \nablaphi \Vpiphi(s') \dint{s'}. \label{eq:AC_grad_V_bellman} \end{equation}$$
 :::
 :::
 
@@ -112,13 +113,13 @@ $$ \nablaphi \Vpiphi(s) = \xi(s) + \int_\Ac\piphi\agivenb{a}{s} \underbrace{\rbr
 ::: small
 ::: incremental
 - Equation \eqref{eq:AC_grad_V_bellman} is a Bellman recursion equation, and we can insert the same expression at $s'$ on the right:
-$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s'}{1,\piphi} \underbrace{\rbracket{\xi(s') + \int_{\Sc} p\agivenb{s' \to s''}{1,\piphi} \nablaphi \Vpiphi(s'') \dint{s''}}}_{= \nablaphi \Vpiphi(s')} \dint{s'}. $$
+$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} \pC{s \to s'}{1,\piphi} \underbrace{\rbracket{\xi(s') + \int_{\Sc} \pC{s' \to s''}{1,\piphi} \nablaphi \Vpiphi(s'') \dint{s''}}}_{= \nablaphi \Vpiphi(s')} \dint{s'}. $$
 - We can unroll this expression for an entire trajectory $\tau$ of length $T$. [After some resorting, we obtain:
-$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} p\agivenb{s \to s'}{1,\piphi} \xi(s') \dint{s'} + \int_{\Sc} p\agivenb{s \to s''}{2,\piphi}\xi(s'') \dint{s''} + \ldots$$]{.fragment}
+$$ \nablaphi \Vpiphi(s) = \xi(s) + \int_{\Sc} \pC{s \to s'}{1,\piphi} \xi(s') \dint{s'} + \int_{\Sc} \pC{s \to s''}{2,\piphi}\xi(s'') \dint{s''} + \ldots$$]{.fragment}
 - We can write this cleanly as a sum over all future timesteps $t$:
-<!-- $$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \piphi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} $$ -->
-$$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \piphi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} $$
-[Note: the previously separate case $\xi(s)$ is included, i.e., $\int_{\Sc} p\agivenb{s \to s}{0, \piphi} \xi(x)\dx =\xi(s)$.]{.fragment}
+<!-- $$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} $$ -->
+$$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx. \label{eq:AC_grad_V_recursion} \end{equation} $$
+[Note: the previously separate case $\xi(s)$ is included, i.e., $\int_{\Sc} \pC{s \to s}{0, \piphi} \xi(x)\dx =\xi(s)$.]{.fragment}
 :::
 :::
 
@@ -127,14 +128,14 @@ $$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{T-1} p\agivenb
 ::: small
 ::: incremental
 - We can now insert \eqref{eq:AC_grad_V_recursion} into the gradient of our RL objective (Eq. \eqref{eq:AC_RL_objective}):
-<!-- $$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ -->
-$$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$
+<!-- $$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ -->
+$$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$
 - By changing the order of integration, we isolate the total expected time spent in state $x$:
-<!-- $$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} p\agivenb{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ -->
-$$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} p\agivenb{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$
+<!-- $$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ -->
+$$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$
 - The term inside the brackets is the **undiscounted state visitation frequency** (or the expected number of times state $x$ is visited in an episode), which we denote as $\eta_\phi(s)$:
-<!-- $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{\infty} p\agivenb{s_t = s}{p_0, \piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$ -->
-$$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{T-1} p\agivenb{s_t = s}{\piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$
+<!-- $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$ -->
+$$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{T-1} \pC{s_t = s}{\piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$
 - This simplifies our expression to:
 $$\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.$$
 :::
@@ -174,7 +175,7 @@ $$\nabla_\phi \piphi\agivenb{a}{s} = \piphi\agivenb{a}{s} \nabla_\phi \log \piph
 
 ::: fragment
 ::: definition
-**Note**: In the infinite-horizon case, \eqref{eq:AC_state_visitation_measure} becomes $\eta_\phi(s) = \sum_{t=0}^{\infty} p\agivenb{s_t = s}{p_0, \piphi}$ [$\Rightarrow$ Equation \eqref{eq:AC_policy_gradient_Q_episodic} becomes
+**Note**: In the infinite-horizon case, \eqref{eq:AC_state_visitation_measure} becomes $\eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}$ [$\Rightarrow$ Equation \eqref{eq:AC_policy_gradient_Q_episodic} becomes
 <!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} -->
 $$\nabla_\phi L(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}.$$]{.fragment}
 :::
@@ -273,7 +274,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: incremental
 - Average over **all the possibilities starting in the state $s_t$** (not just in the time step $t$)!
 - How do we do this? 
-  $$\fragment{b = \Expsub{Q^\pi(s_t,a_t)}{a_t\sim \pi\agivenb{\cdot}{s_t}} } \fragment{ = V^\pi(s_t). } $$
+  $$\fragment{b = \Expsub{Q^\pi(s_t,a_t)}{a_t\sim \policy{\cdot}{s_t}} } \fragment{ = V^\pi(s_t). } $$
 :::
 
 :::
@@ -361,7 +362,7 @@ $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a
   - To which target should we fit?
 - Recall the definition of the $Q$-function (with $\gamma=1$): 
 [$$\begin{align*} Q^\pi(s_t, a_t) &= \ExpCsub{r_{t}+ Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi} \fragment{ = \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \ExpCsub{\sum_{t'=t+1}^{T-1} r_{t'}}{s_t,a_t}{\pi}}  \fragment{ = \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \underbrace{\sum_{t'=t+1}^{T-1} \ExpCsub{r_{t'}}{s_t,a_t}{\pi}}_{\fragment{ =V^\pi(s_{t+1}) }} } \\ 
-&= \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p\agivenb{\cdot}{s_t,a_t}}.
+&= \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim \pC{\cdot}{s_t,a_t}}.
 \end{align*}$$]{.math-incremental}
 - Next, we're going to make *two assumptions* to turn this into an algorithm in which we can use experience.
 :::
@@ -371,7 +372,7 @@ $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a
 
 ::: small
 Two assumptions that lead to the following approximation:
-$$Q^\pi(s_t, a_t) = \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p\agivenb{\cdot}{s_t,a_t}} \fragment{ \approx r_{t} + V^\pi(s_{t+1}). }$$
+$$Q^\pi(s_t, a_t) = \ExpCsub{r_{t}}{s_t,a_t}{\pi} + \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim \pC{\cdot}{s_t,a_t}} \fragment{ \approx r_{t} + V^\pi(s_{t+1}). }$$
 
 ::: incremental
 1. We just **take the next reward instead of considering the expectation**: 
@@ -380,7 +381,7 @@ $$r_{t} \approx \ExpCsub{r_{t}}{s_t,a_t}{\pi}.$$
   [$\circ$ If the rewards depends deterministically on the state $s_t$ and the action $a_t$, then this isn't even an approximation.]{.fragment}\
   [:bulb: In this case, people often use the notation $r(s,a)$ to denote that the reward is a deterministic function.]{.fragment}
 2. Instead of considering the expectation over all next possible states, we **take the value of the next state we see in our executed trajectory as a representative**:
-$$ \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p\agivenb{\cdot}{s_t,a_t}} \approx V^\pi(s_{t+1}). $$
+$$ \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim \pC{\cdot}{s_t,a_t}} \approx V^\pi(s_{t+1}). $$
   [$\circ$ This is an assumption that introduces bias.]{.fragment}\
   [$\circ$ But it is often still a very reasonable assumption.]{.fragment}\
   [$\circ$ The strong reduction in variance justifies such a biased (but simple-to-assess) estimator.]{.fragment}
@@ -442,7 +443,7 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 - The changes we observe occur in two places:
   1. The obvious one: Our $Q$-function is now the discounted version: $$Q^\pi(s, a) = \ExpCsub{r + \gamma Q^\pi(s', a')}{s,a}{\pi}.$$
   [:bulb: The same obviously holds for $V$ and $A$.]{.fragment}
-  2. The subtle one: The state distribution ("state visitation probability") changes: $$\eta_\phi(s) = \sum_{t=0}^{T-1} \gamma^t p\agivenb{s_t = s}{\piphi}.$$
+  2. The subtle one: The state distribution ("state visitation probability") changes: $$\eta_\phi(s) = \sum_{t=0}^{T-1} \gamma^t \pC{s_t = s}{\piphi}.$$
   [:bulb: The proof is quite technical and requires swapping the sum over the time steps $t$ and the integration over $\Sc$ in the policy gradient derivation.]{.fragment}
 - When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. [We thus obtain the same formulation (here using $A^\pi$):
 $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } $$]{.fragment}
@@ -470,10 +471,6 @@ $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket
 # Re-introducing the discount factor (3)
 
 ::: small
-<!-- Which version is correct? -->
-<!-- $$\begin{align} 
-\text{Option 1:}\quad\nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }} \tag{\ref{eq:AC_discount_v1}} \\
-\text{Option 2:}\quad\nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \tag{\ref{eq:AC_discount_v3}} \end{align}$$ -->
 $$
 \underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
 \underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
@@ -647,7 +644,7 @@ $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma Q_\theta(s'_i,
 
 [$\circ$ To approximate the value function of the current policy $\pi_\phi$, we can simply sample $a'_i\sim \pi_\phi\agivenb{\cdot}{s'_i}$.]{.fragment data-fragment-index=2}
 
-[$\circ$ Recall (for Step 4.): $V^\pi(s_i) = \Expsub{Q(s_i,a_i)}{a_i \sim \pi\agivenb{\cdot}{s_i}}$.]{.fragment data-fragment-index=3}
+[$\circ$ Recall (for Step 4.): $V^\pi(s_i) = \Expsub{Q(s_i,a_i)}{a_i \sim \policy{\cdot}{s_i}}$.]{.fragment data-fragment-index=3}
 
 [**Step 5**: Sample the actions from the current policy, **not from the replay buffer!**]{.fragment data-fragment-index=4}
 

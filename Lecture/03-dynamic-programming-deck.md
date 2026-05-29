@@ -101,7 +101,7 @@ From this, we derived the *Bellman optimality equation* [@Bellman1954]:
 $$
 \begin{align}
 V^*(s) &= \max_{a\in\Ac} \ExpC{r_{t}+\gamma V^*(s_{t+1})}{s_t = s, a_t = a} \notag \\
- &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
+ &= \max_{a\in\Ac} \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma V^*(s_{t+1}) \right].  \label{eq:DP_BellmanVstar}
 \end{align}
 $$
 
@@ -110,7 +110,7 @@ Similarly, we can derive an optimal Q-function:
 $$
 \begin{align}
 Q^*(s,a) &= \ExpC{r_{t}+\gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a')}{s_t = s, a_t = a} \notag \\
- &= \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:DP_BellmanQstar}
+ &= \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t = s, a_t = a}\left[ r_{t} + \gamma \max_{a'\in\Ac} Q^*(s_{t+1}, a') \right].  \label{eq:DP_BellmanQstar}
 \end{align}
 $$
 :::
@@ -323,7 +323,7 @@ We have a small robot in a gridworld that wants to recharge.
 [$\bullet$ **Initial state $s_0$**: a random valid field.]{ .fragment data-fragment-index=1 }\
 [$\bullet$ **Goal**: reach the battery ($r=1$, otherwise $r=0$).]{ .fragment data-fragment-index=2 }\
 [$\bullet$ $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).]{ .fragment data-fragment-index=3 }\
-[$\bullet$ $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
+[$\bullet$ $\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.]{ .fragment }\
 [$\bullet$ **Discount factor**: $\gamma = 0.8$.]{ .fragment }
 :::
 

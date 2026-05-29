@@ -34,7 +34,8 @@ feedback:
 |   [8]{style="color: red;"}  | [Deep $Q$-learning]{style="color: red;"}   |   [$Q$-learning with neural networks]{style="color: red;"}     | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
-|  11  | Advanced algorithms                                       |        | 
+|  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
+|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -226,12 +227,12 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \na
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_0$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
-$\quad\quad$ Obtain $\textcolor{red}{a_t \sim \pi\agivenb{\cdot}{s_t}}$ (or [$a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$]{style="color: blue;"})\
+$\quad\quad$ Obtain $\textcolor{red}{a_t \sim \policy{\cdot}{s_t}}$ (or [$a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$]{style="color: blue;"})\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then**\
 $\quad\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$\
 $\quad\quad\quad$ Go to next episode $k+1$\
-$\quad\quad$ Choose [$a_{t+1} \sim \pi\agivenb{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a_{t+1} \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
+$\quad\quad$ Choose [$a_{t+1} \sim \policy{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a_{t+1} \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
 $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a_{t+1}) - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$
 :::
 :::

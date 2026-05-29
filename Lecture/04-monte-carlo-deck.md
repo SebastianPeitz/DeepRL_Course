@@ -61,7 +61,7 @@ $$\Exp{f(X)} = \sum_{\omega\in\Omega} p(x) f(x) \qquad / \qquad \Exp{f(X)} = \in
 :::
 :::
 
-# Example: Estimating the value for $\pi$
+# Example: Estimating the value for $\pi$ {menu-title="Example: Estimating the value for π"}
 
 ::: columns-7-4
 ::: platzhalter
@@ -177,7 +177,7 @@ We have a small robot in a gridworld that wants to recharge.
 - Initial state $s_0$: a random valid field.
 - Goal: reach the battery ($r=1$, otherwise $r=0$).
 - $\Ac=\set{\uparrow, \downarrow, \leftarrow, \rightarrow}$ (*leaving* or *invalid field* $\Rightarrow$ no movement).
-- $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
+- $\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
 - Discount: $\gamma = 0.8$.
 :::
 
@@ -196,7 +196,7 @@ We have a small robot in a gridworld that wants to recharge.
 :::
 
 # Example: Gridworld
-Now: Every-visit MC prediction of $V^\pi$, for $\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
+Now: Every-visit MC prediction of $V^\pi$, for $\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc$.
 
 ![](videos/04-Monte-Carlo/GridWorld-MC-everyvisit-value-iteration.mp4 "Every-visit MC prediction"){ height=400px .controls .autoplay .muted }
 
@@ -510,7 +510,7 @@ $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$ **
 $\quad\quad\quad$ $n(s_t,a_t) \gets n(s_t,a_t) + 1$\
 $\quad\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
 $\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: red;"}\
-$\quad\quad\quad$ [$\pi\agivenb{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}
+$\quad\quad\quad$ [$\policy{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}
 :::
 :::
 
@@ -690,8 +690,8 @@ $$w = \frac{\pi(s)}{b(s)}$$
 Given a starting state $s_t$, the probability of the subsequent state–action trajectory $(a_t, s_{t+1},a_{t+1}, \ldots ,s_T)$ under a policy $\pi$ is
 [$$
 \begin{align*}
-p\agivenb{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &= \pi\agivenb{a_t}{s_t}p\agivenb{s_{t+1}}{s_t,a_t}\fragment{\pi\agivenb{a_{t+1}}{s_{t+1}}p\agivenb{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots p\agivenb{s_{T}}{s_{T-1},a_{T-1}}}\\
-&= \prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}.
+\pC{a_t, s_{t+1},a_{t+1}, \ldots ,s_T}{s_t,\pi} &= \policy{a_t}{s_t}\pC{s_{t+1}}{s_t,a_t}\fragment{\policy{a_{t+1}}{s_{t+1}}\pC{s_{t+2}}{s_{t+1},a_{t+1}}}\fragment{\ldots \pC{s_{T}}{s_{T-1},a_{T-1}}}\\
+&= \prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}.
 \end{align*}
 $$]{.math-incremental}
 
@@ -702,9 +702,9 @@ $$]{.math-incremental}
 
 The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step $k$ to $T$ is
 $$
-\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}p\agivenb{s_{k+1}}{s_{k},a_{k}}} 
-\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{p\agivenb{s_{k+1}}{s_{k},a_{k}}}}}
-\fragment{= \frac{\prod_{k=t}^{T-1} \pi\agivenb{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
 $$
 :::
 :::
@@ -812,7 +812,7 @@ $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
-$\quad\quad$ $w \gets w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
+$\quad\quad$ $w \gets w \frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
 :::
 
 ::: platzhalter
@@ -820,7 +820,7 @@ $\quad\quad$ $w \gets w \frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
 
 ::: incremental
 - $b=\pi$ .
-- $\frac{\pi\agivenb{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1$.
+- $\frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1$.
 - $w=1$.
 - $c(s,a)$ becomves the counter for the number of visits (i.e., $n(s,a)$).
 :::

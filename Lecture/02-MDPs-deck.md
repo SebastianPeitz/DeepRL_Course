@@ -210,8 +210,8 @@ $\Rightarrow$ *$x$ is distributed according to $p$*: $$x\sim p \quad / \quad x\s
 In the literature, we often also find *capital letters* for state, action and reward to properly account for the probabilistic nature
 
 ::: incremental
-- $p\agivenb{S_{t+1}=s'}{S_{t}=s, A_{t}=a}$ is the precise formulation for our short form $\psprimesa$.
-- $\pi\agivenb{A_t=a}{S_t=s}$ is the precise formulation for our short form $\pias$.
+- $\pC{S_{t+1}=s'}{S_{t}=s, A_{t}=a}$ is the precise formulation for our short form $\psprimesa$.
+- $\policy{A_t=a}{S_t=s}$ is the precise formulation for our short form $\pias$.
 :::
 
 :::
@@ -274,7 +274,7 @@ Table: Classification of Markov models
 A **finite Markov chain** is a tuple $(\Sc, p)$, where
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
-- $p\agivenb{s'}{s}$ is the **state transition probability**$^*$.
+- $\pC{s'}{s}$ is the **state transition probability**$^*$.
 
 :::
 
@@ -286,7 +286,7 @@ This is a specific stochastic process.
 - It creates a **sequence of random variables** $s_t, s_{t+1}, \ldots$.
 - It is **memoryless**: 
   - the next state only depends on the current state,
-  - but it is *independent of past states*: $$p\agivenb{s_{t+1}}{s_t,s_{t-1},\ldots,s_0} = p\agivenb{s_{t+1}}{s_t}.$$
+  - but it is *independent of past states*: $$\pC{s_{t+1}}{s_t,s_{t-1},\ldots,s_0} = \pC{s_{t+1}}{s_t}.$$
 <!-- - In continuous time: **Markov process** (though this leads to inconsistencies with Markov decision/reard ``processes'') -->
 :::
 :::
@@ -298,7 +298,7 @@ This is a specific stochastic process.
 
 
 ::: footer
-$^*$ $p\agivenb{s'}{s}$ meaning $p\agivenb{S_{t+1}=s'}{S_t=s}$ in extended notation.
+$^*$ $\pC{s'}{s}$ meaning $\pC{S_{t+1}=s'}{S_t=s}$ in extended notation.
 :::
 
 # State transition matrix
@@ -379,8 +379,8 @@ Possible **samples** for the given Markov chain example starting at $s=1$ (small
 A **finite Markov reward process** (**MRP**) is a tuple $(\Sc, p, \textcolor{red}{r}, \textcolor{red}{\gamma})$, where
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
-- $p\agivenb{s'}{s}$ is the state **transition probability**,
-- [$r$ is a **reward function** (a random variable with realization $r_{t} \sim p\agivenb{r}{s_t}$),]{style="color: red;"}
+- $\pC{s'}{s}$ is the state **transition probability**,
+- [$r$ is a **reward function** (a random variable with realization $r_{t} \sim \pC{r}{s_t}$),]{style="color: red;"}
 - [$\gamma\in[0,1]$ is a **discount factor**.]{style="color: red;"}
 
 :::
@@ -477,10 +477,10 @@ V(s_t) = & \,\ExpC{g_t }{s_t} \\
 = &\, \ExpC{r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \dots }{s_t} \\
 = &\, \ExpC{r_t + \gamma ( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
 = &\, \ExpC{r_t}{s_t} + \gamma \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots ) }{s_t} \\
-\overset{\text{Law of total expectation}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot p\agivenb{s_{t+1}}{s_t} \\
-\overset{\text{Markov property}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
-= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot p\agivenb{s_{t+1}}{s_t} \\
-= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot p\agivenb{s_{t+1}}{s_t} \\
+\overset{\text{Law of total expectation}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}, s_t} \cdot \pC{s_{t+1}}{s_t} \\
+\overset{\text{Markov property}}{=} &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{( r_{t+1} + \gamma r_{t+2} + \dots )}{s_{t+1}} \cdot \pC{s_{t+1}}{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} \ExpC{g_{t+1}}{s_{t+1}} \cdot \pC{s_{t+1}}{s_t} \\
+= &\, \ExpC{r_t}{s_t} + \gamma \sum_{s_{t+1} \in \Sc} V(s_{t+1}) \cdot \pC{s_{t+1}}{s_t} \\
 = &\, \ExpC{r_t}{s_t} + \gamma \ExpC{V(s_{t+1}) }{s_t} \\[0.5em]
 \big( = &\, \ExpC{r_t}{s_t} + \gamma \mathbb{E}_{s_{t+1} \sim p(\cdot \mid s_t)}[V(s_{t+1})] \big)
 \end{align*}
@@ -564,7 +564,7 @@ A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \textcolor{red}
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
 - [$\Ac$ is a finite set of discrete-time **actions** $a_t\in\Ac$]{style="color: red;"},
 - $\textcolor{red}{\psprimesa}$ is the **state transition probability**,
-- $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t} \sim p\agivenb{r}{s_t,a_t}}$),
+- $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t} \sim \pC{r}{s_t,a_t}}$),
 - $\gamma\in[0,1]$ is a **discount factor**.
 
 :::
@@ -591,7 +591,7 @@ A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \textcolor{red}
 
 ::: {.definition}
 In an MDP environment, a **policy** is a distribution over actions given states:
-$$ \pi\agivenb{a_t}{s_t} = p\agivenb{a_t}{s_t}.^* $$
+$$ \policy{a_t}{s_t} = \pC{a_t}{s_t}.^* $$
 
 :::
 
@@ -607,7 +607,7 @@ $$ \pi\agivenb{a_t}{s_t} = p\agivenb{a_t}{s_t}.^* $$
 :::
 
 ::: footer
-$^*$ In extended notation: $p\agivenb{A_t=a_t}{S_t=s_t}$.
+$^*$ In extended notation: $\pC{A_t=a_t}{S_t=s_t}$.
 :::
 
 # Policy (2)
@@ -619,7 +619,7 @@ Given a finite MDP $⟨\Sc, \Ac, p, r, \gamma⟩$ and a policy $\pi$:
 $$ p^\pi\agivenb{s'}{s} = \sum_{a\in\Ac} \pias \psprimesa $$
 - Consequently, the sequence $(s_t,r_t),(s_{t+1},r_{t+1}),\ldots$ of states and rewards is a *Markov
 reward process* $\left(\Sc, p^\pi, r^\pi, \gamma\right)$:
-$$ r^\pi = \sum_{a\in\Ac} \pias p\agivenb{r}{s,a} $$
+$$ r^\pi = \sum_{a\in\Ac} \pias \pC{r}{s,a} $$
 :::
 
 # State-value functions and action-value functions of MDPs
@@ -655,7 +655,7 @@ $$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
-$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{p\agivenb{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
+$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{\pC{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
 :::
 
 # Bellman expectation equation \& forest tree example (1)
@@ -667,8 +667,8 @@ $$ \pi\agivenb{a=\text{cut}}{s} = 0.5, \qquad \pi\agivenb{a=\text{wait}}{s} = 0.
 Applied to the given environment behavior
 [$$
 \begin{align*}
-p\agivenb{s'}{s,a=\text{cut}} &= \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \end{bmatrix}, & \quad 
-p\agivenb{s'}{s,a=\text{wait}} &= \begin{bmatrix} 0 & 1-\alpha & 0 & \alpha \\ 0 & 0 & 1-\alpha & \alpha \\ 0 & 0 & 1-\alpha & \alpha \\ 0 & 0 & 0 & 1 \end{bmatrix} \\
+\pC{s'}{s,a=\text{cut}} &= \begin{bmatrix} 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 1 \end{bmatrix}, & \quad 
+\pC{s'}{s,a=\text{wait}} &= \begin{bmatrix} 0 & 1-\alpha & 0 & \alpha \\ 0 & 0 & 1-\alpha & \alpha \\ 0 & 0 & 1-\alpha & \alpha \\ 0 & 0 & 0 & 1 \end{bmatrix} \\
 \hat r^{a=\text{cut}}&=\begin{bmatrix} 1 & 2 & 3 & 0 \end{bmatrix}^\top, & \qquad \hat r^{a=\text{wait}}&=\begin{bmatrix} 0 & 0 & 1 & 0 \end{bmatrix}^\top,
 \end{align*}
 $$]{ .math-incremental }
@@ -769,7 +769,7 @@ V^*(s_t) &= \max_a Q^{\pi^*}(s_t,a) \\
 $$]{ .math-incremental }
 - for a finite MDP:
 $$
-V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} p\agivenb{s_{t+1}}{s_t,a} V^*(s_{t+1}).
+V^*(s_t) = \max_a \Exp{\agivenb{r}{s_t,a}} + \gamma \sum_{s_{t+1}\in\Sc} \pC{s_{t+1}}{s_t,a} V^*(s_{t+1}).
 $$
 :::
 :::

@@ -390,7 +390,7 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 ![](videos/05-td-learning/Example-Gridworld-MCvsTD0.mp4 "MC vs TD($0$) prediction"){ width=600px .controls .autoplay .muted }
 
 ::: platzhalter
-- Fixed policy: $$\pi\agivenb{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.$$
+- Fixed policy: $$\policy{\cdot}{s} = [0.25, 0.25, 0.25, 0.25]^\top ~\forall~ s\in\Sc.$$
 - Discount: $\gamma = 0.9$.
 
 \
@@ -606,7 +606,7 @@ Let's take the expectation of Q $\rightarrow$ **expected SARSA**:
 $$
 \begin{align*}
 Q(s_t,a_t) &\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
-&= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
+&= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \policy{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
 \end{align*}
 $$
 :::
@@ -797,7 +797,7 @@ $\quad$ initialize and store $s_0$\
 $\quad$ $T \leftarrow \infty$, $\tau \leftarrow 0$\
 $\quad$ **for** $t=1,2,3,\ldots$\
 $\quad\quad$ **if** $t<T$ **then**\
-$\quad\quad\quad$ take action $a_t \sim \pi\agivenb{\cdot}{s_t}$, observe and store $s_{t+1}$ and $r_{t+1}$\
+$\quad\quad\quad$ take action $a_t \sim \policy{\cdot}{s_t}$, observe and store $s_{t+1}$ and $r_{t+1}$\
 $\quad\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then** $T \leftarrow k + 1$\
 $\quad\quad$ $\tau\leftarrow t-n-1$ ($\tau$ is the time index for the estimate update)\
 $\quad\quad$ **if** $\tau\geq 0$ **then**\
@@ -848,7 +848,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 
 ### Definition: $n$-step state-action value prediction target.
 
-Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\pi\agivenb{\cdot}{s_{t+n}}$) is rewritten as:
+Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\policy{\cdot}{s_{t+n}}$) is rewritten as:
 $$ 
 \begin{equation} 
 g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
@@ -865,7 +865,7 @@ $$
 For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
 $$ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \pi\agivenb{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 $$
 :::
@@ -902,7 +902,7 @@ with $g_{t:t+n}$ according to \eqref{eq:TD_nstep-onpolicy-return} for the *on-po
 
 For the off-policy version of $n$-step SARSA, we need to adapt the importance sampling weights we have seen in MC off-policy control to the $n$-step case, i.e., for various prediction lengths $h\in\{t+1,\ldots,t+n-1\}$:
 $$
-\rho_{t:h} = \prod_{k=t}^{\min(t+h, T)}\frac{\pi\agivenb{a_k}{s_k}}{b\agivenb{a_k}{s_k}}.
+\rho_{t:h} = \prod_{k=t}^{\min(t+h, T)}\frac{\policy{a_k}{s_k}}{b\agivenb{a_k}{s_k}}.
 $$
 For more details, see [@Sutton1998{}, Chapter 7.3].
 :::

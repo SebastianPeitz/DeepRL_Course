@@ -112,8 +112,10 @@ math:
     pias: '{\pi\left( a  \middle| s \right)}'
     psprimesa: '{p\left( s^{\prime} \middle| s, a \right)}'
     pstplusstat: '{p\left( s_{t+1} \middle| s_t, a_t \right)}'
-    pC: ['{p\left( #1  \middle|#2 \right)}', 2]
-    policy: ['{\pi\left( #1  \middle|#2 \right)}', 2]
+    pC: ['{p\left( #1  \middle| #2 \right)}', 2]
+    policy: ['{\pi\left( #1  \middle| #2 \right)}', 2]
+    subold: ['{{#1}_{\mathsf{old}}}', 1]
+    subnew: ['{{#1}_{\mathsf{new}}}', 1]
     Exp: ['{\mathbb{E}\left[ #1 \right]}', 1]
     Expsub: ['{\mathbb{E}_{#2}\left[ #1 \right]}', 2]
     ExpC: ['{\mathbb{E}\left[ #1 \middle| #2 \right]}', 2]
@@ -154,6 +156,8 @@ math:
     norm: ['\left\Vert #1 \right\Vert', 1]
 
     KLdiv: ['D_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
+    KLdivmax: ['D_{\mathsf{KL}}^{\mathsf{max}}\left( #1 \middle \| #2 \right)', 2]
+    KLdivavg: ['\bar{D}_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
 
     set: ['{\left\{ #1 \right\}}', 1]
     cbracket: ['{\left( #1 \right)}', 1]
