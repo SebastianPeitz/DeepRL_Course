@@ -117,6 +117,7 @@ math:
     subold: ['{{#1}_{\mathsf{old}}}', 1]
     subnew: ['{{#1}_{\mathsf{new}}}', 1]
     Exp: ['{\mathbb{E}\left[ #1 \right]}', 1]
+    Exphat: ['{\hat{\mathbb{E}}_t\left[ #1 \right]}', 1]
     Expsub: ['{\mathbb{E}_{#2}\left[ #1 \right]}', 2]
     ExpC: ['{\mathbb{E}\left[ #1 \middle| #2 \right]}', 2]
     ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]

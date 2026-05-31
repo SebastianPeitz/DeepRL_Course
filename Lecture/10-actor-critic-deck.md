@@ -786,7 +786,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi
 [$\Rightarrow$ This one is often easier to estimate.]{.fragment} [**Finite $\Ac$**: compute sum!]{.fragment} [**Continuous $\Ac$**: sampling actions is easy!]{.fragment}
 :::
 
-# $n$-step advantage estimation
+# $n$-step advantage estimation {menu-title="n-step advantage estimation"}
 
 ::: small
 Similar to standard TD learning, we can again find some middle ground between the one-step estimate and the MC estimate:

@@ -587,6 +587,7 @@ $$ \max_{\phi'} L_{\pi_\phi}(\pi_{\phi'}) - C \cdot \KLdivmax{\pi_\phi}{\pi_{\ph
 :::
 
 ::: fragment
+::: definition
 **Challenges**:
 
 ::: incremental
@@ -596,6 +597,7 @@ $$ \max_{\phi'} L_{\pi_\phi}(\pi_{\phi'}) - C \cdot \KLdivmax{\pi_\phi}{\pi_{\ph
 [**Solution**: Replace by the average KL divergence over the states that were actually observed:
 $$\KLdivavg{\pi_\phi}{\pi_{\subold{\phi}}} = \Expsub{\KLdiv{\pi_{\subold{\phi}}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\pi_\subold{\phi}}}.$$
 ]{.fragment}
+:::
 :::
 :::
 :::
@@ -717,14 +719,14 @@ $$\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g
 
 ::: incremental
 - Compute $x = F^{-1}g$ using the CG method ($\Oc(d)$ if we use autodiff).
-- Calculate the denominator in \eqref{eq:Adv_TRPO_step} (Note that $F^\top = F$, since the FIM is symmetric):
+- Calculate the denominator in \eqref{eq:Adv_TRPO_step} (Note that $F^\top = F$, since the Fisher information matrix is symmetric):
 $$ \nu = g^\top F^{-1} g \fragment{ = (Fx)^\top F^{-1} Fx } \fragment{ = x^\top F^\top F^{-1} Fx } \fragment{ = x^\top F x } \fragment{ = x^\top g. } $$
-- Compute the step size $\beta = \sqrt{\frac{2\delta}{\nu}} F^{-1} g$.
+- Compute the step size $\beta = \sqrt{\frac{2\delta}{\nu}} = \sqrt{\frac{2\delta}{x^\top g}}$.
 - Compute the update $\Delta \phi = \beta x$.
 :::
 :::
 
-# TRPO: Step size selection
+# TRPO: Line search
 
 ::: small
 ::: columns-5-5
@@ -748,13 +750,14 @@ $$\begin{equation}
 :::
 :::
 
-[**Issue**: Even though we have selected an optimal step size for \eqref{eq:Adv_TRPO_LQOpt} in \eqref{eq:Adv_TRPO_step}, we are not guaranteed that in \eqref{eq:Adv_TRPO_Opt}, we]{.fragment}
+[**Issue**: Even though we have selected an optimal step size for Problem \eqref{eq:Adv_TRPO_LQOpt} via Eq. \eqref{eq:Adv_TRPO_step}, we are not guaranteed that in \eqref{eq:Adv_TRPO_Opt}, we]{.fragment}
 
 ::: incremental
 - actually get a descent in $L_\mathsf{TRPO}(\phi)$,
 - satisfy the constraint $\KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta$.
 :::
 
+::: columns-7-3
 ::: fragment
 ::: definition
 **Step length selection via [backtracking](https://en.wikipedia.org/wiki/Backtracking_line_search).**
@@ -765,11 +768,22 @@ $$\begin{equation}
 1. Calculate candidate $\phi' = \subold{\phi} + \Delta\phi$ for the next iterate.
 1. Check the following two conditions (recall that $L_\mathsf{TRPO}(\subold{\phi})=0$):
 $$(I)\quad L_\mathsf{TRPO}(\phi') >0 ~ ? \qquad\text{and}\qquad (II)\quad \KLdivavg{\subold{\pi}}{\pi_{\phi'}} \leq \delta ~ ?$$
-1. **if** (I) and (II) are satisfied **then** set $\subnew{\phi}=\phi'$ and $\STOP$. $\qquad$
-[**else:** set $\Delta\phi \gets \alpha \Delta\phi$ and go back to 2.]{.fragment}
+1. **if** (I) and (II) :white_check_mark: **then** $\subnew{\phi}\gets\phi'$ and $\STOP$ [**else:** $\Delta\phi \gets \alpha \Delta\phi$ and back to 2.]{.fragment}
+<!-- 1. **if** (I) and (II) are satisfied **then** set $\subnew{\phi}=\phi'$ and $\STOP$.\
+[**else:** set $\Delta\phi \gets \alpha \Delta\phi$ and go back to 2.]{.fragment} -->
 :::
 :::
 :::
+
+::: fragment
+**Note**: 
+Condition (II) is checked point-wise on the training batch: 
+$$\begin{align*} &\KLdivavg{\subold{\phi}}{\subnew{\phi}}= \\
+&\frac{1}{N}\sum_{i=1}^N \KLdiv{\pi_{\subold{\phi}}\agivenb{\cdot}{s_i}}{\pi_{\subnew{\phi}}\agivenb{\cdot}{s_i}}. \end{align*}$$
+[That's why TRPO does not apply to deterministic policies right away!]{.fragment}
+:::
+:::
+
 :::
 
 # TRPO: Final algorithm
@@ -786,7 +800,7 @@ For iterations $k = 0, 1, 2, \dots$ until convergence:
 1. **Data collection:**
 Run the current policy $\pi_{\iterate{\phi}{k}}$ in the environment to collect a batch of trajectories $\Bc = \{(s_t, a_t, r_t)\}$.
 2. **Advantage estimation:**
-Estimate the advantage values $A_{\iterate{\phi}{k}}(s, a)$ for all sampled steps.
+Estimate the advantage values $A_{\iterate{\theta}{k}}(s, a)$ for all sampled steps.
 3. **Compute policy gradient ($g$):**
 Evaluate the standard policy gradient vector $g$ using the collected samples:
 $$g = \frac{1}{\abs{\Bc}} \sum_{s,a \in \Bc} \nablaphi \log \pi_\phi\agivenb{a}{s}\Big|_{\phi=\iterate{\phi}{k}} A_{\iterate{\phi}{k}}(s,a)$$
@@ -803,16 +817,28 @@ $\iterate{\phi}{k+1} = \iterate{\phi}{k} + \gamma \Delta \phi$ (or *reject* if n
 :::
 :::
 
-<!-- # TITLE
+# TRPO: The big picture and relation to actor-critic
 
 ### The Big Picture Structure
 
 ```
- Collect Data ──► Compute Gradient (g) ──► CG Loop (F⁻¹g) ──► Line Search (KL ≤ δ) ──► Update θ
-      ▲                                                                                     │
-      └─────────────────────────────────────────────────────────────────────────────────────┘
+ Collect Data ──► Advantage estimation ──► Compute Gradient (g) ──► CG Loop (F⁻¹g) ──► Line Search (KL ≤ δ) ──► Update θ
+      ▲                                                                                                            │
+      └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-``` -->
+```
+
+::: fragment
+### Relation to actor-critic
+
+::: incremental
+- At its core, TRPO is an Actor-Critic algorithm in practice: 
+  - It uses a value network critic to estimate $A_{\iterate{\theta}{k}}(s, a)$.
+- However, it was derived from first principles using policy gradient theory.
+  - The primary goal of the paper was to solve a massive mathematical flaw in early actor-critic methods: the lack of monotonic improvement guarantees.
+:::
+
+:::
 
 # Example: Half-Cheetah
 
@@ -860,7 +886,142 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 
 ------------------------------------------------------------------------------
 
-# Proximal policy optimization (PPO)
+# Drawbacks of TRPO
+
+::: small
+
+### Drawback A: Large computational overhead (the CG bottleneck)
+::: incremental
+- TRPO relies on the Conjugate Gradient (CG) method to compute the matrix-free step direction $F^{-1}g$. 
+- While CG is much cheaper than explicit matrix inversion, it still requires running a separate $10$-to-$20$ iteration inner loop for every single policy update, evaluating two backpropagation passes per CG step. 
+<!-- - This made TRPO significantly slower in wall-clock time compared to simple first-order methods.  -->
+:::
+
+::: columns-7-3
+::: platzhalter
+
+::: fragment
+### Drawback B: Code complexity and fragility
+:::
+
+::: incremental
+- TRPO requires custom optimization pipelines. You cannot simply hand a TRPO objective to a standard deep learning optimizer like Adam. 
+- Requires writing both a dedicated Conjugate Gradient solver and backtracking line search. 
+:::
+
+::: fragment
+### Drawback C: Incompatibility with shared architectures
+:::
+
+::: incremental
+- In modern deep RL, it is common to use a shared network architecture with two heads for the policy actions (Actor) and the state-value estimates (Critic). 
+- Because TRPO’s constraint is calculated purely using the Fisher Information Matrix of the policy, it has no mathematical way to constrain or properly scale the value function parameters. 
+- As a result we are forced to maintain two entirely separate neural networks. 
+:::
+:::
+
+::: fragment
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/10-actor-critic/NN-architectures.svg){ width=500px }
+:::
+:::
+:::
+
+# Avoiding the constraint
+
+::: small
+::: incremental
+- The core breakthrough leading to **Proximal Policy Optimization** (**PPO**) [@Schulman2017ppo] was the realization that we don't need a massive, second-order constraint boundary (like a KL ellipse) to keep the policy updates safe. 
+- Instead of a constraint, we can enforce a trust region directly inside the objective function by punishing the optimizer if it tries to push the new policy too far away from the old one.
+:::
+
+::: fragment
+::: definition
+### The clipped surrogate objective in PPO
+
+$$\begin{equation} L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\kappa_t(\phi), 1-\epsilon, 1+\epsilon)A_t \right)}, \label{eq:Adv_PPO_Objective} \end{equation}$$
+where we have simplified the notation in several ways:
+
+::: incremental
+- $\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_\subold{\phi}\agivenb{a_t}{s_t}}$ is the *importance sampling* ratio.
+- ${A}_t$ is the estimated advantage at time $t$, i.e., $A_\theta(s_t,a_t)$ (typically using a *critic network*).
+- $\epsilon$ is a hyperparameter (typically $0.1$ or $0.2$) determining how far the policy is allowed to drift.
+- $\Exphat{f_t} = \frac{1}{T}\sum_{t=1}^T f_t$ denotes an *empirical expectation* (i.e., a sample average) which, in the limit $T\to\infty$, yields our analytical expectation $\Expsub{f_t}{s\sim \rho_{\pi_{\phi}}, a\sim\pi_{\phi}}$.
+[This notation was chosen in [@Schulman2017ppo] for two reasons:]{.fragment}
+  1. It aligns closely with the implementation.
+  1. It handles both infinite and finite-time trajectories.
+:::
+:::
+:::
+:::
+
+# Understanding the clipped surrogate objective (1)
+
+::: small
+::: definition
+
+$$L_\mathsf{TRPO}(\phi) = \E_{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}}\Big[\underbrace{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}}_{=\kappa(\phi)}A_{\subold{\pi}}(s,a)\Big]\quad \text{vs.} \quad
+L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\kappa_t(\phi), 1-\epsilon, 1+\epsilon)A_t \right)}.$$
+:::
+
+::: fragment
+::: columns-6-4
+::: platzhalter
+**The clipping function** $\mathsf{clip}(r_t(\phi), 1-\epsilon, 1+\epsilon)$ bounds the importance sampling ratio $\kappa_t$ to
+
+- at most $1+\epsilon$ if $A>0$,
+- at least $1-\epsilon$ if $A<0$.
+
+::: fragment
+**The $\min$ function** ensures that we take the minimum of the clipped and unclipped objective $\Rightarrow$ $L_\mathsf{CLIP}$ is a lower (i.e., pessimistic) bound on the unclipped objective.
+:::
+
+:::
+
+::: platzhalter
+![Source: [@Schulman2017ppo]](images/11-advanced/PPO_clipping.png){width=550px}
+:::
+:::
+:::
+:::
+
+# Understanding the clipped surrogate objective (1)
+
+::: small
+::: definition
+
+$$L_\mathsf{TRPO}(\phi) = \E_{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}}\Big[\underbrace{\frac{\pi_\phi\agivenb{a}{s}}{\subold{\pi}\agivenb{a}{s}}}_{=\kappa(\phi)}A_{\subold{\pi}}(s,a)\Big]\quad \text{vs.} \quad
+L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\kappa_t(\phi), 1-\epsilon, 1+\epsilon)A_t \right)}.$$
+:::
+
+### Examples
+
+::: columns-5-5
+::: platzhalter
+1. **Positive Advantage ($A_t > 0$)** 
+
+::: incremental
+- This means the action was good, and the optimizer wants to make it more likely by increasing $\kappa_t(\phi)$ above $1.0$. 
+- However, the clipping term caps the reward at $1 + \epsilon$. 
+- The $\min$ operator ensures that even if $\kappa_t(\phi)$ grows (for instance, to $1.5$ or $2.0$), the optimizer receives no extra gradient incentive to push it further. 
+- It flattens the objective landscape, stopping the policy from overshooting.
+:::
+:::
+
+::: fragment
+::: platzhalter
+2. **Negative Advantage ($A_t < 0$)**
+
+::: incremental
+- This means the action was bad, and the optimizer wants to make it less likely by dropping $\kappa_t(\phi)$ below $1.0$. 
+- The clipping term caps this at $1 - \epsilon$. 
+- Crucially, if the policy makes a disastrously huge change that makes a good action suddenly zero probability ($\kappa_t \to 0$), the objective drops sharply without a cap, creating a massive gradient pull that forces the policy back into the safe zone. 
+:::
+:::
+:::
+:::
+:::
+
+<!-- # Proximal policy optimization (PPO)
 
 ::: small
 ::: incremental
@@ -879,18 +1040,62 @@ Two possible approaches:
 ::: incremental
 1. Turn constraint into penalty term (tuning constant is hard).
 2. Clipped objective (the one people use)
-:::
+::: -->
 
 # Evolution of policy gradient methods
 
+::: incremental
+- Standard policy gradient.
+- Natural policy gradient $\Rightarrow$ Balancing parameters via the Fisher information matrix.
+- TRPO $\Rightarrow$ Maximize surrogate objective subject to KL trust region.
+- PPO $\Rightarrow$ Replace hard trust region with clipped objective.
+:::
+
+# Example: Half-Cheetah
+
 ::: small
-- policy gradient
-- natural policy gradient
-- TRPO: maximize surrogate objectivesubject to KL trust region
-- PPO: replace hard trust region with clipped objective
+::: columns-3-2-2
+::: platzhalter
+As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/) example from the MuJoCo library.
+
+- $\Sc$: 17 states.
+- $\Ac$: 6 actions.
+- Reward: Forward-Cost - Control-Cost.
+:::
+
+::: platzhalter
+![](images/11-advanced/half_cheetah.png){width=350px}
 :::
 
 
+![](images/11-advanced/half_cheetah.gif){width=200px}
+
+:::
+\
+
+::: fragment
+::: columns-6-3-3
+::: platzhalter
+### Results: TRPO vs. PPO
+![](images/11-advanced/half_cheetah_ppo.svg){.embed width=650px}
+:::
+
+::: platzhalter
+\
+
+![TRPO](videos/11-advanced/trpo.mp4){width=280px .controls .autoplay .muted }
+:::
+
+::: fragment
+\
+
+![PPO](videos/11-advanced/ppo.mp4){width=280px .controls .autoplay .muted }
+:::
+:::
+
+:::
+
+:::
 
 # References
 
