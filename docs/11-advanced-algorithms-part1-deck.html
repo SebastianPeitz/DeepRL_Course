@@ -1714,23 +1714,32 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\kappa_t(\phi), 1-\epsilon, 1+\epsilon)A_t \right)}.\]</span></p>
 </div>
 <div class="fragment">
-<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="platzhalter">
 <p><strong>The clipping function</strong> <span class="math inline">\(\mathsf{clip}(r_t(\phi), 1-\epsilon, 1+\epsilon)\)</span> bounds the importance sampling ratio <span class="math inline">\(\kappa_t\)</span> to</p>
 <ul>
 <li>at most <span class="math inline">\(1+\epsilon\)</span> if <span class="math inline">\(A&gt;0\)</span>,</li>
 <li>at least <span class="math inline">\(1-\epsilon\)</span> if <span class="math inline">\(A&lt;0\)</span>.</li>
 </ul>
-<div class="fragment">
-<p><strong>The <span class="math inline">\(\min\)</span> function</strong> ensures that we take the minimum of the clipped and unclipped objective <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(L_\mathsf{CLIP}\)</span> is a lower (i.e., pessimistic) bound on the unclipped objective.</p>
-</div>
-</div>
-<div class="platzhalter">
 <div class="media">
 <figure class="image" style="height:auto;width:550px;">
 <img src="images/11-advanced/PPO_clipping.png" style="height:auto;width:100%;" aria-label="Source: (Schulman et al. 2017)" alt="images/11-advanced/PPO_clipping.png" />
 <figcaption>
 Source: <span class="citation">(<a href="#ref-Schulman2017ppo">Schulman et al. 2017</a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="platzhalter">
+<div class="fragment">
+<p><strong>The <span class="math inline">\(\min\)</span> function</strong> ensures that we take the minimum of the clipped and unclipped objective <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(L_\mathsf{CLIP}\)</span> is a lower (i.e., pessimistic) bound on the unclipped objective.</p>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:600px;">
+<img src="images/11-advanced/PPO_interpolation.png" style="height:auto;width:100%;" aria-label="Loss function behavior for interpolating policy \pi_\alpha = \alpha \pi_\phi + (1-\alpha) \subold{\pi}. (Source: (Schulman et al. 2017))" alt="images/11-advanced/PPO_interpolation.png" />
+<figcaption>
+Loss function behavior for interpolating policy <span class="math inline">\(\pi_\alpha = \alpha \pi_\phi + (1-\alpha) \subold{\pi}\)</span>. (Source: <span class="citation">(<a href="#ref-Schulman2017ppo">Schulman et al. 2017</a>)</span>)
 </figcaption>
 </figure>
 </div>
@@ -1743,11 +1752,12 @@ Source: <span class="citation">(<a href="#ref-Schulman2017ppo">Schulman et al. 2
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="understanding-the-clipped-surrogate-objective-1-1" class="slide level1">
+<section id="understanding-the-clipped-surrogate-objective-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Understanding the clipped surrogate objective (1)</h1>
+<h1>Understanding the clipped surrogate objective (2)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -1807,6 +1817,74 @@ Two possible approaches:
 1. Turn constraint into penalty term (tuning constant is hard).
 2. Clipped objective (the one people use)
 ::: -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="ppo-final-algorithm" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>PPO: Final algorithm</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="definition">
+<!-- ### Algorithm: Trust-Region Policy Optimization (TRPO) -->
+<p><strong>Input:</strong> Initial policy parameters <span class="math inline">\(\iterate{\phi}{0}\)</span>, clipping parameter <span class="math inline">\(\epsilon\)</span>, gradient descent algorithm (Adam, RMSprop, …)</p>
+<p>For iterations <span class="math inline">\(k = 0, 1, 2, \dots\)</span> until convergence:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Data collection:</strong> Run the current policy <span class="math inline">\(\pi_{\iterate{\phi}{k}}\)</span> in the environment to collect a batch of trajectories <span class="math inline">\(\Bc = \{(s_t, a_t, r_t)\}\)</span>.</li>
+<li><strong>Advantage estimation:</strong> Estimate the advantage values <span class="math inline">\(A_{\iterate{\theta}{k}}(s, a)\)</span> for all sampled steps.</li>
+<li><strong>Optimize surrogate loss:</strong> <span class="math inline">\(\iterate{\phi}{k+1} = \arg\min_\phi L_\mathsf{clip}(\phi)\)</span> via mini-batch training.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trpo-and-ppo-are-on-policy" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>TRPO and PPO are on-policy!</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">At first glance, TRPO and PPO can look off-policy because their objective functions use importance sampling: <span class="math display">\[\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb{a_t}{s_t}}.\]</span></li>
+<li class="fragment">However, the intent behind it here is completely different:
+<ul class="incremental">
+<li class="fragment">In <strong>off-policy RL</strong>: <span class="math inline">\(\pi_{\theta_{old}}\)</span> could be a completely different policy from long ago.</li>
+<li class="fragment">In <strong>TRPO/PPO</strong>: <span class="math inline">\(\pi_{\theta_{old}}\)</span> is the immediate, exact current policy that just finished stepping through the environment with the polcy we’re trying to update.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="the-mathematical-reason-local-approximations">The Mathematical Reason: Local Approximations</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">As derived earlier, the surrogate objectives for both TRPO and PPO rely on a critical assumption: the states we use to calculate the loss must be sampled from a distribution that is nearly identical to the new policy’s distribution (<span class="math inline">\(\rho_{\pi_\phi} \approx \rho_{\pi_{\subold{\phi}}}\)</span>).</li>
+<li class="fragment">Because their mathematical bounds collapse if the data isn’t fresh, TRPO and PPO are <strong>strictly on-policy</strong>. If we tried to feed TRPO or PPO a batch of off-policy data collected by an entirely different policy/network:
+<ul class="incremental">
+<li class="fragment">In TRPO, the true KL divergence would exceed the trust region <span class="math inline">\(\delta\)</span>, the backtracking line search would reject the step, and the algorithm would freeze.</li>
+<li class="fragment">In PPO, the importance ratio <span class="math inline">\(\kappa_t(\phi)\)</span> would land far outside the <span class="math inline">\((1-\epsilon, 1+\epsilon)\)</span> safety window, the clipping mechanism would zero out the gradients, and the network would learn nothing.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="the-one-small-exception-near-policy-multiple-epochs">The one small exception: “Near-policy” (multiple epochs)</h3>
+<p>If changes are small, then we can try to use data in multiple consecutive iterations. Tradeoff:</p>
+<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad\)</span></span> <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ More data }\Rightarrow\text{ lower variance.}}\)</span></span></p>
+</div>
+</div>
 </div>
 </div>
 </div>

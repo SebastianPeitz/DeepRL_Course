@@ -964,27 +964,29 @@ L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\
 :::
 
 ::: fragment
-::: columns-6-4
+::: columns-5-5
 ::: platzhalter
 **The clipping function** $\mathsf{clip}(r_t(\phi), 1-\epsilon, 1+\epsilon)$ bounds the importance sampling ratio $\kappa_t$ to
 
 - at most $1+\epsilon$ if $A>0$,
 - at least $1-\epsilon$ if $A<0$.
 
-::: fragment
-**The $\min$ function** ensures that we take the minimum of the clipped and unclipped objective $\Rightarrow$ $L_\mathsf{CLIP}$ is a lower (i.e., pessimistic) bound on the unclipped objective.
-:::
-
+![Source: [@Schulman2017ppo]](images/11-advanced/PPO_clipping.png){width=550px}
 :::
 
 ::: platzhalter
-![Source: [@Schulman2017ppo]](images/11-advanced/PPO_clipping.png){width=550px}
+::: fragment
+**The $\min$ function** ensures that we take the minimum of the clipped and unclipped objective $\Rightarrow$ $L_\mathsf{CLIP}$ is a lower (i.e., pessimistic) bound on the unclipped objective.
+:::
+::: fragment
+![Loss function behavior for interpolating policy $\pi_\alpha = \alpha \pi_\phi + (1-\alpha) \subold{\pi}$. (Source: [@Schulman2017ppo])](images/11-advanced/PPO_interpolation.png){width=600px}
+:::
 :::
 :::
 :::
 :::
 
-# Understanding the clipped surrogate objective (1)
+# Understanding the clipped surrogate objective (2)
 
 ::: small
 ::: definition
@@ -1042,6 +1044,61 @@ Two possible approaches:
 2. Clipped objective (the one people use)
 ::: -->
 
+# PPO: Final algorithm
+
+::: small
+::: definition
+
+<!-- ### Algorithm: Trust-Region Policy Optimization (TRPO) -->
+
+**Input:** Initial policy parameters $\iterate{\phi}{0}$, clipping parameter $\epsilon$, gradient descent algorithm (Adam, RMSprop, ...)
+
+For iterations $k = 0, 1, 2, \dots$ until convergence:
+
+1. **Data collection:**
+Run the current policy $\pi_{\iterate{\phi}{k}}$ in the environment to collect a batch of trajectories $\Bc = \{(s_t, a_t, r_t)\}$.
+2. **Advantage estimation:**
+Estimate the advantage values $A_{\iterate{\theta}{k}}(s, a)$ for all sampled steps.
+3. **Optimize surrogate loss:** $\iterate{\phi}{k+1} = \arg\min_\phi L_\mathsf{clip}(\phi)$ via mini-batch training.
+:::
+:::
+
+
+# TRPO and PPO are on-policy!
+
+::: small
+::: incremental
+- At first glance, TRPO and PPO can look off-policy because their objective functions use importance sampling:
+$$\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb{a_t}{s_t}}.$$
+- However, the intent behind it here is completely different:
+  - In **off-policy RL**: $\pi_{\theta_{old}}$ could be a completely different policy from long ago. 
+  - In **TRPO/PPO**: $\pi_{\theta_{old}}$ is the immediate, exact current policy that just finished stepping through the environment with the polcy we're trying to update. 
+:::
+
+::: fragment
+### The Mathematical Reason: Local Approximations 
+:::
+
+::: incremental
+- As derived earlier, the surrogate objectives for both TRPO and PPO rely on a critical assumption: the states we use to calculate the loss must be sampled from a distribution that is nearly identical to the new policy's distribution ($\rho_{\pi_\phi} \approx \rho_{\pi_{\subold{\phi}}}$).
+- Because their mathematical bounds collapse if the data isn't fresh, TRPO and PPO are **strictly on-policy**. If we tried to feed TRPO or PPO a batch of off-policy data collected by an entirely different policy/network: 
+  - In TRPO, the true KL divergence would exceed the trust region $\delta$, the backtracking line search would reject the step, and the algorithm would freeze.
+  - In PPO, the importance ratio $\kappa_t(\phi)$ would land far outside the $(1-\epsilon, 1+\epsilon)$ safety window, the clipping mechanism would zero out the gradients, and the network would learn nothing.
+:::
+
+::: fragment
+### The one small exception: "Near-policy" (multiple epochs)
+
+If changes are small, then we can try to use data in multiple consecutive iterations. Tradeoff:
+
+[$\textcolor{red}{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad$]{.fragment}
+[$\textcolor{green}{\mathbf{+}\text{ More data }\Rightarrow\text{ lower variance.}}$]{.fragment}
+:::
+
+
+:::
+
+
 # Evolution of policy gradient methods
 
 ::: incremental
@@ -1050,6 +1107,8 @@ Two possible approaches:
 - TRPO $\Rightarrow$ Maximize surrogate objective subject to KL trust region.
 - PPO $\Rightarrow$ Replace hard trust region with clipped objective.
 :::
+
+
 
 # Example: Half-Cheetah
 
