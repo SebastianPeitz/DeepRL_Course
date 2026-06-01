@@ -102,6 +102,7 @@ math:
     Oc: '{\mathcal{O}}'
     Xc: '{\mathcal{X}}'
     Yc: '{\mathcal{Y}}'
+    nablaa: '{\nabla_{\mkern-6mu a\mkern+2mu}}'
     nablatheta: '{\nabla_{\mkern-6mu \theta\mkern+2mu}}'
     nablaphi: '{\nabla_{\mkern-6mu \phi\mkern+2mu}}'
     nablaphiprime: '{\nabla_{\mkern-6mu \phi\prime \mkern+2mu}}'

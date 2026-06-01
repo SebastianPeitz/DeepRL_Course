@@ -35,7 +35,7 @@ feedback:
 | 9    | Policy gradients                                          | Direct optimization of the policy      | 
 |  10  | Actor-critic algorithms| Improved policy gradients via value functions | 
 |  [11]{style="color: red;"}  | [Advanced algorithms (Part I): From policy gradient to PPO]{style="color: red;"} | [The evolution of modern RL algorithms]{style="color: red;"} | 
-|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic | The evolution of moderl RL algorithms | 
+|  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -210,7 +210,7 @@ $$ \KLdiv{\pi_\phi}{\pi_\phi'}. $$
 ::: columns-7-3
 ::: incremental
 - The **Kullback-Leibler divergence** (or **KL divergence**) measures the "distance" between two distributions (e.g., $p(x)$ and $q(x)$)
-$$ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} & \text{if}~\Xc~\text{is finite} \\ \int{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx & \text{if}~\Xc~\text{is continuous} \end{cases}. $$
+$$ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} & \text{if}~\Xc~\text{is finite} \\ \int_{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx & \text{if}~\Xc~\text{is continuous} \end{cases}. $$
   - It is zero if and only if $p(x) = q(x)$.
 - **Intuition**: Imagine you have two different maps of the exact same city.
   - Map A is completely accurate. Every street, etc., is exactly where it should be.
@@ -260,8 +260,9 @@ $$\begin{equation} F = \Exp{\cbracket{\nablaphi \log\, \pC{x}{\phi}} \cbracket{\
 
 ::: incremental
 - Consider a very small change in $\phi$ by $\Delta\phi$, and study the KL divergence $\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}}$.
-- If we perform a [Taylor series expansion](https://en.wikipedia.org/wiki/Taylor_series) of $D_{\mathsf{KL}}$ around $\Delta\phi=0$, then the first two terms are zero ($\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0$ and since $\Delta\phi=0$ is the minimum, the first derivative is zero as well).
-- The second order term is thus the leading term! $\Rightarrow$ for small $\Delta\phi$, we have
+- If we perform a [Taylor series expansion](https://en.wikipedia.org/wiki/Taylor_series) of $D_{\mathsf{KL}}$ around $\Delta\phi=0$, then the first two terms are zero\
+($\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0$ and since $\Delta\phi=0$ is the minimum, the first derivative is zero as well).
+- The second-order term is thus the leading term! $\Rightarrow$ for small $\Delta\phi$, we have
 $$\begin{equation} \KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}} \approx \frac{1}{2} \Delta\phi^\top F \Delta\phi. \label{eq:Adv_KLdiv_Fisher} \end{equation}$$
 :::
 
@@ -865,7 +866,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 ::: fragment
 ::: columns-7-3
 ::: platzhalter
-### Results with TRPO
+### Results with TRPO (from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo))
 ![](images/11-advanced/half_cheetah_trpo.svg){width=650px}
 :::
 
@@ -890,7 +891,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 
 ::: small
 
-### Drawback A: Large computational overhead (the CG bottleneck)
+### 1. Large computational overhead (the CG bottleneck)
 ::: incremental
 - TRPO relies on the Conjugate Gradient (CG) method to compute the matrix-free step direction $F^{-1}g$. 
 - While CG is much cheaper than explicit matrix inversion, it still requires running a separate $10$-to-$20$ iteration inner loop for every single policy update, evaluating two backpropagation passes per CG step. 
@@ -901,7 +902,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 ::: platzhalter
 
 ::: fragment
-### Drawback B: Code complexity and fragility
+### 2. Code complexity and fragility
 :::
 
 ::: incremental
@@ -910,7 +911,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 :::
 
 ::: fragment
-### Drawback C: Incompatibility with shared architectures
+### 3. Incompatibility with shared architectures
 :::
 
 ::: incremental
@@ -1135,7 +1136,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 ::: fragment
 ::: columns-6-3-3
 ::: platzhalter
-### Results: TRPO vs. PPO
+### Results: TRPO vs. PPO (from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo))
 ![](images/11-advanced/half_cheetah_ppo.svg){.embed width=650px}
 :::
 

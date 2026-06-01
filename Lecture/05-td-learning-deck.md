@@ -382,7 +382,7 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 The example is taken from [@Sutton1998{}, Ex.\ 6.2]
 :::
 
-# Example: MC vs. TD($0$) prediction in Gridworld
+# Example: MC vs. TD($0$) prediction in Gridworld {menu-title="Example: MC vs. TD(0) prediction in Gridworld"}
 
 ::: small
 ::: columns-6-4
