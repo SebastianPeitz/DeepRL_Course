@@ -420,7 +420,7 @@ $$y = r + \gamma \min_{i=1,2} Q_{\theta_i'}(s', \mu_{\phi'}(s'))$$
 - If the critic is highly inaccurate, updating the actor based on its gradients is counterproductive. 
 - Delaying the policy updates ensures the critic has reached a reliable value before the actor uses it.
 :::
-[$~\Rightarrow$ Update actor ($\phi$) and targets ($\phi'$, $\theta'_1$, $\theta'_2$) less frequently than critics ($\theta_1$, $\theta_2'$), e.g., every $N_a=2$ steps.]{.fragment}
+[$~\Rightarrow$ Update actor ($\phi$) and targets ($\phi'$, $\theta'_1$, $\theta'_2$) less frequently than critics ($\theta_1$, $\theta_2'$), e.g., every $n_\mathsf{up}=2$ steps.]{.fragment}
 :::
 
 
@@ -449,7 +449,7 @@ $$L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^
 :::
 
 ::: fragment
-[Perform the following steps only every $N_a^\mathsf{th}$ step:]{style="color: red;"} (:bulb: the **Delayed**):
+[Perform the following steps only every $n_\mathsf{up}$ steps:]{style="color: red;"} (:bulb: the **Delayed**):
 :::
 
 ::: columns-1-30-20
