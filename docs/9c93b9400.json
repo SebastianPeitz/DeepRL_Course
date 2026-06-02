@@ -3,10 +3,10 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "02.06.2026 07:56"
+        "02.06.2026 14:01"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
-    "chapter": "11",
+    "chapter": "12",
     "chart": {
         "colors": [
             "#f5871f",
@@ -848,7 +848,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Advanced Algorithms",
+    "subtitle": "Advanced Algorithms (Part II)",
     "supportPath": "support",
     "template": {
         "deck": {
