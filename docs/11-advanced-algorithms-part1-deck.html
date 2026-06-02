@@ -1897,27 +1897,6 @@ Two possible approaches:
 </div>
 </div>
 </section>
-<section id="evolution-of-policy-gradient-methods" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Evolution of policy gradient methods</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="incremental">
-<ul class="incremental">
-<li class="fragment">Standard policy gradient.</li>
-<li class="fragment">Natural policy gradient <span class="math inline">\(\Rightarrow\)</span> Balancing parameters via the Fisher information matrix.</li>
-<li class="fragment">TRPO <span class="math inline">\(\Rightarrow\)</span> Maximize surrogate objective subject to KL trust region.</li>
-<li class="fragment">PPO <span class="math inline">\(\Rightarrow\)</span> Replace hard trust region with clipped objective.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
 <section id="example-half-cheetah-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -3033,6 +3012,86 @@ PPO
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-of-the-algorithms-we-have-seen-in-part-i" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparison of the algorithms we have seen in part I</h1>
+</div>
+</div>
+</section>
+<section id="comparison-of-the-algorithms-we-have-seen-in-part-i-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparison of the algorithms we have seen in part I</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Standard policy gradient.</li>
+<li class="fragment">Natural policy gradient <span class="math inline">\(\Rightarrow\)</span> Balancing parameters via the Fisher information matrix.</li>
+<li class="fragment">TRPO <span class="math inline">\(\Rightarrow\)</span> Maximize surrogate objective subject to KL trust region.</li>
+<li class="fragment">PPO <span class="math inline">\(\Rightarrow\)</span> Replace hard trust region with clipped objective.</li>
+</ul>
+</div>
+<div class="fragment">
+<table>
+<thead>
+<tr>
+<th align="center">Feature</th>
+<th align="center">Natural Policy Gradient</th>
+<th align="center">TRPO</th>
+<th align="center">PPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Core Concept</td>
+<td align="center">Scaled step sizes based on how much <span class="math inline">\(\pi\)</span> changes, not <span class="math inline">\(\phi\)</span></td>
+<td align="center">Strict boundary (trust region) to guarantee policy improvement</td>
+<td align="center">Mimics trust region via simplified clipped objective function</td>
+</tr>
+<tr>
+<td align="center">Mathematical Constraint</td>
+<td align="center">KL-divergence approximation via Fisher information matrix.</td>
+<td align="center">Strict: <span class="math inline">\(\KLdivavg{\pi_{\phi&#39;}}{\pi_\phi} \le \delta\)</span></td>
+<td align="center">Soft constraint via clipped surrogate objective</td>
+</tr>
+<tr>
+<td align="center">Optimization Method</td>
+<td align="center">Matrix inversion: <span class="math inline">\(\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)\)</span></td>
+<td align="center">Conjugate Gradient (CG) + line search</td>
+<td align="center">Stochastic gradient descent (SGD) or Adam optimizer</td>
+</tr>
+<tr>
+<td align="center">Complexity</td>
+<td align="center">Very high (inversion of <span class="math inline">\(F\)</span>)</td>
+<td align="center">High</td>
+<td align="center">Low (first-order optimization)</td>
+</tr>
+<tr>
+<td align="center">Implementation</td>
+<td align="center">Challenging</td>
+<td align="center">Very challenging</td>
+<td align="center">Simple</td>
+</tr>
+<tr>
+<td align="center">Data Efficiency</td>
+<td align="center">Poor</td>
+<td align="center">Moderate</td>
+<td align="center">High</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

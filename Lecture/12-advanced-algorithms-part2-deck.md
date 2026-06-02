@@ -472,75 +472,169 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 :::
 :::
 
-------------------------------------------------------------------------------
-
-# Soft actor-critic (SAC)
-
-------------------------------------------------------------------------------
-
-# Soft actor-critic (SAC)
-
-::: small
-[@Haarnoja2018sac]
-:::
-
-
-------------------------------------------------------------------------------
-
-# Comparison
-
-------------------------------------------------------------------------------
-
-# Example: Some MuJoCo environments
-
-![Source: [@Fujimoto2018TD3{}, Figure 5].](images/11-advanced/Comparison_MuJoCo.png){width=500px}
-
 # Example: Half-Cheetah
 
 ::: small
-::: columns-3-2-2
+::: columns-2-4
 ::: platzhalter
-As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/) example from the MuJoCo library.
+[Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/) from the MuJoCo library.
 
-- $\Sc$: 17 states.
-- $\Ac$: 6 actions.
+- $\Sc$: 17 states, $\Ac$: 6 actions.
 - Reward: Forward-Cost - Control-Cost.
+
+![](images/11-advanced/half_cheetah.png){width=250px}
 :::
 
-::: platzhalter
-![](images/11-advanced/half_cheetah.png){width=350px}
+![](images/11-advanced/half_cheetah_td3.svg){.embed width=600px}
 :::
-
-
-![](images/11-advanced/half_cheetah.gif){width=200px}
-
-:::
-\
 
 ::: fragment
-::: columns-6-3-3
-::: platzhalter
-### Results: TRPO vs. PPO (from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo))
-![](images/11-advanced/half_cheetah_ppo.svg){.embed width=650px}
-:::
+### Results: TRPO vs. PPO vs. TD3 (from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo))
+::: columns-1-1-1
 
 ::: platzhalter
-\
-
 ![TRPO](videos/11-advanced/trpo.mp4){width=280px .controls .autoplay .muted }
 :::
 
 ::: fragment
-\
-
 ![PPO](videos/11-advanced/ppo.mp4){width=280px .controls .autoplay .muted }
 :::
+
+::: fragment
+![TD3](videos/11-advanced/td3.mp4){width=280px .controls .autoplay .muted }
+:::
 :::
 
 :::
 
 :::
 
+------------------------------------------------------------------------------
+
+# Soft actor-critic (SAC)
+
+------------------------------------------------------------------------------
+
+# Soft actor-critic (SAC)
+
+::: small
+::: incremental
+- The limitations of both DDPG and TD3 are still quite severe.
+  - Overestimation bias (DDPG).
+  - Hyperparameter sensitivity (DDPG)
+  - Lack of exploration (both)
+  - Sample Inefficiency due to Local Optima (both).
+- SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function
+  - [Entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) was defined by Claude Shannon in 1948.
+  - It describes the level of uncertainty (or unpredictability) of a random variable.
+:::
+
+:::
+
+# Soft actor-critic: ingredients
+
+::: small
+::: incremental
+- Entropy term and temperature
+- Networks for $V$ (also target), $Q$ (twin) and $\pi$
+- Reparametrization trick for $\pi$ 
+- Learning of $\alpha$
+- Moving average for target $V$
+:::
+:::
+
+
+
+# Example: Half-Cheetah
+
+::: small
+::: columns-2-4
+::: platzhalter
+[Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/) from the MuJoCo library.
+
+- $\Sc$: 17 states, $\Ac$: 6 actions.
+- Reward: Forward-Cost - Control-Cost.
+
+![](images/11-advanced/half_cheetah.png){width=250px}
+:::
+
+![](images/11-advanced/half_cheetah_all.svg){.embed width=600px}
+:::
+
+::: fragment
+### Results: TRPO vs. PPO vs. TD3 vs. SAC (from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo))
+::: columns-1-1-1-1
+
+::: platzhalter
+![TRPO](videos/11-advanced/trpo.mp4){width=280px .controls .autoplay .muted }
+:::
+
+::: platzhalter
+![PPO](videos/11-advanced/ppo.mp4){width=280px .controls .autoplay .muted }
+:::
+
+::: platzhalter
+![TD3](videos/11-advanced/td3.mp4){width=280px .controls .autoplay .muted }
+:::
+
+::: platzhalter
+![SAC](videos/11-advanced/sac.mp4){width=280px .controls .autoplay .muted }
+:::
+:::
+
+:::
+
+:::
+
+# Example: Some MuJoCo environments
+
+![Source: [@Fujimoto2018TD3{}, Figure 5].](images/11-advanced/SAC_MuJoCo.png){width=800px}
+
+::: columns-1-1-1
+::: fragment
+![Half cheetah (SAC).](videos/11-advanced/sac.mp4){width=250px .controls .autoplay .muted }
+:::
+
+::: fragment
+![Hopper (SAC).](videos/11-advanced/hopper.mp4){width=250px .controls .autoplay .muted }
+:::
+
+::: fragment
+![Walker 2D (SAC).](videos/11-advanced/walker.mp4){width=250px .controls .autoplay .muted }
+:::
+:::
+
+::: footer
+:bulb: Trained models from [StableBaselines3](https://huggingface.co/sb3/models)
+:::
+
+
+------------------------------------------------------------------------------
+
+# Comparison of the algorithms we have seen in part II
+
+------------------------------------------------------------------------------
+
+# Comparison of the algorithms we have seen in part II
+
+::: small
+::: incremental
+- Actor-Critic.
+- DDPG $\Rightarrow$ variance reduction via deterministic policy.
+- TD3 $\Rightarrow$ addresses maximization bias (twin networks) and inaccurate critics (via delayed updates).
+- SAC $\Rightarrow$ entropy objective for natural exploration
+:::
+
+::: fragment
+| Feature | DDPG | TD3 | SAC |
+| :---: | :---: | :---: | :---: |
+| Policy Type | Deterministic | Deterministic | Stochastic |
+| Exploration | Additive Noise (e.g., OU Noise) | Additive Noise (Gaussian) | Intrinsic (Entropy Maximization) |
+| Q-Overestimation Cure | None | Clipped Double-Q | Clipped Double-Q |
+| Sensitivity to Hyperparameters | Extremely High | High | Low (Very Stable) |
+| Sample Efficiency | Moderate | Good | Excellent |
+:::
+:::
 
 # References
 

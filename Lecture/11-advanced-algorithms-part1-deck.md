@@ -1102,18 +1102,6 @@ If changes are small, then we can try to use data in multiple consecutive iterat
 
 :::
 
-
-# Evolution of policy gradient methods
-
-::: incremental
-- Standard policy gradient.
-- Natural policy gradient $\Rightarrow$ Balancing parameters via the Fisher information matrix.
-- TRPO $\Rightarrow$ Maximize surrogate objective subject to KL trust region.
-- PPO $\Rightarrow$ Replace hard trust region with clipped objective.
-:::
-
-
-
 # Example: Half-Cheetah
 
 ::: small
@@ -1158,6 +1146,36 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 
 :::
 
+:::
+
+
+
+------------------------------------------------------------------------------
+
+# Comparison of the algorithms we have seen in part I
+
+------------------------------------------------------------------------------
+
+# Comparison of the algorithms we have seen in part I
+
+::: small
+::: incremental
+- Standard policy gradient.
+- Natural policy gradient $\Rightarrow$ Balancing parameters via the Fisher information matrix.
+- TRPO $\Rightarrow$ Maximize surrogate objective subject to KL trust region.
+- PPO $\Rightarrow$ Replace hard trust region with clipped objective.
+:::
+
+::: fragment
+| Feature | Natural Policy Gradient | TRPO | PPO |
+| :-: | :-: | :-: | :-: |
+| Core Concept| Scaled step sizes based on how much $\pi$ changes, not $\phi$ | Strict boundary (trust region) to guarantee policy improvement | Mimics trust region via simplified clipped objective function | 
+| Mathematical Constraint| KL-divergence approximation via Fisher information matrix. | Strict: $\KLdivavg{\pi_{\phi'}}{\pi_\phi} \le \delta$ | Soft constraint via clipped surrogate objective | 
+| Optimization Method | Matrix inversion: $\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)$ | Conjugate Gradient (CG) + line search | Stochastic gradient descent (SGD) or Adam optimizer |
+| Complexity | Very high (inversion of $F$) | High | Low (first-order optimization) | 
+| Implementation | Challenging | Very challenging | Simple | 
+| Data Efficiency | Poor | Moderate | High |
+:::
 :::
 
 # References
