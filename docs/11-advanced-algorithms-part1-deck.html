@@ -267,7 +267,7 @@ I)</title>
 <tr>
 <td align="center">12</td>
 <td align="left">Advanced algorithms (Part II): From <span class="math inline">\(Q\)</span>-learning to Soft Actor-Critic</td>
-<td align="left">The evolution of moderl RL algorithms</td>
+<td align="left"></td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -396,7 +396,7 @@ I)</title>
 <div class="platzhalter">
 <div class="media">
 <figure class="embed svg embedded" style="height:auto;width:600px;">
-<div aria-label="A simple exemplary MDP. Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;">
+<div aria-label="A simple exemplary MDP (Peters and Schaal 2008). Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;">
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
@@ -649,7 +649,7 @@ I)</title>
 
 </div>
 <figcaption>
-A simple exemplary MDP. Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
+A simple exemplary MDP <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span>. Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse-fa23/">CS285 lecture</a>.
 </figcaption>
 </figure>
 </div>
@@ -747,7 +747,7 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The <strong>Kullback-Leibler divergence</strong> (or <strong>KL divergence</strong>) measures the “distance” between two distributions (e.g., <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>) <span class="math display">\[ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} &amp; \text{if}~\Xc~\text{is finite} \\ \int{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx &amp; \text{if}~\Xc~\text{is continuous} \end{cases}. \]</span>
+<li class="fragment">The <strong>Kullback-Leibler divergence</strong> (or <strong>KL divergence</strong>) measures the “distance” between two distributions (e.g., <span class="math inline">\(p(x)\)</span> and <span class="math inline">\(q(x)\)</span>) <span class="math display">\[ \KLdiv{p}{q}= \begin{cases} \sum_{x\in\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}} &amp; \text{if}~\Xc~\text{is finite} \\ \int_{\Xc} p(x) \log\cbracket{\frac{p(x)}{q(x)}}\dx &amp; \text{if}~\Xc~\text{is continuous} \end{cases}. \]</span>
 <ul class="incremental">
 <li class="fragment">It is zero if and only if <span class="math inline">\(p(x) = q(x)\)</span>.</li>
 </ul></li>
@@ -818,8 +818,9 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Consider a very small change in <span class="math inline">\(\phi\)</span> by <span class="math inline">\(\Delta\phi\)</span>, and study the KL divergence <span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}}\)</span>.</li>
-<li class="fragment">If we perform a <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> of <span class="math inline">\(D_{\mathsf{KL}}\)</span> around <span class="math inline">\(\Delta\phi=0\)</span>, then the first two terms are zero (<span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0\)</span> and since <span class="math inline">\(\Delta\phi=0\)</span> is the minimum, the first derivative is zero as well).</li>
-<li class="fragment">The second order term is thus the leading term! <span class="math inline">\(\Rightarrow\)</span> for small <span class="math inline">\(\Delta\phi\)</span>, we have <span class="math display">\[\begin{equation} \KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}} \approx \frac{1}{2} \Delta\phi^\top F \Delta\phi. \label{eq:Adv_KLdiv_Fisher} \end{equation}\]</span></li>
+<li class="fragment">If we perform a <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> of <span class="math inline">\(D_{\mathsf{KL}}\)</span> around <span class="math inline">\(\Delta\phi=0\)</span>, then the first two terms are zero<br />
+(<span class="math inline">\(\KLdiv{\pC{x}{\phi}}{\pC{x}{\phi}} = 0\)</span> and since <span class="math inline">\(\Delta\phi=0\)</span> is the minimum, the first derivative is zero as well).</li>
+<li class="fragment">The second-order term is thus the leading term! <span class="math inline">\(\Rightarrow\)</span> for small <span class="math inline">\(\Delta\phi\)</span>, we have <span class="math display">\[\begin{equation} \KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}} \approx \frac{1}{2} \Delta\phi^\top F \Delta\phi. \label{eq:Adv_KLdiv_Fisher} \end{equation}\]</span></li>
 </ul>
 </div>
 </div>
@@ -842,7 +843,12 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <li class="fragment">When using the KL divergence or the Fisher information matrix in RL, we often do so in terms of different policies.</li>
 <li class="fragment">This means that we consider the difference in the <strong>action distribution</strong> <span class="math inline">\(\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}\)</span>.</li>
 <li class="fragment">However, this expression is incomplete or even misleading.</li>
-<li class="fragment">Instead, we consider either <span class="math display">\[ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi&#39;}\agivenb{a}{s}}}\dint{a}\]</span> for a fixed <span class="math inline">\(s\)</span>, <span class="fragment">or the expectation over the state space, i.e., <span class="math display">\[\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}}}{s \sim p_\phi}. \]</span></span></li>
+<li class="fragment">Instead, we consider
+<ul class="incremental">
+<li class="fragment">for a fixed <span class="math inline">\(s\)</span>, <span class="math display">\[ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi&#39;}\agivenb{a}{s}}}\dint{a}, \]</span></li>
+<li class="fragment">the expectation over the state space, i.e., <span class="math display">\[\KLdivavg{\pi_\phi}{\pi_{\phi&#39;}}=\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}}}{s \sim p_\phi}, \]</span></li>
+<li class="fragment">or the maximum entry, i.e., <span class="math display">\[\KLdivmax{\pi_\phi}{\pi_{\phi&#39;}}=\max_{s\in\Sc} \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi&#39;}\agivenb{\cdot}{s}}. \]</span></li>
+</ul></li>
 <li class="fragment">The relation between KL divergence and FIM for small changes can be derived analogously to the previous slide and reads <span class="math display">\[\Expsub{\KLdiv{\pi_\phi}{\pi_{\phi&#39;}}}{s \sim p_\phi} \approx \frac{1}{2} \Delta\phi^\top \big( \underbrace{\Expsub{F(s)}{s \sim p_\phi}}_{=F} \big) \Delta\phi \fragment{ = \frac{1}{2} \Delta\phi^\top F \Delta\phi.}\]</span></li>
 </ul>
 </div>
@@ -1572,8 +1578,8 @@ g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=
 </p>
 <div class="fragment">
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
-<div id="results-with-trpo" class="platzhalter">
-<h3>Results with TRPO</h3>
+<div id="results-with-trpo-from-the-rl-baselines3-zoo" class="platzhalter">
+<h3>Results with TRPO (from the <a href="https://github.com/DLR-RM/rl-baselines3-zoo">RL Baselines3 Zoo</a>)</h3>
 <div class="media">
 <figure class="image" style="height:auto;width:650px;">
 <img src="images/11-advanced/half_cheetah_trpo.svg" style="height:auto;width:100%;" alt="images/11-advanced/half_cheetah_trpo.svg" />
@@ -1615,7 +1621,7 @@ g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=
 <div class="area">
 <div class="box block">
 <div class="small">
-<h3 id="drawback-a-large-computational-overhead-the-cg-bottleneck">Drawback A: Large computational overhead (the CG bottleneck)</h3>
+<h3 id="large-computational-overhead-the-cg-bottleneck">1. Large computational overhead (the CG bottleneck)</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">TRPO relies on the Conjugate Gradient (CG) method to compute the matrix-free step direction <span class="math inline">\(F^{-1}g\)</span>.</li>
@@ -1625,7 +1631,7 @@ g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="platzhalter">
 <div class="fragment">
-<h3 id="drawback-b-code-complexity-and-fragility">Drawback B: Code complexity and fragility</h3>
+<h3 id="code-complexity-and-fragility">2. Code complexity and fragility</h3>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -1634,7 +1640,7 @@ g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=
 </ul>
 </div>
 <div class="fragment">
-<h3 id="drawback-c-incompatibility-with-shared-architectures">Drawback C: Incompatibility with shared architectures</h3>
+<h3 id="incompatibility-with-shared-architectures">3. Incompatibility with shared architectures</h3>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -1946,8 +1952,8 @@ Two possible approaches:
 </p>
 <div class="fragment">
 <div class="grid-layout" style="grid-template-columns: 6fr 3fr 3fr;">
-<div id="results-trpo-vs.-ppo" class="platzhalter">
-<h3>Results: TRPO vs. PPO</h3>
+<div id="results-trpo-vs.-ppo-from-the-rl-baselines3-zoo" class="platzhalter">
+<h3>Results: TRPO vs. PPO (from the <a href="https://github.com/DLR-RM/rl-baselines3-zoo">RL Baselines3 Zoo</a>)</h3>
 <div class="media">
 <figure class="embed svg embedded" style="height:auto;width:650px;">
 <div style="height:auto;width:100%;">

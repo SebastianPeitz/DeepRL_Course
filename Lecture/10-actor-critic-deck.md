@@ -457,9 +457,9 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: incremental
 - For a better understanding, let's make an ad-hoc introduction of discount factors and see where this leads us.
 - We start with version one of the policy gradient, i.e., Monte Carlo sampling of rewards using causality:
-  $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}. \label{eq:AC_discount_v1} \end{equation} $$
+  $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}. \label{eq:AC_discount_v1} \end{equation} $$
 - Alternatively, we can start with the version without considering causality:
-$$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
+$$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
 [:zap: Which one is right? There clearly is a different discount for the rewards in \eqref{eq:AC_discount_v1} and \eqref{eq:AC_discount_v2}!]{.fragment}
 - Let's reformulate \eqref{eq:AC_discount_v2} and introduce causality again:
 [$$\begin{align} \nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
@@ -472,7 +472,7 @@ $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket
 
 ::: small
 $$
-\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
+\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
 \underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
 $$
 

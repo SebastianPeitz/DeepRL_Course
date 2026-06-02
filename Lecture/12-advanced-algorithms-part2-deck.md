@@ -340,28 +340,25 @@ addresses these by importing techniques from Deep Q-Networks (DQN).
 
 ::: small
 ::: definition
-::: columns-6-4
 ::: incremental
 1. **Interact**: Sample $\set{s_t,a_t,r_t,s_{t+1}}$ using $a_t=\mu_\phi(s_t)$ and store in the replay buffer $\Dc$.  
 1. **Sample**: A random mini-batch of $N$ transitions.
 1. **Update Critic**: Calculate the target $y_i$ using the Target Networks:
 $$y_i = r_i + \gamma Q_{\theta'}(s_{i+1}, \mu_{\phi'}(s_{i+1}))$$
-The *online Critic* is updated by minimizing the Bellman error:
+1. The *online Critic* is updated by minimizing the Bellman error:
+$$L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_\theta(s_i, a_i) \right) \nablatheta Q_\theta(s_i,a_i).$$
 :::
 
-![Source: [@DDPG_Image]](images/11-advanced/DDPG_v2.png){width=450px}
-:::
-
-[$$L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_\theta(s_i, a_i) \right) \nablatheta Q_\theta(s_i,a_i).$$]{.fragment}
-
+::: columns-6-4
 ::: incremental
 4. **Update Actor**: The *online Actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}): 
-$$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a_i) \nablaphi \mu_\phi(s_i).$$
+$$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
 <!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
-5. **Soft Updates**: The target Networks (i.e., $\phi'$ and $\theta'$) are updated incrementally. 
+5. **Soft Updates**: Incrementally update target networks ($\phi'$ / $\theta'$). 
 :::
 
-
+[![](images/11-advanced/DDPG.svg){.embed width=500px}]{.fragment}
+:::
 :::
 :::
 

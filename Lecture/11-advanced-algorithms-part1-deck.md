@@ -138,7 +138,7 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 ::: small
 ::: columns-5-5
 ::: platzhalter
-![A simple exemplary MDP. Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/11-advanced/PG-example-covariant.svg){ .embed width=600px }
+![A simple exemplary MDP [@Peters2008naturalac]. Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/11-advanced/PG-example-covariant.svg){ .embed width=600px }
 
 [$$\begin{align*} 
 r_t &= -s_t^2 - a_t^2 \\
@@ -275,10 +275,13 @@ $$\begin{equation} \KLdiv{\pC{x}{\phi}}{\pC{x}{\phi + \Delta\phi}} \approx \frac
 - When using the KL divergence or the Fisher information matrix in RL, we often do so in terms of different policies.
 - This means that we consider the difference in the **action distribution** $\KLdiv{\pi_\phi}{\pi_{\phi'}}$.
 - However, this expression is incomplete or even misleading. 
-- Instead, we consider either
-$$ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi'}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi'}\agivenb{a}{s}}}\dint{a}$$
-for a fixed $s$, [or the expectation over the state space, i.e.,
-$$\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi'}\agivenb{\cdot}{s}}}{s \sim p_\phi}. $$]{.fragment}
+- Instead, we consider 
+  - for a fixed $s$,
+$$ \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi'}\agivenb{\cdot}{s}} = \int_{\Ac} \pi_\phi\agivenb{a}{s} \log\cbracket{\frac{\pi_\phi\agivenb{a}{s}}{\pi_{\phi'}\agivenb{a}{s}}}\dint{a}, $$
+  - the expectation over the state space, i.e.,
+$$\KLdivavg{\pi_\phi}{\pi_{\phi'}}=\Expsub{\KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi'}\agivenb{\cdot}{s}}}{s \sim p_\phi}, $$
+  - or the maximum entry, i.e., 
+$$\KLdivmax{\pi_\phi}{\pi_{\phi'}}=\max_{s\in\Sc} \KLdiv{\pi_\phi\agivenb{\cdot}{s}}{\pi_{\phi'}\agivenb{\cdot}{s}}. $$
 - The relation between KL divergence and FIM for small changes can be derived analogously to the previous slide and reads
 $$\Expsub{\KLdiv{\pi_\phi}{\pi_{\phi'}}}{s \sim p_\phi} \approx \frac{1}{2} \Delta\phi^\top \big( \underbrace{\Expsub{F(s)}{s \sim p_\phi}}_{=F} \big) \Delta\phi \fragment{ = \frac{1}{2} \Delta\phi^\top F \Delta\phi.}$$
 :::
