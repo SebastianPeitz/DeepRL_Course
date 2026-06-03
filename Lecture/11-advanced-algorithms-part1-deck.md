@@ -62,7 +62,7 @@ Table: Lecture contents
 ::: incremental
 - Policy is explicitly parameterized and optimized directly: $$L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
 <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
-- Gradient descent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
+- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
 - Methods are typically **on-policy**.
 - **Algorithms**: REINFORCE $\rightarrow$ Actor-Critic $\rightarrow$ Natural Policy Gradient $\rightarrow$ Trust-region policy optimization (TRPO) $\rightarrow$ Proximal policy optimization (PPO).
 :::
@@ -305,7 +305,7 @@ $$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \tex
   - Constraining the KL divergence means that we automatically treat different parameters differently!
   - If a change in one of the entries of $\phi$ results in large policy changes, then the constraint does not allow large changes in that entry.
 - Since we want to have small updates (constrained by $\epsilon$): approximation via the Fisher information matrix,
-$$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad &\text{subject to}\qquad (\phi'-\phi)^\top F (\phi'-\phi), \\
+$$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad &\text{subject to}\qquad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon, \\
 &\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
 \end{align*} $$
 
@@ -318,7 +318,7 @@ $$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\p
 ::: columns-7-3
 ::: incremental
 - We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: 
-$$\begin{equation} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi'-\phi)^\top F (\phi'-\phi). \label{eq:Adv_Natural_PG} \end{equation}$$
+$$\begin{equation} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon. \label{eq:Adv_Natural_PG} \end{equation}$$
 - What remains is the question of solving \eqref{eq:Adv_Natural_PG}.
 - Without going into further details (e.g., [@Kakade2001npg;@Peters2008naturalac])\
 $\Rightarrow$ Solution: **scale** the policy gradient **by the inverse Fisher information matrix**,
@@ -723,9 +723,8 @@ $$\begin{equation} \Delta \phi = \sqrt{\frac{2\delta}{g^\top F^{-1} g}} F^{-1} g
 
 ::: incremental
 - Compute $x = F^{-1}g$ using the CG method ($\Oc(d)$ if we use autodiff).
-- Calculate the denominator in \eqref{eq:Adv_TRPO_step} (Note that $F^\top = F$, since the Fisher information matrix is symmetric):
-$$ \nu = g^\top F^{-1} g \fragment{ = (Fx)^\top F^{-1} Fx } \fragment{ = x^\top F^\top F^{-1} Fx } \fragment{ = x^\top F x } \fragment{ = x^\top g. } $$
-- Compute the step size $\beta = \sqrt{\frac{2\delta}{\nu}} = \sqrt{\frac{2\delta}{x^\top g}}$.
+- Calculate the denominator in \eqref{eq:Adv_TRPO_step}: $g^\top F^{-1} g = g^\top x$.
+- Compute the step size $\beta = \sqrt{\frac{2\delta}{g^\top x}}$.
 - Compute the update $\Delta \phi = \beta x$.
 :::
 :::
@@ -1076,7 +1075,7 @@ Estimate the advantage values $A_{\iterate{\theta}{k}}(s, a)$ for all sampled st
 $$\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb{a_t}{s_t}}.$$
 - However, the intent behind it here is completely different:
   - In **off-policy RL**: $\pi_{\theta_{old}}$ could be a completely different policy from long ago. 
-  - In **TRPO/PPO**: $\pi_{\theta_{old}}$ is the immediate, exact current policy that just finished stepping through the environment with the polcy we're trying to update. 
+  - In **TRPO/PPO**: $\pi_{\theta_{old}}$ is the immediate, exact current policy that just finished stepping through the environment with the policy we're trying to update. 
 :::
 
 ::: fragment

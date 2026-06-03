@@ -420,7 +420,7 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 ::: fragment
 :bulb: We already know what's wrong with this approach!\
 [$\Rightarrow$ The target changes along with the fitted value function in step 2.]{.fragment}\
-[$\Rightarrow$ Use target network $\theta'$?]{.fragment}
+[$\Rightarrow$ Use target network $\bar{\theta}$?]{.fragment}
 :::
 :::
 :::

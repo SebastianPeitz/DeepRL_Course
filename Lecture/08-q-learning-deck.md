@@ -323,7 +323,7 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in
  \
  \
  \
-2. A **separate set of weights** $\theta'$ for the bootstrapped Q-target (\eqref{eq:DQL_DQN-gradient} is **not** a gradient).
+2. A **separate set of weights** $\bar{\theta}$ for the bootstrapped $Q$-target (\eqref{eq:DQL_DQN-gradient} is **not** a gradient).
 :::
 :::
 
@@ -353,14 +353,14 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in
 - Take actions u based on $Q_\theta(s,a)$ (e.g., $\epsilon$-greedy).
 - Store observed tuples $(s,a,r,s')$ in memory buffer $\Dc$.
 - Sample mini-batches $\Bc$ from $\Dc$.
-- Calculate bootstrapped Q-target with a target network with weights $\theta'$:
-$$ Q^\pi(s,a)\approx r + \max_{a\in\Ac}Q_{\theta'}(s,a). $$
+- Calculate bootstrapped Q-target with a target network with weights $\bar{\theta}$:
+$$ Q^\pi(s,a)\approx r + \max_{a\in\Ac}Q_{\bar{\theta}}(s,a). $$
 - Optimize MSE loss between above targets and the regular approximation $Q_{\theta}(s,a)$ using $(s_i,a_i,r_i,s_i')\in\Bc$:
 [$$ \begin{align*} 
-L(\theta) &= \sum_{i=1}^{\abs{\Bc}} \big(\underbrace{r_i + \max_{a\in\Ac}Q_{\theta'}(s_i',a)}_{=y_i~(\target)} - Q_{\theta}(s_i,a_i)\big)^2, \\
+L(\theta) &= \sum_{i=1}^{\abs{\Bc}} \big(\underbrace{r_i + \max_{a\in\Ac}Q_{\bar{\theta}}(s_i',a)}_{=y_i~(\target)} - Q_{\theta}(s_i,a_i)\big)^2, \\
 \theta &\gets \theta + \alpha \sum_{i=1}^{\abs{\Bc}} \rbracket{y_i - Q_\theta(s_i,a_i)} \nablatheta Q_\theta(s_i,a_i).
 \end{align*} $$]{.math-incremental}
-- Update $\theta'$ based on $\theta$ from time to time.
+- Update $\bar{\theta}$ based on $\theta$ from time to time.
 :::
 :::
 
@@ -380,7 +380,7 @@ L(\theta) &= \sum_{i=1}^{\abs{\Bc}} \big(\underbrace{r_i + \max_{a\in\Ac}Q_{\the
 - a differentiable, parameter-dependent function $Q_\theta: \Sc \times \Ac \to \R$
 - learning rate $\alpha$, greedy parameter $\epsilon$, update rate $N_\theta\in\N$
 
-*Initialize*: Q function weights $\theta = \theta' \in\R^d$ arbitrarily, $\Dc=\{\}$\
+*Initialize*: Q function weights $\theta = \bar{\theta} \in\R^d$ arbitrarily, $\Dc=\{\}$\
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_0$\
@@ -389,9 +389,9 @@ $\quad\quad$ Obtain $a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$ and observ
 $\quad\quad$ Store tuple $(s_t,a_t,r_t,s_{t+1})$ in $\Dc$\
 $\quad\quad$ Sample minibatch $\Bc$ from $\Dc$ (after initial *warm-up*)$\qquad\qquad\qquad$ \
 $\quad\quad$ Compute targets for $(s_i,a_i,r_i,s'_i)\in\Bc$
-$$y_i = r_i + \max_{a\in\Ac}Q_{\theta'}(s_i',a) \qquad\text{(or}~y_i = r_i~\text{if $s'_{i}$ is terminal)}$$
+$$y_i = r_i + \max_{a\in\Ac}Q_{\bar{\theta}}(s_i',a) \qquad\text{(or}~y_i = r_i~\text{if $s'_{i}$ is terminal)}$$
 $\quad\quad$ Update $\theta$ via gradient descent on $L(\theta)$ with learning rate $\alpha$\
-$\quad\quad$ **if** $t\mod{N_\theta}=0$ **then** $\theta'\gets\theta$
+$\quad\quad$ **if** $t\mod{N_\theta}=0$ **then** $\bar{\theta}\gets\theta$
 :::
 
 ::: fragment
@@ -498,12 +498,12 @@ $\qquad$
 - Consider the DQN algorithm and separate it into three main components:
   1. Data collection, i.e., store tuples $(s,a,r,s')$ in $\Dc$.
   2. Improvement using mini batches $\Bc$ and a fixed target network, e.g., $\theta \gets \theta + \alpha \sum_{i=1}^{\abs{\Bc}} \rbracket{y_i - Q_\theta(s_i,a_i)} \nablatheta Q_\theta(s_i,a_i)$.
-  3. Update target network every $N_\theta$ steps: $\theta' \gets \theta$.
+  3. Update target network every $N_\theta$ steps: $\bar{\theta} \gets \theta$.
 - Let's visualize these steps (with $N_\theta=4$, even though it's usually much larger):
 ![](images/08-deep-q-learning/Polyak-averaging.svg){ .embed width=850px }
 - The lag is different in different places! [This doesn't need to be a problem, but it feels *uneven*.]{.fragment}
-- Alternative: **Polyak averaging**. [In every step, perform the *linear interpolation* $$ \theta' \gets \tau\theta' + (1-\tau) \theta $$]{.fragment}
-- When initializing $\theta'=\theta$, this linear interpolation tends to work for nonlinear models (i.e., NNs) as well!
+- Alternative: **Polyak averaging**. [In every step, perform the *linear interpolation* $$ \bar{\theta} \gets \tau\bar{\theta} + (1-\tau) \theta $$]{.fragment}
+- When initializing $\bar{\theta}=\theta$, this linear interpolation tends to work for nonlinear models (i.e., NNs) as well!
 :::
 :::
 
@@ -525,8 +525,8 @@ Remember the *maximization bias* and double $Q$-learning?\
 
 ::: incremental
 - Just use the [current network]{style="color: blue;"} ($\theta$) to evaluate the action.
-- Still use the [target network]{style="color: red;"} ($\theta'$) to evaluate the value.
-$$y = r + \gamma \textcolor{red}{Q_{\theta'}}(s',\arg\max_{a\in\Ac} \textcolor{blue}{Q_\theta}(s',a))$$
+- Still use the [target network]{style="color: red;"} ($\bar{\theta}$) to evaluate the value.
+$$y = r + \gamma \textcolor{red}{Q_{\bar{\theta}}}(s',\arg\max_{a\in\Ac} \textcolor{blue}{Q_\theta}(s',a))$$
 :::
 :::
 
@@ -565,8 +565,8 @@ $$\begin{align*}
 - Samples in the replay buffer are *not equally important*.
 - From some examples, you can learn more than from others.
 - What would be a good *criterion to assess the relevance* of a particular sample?
-[$\Rightarrow$ The **TD error** $$\delta_i = r_i + \max_{a\in\Ac}Q_{\theta'}(s_i',a) - Q_\theta(s_i,a_i)$$]{.fragment}
-<!-- [$\Rightarrow$ The **TD error** $$\delta_i = \underbrace{r_i + \gamma Q_{\theta'}(s_i',\arg \max_{a\in\Ac} Q_\theta(s_i',a))}_{=y_i} - Q_\theta(s_i,a_i)$$]{.fragment} -->
+[$\Rightarrow$ The **TD error** $$\delta_i = r_i + \max_{a\in\Ac}Q_{\bar{\theta}}(s_i',a) - Q_\theta(s_i,a_i)$$]{.fragment}
+<!-- [$\Rightarrow$ The **TD error** $$\delta_i = \underbrace{r_i + \gamma Q_{\bar{\theta}}(s_i',\arg \max_{a\in\Ac} Q_\theta(s_i',a))}_{=y_i} - Q_\theta(s_i,a_i)$$]{.fragment} -->
 :::
 
 ![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse-fa23/).](images/08-deep-q-learning/Q-learning-general.svg){ width=600px }
@@ -601,7 +601,7 @@ What's the problem with continuous actions in DQN?
 
 ::: incremental
 1. The action selection: $\pias = \begin{cases} 1, & a = \arg\textcolor{red}{\max}_{a'\in\Ac} Q_\theta(s,a') \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
-2. The target calculation: $y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\theta'}(s_i',a)$.
+2. The target calculation: $y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\bar{\theta}}(s_i',a)$.
 :::
 
 [$\Rightarrow$ if $\Ac$ is continuous (i.e., $a\in\R^m$), then the maximization becomes a **challenging optimization** probelm in itself!]{.fragment}

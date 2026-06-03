@@ -63,7 +63,7 @@ Table: Lecture contents
 ::: incremental
 - Policy is explicitly parameterized and optimized directly: $$L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
 <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
-- Gradient descent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
+- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
 - Methods are typically **on-policy**.
 - **Algorithms**: REINFORCE $\rightarrow$ Actor-Critic $\rightarrow$ Natural Policy Gradient $\rightarrow$ Trust-region policy optimization (TRPO) $\rightarrow$ Proximal policy optimization (PPO).
 :::
@@ -134,6 +134,47 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 
 ------------------------------------------------------------------------------
 
+# The problem of continuous actions in $Q$-learning
+
+::: small
+
+::: columns-7-3
+::: incremental
+- In a standard DQN, the optimal policy is implicit. 
+- To choose the best action $a$ in a given state $s$, the agent evaluates the $Q$-values for all possible actions and picks the one that maximizes the expected return:
+$$\pi(s) = \arg\max_{a} Q^*(s, a)$$
+- Works well for discrete action spaces (e.g., Left, Right, Jump). 
+:::
+
+![Types of architectures [@Abdelwanis2026]](images/08-deep-q-learning/Model_types_action_value.svg){ width=400px }
+:::
+
+::: incremental
+- For continuous $\Ac$ (e.g., controlling the torque of a robotic joint), we have an infinite number of possible actions.
+- To find the absolute maximum of the $Q$-function in this scenario, we can pursue two options (both very expensive):
+  - **Discretize the action space**. For instance, if we have $7$ joints and discretize each into just $10$ levels, we get $10^7$ possible actions.\
+  $\Rightarrow$ The *"curse of dimensionality"* makes this computationally impossible to solve in real-time.
+  - **Optimization**. An iterative optimization algorithm (e.g., gradient ascent) inside the environment loop to find the maximizing $a$ before each step.
+:::
+
+::: fragment
+### Approach: Merging DQN and Actor-Critic
+
+Instead of maximizing over $Q$, we introduce a function $a = \mu_\phi(s)$ such that $Q^*(s, \mu_\phi(s)) \approx \max_{a} Q^*(s, a)$.
+:::
+
+::: fragment
+**Challenges**: 
+:::
+
+::: incremental
+- We now have to optimize for the policy directly $\Rightarrow$ policy gradient!
+- In off-policy algorithms like $Q$-learning, the variance becomes an even bigger problem!
+  - Off-policy policy gradient.
+  - Deterministic policies with reduced variance.
+:::
+:::
+
 # Recall: Policy gradient and actor-critic
 
 ::: small
@@ -178,7 +219,7 @@ $$ \nablaphi\Vpiphi \approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \nablaph
 
 ::: fragment
 ::: footer
-:bulb: In contrast to the on-policy case (see the Actor-Critic lecture), here it is not possible to formulate a recursive formula which would allow us to find a closed-form statement for $\nablaphi\Qpiphi(s,a)$ via $\nablaphi\Vpiphi(s)$. This only works in the on-polcy setting!
+:bulb: In contrast to the on-policy case (see the Actor-Critic lecture), here it is not possible to formulate a recursive formula which would allow us to find a closed-form statement for $\nablaphi\Qpiphi(s,a)$ via $\nablaphi\Vpiphi(s)$. This only works in the on-policy setting!
 :::
 :::
 
@@ -328,8 +369,8 @@ addresses these by importing techniques from Deep Q-Networks (DQN).
 ::: incremental
 - Actor network $\mu_\phi(s)$
 - Critic network $Q_\theta(s,a)$
-- Target actor $\mu_{\phi'}$​
-- Target critic $Q_{\theta'}$​
+- Target actor $\mu_{\bar{\phi}}$​
+- Target critic $Q_{\bar{\theta}}$​
 - Replay buffer
 :::
 :::
@@ -343,8 +384,8 @@ addresses these by importing techniques from Deep Q-Networks (DQN).
 ::: incremental
 1. **Interact**: Sample $\set{s_t,a_t,r_t,s_{t+1}}$ using $a_t=\mu_\phi(s_t)$ (*:bulb: plus noise for exploration!*) and store in the replay buffer $\Dc$.  
 1. **Sample**: Draw random mini-batch of $N$ transitions: $\Bc\subset\Dc$.
-1. **Update critic**: Calculate the target $y_i$ using the target networks (*:bulb: Optimal action $\mu_{\phi'}(s)$ $\Rightarrow$ $Q$-learning!*):
-$$y_i = r_i + \gamma Q_{\theta'}(s_{i+1}, \mu_{\phi'}(s_{i+1})).$$
+1. **Update critic**: Calculate the target $y_i$ using the target networks (*:bulb: Optimal action $\mu_{\bar{\phi}}(s)$ $\Rightarrow$ $Q$-learning!*):
+$$y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).$$
 The *current critic* is updated by minimizing the Bellman error:
 $$L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_\theta(s_i, a_i) \right) \nablatheta Q_\theta(s_i,a_i).$$
 :::
@@ -354,7 +395,7 @@ $$L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qq
 4. **Update actor**: The *current actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}): 
 $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
 <!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
-5. **Soft updates**: Incremental target updates ($\phi'$ / $\theta'$). 
+5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\bar{\theta}$). 
 :::
 
 [![](images/11-advanced/DDPG_numbered.svg){.embed width=570px}]{.fragment}
@@ -383,7 +424,7 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|
 - In DQN, target network weights are periodically copied exactly from the online network every few thousand steps.
 - For continuous actor-critic configurations, hard updates changed the value landscape too abruptly. 
 - Instead: soft update, where target networks track the online networks smoothly at every single training step using an interpolation factor $\tau \ll 1$ (e.g., $\tau = 0.001$): 
-$$\theta' \leftarrow \tau \theta + (1 - \tau)\theta', \qquad \phi' \leftarrow \tau \phi + (1 - \tau)\phi'.$$
+$$\bar{\theta} \leftarrow \tau \theta + (1 - \tau)\bar{\theta}, \qquad \bar{\phi} \leftarrow \tau \phi + (1 - \tau)\bar{\phi}.$$
 [$\Rightarrow$ targets change slowly, providing an unmoving baseline that stabilizes the deep network's gradients.]{.fragment}
 - We have seen this before under *Polyak averaging*.
 :::
@@ -409,8 +450,8 @@ $$\theta' \leftarrow \tau \theta + (1 - \tau)\theta', \qquad \phi' \leftarrow \t
 ### 1. Maximization bias $\Rightarrow$ clipped double $Q$-learning
 ::: incremental
 - Because the target uses a greedy step over actions $a = \mu_\phi(s)$, errors accumulate $\Rightarrow$ massive overestimation bias.  
-- Two independent critics ($Q_{\theta_1}$ / $Q_{\theta_2}$ and targets $Q_{\theta'_1}$ / $Q_{\theta'_2}$) and uses the minimum of their predictions to compute the target:
-$$y = r + \gamma \min_{i=1,2} Q_{\theta_i'}(s', \mu_{\phi'}(s'))$$
+- Two independent critics ($Q_{\theta_1}$ / $Q_{\theta_2}$ and targets $Q_{\bar{\theta}_1}$ / $Q_{\bar{\theta}_2}$) and uses the minimum of their predictions to compute the target:
+$$y = r + \gamma \min_{i=1,2} Q_{\bar{\theta}_i}(s', \mu_{\bar{\phi}}(s'))$$
 :::
 :::
 
@@ -420,7 +461,7 @@ $$y = r + \gamma \min_{i=1,2} Q_{\theta_i'}(s', \mu_{\phi'}(s'))$$
 - If the critic is highly inaccurate, updating the actor based on its gradients is counterproductive. 
 - Delaying the policy updates ensures the critic has reached a reliable value before the actor uses it.
 :::
-[$~\Rightarrow$ Update actor ($\phi$) and targets ($\phi'$, $\theta'_1$, $\theta'_2$) less frequently than critics ($\theta_1$, $\theta_2'$), e.g., every $n_\mathsf{up}=2$ steps.]{.fragment}
+[$~\Rightarrow$ Update actor ($\phi$) and targets ($\bar{\phi}$, $\bar{\theta}_1$, $\bar{\theta}_2$) less frequently than critics ($\theta_1$, $\theta_2$), e.g., every $n_\mathsf{up}=2$ steps.]{.fragment}
 :::
 
 
@@ -431,7 +472,7 @@ $$y = r + \gamma \min_{i=1,2} Q_{\theta_i'}(s', \mu_{\phi'}(s'))$$
 - Adding noise smooths out the value landscape, ensuring that similar actions yield similar values.
 :::
 [$~\Rightarrow$ TD3 adds a small amount of clipped noise (clipping constant $c$) to the target action before feeding it into the target critic:
-$$\tilde{a} = \mu_{\phi'}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$]{.fragment}
+$$\tilde{a} = \mu_{\bar{\phi}}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$]{.fragment}
 :::
 :::
 
@@ -443,7 +484,7 @@ $$\tilde{a} = \mu_{\phi'}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(\math
 1. **Interact**: Sample $\set{s_t,a_t,r_t,s_{t+1}}$ using $a_t=\mu_\phi(s_t) + \epsilon$ ($\epsilon\sim\Normal{0}{\sigma^2}$) and store in the replay buffer $\Dc$.  
 1. **Sample**: Draw random mini-batch of $N$ transitions: $\Bc\subset\Dc$.
 1. **Update critic**: Calculate targets $y_i$ by [minimizing over two target networks]{style="color: red;"} (:bulb: the **Twin**):
-$$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\theta_j'}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\phi'}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
+$$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
 The [two critics]{style="color: red;"} are updated by minimizing the Bellman errors:
 $$L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_{\theta_j}(s_i, a_i) \right) \nablatheta Q_{\theta_j}(s_i,a_i).$$
 :::
@@ -462,7 +503,7 @@ $$L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^
 4. **Update actor**: The *online actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}): 
 $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
 <!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
-5. **Soft updates**: Incremental target updates ($\phi'$ / $\textcolor{red}{\theta_1'}$ / $\textcolor{red}{\theta_2'}$). 
+5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\textcolor{red}{\bar{\theta}_1}$ / $\textcolor{red}{\bar{\theta}_2}$). 
 :::
 :::
 
@@ -518,15 +559,27 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 # Soft actor-critic (SAC)
 
 ::: small
+### The limitations of both DDPG and TD3 are still quite severe.
 ::: incremental
-- The limitations of both DDPG and TD3 are still quite severe.
-  - Overestimation bias (DDPG).
-  - Hyperparameter sensitivity (DDPG)
-  - Lack of exploration (both)
-  - Sample Inefficiency due to Local Optima (both).
-- SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function
-  - [Entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) was defined by Claude Shannon in 1948.
-  - It describes the level of uncertainty (or unpredictability) of a random variable.
+- Overestimation bias (DDPG).
+- Hyperparameter sensitivity (DDPG)
+- Lack of exploration (both)
+- Sample inefficiency due to Local Optima (both).
+:::
+
+::: fragment
+### SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function
+:::
+
+::: incremental
+- [Entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) was defined by Claude Shannon in 1948.
+- It describes the level of uncertainty (or unpredictability) of a random variable.
+$$ L(\phi)=\sum_{t=0}^{T-1}\Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}.$$
+- $\mathcal{H}(\pi(\cdot|s_t))$ is the entropy, measuring how unpredictable the policy is. 
+  - High entropy means the agent explores widely.
+  - Low entropy means it is laser-focused on a few actions.
+- The *temperature* $\alpha$ how much the agent values exploration vs. exploitation.
+- By rewarding the agent for being unpredictable, it naturally explores the entire environment, prevents the policy from collapsing into a single repetitive action too early, and becomes more robust to environment changes.
 :::
 
 :::
@@ -543,7 +596,11 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 :::
 :::
 
+# The SAC algorithm
 
+::: small
+![[@Haarnoja2018sac2]](images/11-advanced/SAC_algorithm.png){width=1000px}
+:::
 
 # Example: Half-Cheetah
 
@@ -588,6 +645,10 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 
 # Example: Some MuJoCo environments
 
+:::small
+
+:::columns-7-3
+::: platzhalter
 ![Source: [@Fujimoto2018TD3{}, Figure 5].](images/11-advanced/SAC_MuJoCo.png){width=800px}
 
 ::: columns-1-1-1
@@ -603,9 +664,19 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 ![Walker 2D (SAC).](videos/11-advanced/walker.mp4){width=250px .controls .autoplay .muted }
 :::
 :::
+:::
 
-::: footer
-:bulb: Trained models from [StableBaselines3](https://huggingface.co/sb3/models)
+::: fragment
+**Notes**
+
+::: incremental
+- Trained models from [StableBaselines3](https://huggingface.co/sb3/models).
+- The SAC results reported in [@Fujimoto2018TD3] are worse than the TD3 results, because there were two versions of SAC in short succession:
+  1. The now-standard that we have discussed [@Haarnoja2018sac2]. It also considered some ideas from the TD3 paper such as twin $Q$ networks to avoid maximization bias.
+  1. The original one [@Haarnoja2018sac] went out of fashion quickly, but appeared around the same time as TD3. It is thus likely that [@Fujimoto2018TD3] compared against this version.
+:::
+:::
+:::
 :::
 
 
