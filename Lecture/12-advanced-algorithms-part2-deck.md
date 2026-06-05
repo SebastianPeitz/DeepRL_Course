@@ -61,9 +61,9 @@ Table: Lecture contents
 ## (I) Policy gradient methods
 
 ::: incremental
-- Policy is explicitly parameterized and optimized directly: $$L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
-<!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
-- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
+- Policy is explicitly parameterized and optimized directly: $$L_\pi(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
+<!-- - $$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
+- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L_\pi(\phi)$.
 - Methods are typically **on-policy**.
 - **Algorithms**: REINFORCE $\rightarrow$ Actor-Critic $\rightarrow$ Natural Policy Gradient $\rightarrow$ Trust-region policy optimization (TRPO) $\rightarrow$ Proximal policy optimization (PPO).
 :::
@@ -180,13 +180,13 @@ Instead of maximizing over $Q$, we introduce a function $a = \mu_\phi(s)$ such t
 ::: small
 ::: definition
 ### Policy gradient theorem -- formulation via reward trajectories ([sampling version in blue]{style="color: blue;"})
-$$ \nablaphi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. $$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. $$
 :::
 
 ::: definition
 ### Policy gradient theorem -- formulation using the $Q$-function and the Actor-Critic architecture
-<!-- $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
-$$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. $$
+<!-- $$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
+$$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. $$
 :::
 
 ### Main drawbacks
@@ -256,7 +256,7 @@ $$
 - Drop the randomness from the policy $\mu$ such that it becomes a **deterministic function**: $a = \mu_\phi(s)$.
 - Reformulate $V$ via $Q$: no need for expecations (i.e., sum / integrate over $\Ac$): $V^{\mu_\phi}(s) = Q^{\mu_\phi}(s,\mu_\phi(s))$.
 - Deterministic: we are incapable of exploration! [The theorem is only practically useful if we sample from off-policy data:
-$$L(\phi)= \Expsub{Q^{\mu_\phi}(s,\mu_\phi(s))}{s\sim\rho_{\beta}} = \int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}. $$]{.fragment}
+$$L_\pi(\phi)= \Expsub{Q^{\mu_\phi}(s,\mu_\phi(s))}{s\sim\rho_{\beta}} = \int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}. $$]{.fragment}
 :::
 
 
@@ -267,7 +267,7 @@ $$L(\phi)= \Expsub{Q^{\mu_\phi}(s,\mu_\phi(s))}{s\sim\rho_{\beta}} = \int_\Sc \r
 ### Exact version: on-policy ($\rho_{\beta} = \rho_{\mu_\phi}$) 
 
 $$\begin{equation}\begin{aligned}
-\nablaphi L(\phi) &= \nablaphi\rbracket{\int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}} = \int_\Sc \rho_{\beta}(s) \nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s) \dint{s} \\
+\nablaphi L_\pi(\phi) &= \nablaphi\rbracket{\int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}} = \int_\Sc \rho_{\beta}(s) \nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s) \dint{s} \\
 &= \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}. 
 \end{aligned} \label{eq:Adv2_dpg} \end{equation}$$
 
@@ -275,7 +275,7 @@ $$\begin{equation}\begin{aligned}
 **Approximate version: off-policy** ($\rho_{\beta} \neq \rho_{\mu_\phi}$, and we use the same simplification as earlier, i.e., $\cancel{\mu_\phi\agivenb{a}{s} \nablaa Q^{\mu_\phi}(s,a)}$) 
 
 $$\begin{equation}
-\nablaphi L(\phi) \approx \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}.\label{eq:Adv2_dpg_approx} 
+\nablaphi L_\pi(\phi) \approx \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}.\label{eq:Adv2_dpg_approx} 
 \end{equation}$$
 :::
 
@@ -387,14 +387,14 @@ addresses these by importing techniques from Deep Q-Networks (DQN).
 1. **Update critic**: Calculate the target $y_i$ using the target networks (*:bulb: Optimal action $\mu_{\bar{\phi}}(s)$ $\Rightarrow$ $Q$-learning!*):
 $$y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).$$
 The *current critic* is updated by minimizing the Bellman error:
-$$L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_\theta(s_i, a_i) \right) \nablatheta Q_\theta(s_i,a_i).$$
+$$L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).$$
 :::
 
 ::: columns-12-9
 ::: incremental
 4. **Update actor**: The *current actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}): 
 $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
-<!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
+<!-- $$\nablaphi L_\pi(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
 5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\bar{\theta}$). 
 :::
 
@@ -486,11 +486,7 @@ $$\tilde{a} = \mu_{\bar{\phi}}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(
 1. **Update critic**: Calculate targets $y_i$ by [minimizing over two target networks]{style="color: red;"} (:bulb: the **Twin**):
 $$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
 The [two critics]{style="color: red;"} are updated by minimizing the Bellman errors:
-$$L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_{\theta_j}(s_i, a_i) \right) \nablatheta Q_{\theta_j}(s_i,a_i).$$
-:::
-
-::: fragment
-[Perform the following steps only every $n_\mathsf{up}$ steps:]{style="color: red;"} (:bulb: the **Delayed**):
+$$L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).$$
 :::
 
 ::: columns-1-30-20
@@ -499,10 +495,13 @@ $$L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^
 :::
 
 ::: platzhalter
+[[Perform next steps only every $n_\mathsf{up}$ steps:]{style="color: red;"} (:bulb: the **Delayed**):]{.fragment}
+
 ::: incremental
-4. **Update actor**: The *online actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}): 
+4. **Update actor**: 
+<!-- The *online actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}):  -->
 $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
-<!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
+<!-- $$\nablaphi L_\pi(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
 5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\textcolor{red}{\bar{\theta}_1}$ / $\textcolor{red}{\bar{\theta}_2}$). 
 :::
 :::
@@ -556,51 +555,202 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 
 ------------------------------------------------------------------------------
 
-# Soft actor-critic (SAC)
+# Introducing entropy
 
 ::: small
 ### The limitations of both DDPG and TD3 are still quite severe.
+::: columns-5-5
 ::: incremental
 - Overestimation bias (DDPG).
-- Hyperparameter sensitivity (DDPG)
-- Lack of exploration (both)
+- Hyperparameter sensitivity (DDPG).
+:::
+
+::: incremental
+- Lack of exploration (both).
 - Sample inefficiency due to Local Optima (both).
 :::
 
-::: fragment
-### SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function
 :::
+
+::: fragment
+::: definition
+### [Entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) (defined by Claude Shannon in 1948).
 
 ::: incremental
-- [Entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) was defined by Claude Shannon in 1948.
+- SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function.
 - It describes the level of uncertainty (or unpredictability) of a random variable.
-$$ L(\phi)=\sum_{t=0}^{T-1}\Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}.$$
-- $\mathcal{H}(\pi(\cdot|s_t))$ is the entropy, measuring how unpredictable the policy is. 
-  - High entropy means the agent explores widely.
-  - Low entropy means it is laser-focused on a few actions.
-- The *temperature* $\alpha$ how much the agent values exploration vs. exploitation.
-- By rewarding the agent for being unpredictable, it naturally explores the entire environment, prevents the policy from collapsing into a single repetitive action too early, and becomes more robust to environment changes.
+$$\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}$$
+- $\Hc\piphi\agivenb{\cdot}{s_t}$ is the entropy, measuring how unpredictable the policy is.\
+[**High entropy** $\Rightarrow$ the agent explores widely.]{.fragment}$\quad$ [**Low entropy** $\Rightarrow$ it is focused on a few actions.]{.fragment}
+- The *temperature* $\alpha$ (a tunig parameter) determines how much the agent values exploration vs. exploitation.
+- By rewarding the agent for being unpredictable, it 
+  - naturally explores the entire environment, 
+  - prevents the policy from collapsing into a single repetitive action too early, 
+  - and becomes more robust to environment changes.
+:::
+:::
 :::
 
 :::
+
+# The entropy objective and value function
+
+::: small
+::: incremental
+- Let's look at the definition of the [entropy](https://en.wikipedia.org/wiki/Entropy_(information_theory)) in Eq. \eqref{eq:Adv2_entropy_objective}:
+$$ \Hc(\pi\agivenb{\cdot}{s}) = \Expsub{-\log \pias}{a \sim \pi\agivenb{\cdot}{s}}.$$ 
+- Now let's expand the value function in the RL objective \eqref{eq:Adv2_entropy_objective}:
+$$\begin{align} 
+V^\pi(s_t) &= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t+k}})}}{(s_t,a_t)\sim\rho_{\piphi}} \notag \\
+&= \Expsub{r_{t} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t}})}{a_t\sim \pi\agivenb{\cdot}{s_t}} + \Expsub{\sum_{k=1}^{\infty} \gamma^k \cbracket{r_{t+k} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t+1}})}}{(s_t,a_t)\sim\rho_{\piphi}} \notag \\
+&= \Expsub{r_{t} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})} \label{eq:Adv2_entropy_value}
+\end{align}$$
+:::
+:::
+
+# Deriving the entropy $Q$-function {menu-title="Deriving the entropy Q-function"}
+
+::: small
+::: incremental
+- As $a_t$ is already chosen, there is no entropy for the immediate action (its probability is one after selection). 
+- The entropy only applies to future actions. 
+- Therefore, we define the **Soft $Q$-Function** as the immediate reward plus the discounted future soft values:
+$$\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1} \sim p(s_{t+1})}. \label{eq:Adv2_entropy_Q}\end{equation}$$
+- Substitute \eqref{eq:Adv2_entropy_Q} into \eqref{eq:Adv2_entropy_value}:
+$$ V^\pi(s_t) = \Expsubbig{\underbrace{r_{t} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})}}_{=Q^\pi(s_t, a_t)~\text{(Eq. \eqref{eq:Adv2_entropy_Q})}} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} = \Expsubbig{Q^\pi(s_t, a_t) - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}}. $$
+- We thereby obtain the **soft Bellman equation**:
+$$\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{Q^\pi(s_{t+1}, a_{t+1}) - \alpha \log \pi(a_{t+1} | s_{t+1})}{(s_{t+1}, a_{t+1}) \sim \rho_\piphi}. \label{eq:Adv2_entropy_soft_Bellman} \end{equation}$$
+:::
+
+:::
+
 
 # Soft actor-critic: ingredients
 
 ::: small
+
+### Neural networks
+
 ::: incremental
+- An *actor network* $\piphi$.
+- Two *critic networks* $Q_{\theta_1}$ / $Q_{\theta_2}$ and their respective *target networks* $Q_{\bar \theta_1}$ / $Q_{\bar \theta_2}$.
+:::
+
+::: fragment
+### Objective functions
+:::
+
+::: incremental
+- Critic updates (based on \eqref{eq:Adv2_entropy_soft_Bellman}):
+$$\begin{equation} L_Q(\theta_j) = \frac{1}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2 \quad \text{with target}\quad y_i = r_i + \gamma \cbracket{\min_{j=1,2} Q_{\bar\theta_j}(s_i', a_i') - \alpha \log \piphi\agivenb{a_i'}{s_i'}}. \label{eq:Adv2_SAC_loss_Q} \end{equation}$$
+- Actor updates (where we either use $\theta_1$ or the minimum of both critics):
+$$\begin{equation} L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}. \label{eq:Adv2_SAC_loss_pi} \end{equation}$$
+- Temperature updates:
+$$\begin{equation} L(\alpha) = \frac{1}{N} \sum_{i=1}^N \cbracket{-\alpha \log \piphi\agivenb{a_i}{s_i} - \alpha \bar \Hc}. \label{eq:Adv2_SAC_loss_temp} \end{equation}$$
+:::
+
+<!-- ::: incremental
 - Entropy term and temperature
 - Networks for $V$ (also target), $Q$ (twin) and $\pi$
 - Reparametrization trick for $\pi$ 
 - Learning of $\alpha$
 - Moving average for target $V$
+::: -->
+:::
+
+# The actor objective (1)
+
+::: small
+::: incremental
+- To see how we arrived at the objective $L_\pi$, we start from defining a target distribution over the actions.
+- One way to represent the target distribution: probability of choosing an action proportional to its exponential soft $Q$-value:
+$$\pi_{\mathsf{target}}\agivenb{a}{s} = \frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)} \qquad \text{with}\quad Z^\pi(s) = \int \exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}\dint{a}.$$ 
+- This is known as the Boltzmann (or Gibbs) distribution, with two useful properties:
+  - Actions with higher $Q$-values have exponentially higher probabilities of being chosen.
+  - The temperature $\alpha$ scales how pronounced these differences are. If $\alpha \to 0$, it becomes a sharp peak at the max $Q$-value (greedy). If $\alpha \to \infty$, it becomes a uniform distribution (pure random exploration).
+- The SAC goal is thus to push the policy towards the target distribution:
+[$$\begin{align*} L_\pi(\phi) &= \KLdivavg{\piphi}{\pi_{\mathsf{target}}} = \Expsub{\log\cbracket{\frac{\piphi\agivenb{a}{s}}{\pi_{\mathsf{target}}\agivenb{a}{s}}}}{s\sim \rho, a\sim\piphi} \fragment{ = \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \log\cbracket{\frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)}}}{s\sim \rho, a\sim\piphi} }\\
+&= \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \log\cbracket{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi} \\
+&= \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \frac{Q^\pi(s, a)}{\alpha} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi}. 
+\end{align*}$$]{.math-incremental}
+:::
+
+<!-- $$L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}.$$ -->
+:::
+
+# The actor objective (2)
+
+::: small
+$$L_\pi(\phi) = \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \frac{Q^\pi(s, a)}{\alpha} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi}.$$
+
+::: incremental
+- Multiplying by $\alpha$ and neglecting the policy-independent $Z$-term don't change the minimizer [$\Rightarrow$ Sampling version:
+$$\begin{equation} L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}. \tag{\ref{eq:Adv2_SAC_loss_pi}} \end{equation}$$]{.fragment}
+:::
+
+::: fragment
+::: definition
+### Soft Policy Improvement Theorem [@Haarnoja2018sac2{}, Lemma 2]
+
+If we define:
+$$\subnew{\pi} = \arg\min_{\pi'} \KLdiv{ \pi'\agivenb{\cdot}{s}}{\frac{\exp\left(\frac{Q^{\subold{\pi}}\agivenb{\cdot}{s}}{\alpha}\right)}{Z^{\subold{\pi}}(s)}},$$
+then the soft $Q$-value of the new policy is guaranteed to be monotonically greater than or equal to the old one for all $(s,a)$:
+$$Q^{\subnew{\pi}}(s, a) \geq Q^{\subold{\pi}}(s, a) \quad \forall (s,a).$$
+:::
+:::
+
+:::
+
+# The reparametrization trick
+
+::: small
+::: incremental
+- Because the action $a$ is sampled from a stochastic policy $\piphi$, we cannot backpropagate gradients from the critic through the action to the actor directly. 
+- Fix in SAC $\Rightarrow$ the **reparameterization trick**: We express the action as a deterministic function of the state and an independent noise vector $\epsilon$: $$a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.$$
+  - The neural network deterministically outputs the mean $\mu_\phi(s)$ and standard deviation $\sigma_\phi(s)$. 
+  - The $\tanh$ function bounds the actions to a valid range (e.g., $[-1, 1]$).
+- Rewriting the objective with this reparameterization allows us to rewrite the expectation over the noise $\epsilon$:
+$$L_\pi(\phi) = \Expsub{\alpha \log \piphi\agivenb{f_\phi(\epsilon; s)}{s} - Q_{\phi_1}(s, f_\phi(\epsilon; s))}{s \sim \Dc, \epsilon \sim \Nc}.$$
+- Now, the gradient with respect to $\phi$ can flow through $f_\phi$.
+- Analogous to earlier (deterministic) policy gradients, we obtain [@Haarnoja2018sac2]:
+$$\nablaphi L_\pi(\phi) = \Expsub{\nablaphi \alpha \log \piphi\agivenb{a}{s} + \cbracket{\alpha \nabla_a \log \piphi\agivenb{a}{s} - \nabla_a Q_{\theta_1}(s, a)} \nablaphi f_\phi(\epsilon; s)}{s \sim \mathcal{D}, \epsilon \sim \mathcal{N}}.$$
+:::
+:::
+\
+
+::: fragment
+::: footer
+:bulb: Because we pass the Gaussian sample through a $\tanh$ function, the log-likelihood must be corrected using the Jacobian of the transformation: $\log \pi_\theta\agivenb{a}{s} = \log \mu\agivenb{u}{s} - \sum_{i=1}^{m} \log(1 - \tanh^2(u_i))$, where $u$ is the pre-tanh action value. 
+:::
+:::
+
+# The temperature objective
+
+::: small
+::: incremental
+- To prevent hand-tuning the entropy coefficient $\alpha$, SAC treats it as a constrained optimization problem: maximize expected reward subject to a minimum entropy constraint $\bar{\mathcal{H}}$ (More details in [@Haarnoja2018sac2{}, Chapter 5]).
+- SAC tunes $\alpha$ to match a target entropy $\bar{\Hc}$ (usually chosen as the negative action space dimension $(-m)$).
+- The *dual objective function* minimized to find the optimal scaling parameter $\alpha$ is:
+$$\begin{equation} L(\alpha) = \Expsub{-\alpha \log \pi_\theta(a|s) - \alpha \bar{\mathcal{H}}}{s \sim \mathcal{D}, a \sim \pi_\theta} = \Expsub{-\alpha( \log \pi_\theta(a|s) + \bar{\mathcal{H}})}{s \sim \mathcal{D}, a \sim \pi_\theta}. \tag{\ref{eq:Adv2_SAC_loss_temp}} \end{equation}$$
+- Since $L(\alpha)$ is linear with respect to $\alpha$, taking the derivative is straightforward:
+$$\nabla_\alpha L(\alpha) = -\Expsub{( \log \pi_\theta(a|s) + \bar{\mathcal{H}})}{s \sim \mathcal{D}, a \sim \pi_\theta}.$$
+:::
+
+::: fragment
+### Intuition of the $\alpha$ Gradient
+:::
+
+::: incremental
+- If the current policy's entropy is low, then $-\log \piphi\agivenb{a}{s}$ will be a large positive number. 
+  - If $-\log \piphi\agivenb{a}{s} > \bar{\Hc}$, the gradient is negative, which causes $\alpha$ to increase during gradient descent ($\alpha \gets \alpha - \lambda \nabla_\alpha L(\alpha)$). 
+  - Higher $\alpha$ forces the actor to prioritize exploration.
+- If the policy's entropy is high, the gradient becomes positive, causing $\alpha$ to decrease, shifting priorities toward maximizing standard environmental rewards.
 :::
 :::
 
 # The SAC algorithm
 
-::: small
 ![[@Haarnoja2018sac2]](images/11-advanced/SAC_algorithm.png){width=1000px}
-:::
 
 # Example: Half-Cheetah
 

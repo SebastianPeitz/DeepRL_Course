@@ -65,10 +65,10 @@ Table: Lecture contents
 
 ::: incremental
 - Using the definition of the expectation of continuous random variables and the $\log$ derivative trick, we arrived at a formulation of the policy gradient from which we can sample using trajectory data ($\tau=(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_T)$):
-$$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}} \cbracket{\sum_{t=0}^{T-1}r_{i,t}}.}$$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}} \cbracket{\sum_{t=0}^{T-1}r_{i,t}}.}$$
 - **Goal**: derive the policy gradient a second time, but this time using the $Q$-function instead of the return $\sum_{t=0}^{T-1}r_{i,t}$.
 - **Starting point**: the RL objective and its gradient:
-$$\begin{equation} L(\phi)=\Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} \qquad \Rightarrow \qquad \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds. \label{eq:AC_RL_objective} \end{equation}$$
+$$\begin{equation} L_\pi(\phi)=\Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} \qquad \Rightarrow \qquad \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds. \label{eq:AC_RL_objective} \end{equation}$$
 :::
 
 :::
@@ -128,16 +128,16 @@ $$ \begin{equation} \nablaphi \Vpiphi(s) = \int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to
 ::: small
 ::: incremental
 - We can now insert \eqref{eq:AC_grad_V_recursion} into the gradient of our RL objective (Eq. \eqref{eq:AC_RL_objective}):
-<!-- $$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ -->
-$$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$
+<!-- $$ \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ -->
+$$ \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$
 - By changing the order of integration, we isolate the total expected time spent in state $x$:
-<!-- $$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ -->
-$$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$
+<!-- $$\nablaphi L_\pi(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ -->
+$$\nablaphi L_\pi(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$
 - The term inside the brackets is the **undiscounted state visitation frequency** (or the expected number of times state $x$ is visited in an episode), which we denote as $\eta_\phi(s)$:
 <!-- $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$ -->
 $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{T-1} \pC{s_t = s}{\piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$
 - This simplifies our expression to:
-$$\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.$$
+$$\nablaphi L_\pi(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.$$
 :::
 :::
 
@@ -147,12 +147,12 @@ $$\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.$$
 ::: columns-6-4
 ::: incremental
 - Reintroducing the full definition of $\xi(s) = \int_\Ac\nablaphi\piphi\agivenb{a}{s} \Qpiphi(s,a)\dint{a}$ (and keeping $s$ as our state variable):
-$$\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \int_{\Ac} \nablaphi \piphi\agivenb{a}{s} \Qpiphi(s, a) \dint{a}\ds.$$
+$$\nablaphi L_\pi(\phi) = \int_{\Sc} \eta_\phi(s) \int_{\Ac} \nablaphi \piphi\agivenb{a}{s} \Qpiphi(s, a) \dint{a}\ds.$$
 - Apply the $\log$-derivative identity:
-$$\nabla_\phi L(\phi) = \textcolor{blue}{\int_{\Sc} \eta_\phi(s)} \textcolor{red}{\int_{\Ac} \piphi\agivenb{a}{s}} \nabla_\phi \log \piphi\agivenb{a}{s} \Qpiphi(s, a) \textcolor{red}{\dint{a}} \textcolor{blue}{\ds}.$$
+$$\nabla_\phi L_\pi(\phi) = \textcolor{blue}{\int_{\Sc} \eta_\phi(s)} \textcolor{red}{\int_{\Ac} \piphi\agivenb{a}{s}} \nabla_\phi \log \piphi\agivenb{a}{s} \Qpiphi(s, a) \textcolor{red}{\dint{a}} \textcolor{blue}{\ds}.$$
 - In conclusion, the gradient can be expressed using the unnormalized state visitation measure $\eta_\phi(s)$:
-<!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}. \label{eq:AC_policy_gradient_Q} \end{equation}$$ -->
-$$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$
+<!-- $$\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}. \label{eq:AC_policy_gradient_Q} \end{equation}$$ -->
+$$\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$
 :::
 
 ::: platzhalter
@@ -176,8 +176,8 @@ $$\nabla_\phi \piphi\agivenb{a}{s} = \piphi\agivenb{a}{s} \nabla_\phi \log \piph
 ::: fragment
 ::: definition
 **Note**: In the infinite-horizon case, \eqref{eq:AC_state_visitation_measure} becomes $\eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}$ [$\Rightarrow$ Equation \eqref{eq:AC_policy_gradient_Q_episodic} becomes
-<!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} -->
-$$\nabla_\phi L(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}.$$]{.fragment}
+<!-- $$\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} -->
+$$\nabla_\phi L_\pi(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}.$$]{.fragment}
 :::
 :::
 
@@ -191,14 +191,14 @@ Here's the policy gradient theorem in the two versions we have derived ([Samplin
 ::: fragment
 ::: definition
 ### Policy gradient theorem -- formulation via reward trajectories
-$$ \nablaphi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. } $$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. } $$
 :::
 :::
 
 ::: fragment
 ::: definition
 ### Policy gradient theorem -- formulation using the $Q$-function
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$
 :::
 :::
 
@@ -238,7 +238,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 - To reduce the variance, it would be a lot better to simply use the **true expected reward-to-go**:
 $$\sum_{t'=t}^{T-1} \ExpCsub{r_t}{s_{t},a_{t}}{\piphi} = \Qpiphi(s_{i,t},a_{i,t}).$$
 - Replacing $\sum_{t'=t}^{T-1}r_{i,t'}$ by $Q^\pi(s_{i,t},a_{i,t})$ yields
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. $$
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. $$
 :::
 
 ::: fragment
@@ -256,7 +256,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: small
 
 We would like to reduce the variance of the new formulation using a baseline $b$:
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. $$
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. $$
 
 ::: fragment
 ### How do we choose $b$?
@@ -290,7 +290,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: small
 ::: incremental
 - If we're using the value function $V^\pi(s_t)$ as our baseline, we obtain the following expression:
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - V^\pi(s_t)}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - V^\pi(s_{i,t})} } }. $$ 
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - V^\pi(s_t)}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - V^\pi(s_{i,t})} } }. $$ 
 - This one has a very intuitive interpretation:
   - If $Q^\pi(s,a) - V^\pi(s) > 0$, then $a$ is **better than the average action** according to our current policy $\pi$.
   - If $Q^\pi(s,a) - V^\pi(s) < 0$, then $a$ is **worse than the average action**.
@@ -305,7 +305,7 @@ $$ A^\pi(s,a) = Q^\pi(s,a) - V^\pi(s). $$
 <!-- $$ A^\pi(s,t) = Q^\pi(s,t) - V^\pi(s,t) \fragment{ = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi} - \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}. } $$ -->
 
 [*Policy gradient with value baseline*: "maximize the policy likelihood, weighted by the advantage function":
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. } $$ ]{.fragment}
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. } $$ ]{.fragment}
 :::
 :::
 
@@ -317,7 +317,7 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: columns-6-4
 ::: incremental
 - Remember the inconsistency (supersripts $\pi$ and $\pi_\phi$ for $Q$) in our "simple derivation" of the policy gradient formulation,
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}? $$
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}? $$
 :::
 
 ::: incremental
@@ -341,7 +341,7 @@ $$\pi_\phi \approx \pi.$$]{.fragment}
 $$ V_\theta \approx V^\pi, \qquad Q_\theta \approx Q^\pi, \qquad A_\theta \approx A^\pi.$$]{.fragment}
 
 [**Policy gradient** using, e.g., $Q_\theta$:
-$$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$]{.fragment}
+$$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$]{.fragment}
 
 :::
 :::
@@ -356,7 +356,7 @@ $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a
 ::: small
 ::: incremental
 - Now consider the baseline version where we use the advantage function $A^\pi$ to weight the log gradient update:
-$$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. $$
+$$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. $$
 - **Key questions**: 
   - What should we fit? $V^\pi$, $Q^\pi$ or $A^\pi$?
   - To which target should we fit?
@@ -399,9 +399,9 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 - So let's just approximate $V^\pi \approx V_\theta$!
 - How do we do this? $\Rightarrow$ We have seen this already.\
 [$\circ$ Monte Carlo estimates from entire trajectories:
-  $$ L(\theta) = \sum_{k=1}^N \big(g_k - V_\theta(s_k)\big)^2 \fragment{ \quad \Rightarrow \quad \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). } $$]{.fragment}
+  $$ L_V(\theta) = \sum_{k=1}^N \big(g_k - V_\theta(s_k)\big)^2 \fragment{ \quad \Rightarrow \quad \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). } $$]{.fragment}
 [$\circ$ TD estimates from single-sample transitions using semi-gradients:]{.fragment}
-  [$$\begin{align*}  L(\theta) &= \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2 \\
+  [$$\begin{align*}  L_V(\theta) &= \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2 \\
   \Rightarrow \quad \theta &\gets \theta + \alpha\rbracket{r + V_\theta(s') - V_\theta(s)} \nablatheta V_\theta(s).  \end{align*}$$]{.math-incremental}
 :::
 
@@ -413,8 +413,8 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
 1. Sample $\set{s_i,a_i,s'_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$.
 2. Fit $V_\theta(s)$ to the sampled rewards.
 3. Compute advantage: $$A_\theta(s_i,a_i) = r_{i} + V_\theta(s'_i) - V_\theta(s_i).$$
-4. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
-5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+4. Gradient: $$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
+5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 ::: fragment
@@ -446,7 +446,7 @@ $$\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r
   2. The subtle one: The state distribution ("state visitation probability") changes: $$\eta_\phi(s) = \sum_{t=0}^{T-1} \gamma^t \pC{s_t = s}{\piphi}.$$
   [:bulb: The proof is quite technical and requires swapping the sum over the time steps $t$ and the integration over $\Sc$ in the policy gradient derivation.]{.fragment}
 - When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. [We thus obtain the same formulation (here using $A^\pi$):
-$$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } $$]{.fragment}
+$$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } $$]{.fragment}
 [where point 1. is "hidden" in $A^\pi$ and point 2. is "hidden" in the distribution $\tau\sim p_\phi(\tau)$.]{.fragment}
 :::
 :::
@@ -457,12 +457,12 @@ $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{
 ::: incremental
 - For a better understanding, let's make an ad-hoc introduction of discount factors and see where this leads us.
 - We start with version one of the policy gradient, i.e., Monte Carlo sampling of rewards using causality:
-  $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}. \label{eq:AC_discount_v1} \end{equation} $$
+  $$ \begin{equation} \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}. \label{eq:AC_discount_v1} \end{equation} $$
 - Alternatively, we can start with the version without considering causality:
-$$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
+$$ \begin{equation} \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}}. \label{eq:AC_discount_v2} \end{equation}$$
 [:zap: Which one is right? There clearly is a different discount for the rewards in \eqref{eq:AC_discount_v1} and \eqref{eq:AC_discount_v2}!]{.fragment}
 - Let's reformulate \eqref{eq:AC_discount_v2} and introduce causality again:
-[$$\begin{align} \nablaphi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
+[$$\begin{align} \nablaphi L_\pi(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}\textcolor{red}{\gamma^{t'}}r_{i,t'}} \notag \\ 
 &= \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \label{eq:AC_discount_v3}
 \end{align}$$]{.math-incremental}
 :::
@@ -472,8 +472,8 @@ $$ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket
 
 ::: small
 $$
-\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
-\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
+\underbrace{\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} \textcolor{red}{\gamma^{t'-t}} r_{i,t'} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
+\underbrace{\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
 $$
 
 ::: incremental
@@ -490,8 +490,8 @@ $$
 
 $$
 \begin{align*} 
-\text{MC reward sampling:}\quad\nabla_\phi L(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \\
-\text{Advantage function:}\quad\nabla_\phi L(\phi) &\approx\frac{1}{N} \sum_{i=1}^N \Big(\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \underbrace{\cbracket{r_{i,t} + \textcolor{red}{\gamma} V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}}_{A_\theta(s_{i,t},a_{i,t})} \Big) \end{align*}
+\text{MC reward sampling:}\quad\nabla_\phi L_\pi(\phi) &\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1}\textcolor{red}{\gamma^{t' - t}}r_{i,t'}} \\
+\text{Advantage function:}\quad\nabla_\phi L_\pi(\phi) &\approx\frac{1}{N} \sum_{i=1}^N \Big(\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \underbrace{\cbracket{r_{i,t} + \textcolor{red}{\gamma} V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}}_{A_\theta(s_{i,t},a_{i,t})} \Big) \end{align*}
 $$
 :::
 :::
@@ -516,8 +516,8 @@ $$
 2. Fit $V_\theta(s)$ to the sampled reward sums.\
 $~$
 3. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
-4. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
-5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+4. Gradient: $$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
+5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 :::
@@ -531,8 +531,8 @@ $~$
 2. Update $V_\theta(s)$ using the TD error:\
 $\quad\delta = r + \gamma V_\theta(s') - V_\theta(s)$.
 3. Compute advantage: $$A_\theta(s,a) = r + \gamma V_\theta(s') - V_\theta(s).$$
-4. Gradient: $$\nablaphi L(\phi) \approx \nablaphi \log\pi_\phi\agivenb{a}{s} A_\theta(s,a). \vphantom{\frac{1}{N} \sum_{i=1}^N}$$
-5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+4. Gradient: $$\nablaphi L_\pi(\phi) \approx \nablaphi \log\pi_\phi\agivenb{a}{s} A_\theta(s,a). \vphantom{\frac{1}{N} \sum_{i=1}^N}$$
+5. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 :::
@@ -603,8 +603,8 @@ Now that we need to fit two functions, $\pi_\phi$ and $V_\theta$, how do we do t
 3. Update $V_\theta(s)$ using the TD error:\
 $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma V_\theta(s'_i) - V_\theta(s_i)}_{=\delta_i}\|_2^2.$$
 4. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
-5. Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
-6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+5. Gradient: $$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).$$
+6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 
 ::: fragment
@@ -635,8 +635,8 @@ The algorithm is broken in two places! [Can you spot them?]{.fragment}
 3. [Update $Q_\theta(s)$ using the TD error:\
 $$\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma Q_\theta(s'_i, a'_i) - Q_\theta(s_i,a_i)}_{=\delta_i}\|_2^2.$$]{.fragment data-fragment-index=1 style="color: red;"}
 4. Compute advantages: $$A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s'_i) - V_\theta(s_i).$$
-5. [Gradient: $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).$$]{.fragment data-fragment-index=5 style="color: red;"}
-6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+5. [Gradient: $$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).$$]{.fragment data-fragment-index=5 style="color: red;"}
+6. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 
 ::: platzhalter
@@ -681,7 +681,7 @@ Let's directly compare the policy gradient from the last lecture against our act
 ::: platzhalter
 ### Policy gradient
 
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - b}\quad$$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - b}\quad$$
 :::
 
 ::: platzhalter
@@ -699,7 +699,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi
 ::: platzhalter
 ### Actor-critic
 
- $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \cbracket{r_{i,t} + \gamma V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}$$
+ $$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \cbracket{r_{i,t} + \gamma V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}$$
 :::
 
 ::: platzhalter
@@ -717,7 +717,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi
 
 ::: fragment
 ::: columns-7-3
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - V_\theta(s_{i,t})} $$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{i,t'}} - V_\theta(s_{i,t})} $$
 
 ::: platzhalter
 \
@@ -781,7 +781,7 @@ $$ A_\theta(s_t,a_t) = \cbracket{\sum_{t'=t}^{T-1}\gamma^{t'-t} r_{t'}} - Q_\the
 
 ::: fragment
 **The term that was neglected above**:
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\hat{Q}_{i,t} - Q_\theta(s_{i,t}, a_{i,t})} \textcolor{blue}{+ \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \Expsub{Q_\theta(s_{i,t},a_{t})}{a_t \sim \pi_\theta\agivenb{\cdot}{s_{i,t}}}}. $$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\hat{Q}_{i,t} - Q_\theta(s_{i,t}, a_{i,t})} \textcolor{blue}{+ \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \Expsub{Q_\theta(s_{i,t},a_{t})}{a_t \sim \pi_\theta\agivenb{\cdot}{s_{i,t}}}}. $$
 :::
 [$\Rightarrow$ This one is often easier to estimate.]{.fragment} [**Finite $\Ac$**: compute sum!]{.fragment} [**Continuous $\Ac$**: sampling actions is easy!]{.fragment}
 :::

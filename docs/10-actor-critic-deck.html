@@ -321,9 +321,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Using the definition of the expectation of continuous random variables and the <span class="math inline">\(\log\)</span> derivative trick, we arrived at a formulation of the policy gradient from which we can sample using trajectory data (<span class="math inline">\(\tau=(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_T)\)</span>): <span class="math display">\[ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}} \cbracket{\sum_{t=0}^{T-1}r_{i,t}}.}\]</span></li>
+<li class="fragment">Using the definition of the expectation of continuous random variables and the <span class="math inline">\(\log\)</span> derivative trick, we arrived at a formulation of the policy gradient from which we can sample using trajectory data (<span class="math inline">\(\tau=(s_0,a_0,\ldots,s_{T-1},a_{T-1},s_T)\)</span>): <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}} \cbracket{\sum_{t=0}^{T-1}r_{i,t}}.}\]</span></li>
 <li class="fragment"><strong>Goal</strong>: derive the policy gradient a second time, but this time using the <span class="math inline">\(Q\)</span>-function instead of the return <span class="math inline">\(\sum_{t=0}^{T-1}r_{i,t}\)</span>.</li>
-<li class="fragment"><strong>Starting point</strong>: the RL objective and its gradient: <span class="math display">\[\begin{equation} L(\phi)=\Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} \qquad \Rightarrow \qquad \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds. \label{eq:AC_RL_objective} \end{equation}\]</span></li>
+<li class="fragment"><strong>Starting point</strong>: the RL objective and its gradient: <span class="math display">\[\begin{equation} L_\pi(\phi)=\Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} \qquad \Rightarrow \qquad \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds. \label{eq:AC_RL_objective} \end{equation}\]</span></li>
 </ul>
 </div>
 </div>
@@ -416,10 +416,10 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">We can now insert <span class="math inline">\(\eqref{eq:AC_grad_V_recursion}\)</span> into the gradient of our RL objective (Eq. <span class="math inline">\(\eqref{eq:AC_RL_objective}\)</span>): <!-- $$ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ --> <span class="math display">\[ \nablaphi L(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }\]</span></li>
-<li class="fragment">By changing the order of integration, we isolate the total expected time spent in state <span class="math inline">\(x\)</span>: <!-- $$\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ --> <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.\]</span></li>
+<li class="fragment">We can now insert <span class="math inline">\(\eqref{eq:AC_grad_V_recursion}\)</span> into the gradient of our RL objective (Eq. <span class="math inline">\(\eqref{eq:AC_RL_objective}\)</span>): <!-- $$ \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }$$ --> <span class="math display">\[ \nablaphi L_\pi(\phi)=\Expsub{\nablaphi \Vpiphi(s_0)}{s_0 \sim p_0} \fragment{ = \int_{\Sc} p_0(s) \nablaphi \Vpiphi(s) \ds  }\fragment{ = \int_{\Sc} p_0(s) \rbracket{\int_{\Sc} \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \xi(x) \dx} \ds. }\]</span></li>
+<li class="fragment">By changing the order of integration, we isolate the total expected time spent in state <span class="math inline">\(x\)</span>: <!-- $$\nablaphi L_\pi(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{\infty} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.$$ --> <span class="math display">\[\nablaphi L_\pi(\phi) = \int_{\Sc} \rbracket{ \int_{\Sc} p_0(s) \sum_{t=0}^{T-1} \pC{s \to x}{t, \piphi} \ds} \xi(x) \dx.\]</span></li>
 <li class="fragment">The term inside the brackets is the <strong>undiscounted state visitation frequency</strong> (or the expected number of times state <span class="math inline">\(x\)</span> is visited in an episode), which we denote as <span class="math inline">\(\eta_\phi(s)\)</span>: <!-- $$\begin{equation} \eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}. \label{eq:AC_state_visitation_measure} \end{equation}$$ --> <span class="math display">\[\begin{equation} \eta_\phi(s) = \sum_{t=0}^{T-1} \pC{s_t = s}{\piphi}. \label{eq:AC_state_visitation_measure} \end{equation}\]</span></li>
-<li class="fragment">This simplifies our expression to: <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.\]</span></li>
+<li class="fragment">This simplifies our expression to: <span class="math display">\[\nablaphi L_\pi(\phi) = \int_{\Sc} \eta_\phi(s) \xi(s) \ds.\]</span></li>
 </ul>
 </div>
 </div>
@@ -440,9 +440,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Reintroducing the full definition of <span class="math inline">\(\xi(s) = \int_\Ac\nablaphi\piphi\agivenb{a}{s} \Qpiphi(s,a)\dint{a}\)</span> (and keeping <span class="math inline">\(s\)</span> as our state variable): <span class="math display">\[\nablaphi L(\phi) = \int_{\Sc} \eta_\phi(s) \int_{\Ac} \nablaphi \piphi\agivenb{a}{s} \Qpiphi(s, a) \dint{a}\ds.\]</span></li>
-<li class="fragment">Apply the <span class="math inline">\(\log\)</span>-derivative identity: <span class="math display">\[\nabla_\phi L(\phi) = \textcolor{blue}{\int_{\Sc} \eta_\phi(s)} \textcolor{red}{\int_{\Ac} \piphi\agivenb{a}{s}} \nabla_\phi \log \piphi\agivenb{a}{s} \Qpiphi(s, a) \textcolor{red}{\dint{a}} \textcolor{blue}{\ds}.\]</span></li>
-<li class="fragment">In conclusion, the gradient can be expressed using the unnormalized state visitation measure <span class="math inline">\(\eta_\phi(s)\)</span>: <!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}. \label{eq:AC_policy_gradient_Q} \end{equation}$$ --> <span class="math display">\[\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}\]</span></li>
+<li class="fragment">Reintroducing the full definition of <span class="math inline">\(\xi(s) = \int_\Ac\nablaphi\piphi\agivenb{a}{s} \Qpiphi(s,a)\dint{a}\)</span> (and keeping <span class="math inline">\(s\)</span> as our state variable): <span class="math display">\[\nablaphi L_\pi(\phi) = \int_{\Sc} \eta_\phi(s) \int_{\Ac} \nablaphi \piphi\agivenb{a}{s} \Qpiphi(s, a) \dint{a}\ds.\]</span></li>
+<li class="fragment">Apply the <span class="math inline">\(\log\)</span>-derivative identity: <span class="math display">\[\nabla_\phi L_\pi(\phi) = \textcolor{blue}{\int_{\Sc} \eta_\phi(s)} \textcolor{red}{\int_{\Ac} \piphi\agivenb{a}{s}} \nabla_\phi \log \piphi\agivenb{a}{s} \Qpiphi(s, a) \textcolor{red}{\dint{a}} \textcolor{blue}{\ds}.\]</span></li>
+<li class="fragment">In conclusion, the gradient can be expressed using the unnormalized state visitation measure <span class="math inline">\(\eta_\phi(s)\)</span>: <!-- $$\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}. \label{eq:AC_policy_gradient_Q} \end{equation}$$ --> <span class="math display">\[\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}\]</span></li>
 </ul>
 </div>
 <div class="platzhalter">
@@ -460,7 +460,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 <div class="fragment">
 <div class="definition">
-<p><strong>Note</strong>: In the infinite-horizon case, <span class="math inline">\(\eqref{eq:AC_state_visitation_measure}\)</span> becomes <span class="math inline">\(\eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Equation <span class="math inline">\(\eqref{eq:AC_policy_gradient_Q_episodic}\)</span> becomes <!-- $$\begin{equation} \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} --> <span class="math display">\[\nabla_\phi L(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}.\]</span></span></p>
+<p><strong>Note</strong>: In the infinite-horizon case, <span class="math inline">\(\eqref{eq:AC_state_visitation_measure}\)</span> becomes <span class="math inline">\(\eta_\phi(s) = \sum_{t=0}^{\infty} \pC{s_t = s}{p_0, \piphi}\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Equation <span class="math inline">\(\eqref{eq:AC_policy_gradient_Q_episodic}\)</span> becomes <!-- $$\begin{equation} \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \label{eq:AC_policy_gradient_Q_episodic} \end{equation}$$]{.fragment} --> <span class="math display">\[\nabla_\phi L_\pi(\phi) = \Expsub{\nablaphi \log \piphi\agivenb{a}{s} \Qpiphi(s, a)}{s \sim \eta_\phi, a \sim \piphi}.\]</span></span></p>
 </div>
 </div>
 </div>
@@ -482,13 +482,13 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="fragment">
 <div id="policy-gradient-theorem-formulation-via-reward-trajectories" class="definition">
 <h3>Policy gradient theorem – formulation via reward trajectories</h3>
-<p><span class="math display">\[ \nablaphi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t&#39;=t}^{T-1}r_{t&#39;}}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t&#39;=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} r_{i,t&#39;} }}}. } \]</span></p>
+<p><span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t&#39;=t}^{T-1}r_{t&#39;}}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t&#39;=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} r_{i,t&#39;} }}}. } \]</span></p>
 </div>
 </div>
 <div class="fragment">
 <div id="policy-gradient-theorem-formulation-using-the-q-function" class="definition">
 <h3>Policy gradient theorem – formulation using the <span class="math inline">\(Q\)</span>-function</h3>
-<p><span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } \]</span></p>
+<p><span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } \]</span></p>
 </div>
 </div>
 <div class="grid-layout" style="grid-template-columns: 1fr 8fr;">
@@ -1264,7 +1264,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">To reduce the variance, it would be a lot better to simply use the <strong>true expected reward-to-go</strong>: <span class="math display">\[\sum_{t&#39;=t}^{T-1} \ExpCsub{r_t}{s_{t},a_{t}}{\piphi} = \Qpiphi(s_{i,t},a_{i,t}).\]</span></li>
-<li class="fragment">Replacing <span class="math inline">\(\sum_{t&#39;=t}^{T-1}r_{i,t&#39;}\)</span> by <span class="math inline">\(Q^\pi(s_{i,t},a_{i,t})\)</span> yields <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \]</span></li>
+<li class="fragment">Replacing <span class="math inline">\(\sum_{t&#39;=t}^{T-1}r_{i,t&#39;}\)</span> by <span class="math inline">\(Q^\pi(s_{i,t},a_{i,t})\)</span> yields <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}. \]</span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1289,7 +1289,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>We would like to reduce the variance of the new formulation using a baseline <span class="math inline">\(b\)</span>: <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. \]</span></p>
+<p>We would like to reduce the variance of the new formulation using a baseline <span class="math inline">\(b\)</span>: <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - b}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - b} } }. \]</span></p>
 <div class="fragment">
 <h3 id="how-do-we-choose-b">How do we choose <span class="math inline">\(b\)</span>?</h3>
 </div>
@@ -1332,7 +1332,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">If we’re using the value function <span class="math inline">\(V^\pi(s_t)\)</span> as our baseline, we obtain the following expression: <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - V^\pi(s_t)}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - V^\pi(s_{i,t})} } }. \]</span></li>
+<li class="fragment">If we’re using the value function <span class="math inline">\(V^\pi(s_t)\)</span> as our baseline, we obtain the following expression: <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \rbracket{Q^\pi(s_t, a_t) - V^\pi(s_t)}}{\tau\sim p_\phi(\tau)} \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \rbracket{Q^\pi(s_{i,t},a_{i,t}) - V^\pi(s_{i,t})} } }. \]</span></li>
 <li class="fragment">This one has a very intuitive interpretation:
 <ul class="incremental">
 <li class="fragment">If <span class="math inline">\(Q^\pi(s,a) - V^\pi(s) &gt; 0\)</span>, then <span class="math inline">\(a\)</span> is <strong>better than the average action</strong> according to our current policy <span class="math inline">\(\pi\)</span>.</li>
@@ -1344,7 +1344,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div id="policy-gradient-with-advantage-function" class="definition">
 <h3>Policy gradient with advantage function</h3>
 <p>The <em>advantage function</em> <span class="math inline">\(A^\pi(s,a)\)</span> describes how much better the action <span class="math inline">\(a\)</span> is over the average action when following <span class="math inline">\(\pi\)</span>: <span class="math display">\[ A^\pi(s,a) = Q^\pi(s,a) - V^\pi(s). \]</span> <!-- $$ A^\pi(s,t) = Q^\pi(s,t) - V^\pi(s,t) \fragment{ = \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s,a_t=a}{\pi} - \ExpCsub{\sum_{k=0}^{\infty}\gamma^k r_{t+k}}{s_t=s}{\pi}. } $$ --></p>
-<p><span class="fragment"><em>Policy gradient with value baseline</em>: “maximize the policy likelihood, weighted by the advantage function”: <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. } \]</span></span></p>
+<p><span class="fragment"><em>Policy gradient with value baseline</em>: “maximize the policy likelihood, weighted by the advantage function”: <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. } \]</span></span></p>
 </div>
 </div>
 </div>
@@ -1365,7 +1365,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Remember the inconsistency (supersripts <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\pi_\phi\)</span> for <span class="math inline">\(Q\)</span>) in our “simple derivation” of the policy gradient formulation, <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}? \]</span></li>
+<li class="fragment">Remember the inconsistency (supersripts <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\pi_\phi\)</span> for <span class="math inline">\(Q\)</span>) in our “simple derivation” of the policy gradient formulation, <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}? \]</span></li>
 </ul>
 </div>
 <div class="incremental">
@@ -1383,7 +1383,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <h3>The actor-critic framework</h3>
 <p><span class="fragment"><strong>Actor</strong>: Neural network with parameters <span class="math inline">\(\phi\)</span> approximates the policy: <span class="math display">\[\pi_\phi \approx \pi.\]</span></span></p>
 <p><span class="fragment"><strong>Critic</strong>: Approximates <span class="math inline">\(V^\pi\)</span> / <span class="math inline">\(Q^\pi\)</span> / <span class="math inline">\(A^\pi\)</span> and <em>criticizes</em> the actor: <span class="math display">\[ V_\theta \approx V^\pi, \qquad Q_\theta \approx Q^\pi, \qquad A_\theta \approx A^\pi.\]</span></span></p>
-<p><span class="fragment"><strong>Policy gradient</strong> using, e.g., <span class="math inline">\(Q_\theta\)</span>: <span class="math display">\[\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)}.\]</span></span></p>
+<p><span class="fragment"><strong>Policy gradient</strong> using, e.g., <span class="math inline">\(Q_\theta\)</span>: <span class="math display">\[\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} Q_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)}.\]</span></span></p>
 </div>
 </div>
 <p><span class="fragment"><span class="media"><span class="figure embed svg embedded" style="height:auto;width:430px;"><span aria-label="Inspired by Sergey Levine’s CS285 lecture." style="height:auto;width:100%;"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -3207,7 +3207,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Now consider the baseline version where we use the advantage function <span class="math inline">\(A^\pi\)</span> to weight the log gradient update: <span class="math display">\[\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. \]</span></li>
+<li class="fragment">Now consider the baseline version where we use the advantage function <span class="math inline">\(A^\pi\)</span> to weight the log gradient update: <span class="math display">\[\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }. \]</span></li>
 <li class="fragment"><strong>Key questions</strong>:
 <ul class="incremental">
 <li class="fragment">What should we fit? <span class="math inline">\(V^\pi\)</span>, <span class="math inline">\(Q^\pi\)</span> or <span class="math inline">\(A^\pi\)</span>?</li>
@@ -3267,7 +3267,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li class="fragment">Let’s take another look at the <em>advantage function</em> <span class="math inline">\(A^\pi\)</span>: <span class="math display">\[\fragment{ A^\pi(s_t,a_t) = Q^\pi(s_t,a_t) - V^\pi(s_t) } \fragment{ \approx r_{t} + V^\pi(s_{t+1}) - V^\pi(s_t) } \fragment{ = \hat{A}^\pi(s_t,a_t). }\]</span></li>
 <li class="fragment">So let’s just approximate <span class="math inline">\(V^\pi \approx V_\theta\)</span>!</li>
 <li class="fragment">How do we do this? <span class="math inline">\(\Rightarrow\)</span> We have seen this already.<br />
-<span class="fragment"><span class="math inline">\(\circ\)</span> Monte Carlo estimates from entire trajectories: <span class="math display">\[ L(\theta) = \sum_{k=1}^N \big(g_k - V_\theta(s_k)\big)^2 \fragment{ \quad \Rightarrow \quad \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). } \]</span></span> <span class="fragment"><span class="math inline">\(\circ\)</span> TD estimates from single-sample transitions using semi-gradients:</span> <span class="math-incremental"><span class="math display">\[\begin{align*}  L(\theta) &amp;= \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2 \\
+<span class="fragment"><span class="math inline">\(\circ\)</span> Monte Carlo estimates from entire trajectories: <span class="math display">\[ L_V(\theta) = \sum_{k=1}^N \big(g_k - V_\theta(s_k)\big)^2 \fragment{ \quad \Rightarrow \quad \theta \gets \theta + \alpha\rbracket{g - V_\theta(s)} \nablatheta V_\theta(s). } \]</span></span> <span class="fragment"><span class="math inline">\(\circ\)</span> TD estimates from single-sample transitions using semi-gradients:</span> <span class="math-incremental"><span class="math display">\[\begin{align*}  L_V(\theta) &amp;= \sum_{k=1}^N \big(r_k + V_\theta(s_{k+1}) - V_\theta(s_k)\big)^2 \\
 \Rightarrow \quad \theta &amp;\gets \theta + \alpha\rbracket{r + V_\theta(s&#39;) - V_\theta(s)} \nablatheta V_\theta(s).  \end{align*}\]</span></span></li>
 </ul>
 </div>
@@ -3279,8 +3279,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li class="fragment">Sample <span class="math inline">\(\set{s_i,a_i,s&#39;_i}_{i=1}^N\)</span> using <span class="math inline">\(\pi_\phi\agivenb{a}{s}\)</span>.</li>
 <li class="fragment">Fit <span class="math inline">\(V_\theta(s)\)</span> to the sampled rewards.</li>
 <li class="fragment">Compute advantage: <span class="math display">\[A_\theta(s_i,a_i) = r_{i} + V_\theta(s&#39;_i) - V_\theta(s_i).\]</span></li>
-<li class="fragment">Gradient: <span class="math display">\[\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
-<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">Gradient: <span class="math display">\[\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
+<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
 </div>
 </div>
@@ -3322,7 +3322,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li class="fragment">The obvious one: Our <span class="math inline">\(Q\)</span>-function is now the discounted version: <span class="math display">\[Q^\pi(s, a) = \ExpCsub{r + \gamma Q^\pi(s&#39;, a&#39;)}{s,a}{\pi}.\]</span> <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> The same obviously holds for <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span>.</span></li>
 <li class="fragment">The subtle one: The state distribution (“state visitation probability”) changes: <span class="math display">\[\eta_\phi(s) = \sum_{t=0}^{T-1} \gamma^t \pC{s_t = s}{\piphi}.\]</span> <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> The proof is quite technical and requires swapping the sum over the time steps <span class="math inline">\(t\)</span> and the integration over <span class="math inline">\(\Sc\)</span> in the policy gradient derivation.</span></li>
 </ol></li>
-<li class="fragment">When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. <span class="fragment">We thus obtain the same formulation (here using <span class="math inline">\(A^\pi\)</span>): <span class="math display">\[ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } \]</span></span> <span class="fragment">where point 1. is “hidden” in <span class="math inline">\(A^\pi\)</span> and point 2. is “hidden” in the distribution <span class="math inline">\(\tau\sim p_\phi(\tau)\)</span>.</span></li>
+<li class="fragment">When sampling, point 2. is taken care of automatically, as we will sample according to this new distribution automatically. <span class="fragment">We thus obtain the same formulation (here using <span class="math inline">\(A^\pi\)</span>): <span class="math display">\[ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A^\pi(s_{i,t},a_{i,t})} }, } \]</span></span> <span class="fragment">where point 1. is “hidden” in <span class="math inline">\(A^\pi\)</span> and point 2. is “hidden” in the distribution <span class="math inline">\(\tau\sim p_\phi(\tau)\)</span>.</span></li>
 </ul>
 </div>
 </div>
@@ -3343,9 +3343,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">For a better understanding, let’s make an ad-hoc introduction of discount factors and see where this leads us.</li>
-<li class="fragment">We start with version one of the policy gradient, i.e., Monte Carlo sampling of rewards using causality: <span class="math display">\[ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} \textcolor{red}{\gamma^{t&#39;-t}} r_{i,t&#39;} }}. \label{eq:AC_discount_v1} \end{equation} \]</span></li>
-<li class="fragment">Alternatively, we can start with the version without considering causality: <span class="math display">\[ \begin{equation} \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t&#39;=0}^{T-1}\textcolor{red}{\gamma^{t&#39;}}r_{i,t&#39;}}. \label{eq:AC_discount_v2} \end{equation}\]</span> <span class="fragment"><span class="emoji" data-emoji="zap">⚡</span> Which one is right? There clearly is a different discount for the rewards in <span class="math inline">\(\eqref{eq:AC_discount_v1}\)</span> and <span class="math inline">\(\eqref{eq:AC_discount_v2}\)</span>!</span></li>
-<li class="fragment">Let’s reformulate <span class="math inline">\(\eqref{eq:AC_discount_v2}\)</span> and introduce causality again: <span class="math-incremental"><span class="math display">\[\begin{align} \nablaphi L(\phi) &amp;\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=0}^{T-1}\textcolor{red}{\gamma^{t&#39;}}r_{i,t&#39;}} \notag \\ 
+<li class="fragment">We start with version one of the policy gradient, i.e., Monte Carlo sampling of rewards using causality: <span class="math display">\[ \begin{equation} \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} \textcolor{red}{\gamma^{t&#39;-t}} r_{i,t&#39;} }}. \label{eq:AC_discount_v1} \end{equation} \]</span></li>
+<li class="fragment">Alternatively, we can start with the version without considering causality: <span class="math display">\[ \begin{equation} \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t&#39;=0}^{T-1}\textcolor{red}{\gamma^{t&#39;}}r_{i,t&#39;}}. \label{eq:AC_discount_v2} \end{equation}\]</span> <span class="fragment"><span class="emoji" data-emoji="zap">⚡</span> Which one is right? There clearly is a different discount for the rewards in <span class="math inline">\(\eqref{eq:AC_discount_v1}\)</span> and <span class="math inline">\(\eqref{eq:AC_discount_v2}\)</span>!</span></li>
+<li class="fragment">Let’s reformulate <span class="math inline">\(\eqref{eq:AC_discount_v2}\)</span> and introduce causality again: <span class="math-incremental"><span class="math display">\[\begin{align} \nablaphi L_\pi(\phi) &amp;\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=0}^{T-1}\textcolor{red}{\gamma^{t&#39;}}r_{i,t&#39;}} \notag \\ 
 &amp;= \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1}\textcolor{red}{\gamma^{t&#39; - t}}r_{i,t&#39;}} \label{eq:AC_discount_v3}
 \end{align}\]</span></span></li>
 </ul>
@@ -3366,8 +3366,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="box block">
 <div class="small">
 <p><span class="math display">\[
-\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} \textcolor{red}{\gamma^{t&#39;-t}} r_{i,t&#39;} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
-\underbrace{\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1}\textcolor{red}{\gamma^{t&#39; - t}}r_{i,t&#39;}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
+\underbrace{\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} \textcolor{red}{\gamma^{t&#39;-t}} r_{i,t&#39;} }}}_{\text{Option 1: } \eqref{eq:AC_discount_v1}} \quad\text{vs.}\quad
+\underbrace{\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \textcolor{red}{\gamma^t} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1}\textcolor{red}{\gamma^{t&#39; - t}}r_{i,t&#39;}}}_{\text{Option 2: }\eqref{eq:AC_discount_v3}}
 \]</span></p>
 <div class="incremental">
 <ul class="incremental">
@@ -3385,8 +3385,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <h3>Common versions of the policy gradient with discount <span class="math inline">\(\textcolor{red}{\gamma}\)</span></h3>
 <p><span class="math display">\[
 \begin{align*} 
-\text{MC reward sampling:}\quad\nabla_\phi L(\phi) &amp;\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1}\textcolor{red}{\gamma^{t&#39; - t}}r_{i,t&#39;}} \\
-\text{Advantage function:}\quad\nabla_\phi L(\phi) &amp;\approx\frac{1}{N} \sum_{i=1}^N \Big(\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \underbrace{\cbracket{r_{i,t} + \textcolor{red}{\gamma} V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}}_{A_\theta(s_{i,t},a_{i,t})} \Big) \end{align*}
+\text{MC reward sampling:}\quad\nabla_\phi L_\pi(\phi) &amp;\approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1}\textcolor{red}{\gamma^{t&#39; - t}}r_{i,t&#39;}} \\
+\text{Advantage function:}\quad\nabla_\phi L_\pi(\phi) &amp;\approx\frac{1}{N} \sum_{i=1}^N \Big(\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \underbrace{\cbracket{r_{i,t} + \textcolor{red}{\gamma} V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}}_{A_\theta(s_{i,t},a_{i,t})} \Big) \end{align*}
 \]</span></p>
 </div>
 </div>
@@ -3423,8 +3423,8 @@ Actor-critic framework [<a href="http://incompleteideas.net/book/ebook/node66.ht
 <li class="fragment">Fit <span class="math inline">\(V_\theta(s)\)</span> to the sampled reward sums.<br />
 <span class="math inline">\(~\)</span></li>
 <li class="fragment">Compute advantages: <span class="math display">\[A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s&#39;_i) - V_\theta(s_i).\]</span></li>
-<li class="fragment">Gradient: <span class="math display">\[\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
-<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">Gradient: <span class="math display">\[\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
+<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
 </div>
 </div>
@@ -3438,8 +3438,8 @@ Actor-critic framework [<a href="http://incompleteideas.net/book/ebook/node66.ht
 <li class="fragment">Update <span class="math inline">\(V_\theta(s)\)</span> using the TD error:<br />
 <span class="math inline">\(\quad\delta = r + \gamma V_\theta(s&#39;) - V_\theta(s)\)</span>.</li>
 <li class="fragment">Compute advantage: <span class="math display">\[A_\theta(s,a) = r + \gamma V_\theta(s&#39;) - V_\theta(s).\]</span></li>
-<li class="fragment">Gradient: <span class="math display">\[\nablaphi L(\phi) \approx \nablaphi \log\pi_\phi\agivenb{a}{s} A_\theta(s,a). \vphantom{\frac{1}{N} \sum_{i=1}^N}\]</span></li>
-<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">Gradient: <span class="math display">\[\nablaphi L_\pi(\phi) \approx \nablaphi \log\pi_\phi\agivenb{a}{s} A_\theta(s,a). \vphantom{\frac{1}{N} \sum_{i=1}^N}\]</span></li>
+<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
 </div>
 </div>
@@ -6511,8 +6511,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li>Update <span class="math inline">\(V_\theta(s)\)</span> using the TD error:<br />
 <span class="math display">\[\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma V_\theta(s&#39;_i) - V_\theta(s_i)}_{=\delta_i}\|_2^2.\]</span></li>
 <li>Compute advantages: <span class="math display">\[A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s&#39;_i) - V_\theta(s_i).\]</span></li>
-<li>Gradient: <span class="math display">\[\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
-<li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li>Gradient: <span class="math display">\[\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></li>
+<li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
 </div>
 <div class="fragment">
@@ -6551,8 +6551,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li><span class="fragment" data-fragment-index="1" style="color: red;">Update <span class="math inline">\(Q_\theta(s)\)</span> using the TD error:<br />
 <span class="math display">\[\min_\theta \frac{1}{N} \sum_{i=1}^N \|\underbrace{r_i + \gamma Q_\theta(s&#39;_i, a&#39;_i) - Q_\theta(s_i,a_i)}_{=\delta_i}\|_2^2.\]</span></span></li>
 <li>Compute advantages: <span class="math display">\[A_\theta(s_i,a_i) = r_{i} + \gamma V_\theta(s&#39;_i) - V_\theta(s_i).\]</span></li>
-<li><span class="fragment" data-fragment-index="5" style="color: red;">Gradient: <span class="math display">\[\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></span></li>
-<li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li><span class="fragment" data-fragment-index="5" style="color: red;">Gradient: <span class="math display">\[\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi\agivenb{a^{\pi_\phi}_{i}}{s_{i}} A_\theta(s_i,a_i).\]</span></span></li>
+<li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
 </div>
 <div class="platzhalter">
@@ -6594,7 +6594,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div id="policy-gradient" class="platzhalter">
 <h3>Policy gradient</h3>
-<p><span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t&#39;=t}^{T-1}\gamma^{t&#39;-t} r_{i,t&#39;}} - b}\quad\]</span></p>
+<p><span class="math display">\[ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t&#39;=t}^{T-1}\gamma^{t&#39;-t} r_{i,t&#39;}} - b}\quad\]</span></p>
 </div>
 <div class="platzhalter">
 <p><br />
@@ -6606,7 +6606,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div id="actor-critic" class="platzhalter">
 <h3>Actor-critic</h3>
-<p><span class="math display">\[\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \cbracket{r_{i,t} + \gamma V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}\]</span></p>
+<p><span class="math display">\[\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}} \cbracket{r_{i,t} + \gamma V_\theta(s_{i,t+1}) - V_\theta(s_{i,t})}\]</span></p>
 </div>
 <div class="platzhalter">
 <p><br />
@@ -6619,7 +6619,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> we can make the baseline <span class="math inline">\(b\)</span> state-dependent (proof very similar to the one from last week)!</span></p>
 <div class="fragment">
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
-<p><span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t&#39;=t}^{T-1}\gamma^{t&#39;-t} r_{i,t&#39;}} - V_\theta(s_{i,t})} \]</span></p>
+<p><span class="math display">\[ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\cbracket{\sum_{t&#39;=t}^{T-1}\gamma^{t&#39;-t} r_{i,t&#39;}} - V_\theta(s_{i,t})} \]</span></p>
 <div class="platzhalter">
 <p><br />
 </p>
@@ -6675,7 +6675,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 <div class="fragment">
-<p><strong>The term that was neglected above</strong>: <span class="math display">\[ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\hat{Q}_{i,t} - Q_\theta(s_{i,t}, a_{i,t})} \textcolor{blue}{+ \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \Expsub{Q_\theta(s_{i,t},a_{t})}{a_t \sim \pi_\theta\agivenb{\cdot}{s_{i,t}}}}. \]</span></p>
+<p><strong>The term that was neglected above</strong>: <span class="math display">\[ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\hat{Q}_{i,t} - Q_\theta(s_{i,t}, a_{i,t})} \textcolor{blue}{+ \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \Expsub{Q_\theta(s_{i,t},a_{t})}{a_t \sim \pi_\theta\agivenb{\cdot}{s_{i,t}}}}. \]</span></p>
 </div>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> This one is often easier to estimate.</span> <span class="fragment"><strong>Finite <span class="math inline">\(\Ac\)</span></strong>: compute sum!</span> <span class="fragment"><strong>Continuous <span class="math inline">\(\Ac\)</span></strong>: sampling actions is easy!</span></p>
 </div>

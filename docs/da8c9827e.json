@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "03.06.2026 12:07"
+        "05.06.2026 07:48"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "9",
@@ -579,6 +579,10 @@
             ],
             "Expsub": [
                 "{\\mathbb{E}_{#2}\\left[ #1 \\right]}",
+                2.0
+            ],
+            "Expsubbig": [
+                "{\\mathbb{E}_{#2}\\Big[ #1 \\Big]}",
                 2.0
             ],
             "Hc": "{\\mathcal{H}}",

@@ -60,9 +60,9 @@ Table: Lecture contents
 ## (I) Policy gradient methods
 
 ::: incremental
-- Policy is explicitly parameterized and optimized directly: $$L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
-<!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
-- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L(\phi)$.
+- Policy is explicitly parameterized and optimized directly: $$L_\pi(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
+<!-- - $$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ -->
+- Gradient ascent: $\phi \gets \phi  + \alpha \nabla_\phi L_\pi(\phi)$.
 - Methods are typically **on-policy**.
 - **Algorithms**: REINFORCE $\rightarrow$ Actor-Critic $\rightarrow$ Natural Policy Gradient $\rightarrow$ Trust-region policy optimization (TRPO) $\rightarrow$ Proximal policy optimization (PPO).
 :::
@@ -173,15 +173,15 @@ Closely related to ill-conditioned optimization problems:
 ::: small
 ::: columns-9-4
 ::: incremental
-- Recall the policy gradient update: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+- Recall the policy gradient update: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 - A natural idea: **Constrain the length of our update step**!
   - Linearization of our optimization problem around $\phi$ using [Taylor series expansion](https://en.wikipedia.org/wiki/Taylor_series):
   [$$\begin{align*} 
-  L(\phi') &= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi'_i - \phi_i) + \Oc((\phi' - \phi)^2) \\
-  &= L(\phi) + (\phi' - \phi)^\top \nablaphi L(\phi).
+  L(\phi') &= L_\pi(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi'_i - \phi_i) + \Oc((\phi' - \phi)^2) \\
+  &= L_\pi(\phi) + (\phi' - \phi)^\top \nablaphi L_\pi(\phi).
   \end{align*}$$]{.math-incremental}
   - Constrained optimization of $\phi'$ along the steepest ascent direction:
-  $$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi' - \phi}^2\leq \epsilon. } $$
+  $$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L_\pi(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi' - \phi}^2\leq \epsilon. } $$
 - **But**: We just saw that some parameters change probabilities *a lot more than others*! 
 :::
 
@@ -298,14 +298,14 @@ $$\Expsub{\KLdiv{\pi_\phi}{\pi_{\phi'}}}{s \sim p_\phi} \approx \frac{1}{2} \Del
 ::: small
 ::: incremental
 - Recall: constraining w.r.t. the parameter $\phi$ does not solve the issue of strongly different impacts of individual parameters:
-$$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \norm{\phi' - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad $$
+$$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L_\pi(\phi) \qquad \text{subject to}\qquad \norm{\phi' - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad $$
 - **Question**: What is a good alternative to avoid too large (and thus, harmful) steps?\
 [$\Rightarrow$ the KL divergence!
-$$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi'}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. $$]{.fragment} 
+$$\phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L_\pi(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi'}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. $$]{.fragment} 
   - Constraining the KL divergence means that we automatically treat different parameters differently!
   - If a change in one of the entries of $\phi$ results in large policy changes, then the constraint does not allow large changes in that entry.
 - Since we want to have small updates (constrained by $\epsilon$): approximation via the Fisher information matrix,
-$$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \qquad &\text{subject to}\qquad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon, \\
+$$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L_\pi(\phi) \qquad &\text{subject to}\qquad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon, \\
 &\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
 \end{align*} $$
 
@@ -318,11 +318,11 @@ $$\begin{align*} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\p
 ::: columns-7-3
 ::: incremental
 - We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: 
-$$\begin{equation} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon. \label{eq:Adv_Natural_PG} \end{equation}$$
+$$\begin{equation} \phi' \gets \arg\max_{\phi'} (\phi' - \phi)^\top \nablaphi L_\pi(\phi) \quad \text{subject to}\quad (\phi'-\phi)^\top F (\phi'-\phi) \leq \epsilon. \label{eq:Adv_Natural_PG} \end{equation}$$
 - What remains is the question of solving \eqref{eq:Adv_Natural_PG}.
 - Without going into further details (e.g., [@Kakade2001npg;@Peters2008naturalac])\
 $\Rightarrow$ Solution: **scale** the policy gradient **by the inverse Fisher information matrix**,
-$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi). \label{eq:Adv_NPG} \end{equation}$$
+$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi). \label{eq:Adv_NPG} \end{equation}$$
 - **Intuition** behind the inverse FIM $F^{-1}$:
   - Parameters with a high impact have high Fisher information.
   - Scaling by the inverse "normalizes" the individual impacts.
@@ -347,7 +347,7 @@ $$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi). \label{eq:
 
 ::: small
 ::: definition
-$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}$$
+$$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}$$
 :::
 
 ::: columns-4-6
@@ -406,11 +406,11 @@ $$\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi) \tag{\ref{e
 - Let's introduce a new (and yet *already known* quantity): the **performance measure** of a policy,
 $$ \eta(\pi) = \Expsub{\sum_{t=0}^{T-1}\gamma^t r_t}{\tau\sim \pi} = \Expsub{V^\pi(s_0)}{s_0 \sim p_0}. $$ 
 - Remember our reinforcement learning objective
-$$ L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? $$
+$$ L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? $$
 - If we consider a policy parameterized by $\phi$, i.e., $\pi_\phi$, then the two equations are the same,
-$$\eta(\pi_\phi) = L(\phi).$$
+$$\eta(\pi_\phi) = L_\pi(\phi).$$
 - The difference is more in terms of the *motivation*, not the definition:
-  - We use $L(\phi)$ in policy gradients, since we want to find ascent directions for the network paraemters.
+  - We use $L_\pi(\phi)$ in policy gradients, since we want to find ascent directions for the network paraemters.
   - We use $\eta(\pi)$ as a global quantity to establish mathematical lower-bounds so that an algorithm can compute a safe step size (the trust region).
 :::
 :::
@@ -1170,7 +1170,7 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 | :-: | :-: | :-: | :-: |
 | Core Concept| Scaled step sizes based on how much $\pi$ changes, not $\phi$ | Strict boundary (trust region) to guarantee policy improvement | Mimics trust region via simplified clipped objective function | 
 | Mathematical Constraint| KL-divergence approximation via Fisher information matrix. | Strict: $\KLdivavg{\pi_{\phi'}}{\pi_\phi} \le \delta$ | Soft constraint via clipped surrogate objective | 
-| Optimization Method | Matrix inversion: $\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)$ | Conjugate Gradient (CG) + line search | Stochastic gradient descent (SGD) or Adam optimizer |
+| Optimization Method | Matrix inversion: $\phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi)$ | Conjugate Gradient (CG) + line search | Stochastic gradient descent (SGD) or Adam optimizer |
 | Complexity | Very high (inversion of $F$) | High | Low (first-order optimization) | 
 | Implementation | Challenging | Very challenging | Simple | 
 | Data Efficiency | Poor | Moderate | High |

@@ -312,8 +312,8 @@ II)</title>
 <h2>(I) Policy gradient methods</h2>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
-<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L(\phi)\)</span>.</li>
+<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L_\pi(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
+<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L_\pi(\phi)\)</span>.</li>
 <li class="fragment">Methods are typically <strong>on-policy</strong>.</li>
 <li class="fragment"><strong>Algorithms</strong>: REINFORCE <span class="math inline">\(\rightarrow\)</span> Actor-Critic <span class="math inline">\(\rightarrow\)</span> Natural Policy Gradient <span class="math inline">\(\rightarrow\)</span> Trust-region policy optimization (TRPO) <span class="math inline">\(\rightarrow\)</span> Proximal policy optimization (PPO).</li>
 </ul>
@@ -456,12 +456,12 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <div class="small">
 <div id="policy-gradient-theorem-formulation-via-reward-trajectories-sampling-version-in-blue" class="definition">
 <h3>Policy gradient theorem – formulation via reward trajectories (<span style="color: blue;">sampling version in blue</span>)</h3>
-<p><span class="math display">\[ \nablaphi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t&#39;=t}^{T-1}r_{t&#39;}}}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t&#39;=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} r_{i,t&#39;} }}}. \]</span></p>
+<p><span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t&#39;=t}^{T-1}r_{t&#39;}}}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t&#39;=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t&#39;=t}^{T-1} r_{i,t&#39;} }}}. \]</span></p>
 </div>
 <div id="policy-gradient-theorem-formulation-using-the-q-function-and-the-actor-critic-architecture" class="definition">
 <h3>Policy gradient theorem – formulation using the <span class="math inline">\(Q\)</span>-function and the Actor-Critic architecture</h3>
-<!-- $$ \nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
-<p><span class="math display">\[\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. \]</span></p>
+<!-- $$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
+<p><span class="math display">\[\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. \]</span></p>
 </div>
 <h3 id="main-drawbacks">Main drawbacks</h3>
 <div class="incremental">
@@ -554,7 +554,7 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <ul class="incremental">
 <li class="fragment">Drop the randomness from the policy <span class="math inline">\(\mu\)</span> such that it becomes a <strong>deterministic function</strong>: <span class="math inline">\(a = \mu_\phi(s)\)</span>.</li>
 <li class="fragment">Reformulate <span class="math inline">\(V\)</span> via <span class="math inline">\(Q\)</span>: no need for expecations (i.e., sum / integrate over <span class="math inline">\(\Ac\)</span>): <span class="math inline">\(V^{\mu_\phi}(s) = Q^{\mu_\phi}(s,\mu_\phi(s))\)</span>.</li>
-<li class="fragment">Deterministic: we are incapable of exploration! <span class="fragment">The theorem is only practically useful if we sample from off-policy data: <span class="math display">\[L(\phi)= \Expsub{Q^{\mu_\phi}(s,\mu_\phi(s))}{s\sim\rho_{\beta}} = \int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}. \]</span></span></li>
+<li class="fragment">Deterministic: we are incapable of exploration! <span class="fragment">The theorem is only practically useful if we sample from off-policy data: <span class="math display">\[L_\pi(\phi)= \Expsub{Q^{\mu_\phi}(s,\mu_\phi(s))}{s\sim\rho_{\beta}} = \int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}. \]</span></span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -562,13 +562,13 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <h2>Deterministic policy gradient theorem <span class="citation">(<a href="#ref-Silver2014dpg">Silver et al. 2014</a>)</span></h2>
 <h3 id="exact-version-on-policy-rho_beta-rho_mu_phi">Exact version: on-policy (<span class="math inline">\(\rho_{\beta} = \rho_{\mu_\phi}\)</span>)</h3>
 <p><span class="math display">\[\begin{equation}\begin{aligned}
-\nablaphi L(\phi) &amp;= \nablaphi\rbracket{\int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}} = \int_\Sc \rho_{\beta}(s) \nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s) \dint{s} \\
+\nablaphi L_\pi(\phi) &amp;= \nablaphi\rbracket{\int_\Sc \rho_{\beta}(s) Q^{\mu_\phi}(s,\mu_\phi(s)) \dint{s}} = \int_\Sc \rho_{\beta}(s) \nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s) \dint{s} \\
 &amp;= \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}. 
 \end{aligned} \label{eq:Adv2_dpg} \end{equation}\]</span></p>
 <div class="fragment">
 <p><strong>Approximate version: off-policy</strong> (<span class="math inline">\(\rho_{\beta} \neq \rho_{\mu_\phi}\)</span>, and we use the same simplification as earlier, i.e., <span class="math inline">\(\cancel{\mu_\phi\agivenb{a}{s} \nablaa Q^{\mu_\phi}(s,a)}\)</span>)</p>
 <p><span class="math display">\[\begin{equation}
-\nablaphi L(\phi) \approx \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}.\label{eq:Adv2_dpg_approx} 
+\nablaphi L_\pi(\phi) \approx \Expsub{\nablaa Q^{\mu_\phi}(s,\mu_\phi(s)) \big|_{a=\mu_\phi(s)} \nablaphi \mu_\phi(s)}{s\sim\rho_{\beta}}.\label{eq:Adv2_dpg_approx} 
 \end{equation}\]</span></p>
 </div>
 <p><span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> <span class="math inline">\(\eqref{eq:Adv2_dpg}\)</span> is the limit case of the stochastic policy gradient theorem (i.e., <span class="math inline">\(\Var{\pi}\to 0\)</span>) <span class="citation">(<a href="#ref-Silver2014dpg">Silver et al. 2014</a>, Theorem 2)</span>.</span></p>
@@ -705,13 +705,13 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <li class="fragment"><strong>Interact</strong>: Sample <span class="math inline">\(\set{s_t,a_t,r_t,s_{t+1}}\)</span> using <span class="math inline">\(a_t=\mu_\phi(s_t)\)</span> (<em><span class="emoji" data-emoji="bulb">💡</span> plus noise for exploration!</em>) and store in the replay buffer <span class="math inline">\(\Dc\)</span>.<br />
 </li>
 <li class="fragment"><strong>Sample</strong>: Draw random mini-batch of <span class="math inline">\(N\)</span> transitions: <span class="math inline">\(\Bc\subset\Dc\)</span>.</li>
-<li class="fragment"><strong>Update critic</strong>: Calculate the target <span class="math inline">\(y_i\)</span> using the target networks (<em><span class="emoji" data-emoji="bulb">💡</span> Optimal action <span class="math inline">\(\mu_{\bar{\phi}}(s)\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(Q\)</span>-learning!</em>): <span class="math display">\[y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).\]</span> The <em>current critic</em> is updated by minimizing the Bellman error: <span class="math display">\[L(\theta) = \frac{1}{N}\sum_{i} \left( y_i - Q_\theta(s_i, a_i) \right)^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_\theta(s_i, a_i) \right) \nablatheta Q_\theta(s_i,a_i).\]</span></li>
+<li class="fragment"><strong>Update critic</strong>: Calculate the target <span class="math inline">\(y_i\)</span> using the target networks (<em><span class="emoji" data-emoji="bulb">💡</span> Optimal action <span class="math inline">\(\mu_{\bar{\phi}}(s)\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(Q\)</span>-learning!</em>): <span class="math display">\[y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).\]</span> The <em>current critic</em> is updated by minimizing the Bellman error: <span class="math display">\[L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).\]</span></li>
 </ol>
 </div>
 <div class="grid-layout" style="grid-template-columns: 12fr 9fr;">
 <div class="incremental">
 <ol class="incremental" start="4" style="list-style-type: decimal">
-<li class="fragment"><strong>Update actor</strong>: The <em>current actor</em> is updated using the sampled deterministic policy gradient (Eq. <span class="math inline">\(\eqref{eq:Adv2_dpg}\)</span>): <span class="math display">\[\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).\]</span> <!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ --></li>
+<li class="fragment"><strong>Update actor</strong>: The <em>current actor</em> is updated using the sampled deterministic policy gradient (Eq. <span class="math inline">\(\eqref{eq:Adv2_dpg}\)</span>): <span class="math display">\[\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_\theta(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).\]</span> <!-- $$\nablaphi L_\pi(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ --></li>
 <li class="fragment"><strong>Soft updates</strong>: Incremental target updates (<span class="math inline">\(\bar{\phi}\)</span> / <span class="math inline">\(\bar{\theta}\)</span>).</li>
 </ol>
 </div>
@@ -4868,20 +4868,18 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <li class="fragment"><strong>Interact</strong>: Sample <span class="math inline">\(\set{s_t,a_t,r_t,s_{t+1}}\)</span> using <span class="math inline">\(a_t=\mu_\phi(s_t) + \epsilon\)</span> (<span class="math inline">\(\epsilon\sim\Normal{0}{\sigma^2}\)</span>) and store in the replay buffer <span class="math inline">\(\Dc\)</span>.<br />
 </li>
 <li class="fragment"><strong>Sample</strong>: Draw random mini-batch of <span class="math inline">\(N\)</span> transitions: <span class="math inline">\(\Bc\subset\Dc\)</span>.</li>
-<li class="fragment"><strong>Update critic</strong>: Calculate targets <span class="math inline">\(y_i\)</span> by <span style="color: red;">minimizing over two target networks</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Twin</strong>): <span class="math display">\[y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).\]</span> The <span style="color: red;">two critics</span> are updated by minimizing the Bellman errors: <span class="math display">\[L(\theta_j) = \frac{1}{N}\sum_{i} \left( y_i - Q_{\theta_j}(s_i, a_i) \right)^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \left( y_i - Q_{\theta_j}(s_i, a_i) \right) \nablatheta Q_{\theta_j}(s_i,a_i).\]</span></li>
+<li class="fragment"><strong>Update critic</strong>: Calculate targets <span class="math inline">\(y_i\)</span> by <span style="color: red;">minimizing over two target networks</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Twin</strong>): <span class="math display">\[y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).\]</span> The <span style="color: red;">two critics</span> are updated by minimizing the Bellman errors: <span class="math display">\[L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).\]</span></li>
 </ol>
-</div>
-<div class="fragment">
-<p><span style="color: red;">Perform the following steps only every <span class="math inline">\(n_\mathsf{up}\)</span> steps:</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Delayed</strong>):</p>
 </div>
 <div class="grid-layout" style="grid-template-columns: 1fr 30fr 20fr;">
 <div class="platzhalter">
 
 </div>
 <div class="platzhalter">
+<p><span class="fragment"><span style="color: red;">Perform next steps only every <span class="math inline">\(n_\mathsf{up}\)</span> steps:</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Delayed</strong>):</span></p>
 <div class="incremental">
 <ol class="incremental" start="4" style="list-style-type: decimal">
-<li class="fragment"><strong>Update actor</strong>: The <em>online actor</em> is updated using the sampled deterministic policy gradient (Eq. <span class="math inline">\(\eqref{eq:Adv2_dpg}\)</span>): <span class="math display">\[\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).\]</span> <!-- $$\nablaphi L(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ --></li>
+<li class="fragment"><strong>Update actor</strong>: <!-- The *online actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}):  --> <span class="math display">\[\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).\]</span> <!-- $$\nablaphi L_\pi(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ --></li>
 <li class="fragment"><strong>Soft updates</strong>: Incremental target updates (<span class="math inline">\(\bar{\phi}\)</span> / <span class="math inline">\(\textcolor{red}{\bar{\theta}_1}\)</span> / <span class="math inline">\(\textcolor{red}{\bar{\theta}_2}\)</span>).</li>
 </ol>
 </div>
@@ -6074,37 +6072,96 @@ TD3
 </div>
 </div>
 </section>
-<section id="soft-actor-critic-sac-1" class="slide level1">
+<section id="introducing-entropy" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Soft actor-critic (SAC)</h1>
+<h1>Introducing entropy</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
 <h3 id="the-limitations-of-both-ddpg-and-td3-are-still-quite-severe.">The limitations of both DDPG and TD3 are still quite severe.</h3>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Overestimation bias (DDPG).</li>
-<li class="fragment">Hyperparameter sensitivity (DDPG)</li>
-<li class="fragment">Lack of exploration (both)</li>
-<li class="fragment">Sample inefficiency due to Local Optima (both).</li>
+<li class="fragment">Hyperparameter sensitivity (DDPG).</li>
 </ul>
-</div>
-<div class="fragment">
-<h3 id="sac-haarnoja2018sac-introduces-an-entropy-term-in-the-loss-function">SAC <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> introduces an <strong>entropy term</strong> in the loss function</h3>
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">Entropy</a> was defined by Claude Shannon in 1948.</li>
-<li class="fragment">It describes the level of uncertainty (or unpredictability) of a random variable. <span class="math display">\[ L(\phi)=\sum_{t=0}^{T-1}\Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}.\]</span></li>
-<li class="fragment"><span class="math inline">\(\mathcal{H}(\pi(\cdot|s_t))\)</span> is the entropy, measuring how unpredictable the policy is.
+<li class="fragment">Lack of exploration (both).</li>
+<li class="fragment">Sample inefficiency due to Local Optima (both).</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="entropy-defined-by-claude-shannon-in-1948." class="definition">
+<h3><a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">Entropy</a> (defined by Claude Shannon in 1948).</h3>
+<div class="incremental">
 <ul class="incremental">
-<li class="fragment">High entropy means the agent explores widely.</li>
-<li class="fragment">Low entropy means it is laser-focused on a few actions.</li>
+<li class="fragment">SAC <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> introduces an <strong>entropy term</strong> in the loss function.</li>
+<li class="fragment">It describes the level of uncertainty (or unpredictability) of a random variable. <span class="math display">\[\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}\]</span></li>
+<li class="fragment"><span class="math inline">\(\Hc\piphi\agivenb{\cdot}{s_t}\)</span> is the entropy, measuring how unpredictable the policy is.<br />
+<span class="fragment"><strong>High entropy</strong> <span class="math inline">\(\Rightarrow\)</span> the agent explores widely.</span><span class="math inline">\(\quad\)</span> <span class="fragment"><strong>Low entropy</strong> <span class="math inline">\(\Rightarrow\)</span> it is focused on a few actions.</span></li>
+<li class="fragment">The <em>temperature</em> <span class="math inline">\(\alpha\)</span> (a tunig parameter) determines how much the agent values exploration vs. exploitation.</li>
+<li class="fragment">By rewarding the agent for being unpredictable, it
+<ul class="incremental">
+<li class="fragment">naturally explores the entire environment,</li>
+<li class="fragment">prevents the policy from collapsing into a single repetitive action too early,</li>
+<li class="fragment">and becomes more robust to environment changes.</li>
 </ul></li>
-<li class="fragment">The <em>temperature</em> <span class="math inline">\(\alpha\)</span> how much the agent values exploration vs. exploitation.</li>
-<li class="fragment">By rewarding the agent for being unpredictable, it naturally explores the entire environment, prevents the policy from collapsing into a single repetitive action too early, and becomes more robust to environment changes.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-entropy-objective-and-value-function" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The entropy objective and value function</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Let’s look at the definition of the <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a> in Eq. <span class="math inline">\(\eqref{eq:Adv2_entropy_objective}\)</span>: <span class="math display">\[ \Hc(\pi\agivenb{\cdot}{s}) = \Expsub{-\log \pias}{a \sim \pi\agivenb{\cdot}{s}}.\]</span></li>
+<li class="fragment">Now let’s expand the value function in the RL objective <span class="math inline">\(\eqref{eq:Adv2_entropy_objective}\)</span>: <span class="math display">\[\begin{align} 
+V^\pi(s_t) &amp;= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t+k}})}}{(s_t,a_t)\sim\rho_{\piphi}} \notag \\
+&amp;= \Expsub{r_{t} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t}})}{a_t\sim \pi\agivenb{\cdot}{s_t}} + \Expsub{\sum_{k=1}^{\infty} \gamma^k \cbracket{r_{t+k} + \alpha \Hc(\piphi\agivenb{\cdot}{s_{t+1}})}}{(s_t,a_t)\sim\rho_{\piphi}} \notag \\
+&amp;= \Expsub{r_{t} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})} \label{eq:Adv2_entropy_value}
+\end{align}\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="deriving-the-entropy-q-function" class="slide level1" menu-title="Deriving the entropy Q-function">
+<div class="decker">
+<div class="alignment">
+<h1>Deriving the entropy <span class="math inline">\(Q\)</span>-function</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">As <span class="math inline">\(a_t\)</span> is already chosen, there is no entropy for the immediate action (its probability is one after selection).</li>
+<li class="fragment">The entropy only applies to future actions.</li>
+<li class="fragment">Therefore, we define the <strong>Soft <span class="math inline">\(Q\)</span>-Function</strong> as the immediate reward plus the discounted future soft values: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1} \sim p(s_{t+1})}. \label{eq:Adv2_entropy_Q}\end{equation}\]</span></li>
+<li class="fragment">Substitute <span class="math inline">\(\eqref{eq:Adv2_entropy_Q}\)</span> into <span class="math inline">\(\eqref{eq:Adv2_entropy_value}\)</span>: <span class="math display">\[ V^\pi(s_t) = \Expsubbig{\underbrace{r_{t} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})}}_{=Q^\pi(s_t, a_t)~\text{(Eq. \eqref{eq:Adv2_entropy_Q})}} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} = \Expsubbig{Q^\pi(s_t, a_t) - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}}. \]</span></li>
+<li class="fragment">We thereby obtain the <strong>soft Bellman equation</strong>: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{Q^\pi(s_{t+1}, a_{t+1}) - \alpha \log \pi(a_{t+1} | s_{t+1})}{(s_{t+1}, a_{t+1}) \sim \rho_\piphi}. \label{eq:Adv2_entropy_soft_Bellman} \end{equation}\]</span></li>
 </ul>
 </div>
 </div>
@@ -6122,13 +6179,157 @@ TD3
 <div class="area">
 <div class="box block">
 <div class="small">
+<h3 id="neural-networks">Neural networks</h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Entropy term and temperature</li>
-<li class="fragment">Networks for <span class="math inline">\(V\)</span> (also target), <span class="math inline">\(Q\)</span> (twin) and <span class="math inline">\(\pi\)</span></li>
-<li class="fragment">Reparametrization trick for <span class="math inline">\(\pi\)</span></li>
-<li class="fragment">Learning of <span class="math inline">\(\alpha\)</span></li>
-<li class="fragment">Moving average for target <span class="math inline">\(V\)</span></li>
+<li class="fragment">An <em>actor network</em> <span class="math inline">\(\piphi\)</span>.</li>
+<li class="fragment">Two <em>critic networks</em> <span class="math inline">\(Q_{\theta_1}\)</span> / <span class="math inline">\(Q_{\theta_2}\)</span> and their respective <em>target networks</em> <span class="math inline">\(Q_{\bar \theta_1}\)</span> / <span class="math inline">\(Q_{\bar \theta_2}\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="objective-functions">Objective functions</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Critic updates (based on <span class="math inline">\(\eqref{eq:Adv2_entropy_soft_Bellman}\)</span>): <span class="math display">\[\begin{equation} L_Q(\theta_j) = \frac{1}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2 \quad \text{with target}\quad y_i = r_i + \gamma \cbracket{\min_{j=1,2} Q_{\bar\theta_j}(s_i&#39;, a_i&#39;) - \alpha \log \piphi\agivenb{a_i&#39;}{s_i&#39;}}. \label{eq:Adv2_SAC_loss_Q} \end{equation}\]</span></li>
+<li class="fragment">Actor updates (where we either use <span class="math inline">\(\theta_1\)</span> or the minimum of both critics): <span class="math display">\[\begin{equation} L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}. \label{eq:Adv2_SAC_loss_pi} \end{equation}\]</span></li>
+<li class="fragment">Temperature updates: <span class="math display">\[\begin{equation} L(\alpha) = \frac{1}{N} \sum_{i=1}^N \cbracket{-\alpha \log \piphi\agivenb{a_i}{s_i} - \alpha \bar \Hc}. \label{eq:Adv2_SAC_loss_temp} \end{equation}\]</span></li>
+</ul>
+</div>
+<!-- ::: incremental
+- Entropy term and temperature
+- Networks for $V$ (also target), $Q$ (twin) and $\pi$
+- Reparametrization trick for $\pi$ 
+- Learning of $\alpha$
+- Moving average for target $V$
+::: -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-actor-objective-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The actor objective (1)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">To see how we arrived at the objective <span class="math inline">\(L_\pi\)</span>, we start from defining a target distribution over the actions.</li>
+<li class="fragment">One way to represent the target distribution: probability of choosing an action proportional to its exponential soft <span class="math inline">\(Q\)</span>-value: <span class="math display">\[\pi_{\mathsf{target}}\agivenb{a}{s} = \frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)} \qquad \text{with}\quad Z^\pi(s) = \int \exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}\dint{a}.\]</span></li>
+<li class="fragment">This is known as the Boltzmann (or Gibbs) distribution, with two useful properties:
+<ul class="incremental">
+<li class="fragment">Actions with higher <span class="math inline">\(Q\)</span>-values have exponentially higher probabilities of being chosen.</li>
+<li class="fragment">The temperature <span class="math inline">\(\alpha\)</span> scales how pronounced these differences are. If <span class="math inline">\(\alpha \to 0\)</span>, it becomes a sharp peak at the max <span class="math inline">\(Q\)</span>-value (greedy). If <span class="math inline">\(\alpha \to \infty\)</span>, it becomes a uniform distribution (pure random exploration).</li>
+</ul></li>
+<li class="fragment">The SAC goal is thus to push the policy towards the target distribution: <span class="math-incremental"><span class="math display">\[\begin{align*} L_\pi(\phi) &amp;= \KLdivavg{\piphi}{\pi_{\mathsf{target}}} = \Expsub{\log\cbracket{\frac{\piphi\agivenb{a}{s}}{\pi_{\mathsf{target}}\agivenb{a}{s}}}}{s\sim \rho, a\sim\piphi} \fragment{ = \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \log\cbracket{\frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)}}}{s\sim \rho, a\sim\piphi} }\\
+&amp;= \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \log\cbracket{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi} \\
+&amp;= \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \frac{Q^\pi(s, a)}{\alpha} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi}. 
+\end{align*}\]</span></span></li>
+</ul>
+</div>
+<!-- $$L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}.$$ -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-actor-objective-2" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The actor objective (2)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p><span class="math display">\[L_\pi(\phi) = \Expsub{\log\cbracket{\piphi\agivenb{a}{s}} - \frac{Q^\pi(s, a)}{\alpha} + \log\cbracket{Z^\pi(s)}}{s\sim \rho, a\sim\piphi}.\]</span></p>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Multiplying by <span class="math inline">\(\alpha\)</span> and neglecting the policy-independent <span class="math inline">\(Z\)</span>-term don’t change the minimizer <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Sampling version: <span class="math display">\[\begin{equation} L_\pi(\phi) = \frac{1}{N} \sum_{i=1}^N \cbracket{\alpha \log \piphi\agivenb{a_i}{s_i} - Q_{\theta_1}(s_i,a_i)}. \tag{\ref{eq:Adv2_SAC_loss_pi}} \end{equation}\]</span></span></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="soft-policy-improvement-theorem-haarnoja2018sac2-lemma-2" class="definition">
+<h3>Soft Policy Improvement Theorem <span class="citation">(<a href="#ref-Haarnoja2018sac2">Haarnoja, Zhou, Hartikainen, et al. 2018</a>, Lemma 2)</span></h3>
+<p>If we define: <span class="math display">\[\subnew{\pi} = \arg\min_{\pi&#39;} \KLdiv{ \pi&#39;\agivenb{\cdot}{s}}{\frac{\exp\left(\frac{Q^{\subold{\pi}}\agivenb{\cdot}{s}}{\alpha}\right)}{Z^{\subold{\pi}}(s)}},\]</span> then the soft <span class="math inline">\(Q\)</span>-value of the new policy is guaranteed to be monotonically greater than or equal to the old one for all <span class="math inline">\((s,a)\)</span>: <span class="math display">\[Q^{\subnew{\pi}}(s, a) \geq Q^{\subold{\pi}}(s, a) \quad \forall (s,a).\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-reparametrization-trick" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The reparametrization trick</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Because the action <span class="math inline">\(a\)</span> is sampled from a stochastic policy <span class="math inline">\(\piphi\)</span>, we cannot backpropagate gradients from the critic through the action to the actor directly.</li>
+<li class="fragment">Fix in SAC <span class="math inline">\(\Rightarrow\)</span> the <strong>reparameterization trick</strong>: We express the action as a deterministic function of the state and an independent noise vector <span class="math inline">\(\epsilon\)</span>: <span class="math display">\[a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.\]</span>
+<ul class="incremental">
+<li class="fragment">The neural network deterministically outputs the mean <span class="math inline">\(\mu_\phi(s)\)</span> and standard deviation <span class="math inline">\(\sigma_\phi(s)\)</span>.</li>
+<li class="fragment">The <span class="math inline">\(\tanh\)</span> function bounds the actions to a valid range (e.g., <span class="math inline">\([-1, 1]\)</span>).</li>
+</ul></li>
+<li class="fragment">Rewriting the objective with this reparameterization allows us to rewrite the expectation over the noise <span class="math inline">\(\epsilon\)</span>: <span class="math display">\[L_\pi(\phi) = \Expsub{\alpha \log \piphi\agivenb{f_\phi(\epsilon; s)}{s} - Q_{\phi_1}(s, f_\phi(\epsilon; s))}{s \sim \Dc, \epsilon \sim \Nc}.\]</span></li>
+<li class="fragment">Now, the gradient with respect to <span class="math inline">\(\phi\)</span> can flow through <span class="math inline">\(f_\phi\)</span>.</li>
+<li class="fragment">Analogous to earlier (deterministic) policy gradients, we obtain <span class="citation">(<a href="#ref-Haarnoja2018sac2">Haarnoja, Zhou, Hartikainen, et al. 2018</a>)</span>: <span class="math display">\[\nablaphi L_\pi(\phi) = \Expsub{\nablaphi \alpha \log \piphi\agivenb{a}{s} + \cbracket{\alpha \nabla_a \log \piphi\agivenb{a}{s} - \nabla_a Q_{\theta_1}(s, a)} \nablaphi f_\phi(\epsilon; s)}{s \sim \mathcal{D}, \epsilon \sim \mathcal{N}}.\]</span></li>
+</ul>
+</div>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> Because we pass the Gaussian sample through a <span class="math inline">\(\tanh\)</span> function, the log-likelihood must be corrected using the Jacobian of the transformation: <span class="math inline">\(\log \pi_\theta\agivenb{a}{s} = \log \mu\agivenb{u}{s} - \sum_{i=1}^{m} \log(1 - \tanh^2(u_i))\)</span>, where <span class="math inline">\(u\)</span> is the pre-tanh action value.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-temperature-objective" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The temperature objective</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">To prevent hand-tuning the entropy coefficient <span class="math inline">\(\alpha\)</span>, SAC treats it as a constrained optimization problem: maximize expected reward subject to a minimum entropy constraint <span class="math inline">\(\bar{\mathcal{H}}\)</span> (More details in <span class="citation">(<a href="#ref-Haarnoja2018sac2">Haarnoja, Zhou, Hartikainen, et al. 2018</a>, Chapter 5)</span>).</li>
+<li class="fragment">SAC tunes <span class="math inline">\(\alpha\)</span> to match a target entropy <span class="math inline">\(\bar{\Hc}\)</span> (usually chosen as the negative action space dimension <span class="math inline">\((-m)\)</span>).</li>
+<li class="fragment">The <em>dual objective function</em> minimized to find the optimal scaling parameter <span class="math inline">\(\alpha\)</span> is: <span class="math display">\[\begin{equation} L(\alpha) = \Expsub{-\alpha \log \pi_\theta(a|s) - \alpha \bar{\mathcal{H}}}{s \sim \mathcal{D}, a \sim \pi_\theta} = \Expsub{-\alpha( \log \pi_\theta(a|s) + \bar{\mathcal{H}})}{s \sim \mathcal{D}, a \sim \pi_\theta}. \tag{\ref{eq:Adv2_SAC_loss_temp}} \end{equation}\]</span></li>
+<li class="fragment">Since <span class="math inline">\(L(\alpha)\)</span> is linear with respect to <span class="math inline">\(\alpha\)</span>, taking the derivative is straightforward: <span class="math display">\[\nabla_\alpha L(\alpha) = -\Expsub{( \log \pi_\theta(a|s) + \bar{\mathcal{H}})}{s \sim \mathcal{D}, a \sim \pi_\theta}.\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="intuition-of-the-alpha-gradient">Intuition of the <span class="math inline">\(\alpha\)</span> Gradient</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">If the current policy’s entropy is low, then <span class="math inline">\(-\log \piphi\agivenb{a}{s}\)</span> will be a large positive number.
+<ul class="incremental">
+<li class="fragment">If <span class="math inline">\(-\log \piphi\agivenb{a}{s} &gt; \bar{\Hc}\)</span>, the gradient is negative, which causes <span class="math inline">\(\alpha\)</span> to increase during gradient descent (<span class="math inline">\(\alpha \gets \alpha - \lambda \nabla_\alpha L(\alpha)\)</span>).</li>
+<li class="fragment">Higher <span class="math inline">\(\alpha\)</span> forces the actor to prioritize exploration.</li>
+</ul></li>
+<li class="fragment">If the policy’s entropy is high, the gradient becomes positive, causing <span class="math inline">\(\alpha\)</span> to decrease, shifting priorities toward maximizing standard environmental rewards.</li>
 </ul>
 </div>
 </div>
@@ -6145,7 +6346,6 @@ TD3
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div class="small">
 <div class="media">
 <figure class="image" style="height:auto;width:1000px;">
 <img src="images/11-advanced/SAC_algorithm.png" style="height:auto;width:100%;" aria-label="(Haarnoja, Zhou, Hartikainen, et al. 2018)" alt="images/11-advanced/SAC_algorithm.png" />
@@ -6153,7 +6353,6 @@ TD3
 <span class="citation">(<a href="#ref-Haarnoja2018sac2">Haarnoja, Zhou, Hartikainen, et al. 2018</a>)</span>
 </figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>

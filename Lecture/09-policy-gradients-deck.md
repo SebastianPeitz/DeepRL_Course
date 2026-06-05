@@ -126,15 +126,15 @@ Table: Lecture contents
 
 ::: columns-6-4
 ::: small
-$$ \phi^* = \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)} $$
+$$ \phi^* = \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L_\pi(\phi)} $$
 
 ::: incremental
-- First, let's think about evaluating $L(\phi)$ for a fixed policy $\pi$.
+- First, let's think about evaluating $L_\pi(\phi)$ for a fixed policy $\pi$.
 - How do we estimate expectations if we don't have access to a model?
 :::
 
 [$\Rightarrow$ Monte Carlo sampling!
-$$L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t} $$]{.fragment}
+$$L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} \approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t} $$]{.fragment}
 
 :::
 
@@ -175,9 +175,9 @@ Here, $p$ is the density according to which $\tau$ is distributed, with $\int p(
 :::
 :::
 
-[$$ \begin{align*} \phi^* &= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L(\phi)}\\ 
-L(\phi) &= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
-\nablaphi L(\phi) &= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}\\
+[$$ \begin{align*} \phi^* &= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L_\pi(\phi)}\\ 
+L_\pi(\phi) &= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
+\nablaphi L_\pi(\phi) &= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}\\
 &= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau
 \end{align*}$$]{.math-incremental}
 :::
@@ -222,9 +222,9 @@ $$
 \
 \
 \
-$$ \begin{align*} \phi^* &= \arg\max_{\phi}L(\phi)\\ 
-L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau\\
-\nablaphi L(\phi) &= \Expsub{\textcolor{blue}{\nablaphi \log p_\phi(\tau)} r(\tau)}{\tau\sim p_\phi(\tau)} 
+$$ \begin{align*} \phi^* &= \arg\max_{\phi}L_\pi(\phi)\\ 
+L_\pi(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau\\
+\nablaphi L_\pi(\phi) &= \Expsub{\textcolor{blue}{\nablaphi \log p_\phi(\tau)} r(\tau)}{\tau\sim p_\phi(\tau)} 
 \end{align*}$$
 :::
 
@@ -250,7 +250,7 @@ L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \
 ::: definition
 ### Policy gradient theorem (simplified)
 
-[$$\begin{align*} \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}r(\tau)}{\tau\sim p_\phi(\tau)}\\
+[$$\begin{align*} \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}r(\tau)}{\tau\sim p_\phi(\tau)}\\
 = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}
  \end{align*}$$]{.math-incremental}
 :::
@@ -274,18 +274,18 @@ L(\phi) &= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \
 ::: definition
 ### Policy gradient theorem (simplified)
 
-$$\nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}$$
+$$\nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}$$
 :::
 :::
 
 ::: incremental
-2. **Neural network approximator** $\pi_\phi$ $\Rightarrow$ maximization w.r.t. the policy parameters: $$\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \max_{\phi}L(\phi).$$
+2. **Neural network approximator** $\pi_\phi$ $\Rightarrow$ maximization w.r.t. the policy parameters: $$\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \max_{\phi}L_\pi(\phi).$$
 3. **Challenging objective function**: Integration over $\tau$ (i.e., the space of trajectories) is infeasible!
 <!-- [$\Rightarrow$ Approximation via [Monte Carlo sampling]{style="color: blue;"} becomes possible]{.fragment} -->
-$$L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau. $$ 
+$$L_\pi(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau. $$ 
 <!-- \fragment{ \textcolor{blue}{\approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t}}. }$$ -->
 4. Use $\log$ identity to derive a formulation of the gradient that we can *approximate using sampling*:
-$$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}.$$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}.$$
 :::
 
 :::
@@ -294,7 +294,7 @@ $$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi
 
 ::: small
 We now have a formulation of the policy gradient that we can **approximate using [Monte Carlo sampling]{style="color: blue;"}**:
-$$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N} \underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }$$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N} \underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }$$
 
 ::: columns-5-5
 ::: platzhalter
@@ -314,8 +314,8 @@ $$ \nablaphi L(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi
 
 ::: incremental
 1. Sample $\set{\tau_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N$.
-2. $\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
-3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+2. $\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
+3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 :::
@@ -350,8 +350,8 @@ $$ \begin{align*} \pi_\phi\agivenb{a}{s} &= \Normal{f_{\mathsf{NN}}(s)}{\Sigma} 
 ### The REINFORCE algorithm
 
 1. Sample $\set{\tau_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N$.
-2. $\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
-3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+2. $\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
+3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 :::
@@ -380,7 +380,7 @@ $$\nablatheta \log L(\theta) = \sum_{i=1}^N \nablatheta \log p_\theta\agivenb{y_
 ::: definition
 **Comparison against the policy gradient** (MC sampling):
 
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}.$$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}.$$
 :::
 ::: incremental
 - The policy gradient can be seen as a weighted version of the maximum likelihood objective.
@@ -403,7 +403,7 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1}
 ::: incremental
 - What did we just do?\
 [$\Rightarrow$ let's rewrite the formula a little and *compare against maixmum likelihood*:
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \nablatheta \log \pi_\phi(\tau_i). $$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \underbrace{\nablaphi \log\,\pi_\phi(\tau_i)}_{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\underbrace{r(\tau_i)}_{\sum_{t=0}^{T-1}r_{i,t}} \quad \text{vs.} \quad \nablatheta L(\theta) = \sum_{i=1}^N \nablatheta \log \pi_\phi(\tau_i). $$
 ]{.fragment}
 - Good experience is made more likely: We increase the proability of the policy to produce similar trajectories.
 - Bad experience is made less likely.
@@ -437,7 +437,7 @@ The policy gradient also holds for partially observed MDPs (POMDPs). That is, fo
 ![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/09-policy-gradients/PG-variance.svg){ .embed width=500px }
 
 ::: platzhalter
-$$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
+$$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
 
 ::: incremental
 - Adding a constant to the reward should not change the optimal policy!
@@ -457,7 +457,7 @@ $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau
 ::: small
 ::: columns-4-6
 ::: platzhalter
-$$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
+$$\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) r(\tau_i). $$
 
 ::: incremental
 - **Question**: Is there a systematic way to fix the challenge of reward offsets?\
@@ -475,7 +475,7 @@ $$\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau
 ::: fragment
 ::: definition
 *Approach*: subtract a **baseline** $b$ from the reward signal
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) \rbracket{r(\tau_i) - b}, $$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \nablaphi \log\pi_\phi(\tau_i) \rbracket{r(\tau_i) - b}, $$
 [where $b=\frac{1}{N} \sum_{i=1}^N r(\tau_i)$. ]{.fragment}
 :::
 :::
@@ -490,7 +490,7 @@ Subtracting any constant $b$ is *unbiased in expectation*
 
 ::: fragment
 **Proof**: Start with the exact formulation of the policy gradient following \eqref{eq:PG_policy_gradient},
-$$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. $$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. $$
 [Unbiased in expectation $\Rightarrow$ baseline term is zero in expectation:]{.fragment}
 [$$\begin{align*}
 &\Expsub{\nablaphi \log p_\phi(\tau) b }{\tau\sim p_\phi(\tau)} \fragment{ = \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} b \dtau } \\
@@ -509,7 +509,7 @@ $$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b
 ::: columns-6-5-3
 
 ::: definition
-$$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. $$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. $$
 :::
 
 ::: platzhalter
@@ -556,18 +556,18 @@ $$ b^* = \frac{\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)}}{\Expsub{g(\tau
 ::: small
 ::: columns-6-4
 ::: platzhalter
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}.$$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}.$$
 
 ::: incremental
 - **Causality**: Policy at time $t'$ cannot affect reward at time $t$ when $t<t'$.
   - "What you do now, is not going to change the rewards you received in the past."
 - **Question**: Are we making use of causality in the above equation?
   - Let's rewrite it and make use of the distributive property ($a \cdot (b + c) = a\cdot b + a\cdot c$):
-  $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}. $$
+  $$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=0}^{T-1}r_{i,t'}}. $$
   [$\Rightarrow$ Past rewards (i.e., $t'<t$) have an impact on the policy $\pi_\phi$!]{.fragment}\
   - In expectation, these factors have to cancel out (and one can prove this). [**But**: for finite sample sizes, they do not and instead increase the variance.]{.fragment}
 - **Simple fix**: "*reward to go*" $\hat{Q}_{i,t} = \sum_{\textcolor{red}{t'=t}}^{T-1}r_{i,t'}$ (the only change is $0 \to t$),
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. $$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. $$
 :::
 :::
 
@@ -602,10 +602,10 @@ $$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi
 ::: platzhalter
 ::: incremental
 - Recall the policy gradient optimization problem:
-$$ \phi^* = \arg\max_\phi L(\phi) = \arg\max_\phi \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}. $$
+$$ \phi^* = \arg\max_\phi L_\pi(\phi) = \arg\max_\phi \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}. $$
 <!-- = \arg\max_\phi \int p_\phi(\tau) r(\tau) \dtau. $$ -->
 - The corresponding policy gradient (for simplicity, without baseline) is
-$$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. $$
+$$ \nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. $$
 - The problem: $\Expsub{r(\tau)}{\textcolor{red}{\tau\sim p_\phi(\tau)}}$ requires on-policy sampling!
 - We cannot skip step 1 of the REINFORCE algorithm.
 :::
@@ -615,8 +615,8 @@ $$ \nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\
 ### The REINFORCE algorithm
 
 1. [Sample $\set{\tau_i}_{i=1}^N$ using $\pi_\phi\agivenb{a}{s}$ $\Rightarrow$ $\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N$.]{style="color: red;"}
-2. $\nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
-3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L(\phi)$.
+2. $\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}$.
+3. Gradient ascent: $\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)$.
 :::
 :::
 :::
@@ -658,10 +658,10 @@ How do we calculate the expectation *w.r.t. a different distribution*?
 :::
 
 ::: incremental
-- Back to the reinforcement learning objective $$L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
+- Back to the reinforcement learning objective $$L_\pi(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$$
 - What if we have trajectory samples from $\overline{p}$ instead of $p_\phi$?
   - Examples are previous policies, expert demonstrations, combinations thereof, ...
-- Simply transfer of the importance sampling formula: $$ L(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. $$
+- Simply transfer of the importance sampling formula: $$ L_\pi(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. $$
 - Insert definition of trajectory probabilities:
 [$$\begin{align} 
 p_\phi(\tau) &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}, \notag \\ 
@@ -677,9 +677,9 @@ p_\phi(\tau) &= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}
 ::: small
 ::: columns-7-3
 ::: incremental
-- Once more, recall the loss function $L(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$
+- Once more, recall the loss function $L_\pi(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.$
 - **Question**: Can we estimate $L$ for $\phi'$ using samples according to $p_\phi$?
-[$$ L(\phi') = \Expsub{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} $$]{.fragment}
+[$$ L_\pi(\phi') = \Expsub{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} $$]{.fragment}
 :::
 
 ::: platzhalter
@@ -693,9 +693,9 @@ $$p_\phi(\tau) \nablaphi \log p_\phi(\tau) = \nablaphi p_\phi(\tau)$$
 
 ::: incremental
 - Note that only $p_{\phi'}(\tau)$ actually depends on the new parameter vector $\phi'$:
-$$ \fragment{ \nablaphiprime L(\phi') = \Expsub{\frac{\nablaphiprime p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} } \fragment{ = \Expsub{\frac{\nablaphiprime p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)}} \fragment{ = \Expsub{\textcolor{blue}{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)}} \nablaphiprime \log p_{\phi'}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. } $$
+$$ \fragment{ \nablaphiprime L_\pi(\phi') = \Expsub{\frac{\nablaphiprime p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} } \fragment{ = \Expsub{\frac{\nablaphiprime p_{\phi'}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)}} \fragment{ = \Expsub{\textcolor{blue}{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)}} \nablaphiprime \log p_{\phi'}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. } $$
 - It's the policy gradient formula we know, modified by the importance sampling weights!
-  - In fact, that's an alternative way to derive it: introduce importance sampling in the policy gradient formula $\nablaphi L(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}$.
+  - In fact, that's an alternative way to derive it: introduce importance sampling in the policy gradient formula $\nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}$.
 - Setting $\theta' = \theta$, we recover the on-policy policy gradient.
 :::
 :::
@@ -715,7 +715,7 @@ $$\nablaphi \log p_\phi(\tau) = \cancel{\nablaphi \log\, p(s_0)} + \sum_{t=0}^{T
 ::: incremental
 - Now that we have the formula, let's reformulate and introduce causality again:
 [$$\begin{align*} 
-\nablaphiprime L(\phi') &= \Expsub{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)} \nablaphiprime \log \pi_{\phi'}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \\
+\nablaphiprime L_\pi(\phi') &= \Expsub{\frac{p_{\phi'}(\tau)}{p_{\phi}(\tau)} \nablaphiprime \log \pi_{\phi'}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \\
 &= \E_{\tau\sim p_\phi(\tau)} \Big[\underbrace{\cbracket{\prod_{t=0}^{T-1} \frac{\pi_{\phi'}\agivenb{a_t}{s_t}}{\pi_{\phi}\agivenb{a_t}{s_t}}}}_{\text{Eq. }\eqref{eq:PG_importance_sampling}} \cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi'}\agivenb{a_t}{s_t}} \cbracket{\sum_{t=0}^{T-1} r_t}\Big] \\
 \text{\small (Causality:}~&\text{\small Future actions don't affect (1) the \textcolor{blue}{current weights} and (2) \textcolor{red}{past rewards}. $\Rightarrow$ Distribute weights!)}\\
 &= \Expsub{\cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi'}\agivenb{a_t}{s_t} \cbracket{\textcolor{blue}{\prod_{t'=0}^{t} \frac{\pi_{\phi'}\agivenb{a_{t'}}{s_{t'}}}{\pi_{\phi}\agivenb{a_{t'}}{s_{t'}}}}}} \cbracket{\sum_{t=0}^{T-1} r_t \cbracket{\textcolor{red}{\prod_{t''=t}^{t'} \frac{\pi_{\phi'}\agivenb{a_{t''}}{s_{t''}}}{\pi_{\phi}\agivenb{a_{t''}}{s_{t''}}}}}}}{\tau\sim p_\phi(\tau)}
@@ -736,7 +736,7 @@ $$ \cbracket{\textcolor{red}{\cancel{\prod_{t''=t}^{t'} \frac{\pi_{\phi'}\agiven
 ::: small
 ::: columns-7-4
 ::: platzhalter
-$$ \nablaphi L(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\underbrace{\hat{Q}_{i,t}}_{= \sum_{t'=t}^{T-1}r_{i,t'}}.$$
+$$ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\underbrace{\hat{Q}_{i,t}}_{= \sum_{t'=t}^{T-1}r_{i,t'}}.$$
 
 ::: incremental
 - Calculation of $\nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}$ can be very inefficient!

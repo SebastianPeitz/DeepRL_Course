@@ -310,8 +310,8 @@ I)</title>
 <h2>(I) Policy gradient methods</h2>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
-<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L(\phi)\)</span>.</li>
+<li class="fragment">Policy is explicitly parameterized and optimized directly: <span class="math display">\[L_\pi(\phi)=\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}.\]</span> <!-- - $$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A^\pi(s_t, a_t)}{\tau\sim p_\phi(\tau)}.$$ --></li>
+<li class="fragment">Gradient ascent: <span class="math inline">\(\phi \gets \phi  + \alpha \nabla_\phi L_\pi(\phi)\)</span>.</li>
 <li class="fragment">Methods are typically <strong>on-policy</strong>.</li>
 <li class="fragment"><strong>Algorithms</strong>: REINFORCE <span class="math inline">\(\rightarrow\)</span> Actor-Critic <span class="math inline">\(\rightarrow\)</span> Natural Policy Gradient <span class="math inline">\(\rightarrow\)</span> Trust-region policy optimization (TRPO) <span class="math inline">\(\rightarrow\)</span> Proximal policy optimization (PPO).</li>
 </ul>
@@ -702,14 +702,14 @@ Source: <span class="citation">(<a href="#ref-Peters2008naturalac">Peters and Sc
 <div class="grid-layout" style="grid-template-columns: 9fr 4fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Recall the policy gradient update: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L(\phi)\)</span>.</li>
+<li class="fragment">Recall the policy gradient update: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 <li class="fragment">A natural idea: <strong>Constrain the length of our update step</strong>!
 <ul class="incremental">
 <li class="fragment">Linearization of our optimization problem around <span class="math inline">\(\phi\)</span> using <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a>: <span class="math-incremental"><span class="math display">\[\begin{align*} 
-L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi_i) + \Oc((\phi&#39; - \phi)^2) \\
-&amp;= L(\phi) + (\phi&#39; - \phi)^\top \nablaphi L(\phi).
+L(\phi&#39;) &amp;= L_\pi(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi_i) + \Oc((\phi&#39; - \phi)^2) \\
+&amp;= L_\pi(\phi) + (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi).
 \end{align*}\]</span></span></li>
-<li class="fragment">Constrained optimization of <span class="math inline">\(\phi&#39;\)</span> along the steepest ascent direction: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon. } \]</span></li>
+<li class="fragment">Constrained optimization of <span class="math inline">\(\phi&#39;\)</span> along the steepest ascent direction: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi) \qquad \fragment{ \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon. } \]</span></li>
 </ul></li>
 <li class="fragment"><strong>But</strong>: We just saw that some parameters change probabilities <em>a lot more than others</em>!</li>
 </ul>
@@ -876,14 +876,14 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Recall: constraining w.r.t. the parameter <span class="math inline">\(\phi\)</span> does not solve the issue of strongly different impacts of individual parameters: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad \]</span></li>
+<li class="fragment">Recall: constraining w.r.t. the parameter <span class="math inline">\(\phi\)</span> does not solve the issue of strongly different impacts of individual parameters: <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi) \qquad \text{subject to}\qquad \norm{\phi&#39; - \phi}^2\leq \epsilon.\qquad\qquad\qquad\qquad \]</span></li>
 <li class="fragment"><strong>Question</strong>: What is a good alternative to avoid too large (and thus, harmful) steps?<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the KL divergence! <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi&#39;}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. \]</span></span>
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> the KL divergence! <span class="math display">\[\phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi) \qquad \text{subject to}\qquad \Expsub{\KLdiv{\pi_{\phi&#39;}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim p_\phi}\leq \epsilon. \]</span></span>
 <ul class="incremental">
 <li class="fragment">Constraining the KL divergence means that we automatically treat different parameters differently!</li>
 <li class="fragment">If a change in one of the entries of <span class="math inline">\(\phi\)</span> results in large policy changes, then the constraint does not allow large changes in that entry.</li>
 </ul></li>
-<li class="fragment">Since we want to have small updates (constrained by <span class="math inline">\(\epsilon\)</span>): approximation via the Fisher information matrix, <span class="math display">\[\begin{align*} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \qquad &amp;\text{subject to}\qquad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi) \leq \epsilon, \\
+<li class="fragment">Since we want to have small updates (constrained by <span class="math inline">\(\epsilon\)</span>): approximation via the Fisher information matrix, <span class="math display">\[\begin{align*} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi) \qquad &amp;\text{subject to}\qquad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi) \leq \epsilon, \\
 &amp;\text{with}\qquad F = \Expsub{\cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}} \cbracket{\nablaphi \log\, \pi_{\phi}\agivenb{a}{s}}^\top}{s \sim p_\phi, a \sim \pi_\phi\agivenb{\cdot}{s}}.
 \end{align*} \]</span></li>
 </ul>
@@ -906,10 +906,10 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: <span class="math display">\[\begin{equation} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L(\phi) \quad \text{subject to}\quad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi) \leq \epsilon. \label{eq:Adv_Natural_PG} \end{equation}\]</span></li>
+<li class="fragment">We have now defined a policy gradient whose update length is constrained in terms of the KL divergence: <span class="math display">\[\begin{equation} \phi&#39; \gets \arg\max_{\phi&#39;} (\phi&#39; - \phi)^\top \nablaphi L_\pi(\phi) \quad \text{subject to}\quad (\phi&#39;-\phi)^\top F (\phi&#39;-\phi) \leq \epsilon. \label{eq:Adv_Natural_PG} \end{equation}\]</span></li>
 <li class="fragment">What remains is the question of solving <span class="math inline">\(\eqref{eq:Adv_Natural_PG}\)</span>.</li>
 <li class="fragment">Without going into further details (e.g., <span class="citation">(<a href="#ref-Kakade2001npg">S. M. Kakade 2001</a>; <a href="#ref-Peters2008naturalac">Peters and Schaal 2008</a>)</span>)<br />
-<span class="math inline">\(\Rightarrow\)</span> Solution: <strong>scale</strong> the policy gradient <strong>by the inverse Fisher information matrix</strong>, <span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi). \label{eq:Adv_NPG} \end{equation}\]</span></li>
+<span class="math inline">\(\Rightarrow\)</span> Solution: <strong>scale</strong> the policy gradient <strong>by the inverse Fisher information matrix</strong>, <span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi). \label{eq:Adv_NPG} \end{equation}\]</span></li>
 <li class="fragment"><strong>Intuition</strong> behind the inverse FIM <span class="math inline">\(F^{-1}\)</span>:
 <ul class="incremental">
 <li class="fragment">Parameters with a high impact have high Fisher information.</li>
@@ -945,7 +945,7 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="box block">
 <div class="small">
 <div class="definition">
-<p><span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation} \phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi) \tag{\ref{eq:Adv_NPG}} \end{equation}\]</span></p>
 </div>
 <div class="grid-layout" style="grid-template-columns: 4fr 6fr;">
 <div class="fragment">
@@ -1018,11 +1018,11 @@ L(\phi&#39;) &amp;= L(\phi) + \sum_{i=1}^n \pdiff{L}{\phi_i} (\phi&#39;_i - \phi
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Let’s introduce a new (and yet <em>already known</em> quantity): the <strong>performance measure</strong> of a policy, <span class="math display">\[ \eta(\pi) = \Expsub{\sum_{t=0}^{T-1}\gamma^t r_t}{\tau\sim \pi} = \Expsub{V^\pi(s_0)}{s_0 \sim p_0}. \]</span></li>
-<li class="fragment">Remember our reinforcement learning objective <span class="math display">\[ L(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? \]</span></li>
-<li class="fragment">If we consider a policy parameterized by <span class="math inline">\(\phi\)</span>, i.e., <span class="math inline">\(\pi_\phi\)</span>, then the two equations are the same, <span class="math display">\[\eta(\pi_\phi) = L(\phi).\]</span></li>
+<li class="fragment">Remember our reinforcement learning objective <span class="math display">\[ L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)} = \Expsub{\Vpiphi(s_0)}{s_0 \sim p_0} ? \]</span></li>
+<li class="fragment">If we consider a policy parameterized by <span class="math inline">\(\phi\)</span>, i.e., <span class="math inline">\(\pi_\phi\)</span>, then the two equations are the same, <span class="math display">\[\eta(\pi_\phi) = L_\pi(\phi).\]</span></li>
 <li class="fragment">The difference is more in terms of the <em>motivation</em>, not the definition:
 <ul class="incremental">
-<li class="fragment">We use <span class="math inline">\(L(\phi)\)</span> in policy gradients, since we want to find ascent directions for the network paraemters.</li>
+<li class="fragment">We use <span class="math inline">\(L_\pi(\phi)\)</span> in policy gradients, since we want to find ascent directions for the network paraemters.</li>
 <li class="fragment">We use <span class="math inline">\(\eta(\pi)\)</span> as a global quantity to establish mathematical lower-bounds so that an algorithm can compute a safe step size (the trust region).</li>
 </ul></li>
 </ul>
@@ -3077,7 +3077,7 @@ PPO
 </tr>
 <tr>
 <td align="center">Optimization Method</td>
-<td align="center">Matrix inversion: <span class="math inline">\(\phi \gets \phi + \alpha F^{-1} \nablaphi L(\phi)\)</span></td>
+<td align="center">Matrix inversion: <span class="math inline">\(\phi \gets \phi + \alpha F^{-1} \nablaphi L_\pi(\phi)\)</span></td>
 <td align="center">Conjugate Gradient (CG) + line search</td>
 <td align="center">Stochastic gradient descent (SGD) or Adam optimizer</td>
 </tr>
