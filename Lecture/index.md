@@ -51,16 +51,17 @@ templates:
 |         | Actor-critic algorithms                                   |        [slides:](10-actor-critic) | 
 |         | Advanced algorithms (I): From policy gradient to PPO  |        [slides:](11-advanced-algorithms-part1) |
 |         | Advanced algorithms (II): From Q-learning to Soft Actor-Critic  |        [slides:](12-advanced-algorithms-part2) |
-|   **3** | **Model-Based Control**                                   |                                     |
-|         | Exploration                                               |        | <!--     [slides:](12-exploration) | -->
+|   **3** | **Model-based control**                                   |                                     |
+|         | Exploration                                               |   [slides:](13-exploration) |
 |         | Planning \& optimal control                               |        | <!-- [slides:](13-planning-control) | -->
 |         | Model-based reinforcement learning                        |        | <!-- [slides:](14-model-based-RL) | -->
-|   **4** | **Advanced Topics**                                       |                                     |
+|   **4** | **Advanced topics**                                       |                                     |
 |         | Offline reinforcement learning                            |        | <!--     [slides:](15-offline-RL) | -->
 |         | Imitation learning                                        |        | <!-- [slides:](16-imitation-learning) | -->
 |         | Transfer learning                                         |        | <!-- [slides:](17-transfer-learning) | -->
 |         | Multi-agent reinforcement learning                        |        | <!-- [slides:](18-multi-agent-RL) | -->
-|         | Scientific standards in reinforcement learning            |        | <!-- [slides:](19-scientific-standards) | -->
 |   **∞** | **Notation**                                              |                                     |
 |         | Notation                                                  |              [slides:](99-notation) |
+
+<!-- |         | Scientific standards in reinforcement learning            |        | [slides:](19-scientific-standards) | -->
 

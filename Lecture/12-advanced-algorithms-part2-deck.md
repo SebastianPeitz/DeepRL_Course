@@ -2,7 +2,7 @@
 subtitle:    Advanced Algorithms (Part II)
 chapter:     12
 feedback:
-  deck-id:  'deeprl-advanced-algorithms'
+deck-id:     'deeprl-advanced-algorithms-ii'
 ...
 
 
@@ -37,6 +37,7 @@ feedback:
 |  10  | Actor-critic algorithms| Improved policy gradients via value functions | 
 |  11  | Advanced algorithms (Part I): From policy gradient to PPO | The PG route to modern RL algorithms | 
 |  [12]{style="color: red;"}  | [Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic]{style="color: red;"} | [The AC route to modern RL algorithms]{style="color: red;"} | 
+|  13  | Exploration                                  |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
@@ -282,8 +283,6 @@ $$\begin{equation}
 [:bulb: \eqref{eq:Adv2_dpg} is the limit case of the stochastic policy gradient theorem (i.e., $\Var{\pi}\to 0$) [@Silver2014dpg, Theorem 2].]{.fragment}
 :::
 :::
-:::
-
 :::
 
 

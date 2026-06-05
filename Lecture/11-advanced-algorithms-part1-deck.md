@@ -36,6 +36,7 @@ feedback:
 |  10  | Actor-critic algorithms| Improved policy gradients via value functions | 
 |  [11]{style="color: red;"}  | [Advanced algorithms (Part I): From policy gradient to PPO]{style="color: red;"} | [The evolution of modern RL algorithms]{style="color: red;"} | 
 |  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
+|  13  | Exploration                                  |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 

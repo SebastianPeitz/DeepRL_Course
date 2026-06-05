@@ -1,6 +1,6 @@
 ---
 subtitle:    Planning \& Optimal Control
-chapter:     13
+chapter:     14
 feedback:
   deck-id:  'deeprl-planning-control'
 ...
@@ -22,26 +22,14 @@ feedback:
 | Chapter | Topic                                                  |                            Content  |
 | :--: | :-------------------------------------------------------- | :---------------------------------- |
 |      | **Basics \& tabular methods**                             |                                     |
-|   1  | Multi-armed bandits                                       |   Exploration-exploitation dilemma |
-|   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
-|   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
-|   4  | Monte Carlo methods                                       |   *Data-driven learning* from entire episodes |
-|   5  | Temporal difference learning \& Q-learning                |    *Data-driven learning* from individual transitions    |
+|   1-5  | Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning |   RL basics in finite dimensions  |
 |      | **Deep-learning-based methods**                           |        |
-|   **6**  | **Brief introduction to deep learning**                       |    **The basics for what comes next**    |
-|   7  | Deep Q-learning                                           |        | 
-|   8  | Policy gradients                                          |        | 
-|   9  | Actor-critic algorithms                                   |        | 
-|  10  | Advanced algorithms                                       |        | 
+|   6-13  | DQN, policy gradients, actor-critic, PPO/SAC, exploration   |    Deep RL from basics to modern algorithms   |
 |      | **Model-Based Control**                                   |        |
-|  11  | Planning \& optimal control                               |        | 
-|  12  | Model-based reinforcement learning                        |        | 
-|  13  | Exploration                                               |        | 
+|  [14]{style="color: red;"}  | [ TO DO ]{style="color: red;"}                                               | [TO DO]{style="color: red;"} | 
+|         | Planning \& optimal control                               |        | 
+|         | Model-based reinforcement learning                        |        | 
 |      | **Advanced Topics**                                       |        |
-|  14  | Offline reinforcement learning                            |        | 
-|  15  | Transfer learning                                         |        | 
-|  16  | Multi-agent reinforcement learning                        |        | 
-|  17  | Behavior cloning                                          |        | 
 
 Table: Lecture contents
 :::

@@ -36,6 +36,7 @@ feedback:
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
 |  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
+|  13  | Exploration                                  |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
 
