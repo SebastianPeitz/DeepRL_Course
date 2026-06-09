@@ -894,10 +894,10 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 
 ::: small
 
-### 1. Large computational overhead (the CG bottleneck)
+### 1. Large computational overhead
 ::: incremental
 - TRPO relies on the Conjugate Gradient (CG) method to compute the matrix-free step direction $F^{-1}g$. 
-- While CG is much cheaper than explicit matrix inversion, it still requires running a separate $10$-to-$20$ iteration inner loop for every single policy update, evaluating two backpropagation passes per CG step. 
+- While CG is much cheaper than explicit matrix inversion, it still requires running an inner loop for every single policy update, evaluating two backpropagation passes per CG step. 
 <!-- - This made TRPO significantly slower in wall-clock time compared to simple first-order methods.  -->
 :::
 
@@ -919,8 +919,8 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 
 ::: incremental
 - In modern deep RL, it is common to use a shared network architecture with two heads for the policy actions (Actor) and the state-value estimates (Critic). 
-- Because TRPO’s constraint is calculated purely using the Fisher Information Matrix of the policy, it has no mathematical way to constrain or properly scale the value function parameters. 
-- As a result we are forced to maintain two entirely separate neural networks. 
+- Because TRPO’s constraint is calculated purely using the Fisher Information Matrix of the policy, it has no mathematical way to constrain or properly scale the value function parameters.\
+[$\Rightarrow$ we are forced to maintain two entirely separate neural networks.]{.fragment}
 :::
 :::
 
@@ -933,11 +933,11 @@ As an example, we study the [Half Cheetah](https://gymnasium.farama.org/environm
 # Avoiding the constraint
 
 ::: small
-::: incremental
-- The core breakthrough leading to **Proximal Policy Optimization** (**PPO**) [@Schulman2017ppo] was the realization that we don't need a massive, second-order constraint boundary (like a KL ellipse) to keep the policy updates safe. 
-- Instead of a constraint, we can enforce a trust region directly inside the objective function by punishing the optimizer if it tries to push the new policy too far away from the old one.
-:::
+Breakthrough leading to **Proximal Policy Optimization** (**PPO**) [@Schulman2017ppo]:\
+[$\Rightarrow$ no need for an expensive constraint boundary for safe updates.]{.fragment}\
+[$\Rightarrow$ we can enforce a trust region inside the objective function by penalizing too large changes in the policy.]{.fragment}
 
+::: columns-7-3
 ::: fragment
 ::: definition
 ### The clipped surrogate objective in PPO
@@ -947,13 +947,34 @@ where we have simplified the notation in several ways:
 
 ::: incremental
 - $\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_\subold{\phi}\agivenb{a_t}{s_t}}$ is the *importance sampling* ratio.
-- ${A}_t$ is the estimated advantage at time $t$, i.e., $A_\theta(s_t,a_t)$ (typically using a *critic network*).
+- ${A}_t$: *estimated advantage* at time $t$, i.e., $A_\theta(s_t,a_t)$ (typically using a *critic*).
 - $\epsilon$ is a hyperparameter (typically $0.1$ or $0.2$) determining how far the policy is allowed to drift.
 - $\Exphat{f_t} = \frac{1}{T}\sum_{t=1}^T f_t$ denotes an *empirical expectation* (i.e., a sample average) which, in the limit $T\to\infty$, yields our analytical expectation $\Expsub{f_t}{s\sim \rho_{\pi_{\phi}}, a\sim\pi_{\phi}}$.
-[This notation was chosen in [@Schulman2017ppo] for two reasons:]{.fragment}
-  1. It aligns closely with the implementation.
-  1. It handles both infinite and finite-time trajectories.
 :::
+[:bulb: This notation was chosen in [@Schulman2017ppo] for two reasons:]{.fragment}
+
+::: small
+::: incremental
+1. It aligns closely with the implementation.
+1. It handles both infinite and finite-time trajectories.
+:::
+:::
+:::
+:::
+
+::: fragment
+**Recall**:
+The TRPO optimization problem (Eq. \eqref{eq:Adv_TRPO_Opt}) for comparison:
+$$\begin{align*}
+&\max_{\phi} \Expsub{\kappa(\phi)A_{\subold{\pi}}(s,a)}{s\sim \rho_{\subold{\pi}}, a\sim\subold{\pi}} \\
+&\text{subject to}\\ &\Expsub{\KLdiv{\subold{\pi}\agivenb{\cdot}{s}}{\pi_{\phi}\agivenb{\cdot}{s}}}{s \sim \rho_{\subold{\pi}}} \leq \delta.\end{align*}$$
+or, in short:
+$$\begin{align*}
+\max_{\phi} L_\mathsf{TRPO}(\phi) \\
+\text{s.t.}\quad \KLdivavg{\subold{\pi}}{\pi_{\phi}} \leq \delta.\end{align*}$$
+
+[$\Rightarrow$ **clipping replaces the constraint!** ]{.fragment}
+
 :::
 :::
 :::
@@ -1020,33 +1041,12 @@ L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\
 ::: incremental
 - This means the action was bad, and the optimizer wants to make it less likely by dropping $\kappa_t(\phi)$ below $1.0$. 
 - The clipping term caps this at $1 - \epsilon$. 
-- Crucially, if the policy makes a disastrously huge change that makes a good action suddenly zero probability ($\kappa_t \to 0$), the objective drops sharply without a cap, creating a massive gradient pull that forces the policy back into the safe zone. 
+- **Important**: if the policy makes a very large change that makes a good action suddenly zero probability ($\kappa_t \to 0$), the objective drops significantly, keeping the policy in the safe zone. 
 :::
 :::
 :::
 :::
 :::
-
-<!-- # Proximal policy optimization (PPO)
-
-::: small
-::: incremental
-- TRPO solves $\max_\theta L(\theta)$ subject to $D_{KL}(\pi_{\subold{\theta}},\pi_\theta) \le \delta$. To do this it requires:
-  - second‑order information (Fisher matrix)
-  - conjugate gradient
-  - a line search
-  - KL constraint checks 
-- Most deep learning uses first‑order optimizers (Adam, SGD). TRPO instead requires solving $F^{-1} g$, which means special optimization code rather than standard gradient descent.
-- Because of the line search and constraint checks, each update is more expensive and harder to integrate into large-scale training pipelines.
-Researchers wanted something that: 
-  - keeps small policy updates
-  - but uses simple gradient descent
-:::
-Two possible approaches:
-::: incremental
-1. Turn constraint into penalty term (tuning constant is hard).
-2. Clipped objective (the one people use)
-::: -->
 
 # PPO: Final algorithm
 
@@ -1074,7 +1074,7 @@ Estimate the advantage values $A_{\iterate{\theta}{k}}(s, a)$ for all sampled st
 ::: incremental
 - At first glance, TRPO and PPO can look off-policy because their objective functions use importance sampling:
 $$\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb{a_t}{s_t}}.$$
-- However, the intent behind it here is completely different:
+- However, the intent behind it here is different:
   - In **off-policy RL**: $\pi_{\theta_{old}}$ could be a completely different policy from long ago. 
   - In **TRPO/PPO**: $\pi_{\theta_{old}}$ is the immediate, exact current policy that just finished stepping through the environment with the policy we're trying to update. 
 :::
@@ -1087,7 +1087,7 @@ $$\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb
 - As derived earlier, the surrogate objectives for both TRPO and PPO rely on a critical assumption: the states we use to calculate the loss must be sampled from a distribution that is nearly identical to the new policy's distribution ($\rho_{\pi_\phi} \approx \rho_{\pi_{\subold{\phi}}}$).
 - Because their mathematical bounds collapse if the data isn't fresh, TRPO and PPO are **strictly on-policy**. If we tried to feed TRPO or PPO a batch of off-policy data collected by an entirely different policy/network: 
   - In TRPO, the true KL divergence would exceed the trust region $\delta$, the backtracking line search would reject the step, and the algorithm would freeze.
-  - In PPO, the importance ratio $\kappa_t(\phi)$ would land far outside the $(1-\epsilon, 1+\epsilon)$ safety window, the clipping mechanism would zero out the gradients, and the network would learn nothing.
+  - In PPO, the importance ratio $\kappa_t(\phi)$ would land far outside the $(1-\epsilon, 1+\epsilon)$ safety window, the clipping mechanism would zero out the gradients, likely resulting in no learning at all.
 :::
 
 ::: fragment

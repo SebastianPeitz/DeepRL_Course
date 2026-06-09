@@ -526,10 +526,11 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 \nablaphi\Vpiphi &amp;\approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \textcolor{red}{\beta\agivenb{a}{s}} \underbrace{\frac{\textcolor{blue}{\piphi\agivenb{a}{s}}}{\textcolor{red}{\beta\agivenb{a}{s}}}}_{=\kappa_\phi(s,a)} \frac{\nablaphi\piphi\agivenb{a}{s}}{\textcolor{blue}{\piphi\agivenb{a}{s}}} \Qpiphi(s,a) \fragment{ = \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \beta\agivenb{a}{s} \kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a) } \\
 &amp;= \Expsub{\kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a)}{s\sim\rho_\beta,a\sim \beta\agivenb{\cdot}{s}}.
 \end{align*}\]</span></span></li>
-<li class="fragment">The starting point in <span class="citation">(<a href="#ref-Silver2014dpg">Silver et al. 2014</a>)</span> was very similar, but using continuous state and action spaces: <span class="math display">\[
+<li class="fragment">The starting point in <span class="citation">(<a href="#ref-Silver2014dpg">Silver et al. 2014</a>)</span> was very similar, but using continuous state and action spaces: <span class="math display">\[\boxed{
 \nablaphi\Vpiphi \approx \int_\Sc\rho_\beta(s)\int_\Ac  \kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a) \dint{a} \dint{s} = \Expsub{\kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a)}{s\sim\rho_\beta,a\sim \beta\agivenb{\cdot}{s}}.
-\]</span></li>
+}\]</span></li>
 <li class="fragment">We now have derived a simplified formula for the off-policy policy gradient.</li>
+<li class="fragment">Aside from the approximation we just made, it’s similar to the on-policy policy gradient!</li>
 <li class="fragment">However, we still suffer from the large variance issue.</li>
 </ul>
 </div>
@@ -612,11 +613,11 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <p>To update a deterministic policy off-policy, your algorithm does this for a batch of states from the replay buffer:</p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Pass state <span class="math inline">\(s\)</span> into the Actor: <span class="math inline">\(a = \mu_\phi(s)\)</span>.</li>
-<li class="fragment">Pass <span class="math inline">\(s\)</span> and <span class="math inline">\(a\)</span> into the Critic network <span class="math inline">\(Q_\theta(s, a)\)</span>.</li>
-<li class="fragment">Compute how the Critic’s output changes with respect to that action (<span class="math inline">\(\nabla_a Q\)</span>).</li>
-<li class="fragment">Compute how the Actor’s weights change to produce that action change (<span class="math inline">\(\nablaphi \mu_\phi\)</span>).</li>
-<li class="fragment">Multiply them together to update the Actor.</li>
+<li class="fragment">Pass state <span class="math inline">\(s\)</span> into the actor: <span class="math inline">\(a = \mu_\phi(s)\)</span>.</li>
+<li class="fragment">Pass <span class="math inline">\(s\)</span> and <span class="math inline">\(a\)</span> into the critic network <span class="math inline">\(Q_\theta(s, a)\)</span>.</li>
+<li class="fragment">Compute how the critic’s output changes with respect to that action (<span class="math inline">\(\nabla_a Q\)</span>).</li>
+<li class="fragment">Compute how the actor’s weights change to produce that action change (<span class="math inline">\(\nablaphi \mu_\phi\)</span>).</li>
+<li class="fragment">Multiply them together to update the actor.</li>
 </ol>
 </div>
 </div>
@@ -660,10 +661,10 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Bootstrapping instability</li>
-<li class="fragment">Correlated samples from trajectories</li>
-<li class="fragment">Targets change too quickly</li>
-<li class="fragment">Poor exploration due to deterministic policy</li>
+<li class="fragment">Bootstrapping instability.</li>
+<li class="fragment">Correlated samples from trajectories.</li>
+<li class="fragment">Targets change too quickly.</li>
+<li class="fragment">Poor exploration due to deterministic policy.</li>
 </ul>
 </div>
 </div>
@@ -709,7 +710,7 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <li class="fragment"><strong>Interact</strong>: Sample <span class="math inline">\(\set{s_t,a_t,r_t,s_{t+1}}\)</span> using <span class="math inline">\(a_t=\mu_\phi(s_t)\)</span> (<em><span class="emoji" data-emoji="bulb">💡</span> plus noise for exploration!</em>) and store in the replay buffer <span class="math inline">\(\Dc\)</span>.<br />
 </li>
 <li class="fragment"><strong>Sample</strong>: Draw random mini-batch of <span class="math inline">\(N\)</span> transitions: <span class="math inline">\(\Bc\subset\Dc\)</span>.</li>
-<li class="fragment"><strong>Update critic</strong>: Calculate the target <span class="math inline">\(y_i\)</span> using the target networks (<em><span class="emoji" data-emoji="bulb">💡</span> Optimal action <span class="math inline">\(\mu_{\bar{\phi}}(s)\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(Q\)</span>-learning!</em>): <span class="math display">\[y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).\]</span> The <em>current critic</em> is updated by minimizing the Bellman error: <span class="math display">\[L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).\]</span></li>
+<li class="fragment"><strong>Update critic</strong>: Calculate the target <span class="math inline">\(y_i\)</span> using the target networks (<em><span class="emoji" data-emoji="bulb">💡</span> Optimal action <span class="math inline">\(\mu_{\bar{\phi}}(s)\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(Q\)</span>-learning!</em>): <span class="math display">\[y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).\]</span> <span class="fragment">The <em>current critic</em> is updated by minimizing the Bellman error: <span class="math display">\[L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).\]</span></span></li>
 </ol>
 </div>
 <div class="grid-layout" style="grid-template-columns: 12fr 9fr;">
@@ -4825,9 +4826,9 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <h3 id="maximization-bias-rightarrow-clipped-double-q-learning">1. Maximization bias <span class="math inline">\(\Rightarrow\)</span> clipped double <span class="math inline">\(Q\)</span>-learning</h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Because the target uses a greedy step over actions <span class="math inline">\(a = \mu_\phi(s)\)</span>, errors accumulate <span class="math inline">\(\Rightarrow\)</span> massive overestimation bias.<br />
+<li class="fragment">Because the target uses a greedy step over actions <span class="math inline">\(a = \mu_\phi(s)\)</span>, errors accumulate <span class="math inline">\(\Rightarrow\)</span> large overestimation bias.<br />
 </li>
-<li class="fragment">Two independent critics (<span class="math inline">\(Q_{\theta_1}\)</span> / <span class="math inline">\(Q_{\theta_2}\)</span> and targets <span class="math inline">\(Q_{\bar{\theta}_1}\)</span> / <span class="math inline">\(Q_{\bar{\theta}_2}\)</span>) and uses the minimum of their predictions to compute the target: <span class="math display">\[y = r + \gamma \min_{i=1,2} Q_{\bar{\theta}_i}(s&#39;, \mu_{\bar{\phi}}(s&#39;))\]</span></li>
+<li class="fragment">Two independent critics (<span class="math inline">\(Q_{\theta_1}\)</span> / <span class="math inline">\(Q_{\theta_2}\)</span> and targets <span class="math inline">\(Q_{\bar{\theta}_1}\)</span> / <span class="math inline">\(Q_{\bar{\theta}_2}\)</span>), using the minimum of their predictions to compute the target: <span class="math display">\[y = r + \gamma \min_{i=1,2} Q_{\bar{\theta}_i}(s&#39;, \mu_{\bar{\phi}}(s&#39;))\]</span></li>
 </ul>
 </div>
 </div>
@@ -4872,7 +4873,7 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <li class="fragment"><strong>Interact</strong>: Sample <span class="math inline">\(\set{s_t,a_t,r_t,s_{t+1}}\)</span> using <span class="math inline">\(a_t=\mu_\phi(s_t) + \epsilon\)</span> (<span class="math inline">\(\epsilon\sim\Normal{0}{\sigma^2}\)</span>) and store in the replay buffer <span class="math inline">\(\Dc\)</span>.<br />
 </li>
 <li class="fragment"><strong>Sample</strong>: Draw random mini-batch of <span class="math inline">\(N\)</span> transitions: <span class="math inline">\(\Bc\subset\Dc\)</span>.</li>
-<li class="fragment"><strong>Update critic</strong>: Calculate targets <span class="math inline">\(y_i\)</span> by <span style="color: red;">minimizing over two target networks</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Twin</strong>): <span class="math display">\[y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).\]</span> The <span style="color: red;">two critics</span> are updated by minimizing the Bellman errors: <span class="math display">\[L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).\]</span></li>
+<li class="fragment"><strong>Update critic</strong>: Calculate targets <span class="math inline">\(y_i\)</span> by <span style="color: red;">minimizing over two target networks</span> (<span class="emoji" data-emoji="bulb">💡</span> the <strong>Twin</strong>): <span class="math display">\[y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).\]</span> <span class="fragment">The <span style="color: red;">two critics</span> are updated by minimizing the Bellman errors: <span class="math display">\[L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).\]</span></span></li>
 </ol>
 </div>
 <div class="grid-layout" style="grid-template-columns: 1fr 30fr 20fr;">
@@ -6113,7 +6114,7 @@ TD3
 <ul class="incremental">
 <li class="fragment">naturally explores the entire environment,</li>
 <li class="fragment">prevents the policy from collapsing into a single repetitive action too early,</li>
-<li class="fragment">and becomes more robust to environment changes.</li>
+<li class="fragment">becomes more robust to environment changes.</li>
 </ul></li>
 </ul>
 </div>
@@ -6163,7 +6164,7 @@ V^\pi(s_t) &amp;= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alph
 <ul class="incremental">
 <li class="fragment">As <span class="math inline">\(a_t\)</span> is already chosen, there is no entropy for the immediate action (its probability is one after selection).</li>
 <li class="fragment">The entropy only applies to future actions.</li>
-<li class="fragment">Therefore, we define the <strong>Soft <span class="math inline">\(Q\)</span>-Function</strong> as the immediate reward plus the discounted future soft values: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1} \sim p(s_{t+1})}. \label{eq:Adv2_entropy_Q}\end{equation}\]</span></li>
+<li class="fragment">Therefore, we define the <strong>soft <span class="math inline">\(Q\)</span>-function</strong> as the immediate reward plus the discounted future soft values: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1} \sim p(s_{t+1})}. \label{eq:Adv2_entropy_Q}\end{equation}\]</span></li>
 <li class="fragment">Substitute <span class="math inline">\(\eqref{eq:Adv2_entropy_Q}\)</span> into <span class="math inline">\(\eqref{eq:Adv2_entropy_value}\)</span>: <span class="math display">\[ V^\pi(s_t) = \Expsubbig{\underbrace{r_{t} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})}}_{=Q^\pi(s_t, a_t)~\text{(Eq. \eqref{eq:Adv2_entropy_Q})}} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} = \Expsubbig{Q^\pi(s_t, a_t) - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}}. \]</span></li>
 <li class="fragment">We thereby obtain the <strong>soft Bellman equation</strong>: <span class="math display">\[\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{Q^\pi(s_{t+1}, a_{t+1}) - \alpha \log \pi(a_{t+1} | s_{t+1})}{(s_{t+1}, a_{t+1}) \sim \rho_\piphi}. \label{eq:Adv2_entropy_soft_Bellman} \end{equation}\]</span></li>
 </ul>
@@ -6226,7 +6227,7 @@ V^\pi(s_t) &amp;= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alph
 <ul class="incremental">
 <li class="fragment">To see how we arrived at the objective <span class="math inline">\(L_\pi\)</span>, we start from defining a target distribution over the actions.</li>
 <li class="fragment">One way to represent the target distribution: probability of choosing an action proportional to its exponential soft <span class="math inline">\(Q\)</span>-value: <span class="math display">\[\pi_{\mathsf{target}}\agivenb{a}{s} = \frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)} \qquad \text{with}\quad Z^\pi(s) = \int \exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}\dint{a}.\]</span></li>
-<li class="fragment">This is known as the Boltzmann (or Gibbs) distribution, with two useful properties:
+<li class="fragment">This is known as the <strong>Boltzmann distribution</strong> (or <strong>Gibbs distribution</strong>), with two useful properties:
 <ul class="incremental">
 <li class="fragment">Actions with higher <span class="math inline">\(Q\)</span>-values have exponentially higher probabilities of being chosen.</li>
 <li class="fragment">The temperature <span class="math inline">\(\alpha\)</span> scales how pronounced these differences are. If <span class="math inline">\(\alpha \to 0\)</span>, it becomes a sharp peak at the max <span class="math inline">\(Q\)</span>-value (greedy). If <span class="math inline">\(\alpha \to \infty\)</span>, it becomes a uniform distribution (pure random exploration).</li>
@@ -7642,13 +7643,14 @@ Walker 2D (SAC).
 </div>
 </div>
 </div>
+<p><span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> Trained models from <a href="https://huggingface.co/sb3/models">StableBaselines3</a>.</span></p>
 </div>
 <div class="fragment">
 <p><strong>Notes</strong></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Trained models from <a href="https://huggingface.co/sb3/models">StableBaselines3</a>.</li>
-<li class="fragment">The SAC results reported in <span class="citation">(<a href="#ref-Fujimoto2018TD3">Fujimoto, Hoof, and Meger 2018</a>)</span> are worse than the TD3 results, because there were two versions of SAC in short succession:
+<li class="fragment">The SAC results <em>reported in the TD3 paper</em> <span class="citation">(<a href="#ref-Fujimoto2018TD3">Fujimoto, Hoof, and Meger 2018</a>)</span> (see left) are worse than the TD3 results.</li>
+<li class="fragment">Reason: there were two versions of SAC in quick succession.
 <ol class="incremental" style="list-style-type: decimal">
 <li class="fragment">The now-standard that we have discussed <span class="citation">(<a href="#ref-Haarnoja2018sac2">Haarnoja, Zhou, Hartikainen, et al. 2018</a>)</span>. It also considered some ideas from the TD3 paper such as twin <span class="math inline">\(Q\)</span> networks to avoid maximization bias.</li>
 <li class="fragment">The original one <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> went out of fashion quickly, but appeared around the same time as TD3. It is thus likely that <span class="citation">(<a href="#ref-Fujimoto2018TD3">Fujimoto, Hoof, and Meger 2018</a>)</span> compared against this version.</li>

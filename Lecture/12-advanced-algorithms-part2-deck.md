@@ -236,10 +236,11 @@ $$ \nablaphi\Vpiphi \approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \nablaph
 &= \Expsub{\kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a)}{s\sim\rho_\beta,a\sim \beta\agivenb{\cdot}{s}}.
 \end{align*}$$]{.math-incremental}
 - The starting point in [@Silver2014dpg] was very similar, but using continuous state and action spaces:
-$$
+$$\boxed{
 \nablaphi\Vpiphi \approx \int_\Sc\rho_\beta(s)\int_\Ac  \kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a) \dint{a} \dint{s} = \Expsub{\kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a)}{s\sim\rho_\beta,a\sim \beta\agivenb{\cdot}{s}}.
-$$
+}$$
 - We now have derived a simplified formula for the off-policy policy gradient.
+- Aside from the approximation we just made, it's similar to the on-policy policy gradient!
 - However, we still suffer from the large variance issue.
 :::
 :::
@@ -310,11 +311,11 @@ $$\theta \gets \theta + \alpha_\theta \frac{1}{N} \sum_{i=1}^N \delta_i \nablath
 To update a deterministic policy off-policy, your algorithm does this for a batch of states from the replay buffer: 
 
 ::: incremental
-1. Pass state $s$ into the Actor: $a = \mu_\phi(s)$. 
-1. Pass $s$ and $a$ into the Critic network $Q_\theta(s, a)$.
-1. Compute how the Critic's output changes with respect to that action ($\nabla_a Q$).
-1. Compute how the Actor's weights change to produce that action change ($\nablaphi \mu_\phi$).
-1. Multiply them together to update the Actor. 
+1. Pass state $s$ into the actor: $a = \mu_\phi(s)$. 
+1. Pass $s$ and $a$ into the critic network $Q_\theta(s, a)$.
+1. Compute how the critic's output changes with respect to that action ($\nabla_a Q$).
+1. Compute how the actor's weights change to produce that action change ($\nablaphi \mu_\phi$).
+1. Multiply them together to update the actor. 
 :::
 :::
 :::
@@ -347,10 +348,10 @@ To update a deterministic policy off-policy, your algorithm does this for a batc
 ### When neural networks are used, several problems appear:
 :::
 ::: incremental
-- Bootstrapping instability
-- Correlated samples from trajectories
-- Targets change too quickly
-- Poor exploration due to deterministic policy 
+- Bootstrapping instability.
+- Correlated samples from trajectories.
+- Targets change too quickly.
+- Poor exploration due to deterministic policy.
 :::
 :::
 
@@ -385,8 +386,8 @@ addresses these by importing techniques from Deep Q-Networks (DQN).
 1. **Sample**: Draw random mini-batch of $N$ transitions: $\Bc\subset\Dc$.
 1. **Update critic**: Calculate the target $y_i$ using the target networks (*:bulb: Optimal action $\mu_{\bar{\phi}}(s)$ $\Rightarrow$ $Q$-learning!*):
 $$y_i = r_i + \gamma Q_{\bar{\theta}}(s_{i+1}, \mu_{\bar{\phi}}(s_{i+1})).$$
-The *current critic* is updated by minimizing the Bellman error:
-$$L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).$$
+[The *current critic* is updated by minimizing the Bellman error:
+$$L_Q(\theta) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_\theta(s_i, a_i)}^2, \qquad \theta \gets \theta + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_\theta(s_i, a_i)} \nablatheta Q_\theta(s_i,a_i).$$]{.fragment}
 :::
 
 ::: columns-12-9
@@ -448,8 +449,8 @@ $$\bar{\theta} \leftarrow \tau \theta + (1 - \tau)\bar{\theta}, \qquad \bar{\phi
 ::: fragment
 ### 1. Maximization bias $\Rightarrow$ clipped double $Q$-learning
 ::: incremental
-- Because the target uses a greedy step over actions $a = \mu_\phi(s)$, errors accumulate $\Rightarrow$ massive overestimation bias.  
-- Two independent critics ($Q_{\theta_1}$ / $Q_{\theta_2}$ and targets $Q_{\bar{\theta}_1}$ / $Q_{\bar{\theta}_2}$) and uses the minimum of their predictions to compute the target:
+- Because the target uses a greedy step over actions $a = \mu_\phi(s)$, errors accumulate $\Rightarrow$ large overestimation bias.  
+- Two independent critics ($Q_{\theta_1}$ / $Q_{\theta_2}$ and targets $Q_{\bar{\theta}_1}$ / $Q_{\bar{\theta}_2}$), using the minimum of their predictions to compute the target:
 $$y = r + \gamma \min_{i=1,2} Q_{\bar{\theta}_i}(s', \mu_{\bar{\phi}}(s'))$$
 :::
 :::
@@ -484,8 +485,8 @@ $$\tilde{a} = \mu_{\bar{\phi}}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(
 1. **Sample**: Draw random mini-batch of $N$ transitions: $\Bc\subset\Dc$.
 1. **Update critic**: Calculate targets $y_i$ by [minimizing over two target networks]{style="color: red;"} (:bulb: the **Twin**):
 $$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
-The [two critics]{style="color: red;"} are updated by minimizing the Bellman errors:
-$$L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).$$
+[The [two critics]{style="color: red;"} are updated by minimizing the Bellman errors:
+$$L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).$$]{.fragment}
 :::
 
 ::: columns-1-30-20
@@ -585,7 +586,7 @@ $$\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc
 - By rewarding the agent for being unpredictable, it 
   - naturally explores the entire environment, 
   - prevents the policy from collapsing into a single repetitive action too early, 
-  - and becomes more robust to environment changes.
+  - becomes more robust to environment changes.
 :::
 :::
 :::
@@ -613,7 +614,7 @@ V^\pi(s_t) &= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alpha \H
 ::: incremental
 - As $a_t$ is already chosen, there is no entropy for the immediate action (its probability is one after selection). 
 - The entropy only applies to future actions. 
-- Therefore, we define the **Soft $Q$-Function** as the immediate reward plus the discounted future soft values:
+- Therefore, we define the **soft $Q$-function** as the immediate reward plus the discounted future soft values:
 $$\begin{equation} Q^\pi(s_t, a_t) = r_t + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1} \sim p(s_{t+1})}. \label{eq:Adv2_entropy_Q}\end{equation}$$
 - Substitute \eqref{eq:Adv2_entropy_Q} into \eqref{eq:Adv2_entropy_value}:
 $$ V^\pi(s_t) = \Expsubbig{\underbrace{r_{t} + \gamma \Expsub{V^\pi(s_{t+1})}{s_{t+1}\sim p(s_{t+1})}}_{=Q^\pi(s_t, a_t)~\text{(Eq. \eqref{eq:Adv2_entropy_Q})}} - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}} = \Expsubbig{Q^\pi(s_t, a_t) - \alpha \log \pi\agivenb{a_t}{s_t}}{a_t\sim \pi\agivenb{\cdot}{s_t}}. $$
@@ -664,7 +665,7 @@ $$\begin{equation} L(\alpha) = \frac{1}{N} \sum_{i=1}^N \cbracket{-\alpha \log \
 - To see how we arrived at the objective $L_\pi$, we start from defining a target distribution over the actions.
 - One way to represent the target distribution: probability of choosing an action proportional to its exponential soft $Q$-value:
 $$\pi_{\mathsf{target}}\agivenb{a}{s} = \frac{\exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}}{Z^\pi(s)} \qquad \text{with}\quad Z^\pi(s) = \int \exp\cbracket{\frac{Q^\pi(s, a)}{\alpha}}\dint{a}.$$ 
-- This is known as the Boltzmann (or Gibbs) distribution, with two useful properties:
+- This is known as the **Boltzmann distribution** (or **Gibbs distribution**), with two useful properties:
   - Actions with higher $Q$-values have exponentially higher probabilities of being chosen.
   - The temperature $\alpha$ scales how pronounced these differences are. If $\alpha \to 0$, it becomes a sharp peak at the max $Q$-value (greedy). If $\alpha \to \infty$, it becomes a uniform distribution (pure random exploration).
 - The SAC goal is thus to push the policy towards the target distribution:
@@ -813,14 +814,17 @@ $$\nabla_\alpha L(\alpha) = -\Expsub{( \log \pi_\theta(a|s) + \bar{\mathcal{H}})
 ![Walker 2D (SAC).](videos/11-advanced/walker.mp4){width=250px .controls .autoplay .muted }
 :::
 :::
+
+[:bulb: Trained models from [StableBaselines3](https://huggingface.co/sb3/models).]{.fragment}
+
 :::
 
 ::: fragment
 **Notes**
 
 ::: incremental
-- Trained models from [StableBaselines3](https://huggingface.co/sb3/models).
-- The SAC results reported in [@Fujimoto2018TD3] are worse than the TD3 results, because there were two versions of SAC in short succession:
+- The SAC results *reported in the TD3 paper* [@Fujimoto2018TD3] (see left) are worse than the TD3 results.
+- Reason: there were two versions of SAC in quick succession.
   1. The now-standard that we have discussed [@Haarnoja2018sac2]. It also considered some ideas from the TD3 paper such as twin $Q$ networks to avoid maximization bias.
   1. The original one [@Haarnoja2018sac] went out of fashion quickly, but appeared around the same time as TD3. It is thus likely that [@Fujimoto2018TD3] compared against this version.
 :::
