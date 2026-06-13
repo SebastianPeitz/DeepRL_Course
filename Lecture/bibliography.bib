@@ -290,3 +290,450 @@ journal = {Journal of Open Source Education}
 	journal = {arXiv:1812.05905},
 	title = {Soft actor-critic algorithms and applications.},
 	year = {2018}}
+
+% =====================================================================
+%  references.bib  —  Exploration in Reinforcement Learning (lecture)
+%
+%  Every entry below was checked against the live web. Venue/year and,
+%  where applicable, the arXiv identifier were confirmed. For papers with
+%  both a preprint and a peer-reviewed version of record, the version of
+%  record is used for the citation and the arXiv id is given in `note`
+%  for accessibility. Entries marked "[canonical]" in a trailing comment
+%  are foundational works whose details were cross-checked against
+%  multiple reference lists rather than a single fetched source.
+% =====================================================================
+
+% ---------- Bandits and classical online-learning foundations ----------
+
+@article{thompson1933likelihood,
+  author  = {Thompson, William R.},
+  title   = {On the Likelihood that One Unknown Probability Exceeds Another in View of the Evidence of Two Samples},
+  journal = {Biometrika},
+  volume  = {25},
+  number  = {3/4},
+  pages   = {285--294},
+  year    = {1933}
+}  % [canonical]
+
+@article{lai1985asymptotically,
+  author  = {Lai, Tze Leung and Robbins, Herbert},
+  title   = {Asymptotically Efficient Adaptive Allocation Rules},
+  journal = {Advances in Applied Mathematics},
+  volume  = {6},
+  number  = {1},
+  pages   = {4--22},
+  year    = {1985}
+}  % [canonical]
+
+@article{auer2002finitetime,
+  author  = {Auer, Peter and Cesa-Bianchi, Nicol{\`o} and Fischer, Paul},
+  title   = {Finite-time Analysis of the Multiarmed Bandit Problem},
+  journal = {Machine Learning},
+  volume  = {47},
+  number  = {2--3},
+  pages   = {235--256},
+  year    = {2002}
+}  % UCB1 [canonical]
+
+@article{russo2018ids,
+  author  = {Russo, Daniel and Van Roy, Benjamin},
+  title   = {Learning to Optimize via Information-Directed Sampling},
+  journal = {Operations Research},
+  volume  = {66},
+  number  = {1},
+  pages   = {230--252},
+  year    = {2018},
+  note    = {Earlier version: NeurIPS 2014}
+}
+
+% ---------- Tabular and structured MDP exploration theory ----------
+
+@article{jaksch2010near,
+  author  = {Jaksch, Thomas and Ortner, Ronald and Auer, Peter},
+  title   = {Near-Optimal Regret Bounds for Reinforcement Learning},
+  journal = {Journal of Machine Learning Research},
+  volume  = {11},
+  pages   = {1563--1600},
+  year    = {2010},
+  note    = {UCRL2; conference version NeurIPS 2008}
+}
+
+@inproceedings{azar2017minimax,
+  author    = {Azar, Mohammad Gheshlaghi and Osband, Ian and Munos, R{\'e}mi},
+  title     = {Minimax Regret Bounds for Reinforcement Learning},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {70},
+  pages     = {263--272},
+  year      = {2017},
+  note      = {UCBVI; arXiv:1703.05449}
+}
+
+@inproceedings{osband2013more,
+  author    = {Osband, Ian and Russo, Daniel and Van Roy, Benjamin},
+  title     = {(More) Efficient Reinforcement Learning via Posterior Sampling},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  pages     = {3003--3011},
+  year      = {2013},
+  note      = {PSRL}
+}
+
+% ---------- Deep RL exploration: bonuses, curiosity, randomized values ----------
+
+@inproceedings{bellemare2016unifying,
+  author    = {Bellemare, Marc G. and Srinivasan, Sriram and Ostrovski, Georg and Schaul, Tom and Saxton, David and Munos, R{\'e}mi},
+  title     = {Unifying Count-Based Exploration and Intrinsic Motivation},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2016},
+  note      = {Pseudo-counts; arXiv:1606.01868}
+}
+
+@inproceedings{tang2017exploration,
+  author    = {Tang, Haoran and Houthooft, Rein and Foote, Davis and Stooke, Adam and Chen, Xi and Duan, Yan and Schulman, John and De Turck, Filip and Abbeel, Pieter},
+  title     = {{\#}Exploration: A Study of Count-Based Exploration for Deep Reinforcement Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2017},
+  note      = {Hash-based counts; arXiv:1611.04717}
+}  % [canonical]
+
+@inproceedings{pathak2017curiosity,
+  author    = {Pathak, Deepak and Agrawal, Pulkit and Efros, Alexei A. and Darrell, Trevor},
+  title     = {Curiosity-Driven Exploration by Self-Supervised Prediction},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  pages     = {2778--2787},
+  year      = {2017},
+  note      = {ICM; arXiv:1705.05363}
+}
+
+@inproceedings{houthooft2016vime,
+  author    = {Houthooft, Rein and Chen, Xi and Duan, Yan and Schulman, John and De Turck, Filip and Abbeel, Pieter},
+  title     = {{VIME}: Variational Information Maximizing Exploration},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2016},
+  note      = {arXiv:1605.09674}
+}
+
+@inproceedings{burda2019exploration,
+  author    = {Burda, Yuri and Edwards, Harrison and Storkey, Amos and Klimov, Oleg},
+  title     = {Exploration by Random Network Distillation},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2019},
+  note      = {RND; arXiv:1810.12894}
+}
+
+@article{schmidhuber1991curious,
+  author  = {Schmidhuber, J{\"u}rgen},
+  title   = {A Possibility for Implementing Curiosity and Boredom in Model-Building Neural Controllers},
+  journal = {Proceedings of the International Conference on Simulation of Adaptive Behavior (SAB)},
+  pages   = {222--227},
+  year    = {1991}
+}  % [canonical] origin of prediction-error curiosity
+
+% ---------- Procedurally-generated / contextual-MDP exploration ----------
+
+@inproceedings{raileanu2020ride,
+  author    = {Raileanu, Roberta and Rockt{\"a}schel, Tim},
+  title     = {{RIDE}: Rewarding Impact-Driven Exploration for Procedurally-Generated Environments},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2020},
+  note      = {arXiv:2002.12292}
+}  % [canonical]
+
+@inproceedings{zhang2021noveld,
+  author    = {Zhang, Tianjun and Xu, Huazhe and Wang, Xiaolong and Wu, Yi and Keutzer, Kurt and Gonzalez, Joseph E. and Tian, Yuandong},
+  title     = {{NovelD}: A Simple yet Effective Exploration Criterion},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2021},
+  note      = {arXiv:2110.13625}
+}  % [canonical]
+
+@inproceedings{henaff2022exploration,
+  author    = {Henaff, Mikael and Raileanu, Roberta and Jiang, Minqi and Rockt{\"a}schel, Tim},
+  title     = {Exploration via Elliptical Episodic Bonuses},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2022},
+  note      = {E3B; arXiv:2210.05805}
+}
+
+% ---------- State coverage, reward-free objectives, skill discovery ----------
+
+@inproceedings{seo2021state,
+  author    = {Seo, Younggyo and Chen, Lili and Shin, Jinwoo and Lee, Honglak and Abbeel, Pieter and Lee, Kimin},
+  title     = {State Entropy Maximization with Random Encoders for Efficient Exploration},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  year      = {2021},
+  note      = {RE3; arXiv:2102.09430}
+}  % [canonical]
+
+@inproceedings{kim2023accelerating,
+  author    = {Kim, Dongyoung and Shin, Jinwoo and Abbeel, Pieter and Seo, Younggyo},
+  title     = {Accelerating Reinforcement Learning with Value-Conditional State Entropy Exploration},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2023},
+  note      = {VCSE; arXiv:2305.19476}
+}  % [canonical]
+
+@article{gregor2016variational,
+  author  = {Gregor, Karol and Rezende, Danilo Jimenez and Wierstra, Daan},
+  title   = {Variational Intrinsic Control},
+  journal = {arXiv preprint arXiv:1611.07507},
+  year    = {2016},
+  note    = {VIC}
+}  % [canonical]
+
+@inproceedings{mohamed2015variational,
+  author    = {Mohamed, Shakir and Rezende, Danilo Jimenez},
+  title     = {Variational Information Maximisation for Intrinsically Motivated Reinforcement Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2015},
+  note      = {Empowerment; arXiv:1509.08731}
+}  % [canonical]
+
+% ---------- Exploration in the foundation-model / reasoning era ----------
+
+@article{singh2000convergence,
+  author  = {Singh, Satinder and Jaakkola, Tommi and Littman, Michael L. and Szepesv{\'a}ri, Csaba},
+  title   = {Convergence Results for Single-Step On-Policy Reinforcement-Learning Algorithms},
+  journal = {Machine Learning},
+  volume  = {38},
+  number  = {3},
+  pages   = {287--308},
+  year    = {2000},
+  note    = {Introduces the GLIE condition}
+}
+
+@inproceedings{chapelle2011empirical,
+  author    = {Chapelle, Olivier and Li, Lihong},
+  title     = {An Empirical Evaluation of {Thompson} Sampling},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  pages     = {2249--2257},
+  year      = {2011}
+}
+
+@article{lindley1956measure,
+  author  = {Lindley, Dennis V.},
+  title   = {On a Measure of the Information Provided by an Experiment},
+  journal = {The Annals of Mathematical Statistics},
+  volume  = {27},
+  number  = {4},
+  pages   = {986--1005},
+  year    = {1956}
+}
+
+@misc{osband2017randomized,
+  title         = {Deep Exploration via Randomized Value Functions},
+  author        = {Osband, Ian and Van Roy, Benjamin and Russo, Daniel and Wen, Zheng},
+  year          = {2017},
+  eprint        = {1703.07608},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@misc{osband2016bootstrapped,
+  title         = {Deep Exploration via Bootstrapped {DQN}},
+  author        = {Osband, Ian and Blundell, Charles and Pritzel, Alexander and Van Roy, Benjamin},
+  year          = {2016},
+  eprint        = {1602.04621},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@misc{osband2018randomized,
+  title         = {Randomized Prior Functions for Deep Reinforcement Learning},
+  author        = {Osband, Ian and Aslanides, John and Cassirer, Albin},
+  year          = {2018},
+  eprint        = {1806.03335},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@book{rasmussen2006gaussian,
+  title     = {Gaussian Processes for Machine Learning},
+  author    = {Rasmussen, Carl Edward and Williams, Christopher K. I.},
+  publisher = {MIT Press},
+  year      = {2006}
+}
+
+@misc{bijl2016smcgpThompson,
+  title         = {A Sequential Monte Carlo Approach to Thompson Sampling for Bayesian Optimization},
+  author        = {Bijl, Hildo and Sch{\"o}n, Thomas B. and van Wingerden, Jan-Willem and Verhaegen, Michel},
+  year          = {2016},
+  eprint        = {1604.00169},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@misc{stadie2015incentivizing,
+  title         = {Incentivizing Exploration In Reinforcement Learning With Deep Predictive Models},
+  author        = {Stadie, Bradly C. and Levine, Sergey and Abbeel, Pieter},
+  year          = {2015},
+  eprint        = {1507.00814},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@inproceedings{schmidhuber1991curiosity,
+  title     = {A Possibility for Implementing Curiosity and Boredom in Model-Building Neural Controllers},
+  author    = {Schmidhuber, J{\"u}rgen},
+  booktitle = {From Animals to Animats: Proceedings of the First International Conference on Simulation of Adaptive Behavior},
+  publisher = {MIT Press/Bradford Books},
+  year      = {1991}
+}
+
+@article{schmidhuber2010formal,
+  title   = {Formal Theory of Creativity, Fun, and Intrinsic Motivation (1990--2010)},
+  author  = {Schmidhuber, J{\"u}rgen},
+  journal = {IEEE Transactions on Autonomous Mental Development},
+  volume  = {2},
+  number  = {3},
+  pages   = {230--247},
+  year    = {2010},
+  doi     = {10.1109/TAMD.2010.2056368}
+}
+
+@article{deisenroth2009gpdp,
+  title   = {Gaussian Process Dynamic Programming},
+  author  = {Deisenroth, Marc Peter and Rasmussen, Carl Edward and Peters, Jan},
+  journal = {Neurocomputing},
+  volume  = {72},
+  number  = {7--9},
+  pages   = {1508--1524},
+  year    = {2009},
+  doi     = {10.1016/j.neucom.2008.12.019}
+}
+
+@inproceedings{srinivas2010gpucb,
+  title     = {Gaussian Process Optimization in the Bandit Setting: No Regret and Experimental Design},
+  author    = {Srinivas, Niranjan and Krause, Andreas and Kakade, Sham M. and Seeger, Matthias},
+  booktitle = {Proceedings of the 27th International Conference on Machine Learning},
+  pages     = {1015--1022},
+  year      = {2010}
+}
+
+@inproceedings{kirschner2018information,
+  author    = {Kirschner, Johannes and Krause, Andreas},
+  title     = {Information Directed Sampling and Bandits with Heteroscedastic Noise},
+  booktitle = {Proceedings of the 31st Conference on Learning Theory (COLT)},
+  series    = {PMLR}, volume = {75}, pages = {358--384}, year = {2018},
+  note      = {Deterministic IDS; arXiv:1801.09667}
+}
+@inproceedings{ostrovski2017count,
+  author    = {Ostrovski, Georg and Bellemare, Marc G. and van den Oord, A{\"a}ron and Munos, R{\'e}mi},
+  title     = {Count-Based Exploration with Neural Density Models},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  series    = {PMLR}, volume = {70}, pages = {2721--2730}, year = {2017},
+  note      = {PixelCNN pseudo-counts; arXiv:1703.01310}
+}
+@inproceedings{fu2017ex2,
+  author    = {Fu, Justin and Co-Reyes, John D. and Levine, Sergey},
+  title     = {{EX2}: Exploration with Exemplar Models for Deep Reinforcement Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  pages     = {2577--2587}, year = {2017}, note = {arXiv:1703.01260}
+}
+@inproceedings{chowdhury2017kernelized,
+  author    = {Chowdhury, Sayak Ray and Gopalan, Aditya},
+  title     = {On Kernelized Multi-armed Bandits},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  series    = {PMLR}, volume = {70}, pages = {844--853}, year = {2017},
+  note      = {arXiv:1704.00445}
+}
+
+@inproceedings{blundell2015weight,
+  author    = {Blundell, Charles and Cornebise, Julien and Kavukcuoglu, Koray and Wierstra, Daan},
+  title     = {Weight Uncertainty in Neural Networks},
+  booktitle = {Proceedings of the 32nd International Conference on Machine Learning (ICML)},
+  series    = {PMLR}, volume = {37}, pages = {1613--1622}, year = {2015},
+  note      = {Bayes by Backprop; arXiv:1505.05424}
+}
+
+% ---------- Exploration Part 2 : Task Agnostic ----------
+
+@book{cover1999elements,
+  title     = {Elements of Information Theory},
+  author    = {Cover, Thomas M. and Thomas, Joy A.},
+  edition   = {2},
+  publisher = {Wiley-Interscience},
+  year      = {2006},
+  isbn      = {978-0-471-24195-9}
+}
+
+@incollection{salge2014empowerment,
+  title={Empowerment--an introduction},
+  author={Salge, Christoph and Glackin, Cornelius and Polani, Daniel},
+  booktitle={Guided self-organization: Inception},
+  pages={67--114},
+  year={2014},
+  publisher={Springer}
+}
+
+@inproceedings{klyubin2005empowerment,
+  title={Empowerment: A universal agent-centric measure of control},
+  author={Klyubin, Alexander S and Polani, Daniel and Nehaniv, Chrystopher L},
+  booktitle={2005 ieee congress on evolutionary computation},
+  volume={1},
+  pages={128--135},
+  year={2005},
+  organization={IEEE}
+}
+
+@article{nair2018visual,
+  title={Visual reinforcement learning with imagined goals},
+  author={Nair, Ashvin V and Pong, Vitchyr and Dalal, Murtaza and Bahl, Shikhar and Lin, Steven and Levine, Sergey},
+  journal={Advances in neural information processing systems},
+  volume={31},
+  year={2018}
+}
+
+@article{pong2019skew,
+  title={Skew-fit: State-covering self-supervised reinforcement learning},
+  author={Pong, Vitchyr H and Dalal, Murtaza and Lin, Steven and Nair, Ashvin and Bahl, Shikhar and Levine, Sergey},
+  journal={arXiv preprint arXiv:1903.03698},
+  year={2019}
+}
+
+@article{kingma2013auto,
+  title={Auto-encoding variational bayes},
+  author={Kingma, Diederik P and Welling, Max},
+  journal={arXiv preprint arXiv:1312.6114},
+  year={2013}
+}
+
+@article{lee2019efficient,
+  title={Efficient exploration via state marginal matching},
+  author={Lee, Lisa and Eysenbach, Benjamin and Parisotto, Emilio and Xing, Eric and Levine, Sergey and Salakhutdinov, Ruslan},
+  journal={arXiv preprint arXiv:1906.05274},
+  year={2019}
+}
+
+@inproceedings{hazan2019provably,
+  title={Provably efficient maximum entropy exploration},
+  author={Hazan, Elad and Kakade, Sham and Singh, Karan and Van Soest, Abby},
+  booktitle={International conference on machine learning},
+  pages={2681--2691},
+  year={2019},
+  organization={PMLR}
+}
+
+@article{gupta2018unsupervised,
+  title={Unsupervised meta-learning for reinforcement learning},
+  author={Gupta, Abhishek and Eysenbach, Benjamin and Finn, Chelsea and Levine, Sergey},
+  journal={arXiv preprint arXiv:1806.04640},
+  year={2018}
+}
+
+@article{eysenbach2018diayn,
+  title   = {Diversity is All You Need: Learning Skills without a Reward Function},
+  author  = {Eysenbach, Benjamin and Gupta, Abhishek and Ibarz, Julian and Levine, Sergey},
+  journal = {arXiv preprint arXiv:1802.06070},
+  year    = {2018},
+  note    = {DIAYN}
+}
+
+@article{gregor2016variational,
+  title={Variational intrinsic control},
+  author={Gregor, Karol and Rezende, Danilo Jimenez and Wierstra, Daan},
+  journal={arXiv preprint arXiv:1611.07507},
+  year={2016}
+}
