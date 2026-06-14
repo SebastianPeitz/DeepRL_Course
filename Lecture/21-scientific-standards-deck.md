@@ -1,8 +1,8 @@
 ---
-subtitle:    Imitation Learning
-chapter:     16
+subtitle:    Scientific Standards in RL
+chapter:     21
 feedback:
-  deck-id:  'deeprl-imitation-learning'
+  deck-id:  'deeprl-scientific-standards'
 ...
 
 

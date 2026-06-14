@@ -1,8 +1,8 @@
 ---
-subtitle:    Transfer Learning
-chapter:     17
+subtitle:    Multi-Agent Reinforcement Learning
+chapter:     20
 feedback:
-  deck-id:  'deeprl-transfer-learning'
+  deck-id:  'deeprl-multi-agent-RL'
 ...
 
 

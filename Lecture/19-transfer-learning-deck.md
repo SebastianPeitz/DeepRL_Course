@@ -1,8 +1,8 @@
 ---
-subtitle:    Scientific Standards in RL
+subtitle:    Transfer Learning
 chapter:     19
 feedback:
-  deck-id:  'deeprl-scientific-standards'
+  deck-id:  'deeprl-transfer-learning'
 ...
 
 

@@ -1,8 +1,8 @@
 ---
-subtitle:    Model-based RL -- Planning & search
-chapter:     15
+subtitle:    Imitation Learning
+chapter:     18
 feedback:
-  deck-id:  'deeprl-model-based-RL'
+  deck-id:  'deeprl-imitation-learning'
 ...
 
 
@@ -12,7 +12,6 @@ feedback:
 
 ------------------------------------------------------------------------------
 
-Look at chapter 8 of [@Sutton1998]
 
 # References
 
