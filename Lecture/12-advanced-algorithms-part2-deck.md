@@ -131,11 +131,11 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 
 ------------------------------------------------------------------------------
 
-# Part (II): Improving $Q$-learning
+# Part (II): Improving $Q$-learning {menu-title="Improving Q-learning"}
 
 ------------------------------------------------------------------------------
 
-# The problem of continuous actions in $Q$-learning
+# The problem of continuous actions in $Q$-learning {menu-title="The problem of continuous actions in Q-learning"}
 
 ::: small
 
@@ -580,7 +580,7 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 - SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function.
 - It describes the level of uncertainty (or unpredictability) of a random variable.
 $$\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}$$
-- $\Hc\piphi\agivenb{\cdot}{s_t}$ is the entropy, measuring how unpredictable the policy is.\
+- $\Hc(\piphi\agivenb{\cdot}{s_t})$ is the entropy, measuring how unpredictable the policy is.\
 [**High entropy** $\Rightarrow$ the agent explores widely.]{.fragment}$\quad$ [**Low entropy** $\Rightarrow$ it is focused on a few actions.]{.fragment}
 - The *temperature* $\alpha$ (a tunig parameter) determines how much the agent values exploration vs. exploitation.
 - By rewarding the agent for being unpredictable, it 

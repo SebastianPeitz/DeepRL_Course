@@ -290,3 +290,96 @@ journal = {Journal of Open Source Education}
 	journal = {arXiv:1812.05905},
 	title = {Soft actor-critic algorithms and applications.},
 	year = {2018}}
+
+@inproceedings{Bellemare2016countbased,
+	author = {Bellemare, Marc and Srinivasan, Sriram and Ostrovski, Georg and Schaul, Tom and Saxton, David and Munos, Remi},
+	booktitle = {Advances in Neural Information Processing Systems},
+	editor = {D. Lee and M. Sugiyama and U. Luxburg and I. Guyon and R. Garnett},
+	publisher = {Curran Associates, Inc.},
+	title = {Unifying Count-Based Exploration and Intrinsic Motivation},
+	volume = {29},
+	year = {2016}}
+@inproceedings{Fu2017ex2,
+ author = {Fu, Justin and Co-Reyes, John and Levine, Sergey},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {I. Guyon and U. Von Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {EX2: Exploration with Exemplar Models for Deep Reinforcement Learning},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2017/file/1baff70e2669e8376347efd3a874a341-Paper.pdf},
+ volume = {30},
+ year = {2017}
+}
+@inproceedings{Tang2017hashexploration,
+ author = {Tang, Haoran and Houthooft, Rein and Foote, Davis and Stooke, Adam and Xi Chen, OpenAI and Duan, Yan and Schulman, John and DeTurck, Filip and Abbeel, Pieter},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {I. Guyon and U. Von Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {\#Exploration: A Study of Count-Based Exploration for Deep Reinforcement Learning},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2017/file/3a20f62a0af1aa152670bab3c602feed-Paper.pdf},
+ volume = {30},
+ year = {2017}
+}
+
+@InProceedings{Ostrovski2017pixelcnn,
+  title = 	 {Count-Based Exploration with Neural Density Models},
+  author =       {Georg Ostrovski and Marc G. Bellemare and A{\"a}ron van den Oord and R{\'e}mi Munos},
+  booktitle = 	 {Proceedings of the 34th International Conference on Machine Learning},
+  pages = 	 {2721--2730},
+  year = 	 {2017},
+  editor = 	 {Precup, Doina and Teh, Yee Whye},
+  volume = 	 {70},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {06--11 Aug},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v70/ostrovski17a/ostrovski17a.pdf},
+  url = 	 {https://proceedings.mlr.press/v70/ostrovski17a.html},
+  abstract = 	 {Bellemare et al. (2016) introduced the notion of a pseudo-count, derived from a density model, to generalize count-based exploration to non-tabular reinforcement learning. This pseudo-count was used to generate an exploration bonus for a DQN agent and combined with a mixed Monte Carlo update was sufficient to achieve state of the art on the Atari 2600 game Montezuma’s Revenge. We consider two questions left open by their work: First, how important is the quality of the density model for exploration? Second, what role does the Monte Carlo update play in exploration? We answer the first question by demonstrating the use of PixelCNN, an advanced neural density model for images, to supply a pseudo-count. In particular, we examine the intrinsic difficulties in adapting Bellemare et al.’s approach when assumptions about the model are violated. The result is a more practical and general algorithm requiring no special apparatus. We combine PixelCNN pseudo-counts with different agent architectures to dramatically improve the state of the art on several hard Atari games. One surprising finding is that the mixed Monte Carlo update is a powerful facilitator of exploration in the sparsest of settings, including Montezuma’s Revenge.}
+}
+@inproceedings{Osband2016bootstrappeddqn,
+ author = {Osband, Ian and Blundell, Charles and Pritzel, Alexander and Van Roy, Benjamin},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {D. Lee and M. Sugiyama and U. Luxburg and I. Guyon and R. Garnett},
+ pages = {},
+ publisher = {Curran Associates, Inc.},
+ title = {Deep Exploration via Bootstrapped DQN},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2016/file/8d8818c8e140c64c743113f563cf750f-Paper.pdf},
+ volume = {29},
+ year = {2016}
+}
+
+@InProceedings{Pathak2017curiosity,
+  title = 	 {Curiosity-driven Exploration by Self-supervised Prediction},
+  author =       {Deepak Pathak and Pulkit Agrawal and Alexei A. Efros and Trevor Darrell},
+  booktitle = 	 {Proceedings of the 34th International Conference on Machine Learning},
+  pages = 	 {2778--2787},
+  year = 	 {2017},
+  editor = 	 {Precup, Doina and Teh, Yee Whye},
+  volume = 	 {70},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {06--11 Aug},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v70/pathak17a/pathak17a.pdf},
+  url = 	 {https://proceedings.mlr.press/v70/pathak17a.html},
+  abstract = 	 {In many real-world scenarios, rewards extrinsic to the agent are extremely sparse, or absent altogether. In such cases, curiosity can serve as an intrinsic reward signal to enable the agent to explore its environment and learn skills that might be useful later in its life. We formulate curiosity as the error in an agent’s ability to predict the consequence of its own actions in a visual feature space learned by a self-supervised inverse dynamics model. Our formulation scales to high-dimensional continuous state spaces like images, bypasses the difficulties of directly predicting pixels, and, critically, ignores the aspects of the environment that cannot affect the agent. The proposed approach is evaluated in two environments: VizDoom and Super Mario Bros. Three broad settings are investigated: 1) sparse extrinsic reward, where curiosity allows for far fewer interactions with the environment to reach the goal; 2) exploration with no extrinsic reward, where curiosity pushes the agent to explore more efficiently; and 3) generalization to unseen scenarios (e.g. new levels of the same game) where the knowledge gained from earlier experience helps the agent explore new places much faster than starting from scratch.}
+}
+
+
+@InProceedings{Mnih2016asynchronous,
+  title = 	 {Asynchronous Methods for Deep Reinforcement Learning},
+  author = 	 {Mnih, Volodymyr and Badia, Adria Puigdomenech and Mirza, Mehdi and Graves, Alex and Lillicrap, Timothy and Harley, Tim and Silver, David and Kavukcuoglu, Koray},
+  booktitle = 	 {Proceedings of The 33rd International Conference on Machine Learning},
+  pages = 	 {1928--1937},
+  year = 	 {2016},
+  editor = 	 {Balcan, Maria Florina and Weinberger, Kilian Q.},
+  volume = 	 {48},
+  series = 	 {Proceedings of Machine Learning Research},
+  address = 	 {New York, New York, USA},
+  month = 	 {20--22 Jun},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v48/mniha16.pdf},
+  url = 	 {https://proceedings.mlr.press/v48/mniha16.html},
+  abstract = 	 {We propose a conceptually simple and lightweight framework for deep reinforcement learning that uses asynchronous gradient descent for optimization of deep neural network controllers. We present asynchronous variants of four standard reinforcement learning algorithms and show that parallel actor-learners have a stabilizing effect on training allowing all four methods to successfully train neural network controllers. The best performing method, an asynchronous variant of actor-critic, surpasses the current state-of-the-art on the Atari domain while training for half the time on a single multi-core CPU instead of a GPU. Furthermore, we show that asynchronous actor-critic succeeds on a wide variety of continuous motor control problems as well as on a new task of navigating random 3D mazes using a visual input.}
+}
+

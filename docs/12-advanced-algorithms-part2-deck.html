@@ -384,14 +384,14 @@ II)</title>
 </div>
 </div>
 </section>
-<section id="part-ii-improving-q-learning" class="slide level1">
+<section id="part-ii-improving-q-learning" class="slide level1" menu-title="Improving Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>Part (II): Improving <span class="math inline">\(Q\)</span>-learning</h1>
 </div>
 </div>
 </section>
-<section id="the-problem-of-continuous-actions-in-q-learning" class="slide level1">
+<section id="the-problem-of-continuous-actions-in-q-learning" class="slide level1" menu-title="The problem of continuous actions in Q-learning">
 <div class="decker">
 <div class="alignment">
 <h1>The problem of continuous actions in <span class="math inline">\(Q\)</span>-learning</h1>
@@ -6107,7 +6107,7 @@ TD3
 <ul class="incremental">
 <li class="fragment">SAC <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> introduces an <strong>entropy term</strong> in the loss function.</li>
 <li class="fragment">It describes the level of uncertainty (or unpredictability) of a random variable. <span class="math display">\[\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}\]</span></li>
-<li class="fragment"><span class="math inline">\(\Hc\piphi\agivenb{\cdot}{s_t}\)</span> is the entropy, measuring how unpredictable the policy is.<br />
+<li class="fragment"><span class="math inline">\(\Hc(\piphi\agivenb{\cdot}{s_t})\)</span> is the entropy, measuring how unpredictable the policy is.<br />
 <span class="fragment"><strong>High entropy</strong> <span class="math inline">\(\Rightarrow\)</span> the agent explores widely.</span><span class="math inline">\(\quad\)</span> <span class="fragment"><strong>Low entropy</strong> <span class="math inline">\(\Rightarrow\)</span> it is focused on a few actions.</span></li>
 <li class="fragment">The <em>temperature</em> <span class="math inline">\(\alpha\)</span> (a tunig parameter) determines how much the agent values exploration vs. exploitation.</li>
 <li class="fragment">By rewarding the agent for being unpredictable, it
