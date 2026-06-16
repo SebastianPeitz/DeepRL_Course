@@ -3,10 +3,10 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "16.06.2026 19:32"
+        "16.06.2026 20:00"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
-    "chapter": "18",
+    "chapter": "14",
     "chart": {
         "colors": [
             "#f5871f",
@@ -186,7 +186,7 @@
         "shade7": "#1d1f21"
     },
     "date": "Summer term 2026",
-    "decker-meta-url": "93aff9bd5.json",
+    "decker-meta-url": "4bd26fd76.json",
     "dictionary": {
         "de": {
             "exam": {
@@ -531,7 +531,7 @@
         }
     },
     "feedback": {
-        "deck-id": "deeprl-imitation-learning"
+        "deck-id": "deeprl-planning-control"
     },
     "includeTULogo": true,
     "index": {
@@ -852,7 +852,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Imitation Learning",
+    "subtitle": "Optimal Control",
     "supportPath": "support",
     "template": {
         "deck": {

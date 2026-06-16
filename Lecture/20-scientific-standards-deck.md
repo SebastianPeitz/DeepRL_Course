@@ -1,8 +1,8 @@
 ---
-subtitle:    Multi-Agent Reinforcement Learning
+subtitle:    Scientific Standards in RL
 chapter:     20
 feedback:
-  deck-id:  'deeprl-multi-agent-RL'
+  deck-id:  'deeprl-scientific-standards'
 ...
 
 

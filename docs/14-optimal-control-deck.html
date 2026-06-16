@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="Prof. Dr. Sebastian Peitz">
-  <title> Deep Reinforcement Learning:  Model-based reinforcement
-learning</title>
+  <title> Deep Reinforcement Learning:  Optimal Control</title>
 
   <!-- PWA stuff -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -22,7 +21,7 @@ learning</title>
   <script type="module">
     /* Store JSON encoded Pandoc meta data in a global variable. */
     import initializeDecker from "./support/js/decker.js";
-    initializeDecker("27a89dd0c.json");
+    initializeDecker("4bd26fd76.json");
   </script>
 
     <!-- Default values for CSS variables can live here. They can be overridden by
@@ -137,8 +136,7 @@ learning</title>
         <span class="title-title">Deep Reinforcement Learning</span>
         </h1>
         <h2 class="subtitle">
-        <span class="title-subtitle">Model-based reinforcement
-        learning</span>
+        <span class="title-subtitle">Optimal Control</span>
         </h2>
       </header>
 
@@ -188,21 +186,18 @@ learning</title>
 <div class="area">
 <div class="box block">
 <ul>
-<li>Model-based RL
+<li>Recap of model-free RL</li>
+<li>Open-loop optimal control
 <ul>
-<li>Model-based rollouts</li>
-<li>Dyna-style algorithms</li>
+<li>Shooting versus collocation</li>
+<li>Trajectory planning</li>
+<li>Stochastic optimal control</li>
+<li>The linear case</li>
 </ul></li>
-<li>Learning a model
+<li>Closed-loop control
 <ul>
-<li>Dreamer architecture</li>
-<li>Uncertainty estimation?</li>
-<li>Learned ensembles</li>
-</ul></li>
-<li>Planning at decision time
-<ul>
-<li>MCTS</li>
-<li>AlphaZero</li>
+<li>Model Predictive Control (MPC)</li>
+<li>Differentiable Predictive Control (DPC)</li>
 </ul></li>
 </ul>
 </div>
@@ -211,17 +206,93 @@ learning</title>
 </div>
 </div>
 </section>
-<section id="the-discrete-case-monte-carlo-tree-search" class="slide level1">
+<section id="where-are-we" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>The discrete case: Monte-Carlo Tree Search</h1>
+<h1>Where are we?</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<caption>Lecture contents</caption>
+<thead>
+<tr>
+<th align="center">Chapter</th>
+<th align="left">Topic</th>
+<th align="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Basics &amp; tabular methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">1-5</td>
+<td align="left">Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning</td>
+<td align="left">RL basics in finite dimensions</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Deep-learning-based methods</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">6-13</td>
+<td align="left">DQN, policy gradients, actor-critic, PPO/SAC, exploration</td>
+<td align="left">Deep RL from basics to modern algorithms</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Model-Based Control</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"><span style="color: red;">14</span></td>
+<td align="left"><span style="color: red;">Optimal control</span></td>
+<td align="left"><span style="color: red;">How to do control when we know the model</span></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">Model-based reinforcement learning</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left"><strong>Advanced Topics</strong></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="alphazero" class="slide level1">
+<section id="until-now-model-free-rl" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>AlphaZero</h1>
+<h1>Until now: model-free RL</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="what-if-we-know-the-dynamics" class="small">
+<h3>What if we know the dynamics?</h3>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="planning-optimal-control" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Planning &amp; optimal control</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -234,17 +305,153 @@ learning</title>
 </div>
 </div>
 </section>
-<section id="alphazero-1" class="slide level1">
+<section id="the-deterministic-vs.-the-stochastic-case" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>AlphaZero</h1>
+<h1>The deterministic vs. the stochastic case</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="alphazero-2" class="slide level1">
+<section id="open-loop-versus-closed-loop" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>AlphaZero</h1>
+<h1>Open-loop versus closed-loop</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="open-loop-optimal-control" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Open loop optimal control</h1>
+</div>
+</div>
+</section>
+<section id="open" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Open</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="shooting-versus-collocation" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Shooting versus collocation</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="trajectory-optimization" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Trajectory optimization</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-linear-case" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The linear case</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="stochastic-optimal-control" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Stochastic optimal control</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="closed-loop-control" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Closed-loop control</h1>
+</div>
+</div>
+</section>
+<section id="model-predicitve-control-mpc" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Model predicitve control (MPC)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<p>Look at chapter 8 of <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></p>
+<div class="small">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="differentiable-predictive-control-dpc" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Differentiable predictive control (DPC)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -264,8 +471,10 @@ learning</title>
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div id="refs">
-
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Sutton1998" class="csl-entry">
+Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.
+</div>
 </div>
 </div>
 </div>

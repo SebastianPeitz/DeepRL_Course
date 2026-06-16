@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "16.06.2026 12:15"
+        "16.06.2026 20:00"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "15",
@@ -852,7 +852,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Model-based RL – Planning & search",
+    "subtitle": "Model-based reinforcement learning",
     "supportPath": "support",
     "template": {
         "deck": {

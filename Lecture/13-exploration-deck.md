@@ -710,6 +710,19 @@ $$\Rightarrow\text{ Intrinsic reward:} \quad r^i = \norm{f_\theta(s) - f(s)}^2.$
 
 :::
 
+# RND versus next-state-prediction
+
+::: small
+![[Source: [OpenAI blog](https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/)]](images/13-exploration/nextstate-vs-rnd.svg){.embed width=1280px}
+\
+
+::: incremental
+- Instead of predicting some meaningful next state, matching random features simplifies the learning process.
+- Learning a model may still be very helpful, though, when we use it for additional tasks (e.g., model-based RL).
+:::
+
+:::
+
 # Example: Montezuma's revenge
 
 ::: small
@@ -736,9 +749,6 @@ $$\Rightarrow\text{ Intrinsic reward:} \quad r^i = \norm{f_\theta(s) - f(s)}^2.$
 :::
 :::
 
-::: footer
-
-:::
 
 # Comparison between ICM and RND
 

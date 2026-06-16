@@ -1,8 +1,8 @@
 ---
-subtitle:    Scientific Standards in RL
-chapter:     21
+subtitle:    Offline Reinforcement Learning
+chapter:     16
 feedback:
-  deck-id:  'deeprl-scientific-standards'
+  deck-id:  'deeprl-offline-RL'
 ...
 
 

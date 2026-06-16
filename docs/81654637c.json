@@ -3,10 +3,10 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "09.06.2026 06:45"
+        "16.06.2026 20:00"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
-    "chapter": "16",
+    "chapter": "17",
     "chart": {
         "colors": [
             "#f5871f",

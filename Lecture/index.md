@@ -53,9 +53,8 @@ templates:
 |         | Advanced algorithms (II): From Q-learning to SAC     |        [slides:](12-advanced-algorithms-part2) |
 |         | Exploration                                          |        [slides:](13-exploration)               |
 |   **3** | **Model-based control**                              |                                                |
-|         | Planning \& optimal control                          |                                                | <!-- [slides:](14-planning-control) | -->
-|         | Model-based RL: Planning & search                    |                                                | <!-- [slides:](15-model-based-RL) | -->
-|         | Model-based RL with learned models                   |                                                | <!-- [slides:](16-model-based-RL-learned) | -->
+|         | Optimal control                                      |        [slides:](14-optimal-control)           |
+|         | Model-based reinforcement learning                   |                                                | <!-- [slides:](15-model-based-RL) | -->
 |   **4** | **Advanced topics**                                  |                                                |
 |         | Offline reinforcement learning                       |                                                | <!-- [slides:](17-offline-RL) | -->
 |         | Imitation learning                                   |                                                | <!-- [slides:](18-imitation-learning) | -->

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "16.06.2026 12:15"
+        "16.06.2026 19:47"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "14",
@@ -852,7 +852,7 @@
         "./papers",
         "./styles"
     ],
-    "subtitle": "Planning & Optimal Control",
+    "subtitle": "Optimal Control",
     "supportPath": "support",
     "template": {
         "deck": {

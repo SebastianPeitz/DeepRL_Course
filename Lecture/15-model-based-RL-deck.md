@@ -1,18 +1,54 @@
 ---
-subtitle:    Model-based RL -- Planning & search
+subtitle:    Model-based reinforcement learning
 chapter:     15
 feedback:
   deck-id:  'deeprl-model-based-RL'
 ...
 
+------------------------------------------------------------------------------
+
+# Content
 
 ------------------------------------------------------------------------------
 
-# First slide
+# Content
+
+- Model-based RL
+  - Model-based rollouts
+  - Dyna-style algorithms
+- Learning a model
+  - Dreamer architecture
+  - Uncertainty estimation?
+  - Learned ensembles
+- Planning at decision time
+  - MCTS
+  - AlphaZero
 
 ------------------------------------------------------------------------------
 
-Look at chapter 8 of [@Sutton1998]
+# The discrete case: Monte-Carlo Tree Search
+
+------------------------------------------------------------------------------
+
+# AlphaZero
+
+::: small
+
+:::
+
+------------------------------------------------------------------------------
+
+# AlphaZero
+
+------------------------------------------------------------------------------
+
+# AlphaZero
+
+::: small
+
+:::
+
+
 
 # References
 

@@ -1,8 +1,8 @@
 ---
-subtitle:    Transfer Learning
-chapter:     19
+subtitle:    Imitation Learning
+chapter:     17
 feedback:
-  deck-id:  'deeprl-transfer-learning'
+  deck-id:  'deeprl-imitation-learning'
 ...
 
 

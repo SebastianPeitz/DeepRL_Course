@@ -1,8 +1,8 @@
 ---
-subtitle:    Model-based RL with learned models
-chapter:     16
+subtitle:    Transfer Learning
+chapter:     18
 feedback:
-  deck-id:  'deeprl-model-based-RL-learned'
+  deck-id:  'deeprl-transfer-learning'
 ...
 
 
@@ -12,7 +12,6 @@ feedback:
 
 ------------------------------------------------------------------------------
 
-Look at chapter 8 of [@Sutton1998]
 
 # References
 

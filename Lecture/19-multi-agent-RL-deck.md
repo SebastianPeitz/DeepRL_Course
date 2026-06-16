@@ -1,8 +1,8 @@
 ---
-subtitle:    Offline Reinforcement Learning
-chapter:     17
+subtitle:    Multi-Agent Reinforcement Learning
+chapter:     19
 feedback:
-  deck-id:  'deeprl-offline-RL'
+  deck-id:  'deeprl-multi-agent-RL'
 ...
 
 
