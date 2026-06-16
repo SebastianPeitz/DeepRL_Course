@@ -578,8 +578,8 @@ $$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\
 
 ::: incremental
 - SAC [@Haarnoja2018sac] introduces an **entropy term** in the loss function.
-- It describes the level of uncertainty (or unpredictability) of a random variable.
 $$\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}$$
+- It describes the level of uncertainty (or unpredictability) of a random variable.
 - $\Hc(\piphi\agivenb{\cdot}{s_t})$ is the entropy, measuring how unpredictable the policy is.\
 [**High entropy** $\Rightarrow$ the agent explores widely.]{.fragment}$\quad$ [**Low entropy** $\Rightarrow$ it is focused on a few actions.]{.fragment}
 - The *temperature* $\alpha$ (a tunig parameter) determines how much the agent values exploration vs. exploitation.
@@ -706,7 +706,7 @@ $$Q^{\subnew{\pi}}(s, a) \geq Q^{\subold{\pi}}(s, a) \quad \forall (s,a).$$
 ::: small
 ::: incremental
 - Because the action $a$ is sampled from a stochastic policy $\piphi$, we cannot backpropagate gradients from the critic through the action to the actor directly. 
-- Fix in SAC $\Rightarrow$ the **reparameterization trick**: We express the action as a deterministic function of the state and an independent noise vector $\epsilon$: $$a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.$$
+- Fix in SAC $\Rightarrow$ the [**reparameterization trick**](https://en.wikipedia.org/wiki/Reparameterization_trick): We express the action as a deterministic function of the state and an independent noise vector $\epsilon$: $$a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.$$
   - The neural network deterministically outputs the mean $\mu_\phi(s)$ and standard deviation $\sigma_\phi(s)$. 
   - The $\tanh$ function bounds the actions to a valid range (e.g., $[-1, 1]$).
 - Rewriting the objective with this reparameterization allows us to rewrite the expectation over the noise $\epsilon$:

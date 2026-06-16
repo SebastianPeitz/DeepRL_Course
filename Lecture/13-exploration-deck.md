@@ -22,9 +22,10 @@ feedback:
   - Thompson sampling
   - Information gain
 - Exploration in continuous spaces
-  - The counting problem
-  - Intrinsic motivation
+  - Novelty-driven exploration: intrinsic motivation
+  - The counting problem & pseudo-counts
   - Curiosity-driven exploration
+  - Exploration via posterior sampling
   - Random network distillation
 
 # Where are we?
@@ -316,8 +317,6 @@ For each step $t = 1, 2, 3, \ldots$
 :::
 :::
 
-
-
 # Information gain and information-directed sampling
 
 ::: small
@@ -369,6 +368,12 @@ $$I(a) = \Hc(a^*) - \ExpC{\Hc(a^*)}{r}.$$
 :::
 :::
 
+# Summary
+
+- **Optimistic exploration** by estimating upper confidence bounds.
+- **Posterior sampling**: updating the belief of a reward (the prior) by using evidence $\Rightarrow$ Bayes' theorem.
+- **Information gain**: which actions give me the most information about the world?
+
 ------------------------------------------------------------------------------
 
 # Exploration in continuous spaces
@@ -380,10 +385,10 @@ $$I(a) = \Hc(a^*) - \ExpC{\Hc(a^*)}{r}.$$
 
 ::: small
 ::: incremental
-- As we have seen before (e.g., the UCB in Eq. \eqref{eq:Exp_UCB}), a common theme for exploration to add some form of **bonus** $B$ to the reward signal that promotes exploration:
-$$ \hat{r} = r + B(N(s)). $$
+- As we have seen before (e.g., the UCB in Eq. \eqref{eq:Exp_UCB}), a common theme for exploration to add some form of bonus $r^i$ to the reward signal that promotes exploration (also referred to as **intrinsic reward**, thus the superscript $^i$):
+$$ \hat{r} = r + r^i(N(s)). $$
 - This is a special case of the general concept of **intrinsic motivation**: [We modify the reward signal in such a way that the agent is *motivated* (i.e., rewarded) to explore unknown territory:
-$$ \hat{r} = r + \beta B.$$]{.fragment}
+$$ \hat{r} = r + \beta r^i.$$]{.fragment}
 :::
 
 
@@ -391,8 +396,8 @@ $$ \hat{r} = r + \beta B.$$]{.fragment}
 | Type of intrinsic motivation | Core question the agent asks | Key algorithms |
 | :- | :- | :- |
 | Novelty / information-theoretic | "Have I seen this specific state configuration before?" | Pseudo-counts (CTS, PixelCNN), count-based hashing |
-| Knowledge gain / reduction of uncertainty | "How much does this experience improve my model of the world?" | RND (random network distillation), disagreement ensembles |
 | Prediction error / surprise | "Can I predict what happens next if I take this action?" | ICM (intrinsic curiosity module) |
+| Knowledge gain / reduction of uncertainty | "How much does this experience improve my model of the world?" | RND (random network distillation), disagreement ensembles |
 :::
 
 :::
@@ -403,7 +408,7 @@ $$ \hat{r} = r + \beta B.$$]{.fragment}
 ::: columns-1-1-1
 ::: incremental
 - As motivated in UCB (Eq. \eqref{eq:Exp_UCB}), we can add a bonus $B$ to the reward that shrinks with the number of times we have seem certain state $s$:
-$$ \begin{align*} \hat{r} &= r + B(N(s)) \\ \text{with}\quad s'&>s \Rightarrow N(s')< N(s). \end{align*} $$
+$$ \begin{align*} \hat{r} &= r + r^i(N(s)) \\ \text{with}\quad s'&>s \Rightarrow N(s')< N(s). \end{align*} $$
 - But what does counting mean in continuous spaces?
 :::
 
@@ -453,7 +458,7 @@ $$ \begin{align*} \hat{r} &= r + B(N(s)) \\ \text{with}\quad s'&>s \Rightarrow N
 \text{Before:}\quad \underbrace{p(s)}_{\text{probability}\\ \text{/ density}} &= \underbrace{\overbrace{\frac{N(s)}{n}}}^{\text{count}}_{\text{total visits}} \\ \text{After:}\qquad p'(s) &= \frac{N(s)+1}{n+1}.
 \end{align*}$$]{.math-incremental}
 - Can we use $p_\theta(s)$ and $p_{\theta'}(s)$ to get a **pseudo-count** $\hat{N}(s)$?
-- Bonus used by [@Bellemare2016countbased]: $B(\hat{N}(s)) = \sqrt{\frac{1}{\hat{N(s)}}}$.
+- Bonus used by [@Bellemare2016countbased]: $r^i(\hat{N}(s)) = \sqrt{\frac{1}{\hat{N(s)}}}$.
 - Various alternatives available.
 :::
 
@@ -465,7 +470,7 @@ $$ \begin{align*} \hat{r} &= r + B(N(s)) \\ \text{with}\quad s'&>s \Rightarrow N
 - Fit model $p_\theta(s)$ to all states $\Dc$ seen so far.
 - Take step $t$ and osberve $s_t$.
 - Fit new model $p_{\theta'}(s)$ to $\Dc \cup s_t$.
-- Set $\hat{r}_t = r_t + B(\hat{N}(s))$.
+- Set $\hat{r}_t = r_t + r^i(\hat{N}(s))$.
 :::
 :::
 
@@ -658,8 +663,95 @@ $\textcolor{green}{\mathbf{+}\text{ No change to original reward function}}\quad
 # Random network distillation
 
 ::: small
+RND [@Burda2018randomnetworkdistillation] uses two neural networks that consider the same state $s$, but they have different jobs:
+
+::: incremental
+1. The **target network** $f(s)$ is a neural network that is initialized randomly and then never changed.\
+*Think of it as a some oracle that takes the state (e.g., the pixels of the screen) and outputs a random string of numbers.*
+2. The **predictor network** $f_\theta(s)$ is allowed to learn. Its job is to *guess what the target network's output will be*.
+:::
+
+::: fragment
+$$\Rightarrow\text{ Intrinsic reward:} \quad r^i = \norm{f_\theta(s) - f(s)}^2.$$
+:::
+
+::: fragment
+### How does this create "curiosity"?
+:::
+
+::: incremental
+- **Familiar territory**: we see similar states $s$ multiple times $\Rightarrow$ We can learn what $f(s)$ predicts $\Rightarrow$ The prediction error is small.
+- **Unexplored territory**: In states that the predictor has not seen, it has to "guess" at the target $\Rightarrow$ The prediction error is large. 
+:::
+
+::: fragment
+::: columns-8-2
+::: platzhalter
+### RND solves the "Noisy TV problem"
+
+::: incremental
+- Other curiosity methods reward the agent if it cannot predict the next frame of the game. 
+- If we encounter a noisy TV, the agent remains curious for ever, as it cannot predict the outcome.
+- RND fixes this:
+  - If the agent sees a TV with static, the target $f(s)$ gives a constant, predictable output for that specific pattern.
+  - The predictor network $f_\theta(s)$ can quickly learn that pattern.
+  - The error drops to zero, and the agent moves on to explore truly novel states. 
+:::
+:::
+
+![[Source: [OpenAI blog](https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/)]](videos/13-exploration/noisyTV.mp4){width=220px .controls .autoplay .muted }
 
 :::
+:::
+
+::: footer
+:bulb: In ML, **knowledge distillation** is the process of teaching a student network to mimic a teacher network. In RND, the predictor attempts to "distill" the frozen, random knowledge of the target network into itself.
+:::
+
+:::
+
+# Example: Montezuma's revenge
+
+::: small
+::: columns-2-3
+::: platzhalter
+![Discovery of new rooms to satisfy curiosity. Then revisiting those rooms to maximize the extrinsic reward. [Source: [OpenAI blog](https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/)]](videos/13-exploration/RND-montezuma.mp4){width=500px .controls .autoplay .muted }
+\
+\
+
+
+:::
+
+::: platzhalter
+::: fragment
+![Spikes in the intrinsic reward at new events [@Burda2018randomnetworkdistillation].](images/13-exploration/RND-montezuma.png){width=600px}
+:::
+\
+\
+
+::: fragment
+![Good performance also for Super Mario. [Source: [OpenAI blog](https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/)]](videos/13-exploration/RND-mario.mp4){width=350px .controls .autoplay .muted }
+:::
+:::
+:::
+:::
+
+::: footer
+
+:::
+
+# Comparison between ICM and RND
+
+::: small
+| Feature | Intrinsic Curiosity Module (ICM) | Random Network Distillation (RND) |
+| :- | :- | :- |
+| Core Mechanism | Predicts the next state given the current state and action (*forward dynamics*). | Predicts the output of a fixed, randomly initialized neural network on the current state. |
+| The "Noisy TV" problem | Vulnerable. If a screen shows unpredictable random noise, ICM gets trapped staring at it because prediction error remains high. | Immune. The random target network outputs a completely deterministic (though random) function. The predictor network learns it quite easily, dropping the reward to zero. |
+| Complexity | High. Requires training three sub-networks: an encoder, an inverse dynamics model, and a forward dynamics model. | Low. Requires training only one network (the predictor) to match a frozen, untrained target network. |
+| Scalability | Harder to scale because compounding forward-prediction errors in high-dimensional state spaces create erratic reward signals. | Highly scalable. It handles raw very exceptionally well (and famously allowed PPO to crack Montezuma's Revenge). |
+:::
+
+
 
 # Relation between exploration and reward shaping
 
@@ -667,27 +759,49 @@ $\textcolor{green}{\mathbf{+}\text{ No change to original reward function}}\quad
 The fundamental difference between exploration and **reward shaping** lies in who defines the reward and why.
 
 ::: incremental
-- Reward Shaping is a top-down approach where a human engineer hard-codes external hints into the environment.
-- Model Curiosity is a bottom-up approach where the agent generates its own internal rewards based on its own surprise and ignorance.
+- Reward Shaping: **top-down approach** where a human engineer hard-codes external hints into the environment.
+- Model Curiosity: **bottom-up approach** where the agent generates its own internal rewards based on surprise and ignorance.
 :::
 
-### Reward Shaping (The Human Guide)
+::: fragment
+### Reward shaping (the human guide)
+:::
 
-Reward shaping is when a human designer manually injects extra, frequent rewards into the environment to gently guide the agent toward the ultimate goal. It is the RL equivalent of playing the "Hot or Cold" game with a child.
-
-### How it works:
-Instead of only giving the agent a reward of $+1$ when it reaches the end of a maze, the programmer adds an extra mathematical function that rewards the agent for getting closer to the exit.
-For example, every step that reduces the straight-line distance to the goal might give the agent a tiny bonus of $+0.01$.
+::: incremental
+- Instead of only giving the agent a sparse reward at the end of an episode, we add a function that rewards the agent for reaching partial objectives.
+- For example, every step that reduces the straight-line distance to the goal might give the agent a small bonus.
+:::
 
 ::: columns-4-1
 ::: platzhalter
-### The Catch: The Perverse Incentive Problem
-Reward shaping is incredibly notorious for causing unintended side effects if not done perfectly. Because humans are basically telling the agent how to solve the problem rather than just what the problem is, the agent will often find loopholes to maximize the shaped reward without ever solving the actual task.
+::: fragment
+### Drawback: unintended side effects
+:::
 
-*Famous Example*: In a [boat-racing video game](https://openai.com/index/faulty-reward-functions/), researchers shaped the reward by giving the boat points for hitting targets along the track. Instead of finishing the race, the AI learned to drive in circles, infinitely loops through a specific cluster of targets, and constantly set itself on fire because doing so yielded more points than winning the actual race.
+::: incremental
+- Reward shaping can quickly cause unintended side effects if not done perfectly. 
+- Since humans are essentially telling the agent how to solve the problem rather than just what the problem is, the agent will often find loopholes to maximize the shaped reward without solving the actual task.
+- **Popular Example**: [Boat-racing video game](https://openai.com/index/faulty-reward-functions/).
+  - Researchers shaped the reward by giving the boat points for hitting targets along the track. 
+  - Instead of finishing the race, the agent learned to drive in circles, infinitely loops through a specific cluster of targets, and constantly set itself on fire because doing so yielded more points than winning the actual race. 
+:::
 :::
 
 ![](images/13-exploration/boat-racing.gif){width=400px}
+:::
+:::
+
+# Summary / what we have learned today
+
+::: small
+::: incremental
+- Various ways to encourage seeing previously unknown territory.
+  - Pseudo-counts to "count" how often states have been seen, then benefit unknown states.
+  - Bayes' theorem / Thompson sampling to update the belief of a reward.
+  - Information gain to select states that we believe to yield a lot of new information.
+- Intrinsic curiosity can be realized by adding rewards for previously unseen situations.
+  - Novelty vs. curiosity: "Which states haven't been seen yet?" vs. "Let's go where we cannot predict what's going to happen."
+- Bootstrapping over ensembles of DQNs can also allow us to identify hard-to-predict territory (disagreement in the ensemble).
 :::
 :::
 

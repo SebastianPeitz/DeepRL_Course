@@ -6105,8 +6105,8 @@ TD3
 <h3><a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">Entropy</a> (defined by Claude Shannon in 1948).</h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">SAC <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> introduces an <strong>entropy term</strong> in the loss function.</li>
-<li class="fragment">It describes the level of uncertainty (or unpredictability) of a random variable. <span class="math display">\[\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}\]</span></li>
+<li class="fragment">SAC <span class="citation">(<a href="#ref-Haarnoja2018sac">Haarnoja, Zhou, Abbeel, et al. 2018</a>)</span> introduces an <strong>entropy term</strong> in the loss function. <span class="math display">\[\begin{equation} L_\pi(\phi)=\sum_{t=0}^{T-1}\gamma^t \Expsub{r_t + \alpha \Hc(\piphi\agivenb{\cdot}{s_t})}{(s_t,a_t)\sim\rho_{\piphi}}, \quad\text{where}~ \Hc(\piphi\agivenb{\cdot}{s}) = \Expsub{-\log \piphi\agivenb{a}{s}}{a \sim \piphi\agivenb{\cdot}{s}}. \label{eq:Adv2_entropy_objective} \end{equation}\]</span></li>
+<li class="fragment">It describes the level of uncertainty (or unpredictability) of a random variable.</li>
 <li class="fragment"><span class="math inline">\(\Hc(\piphi\agivenb{\cdot}{s_t})\)</span> is the entropy, measuring how unpredictable the policy is.<br />
 <span class="fragment"><strong>High entropy</strong> <span class="math inline">\(\Rightarrow\)</span> the agent explores widely.</span><span class="math inline">\(\quad\)</span> <span class="fragment"><strong>Low entropy</strong> <span class="math inline">\(\Rightarrow\)</span> it is focused on a few actions.</span></li>
 <li class="fragment">The <em>temperature</em> <span class="math inline">\(\alpha\)</span> (a tunig parameter) determines how much the agent values exploration vs. exploitation.</li>
@@ -6284,7 +6284,7 @@ V^\pi(s_t) &amp;= \Expsub{\sum_{k=0}^{\infty} \gamma^k \cbracket{r_{t+k} + \alph
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Because the action <span class="math inline">\(a\)</span> is sampled from a stochastic policy <span class="math inline">\(\piphi\)</span>, we cannot backpropagate gradients from the critic through the action to the actor directly.</li>
-<li class="fragment">Fix in SAC <span class="math inline">\(\Rightarrow\)</span> the <strong>reparameterization trick</strong>: We express the action as a deterministic function of the state and an independent noise vector <span class="math inline">\(\epsilon\)</span>: <span class="math display">\[a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.\]</span>
+<li class="fragment">Fix in SAC <span class="math inline">\(\Rightarrow\)</span> the <a href="https://en.wikipedia.org/wiki/Reparameterization_trick"><strong>reparameterization trick</strong></a>: We express the action as a deterministic function of the state and an independent noise vector <span class="math inline">\(\epsilon\)</span>: <span class="math display">\[a = f_\phi(\epsilon; s) = \tanh(\mu_\phi(s) + \sigma_\phi(s) \odot \epsilon), \quad \epsilon \sim \Normal{0}{I}.\]</span>
 <ul class="incremental">
 <li class="fragment">The neural network deterministically outputs the mean <span class="math inline">\(\mu_\phi(s)\)</span> and standard deviation <span class="math inline">\(\sigma_\phi(s)\)</span>.</li>
 <li class="fragment">The <span class="math inline">\(\tanh\)</span> function bounds the actions to a valid range (e.g., <span class="math inline">\([-1, 1]\)</span>).</li>

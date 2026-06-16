@@ -199,9 +199,10 @@
 </ul></li>
 <li>Exploration in continuous spaces
 <ul>
-<li>The counting problem</li>
-<li>Intrinsic motivation</li>
+<li>Novelty-driven exploration: intrinsic motivation</li>
+<li>The counting problem &amp; pseudo-counts</li>
 <li>Curiosity-driven exploration</li>
+<li>Exploration via posterior sampling</li>
 <li>Random network distillation</li>
 </ul></li>
 </ul>
@@ -1751,6 +1752,24 @@ p(A \cap B) &amp;= p\agivenb{A}{B} p(B) \fragment{ = p\agivenb{B}{A} p(A) } \\
 </div>
 </div>
 </section>
+<section id="summary" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<ul>
+<li><strong>Optimistic exploration</strong> by estimating upper confidence bounds.</li>
+<li><strong>Posterior sampling</strong>: updating the belief of a reward (the prior) by using evidence <span class="math inline">\(\Rightarrow\)</span> Bayes’ theorem.</li>
+<li><strong>Information gain</strong>: which actions give me the most information about the world?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="exploration-in-continuous-spaces" class="slide level1">
 <div class="decker">
 <div class="alignment">
@@ -1768,8 +1787,8 @@ p(A \cap B) &amp;= p\agivenb{A}{B} p(B) \fragment{ = p\agivenb{B}{A} p(A) } \\
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">As we have seen before (e.g., the UCB in Eq. <span class="math inline">\(\eqref{eq:Exp_UCB}\)</span>), a common theme for exploration to add some form of <strong>bonus</strong> <span class="math inline">\(B\)</span> to the reward signal that promotes exploration: <span class="math display">\[ \hat{r} = r + B(N(s)). \]</span></li>
-<li class="fragment">This is a special case of the general concept of <strong>intrinsic motivation</strong>: <span class="fragment">We modify the reward signal in such a way that the agent is <em>motivated</em> (i.e., rewarded) to explore unknown territory: <span class="math display">\[ \hat{r} = r + \beta B.\]</span></span></li>
+<li class="fragment">As we have seen before (e.g., the UCB in Eq. <span class="math inline">\(\eqref{eq:Exp_UCB}\)</span>), a common theme for exploration to add some form of bonus <span class="math inline">\(r^i\)</span> to the reward signal that promotes exploration (also referred to as <strong>intrinsic reward</strong>, thus the superscript <span class="math inline">\(^i\)</span>): <span class="math display">\[ \hat{r} = r + r^i(N(s)). \]</span></li>
+<li class="fragment">This is a special case of the general concept of <strong>intrinsic motivation</strong>: <span class="fragment">We modify the reward signal in such a way that the agent is <em>motivated</em> (i.e., rewarded) to explore unknown territory: <span class="math display">\[ \hat{r} = r + \beta r^i.\]</span></span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1788,14 +1807,14 @@ p(A \cap B) &amp;= p\agivenb{A}{B} p(B) \fragment{ = p\agivenb{B}{A} p(A) } \\
 <td align="left">Pseudo-counts (CTS, PixelCNN), count-based hashing</td>
 </tr>
 <tr>
-<td align="left">Knowledge gain / reduction of uncertainty</td>
-<td align="left">“How much does this experience improve my model of the world?”</td>
-<td align="left">RND (random network distillation), disagreement ensembles</td>
-</tr>
-<tr>
 <td align="left">Prediction error / surprise</td>
 <td align="left">“Can I predict what happens next if I take this action?”</td>
 <td align="left">ICM (intrinsic curiosity module)</td>
+</tr>
+<tr>
+<td align="left">Knowledge gain / reduction of uncertainty</td>
+<td align="left">“How much does this experience improve my model of the world?”</td>
+<td align="left">RND (random network distillation), disagreement ensembles</td>
 </tr>
 </tbody>
 </table>
@@ -1818,7 +1837,7 @@ p(A \cap B) &amp;= p\agivenb{A}{B} p(B) \fragment{ = p\agivenb{B}{A} p(A) } \\
 <div class="grid-layout" style="grid-template-columns: 1fr 1fr 1fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">As motivated in UCB (Eq. <span class="math inline">\(\eqref{eq:Exp_UCB}\)</span>), we can add a bonus <span class="math inline">\(B\)</span> to the reward that shrinks with the number of times we have seem certain state <span class="math inline">\(s\)</span>: <span class="math display">\[ \begin{align*} \hat{r} &amp;= r + B(N(s)) \\ \text{with}\quad s&#39;&amp;&gt;s \Rightarrow N(s&#39;)&lt; N(s). \end{align*} \]</span></li>
+<li class="fragment">As motivated in UCB (Eq. <span class="math inline">\(\eqref{eq:Exp_UCB}\)</span>), we can add a bonus <span class="math inline">\(B\)</span> to the reward that shrinks with the number of times we have seem certain state <span class="math inline">\(s\)</span>: <span class="math display">\[ \begin{align*} \hat{r} &amp;= r + r^i(N(s)) \\ \text{with}\quad s&#39;&amp;&gt;s \Rightarrow N(s&#39;)&lt; N(s). \end{align*} \]</span></li>
 <li class="fragment">But what does counting mean in continuous spaces?</li>
 </ul>
 </div>
@@ -1893,7 +1912,7 @@ Walker 2D (SAC).
 \text{Before:}\quad \underbrace{p(s)}_{\text{probability}\\ \text{/ density}} &amp;= \underbrace{\overbrace{\frac{N(s)}{n}}}^{\text{count}}_{\text{total visits}} \\ \text{After:}\qquad p&#39;(s) &amp;= \frac{N(s)+1}{n+1}.
 \end{align*}\]</span></span></li>
 <li class="fragment">Can we use <span class="math inline">\(p_\theta(s)\)</span> and <span class="math inline">\(p_{\theta&#39;}(s)\)</span> to get a <strong>pseudo-count</strong> <span class="math inline">\(\hat{N}(s)\)</span>?</li>
-<li class="fragment">Bonus used by <span class="citation">(<a href="#ref-Bellemare2016countbased">Bellemare et al. 2016</a>)</span>: <span class="math inline">\(B(\hat{N}(s)) = \sqrt{\frac{1}{\hat{N(s)}}}\)</span>.</li>
+<li class="fragment">Bonus used by <span class="citation">(<a href="#ref-Bellemare2016countbased">Bellemare et al. 2016</a>)</span>: <span class="math inline">\(r^i(\hat{N}(s)) = \sqrt{\frac{1}{\hat{N(s)}}}\)</span>.</li>
 <li class="fragment">Various alternatives available.</li>
 </ul>
 </div>
@@ -1905,7 +1924,7 @@ Walker 2D (SAC).
 <li>Fit model <span class="math inline">\(p_\theta(s)\)</span> to all states <span class="math inline">\(\Dc\)</span> seen so far.</li>
 <li>Take step <span class="math inline">\(t\)</span> and osberve <span class="math inline">\(s_t\)</span>.</li>
 <li>Fit new model <span class="math inline">\(p_{\theta&#39;}(s)\)</span> to <span class="math inline">\(\Dc \cup s_t\)</span>.</li>
-<li>Set <span class="math inline">\(\hat{r}_t = r_t + B(\hat{N}(s))\)</span>.</li>
+<li>Set <span class="math inline">\(\hat{r}_t = r_t + r^i(\hat{N}(s))\)</span>.</li>
 </ul>
 </div>
 </div>
@@ -2267,7 +2286,156 @@ Robustness with 40 % noisy pixels.
 <div class="area">
 <div class="box block">
 <div class="small">
+<p>RND <span class="citation">(<a href="#ref-Burda2018randomnetworkdistillation">Burda et al. 2019</a>)</span> uses two neural networks that consider the same state <span class="math inline">\(s\)</span>, but they have different jobs:</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">The <strong>target network</strong> <span class="math inline">\(f(s)\)</span> is a neural network that is initialized randomly and then never changed.<br />
+<em>Think of it as a some oracle that takes the state (e.g., the pixels of the screen) and outputs a random string of numbers.</em></li>
+<li class="fragment">The <strong>predictor network</strong> <span class="math inline">\(f_\theta(s)\)</span> is allowed to learn. Its job is to <em>guess what the target network’s output will be</em>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><span class="math display">\[\Rightarrow\text{ Intrinsic reward:} \quad r^i = \norm{f_\theta(s) - f(s)}^2.\]</span></p>
+</div>
+<div class="fragment">
+<h3 id="how-does-this-create-curiosity">How does this create “curiosity”?</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Familiar territory</strong>: we see similar states <span class="math inline">\(s\)</span> multiple times <span class="math inline">\(\Rightarrow\)</span> We can learn what <span class="math inline">\(f(s)\)</span> predicts <span class="math inline">\(\Rightarrow\)</span> The prediction error is small.</li>
+<li class="fragment"><strong>Unexplored territory</strong>: In states that the predictor has not seen, it has to “guess” at the target <span class="math inline">\(\Rightarrow\)</span> The prediction error is large.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 8fr 2fr;">
+<div id="rnd-solves-the-noisy-tv-problem" class="platzhalter">
+<h3>RND solves the “Noisy TV problem”</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Other curiosity methods reward the agent if it cannot predict the next frame of the game.</li>
+<li class="fragment">If we encounter a noisy TV, the agent remains curious for ever, as it cannot predict the outcome.</li>
+<li class="fragment">RND fixes this:
+<ul class="incremental">
+<li class="fragment">If the agent sees a TV with static, the target <span class="math inline">\(f(s)\)</span> gives a constant, predictable output for that specific pattern.</li>
+<li class="fragment">The predictor network <span class="math inline">\(f_\theta(s)\)</span> can quickly learn that pattern.</li>
+<li class="fragment">The error drops to zero, and the agent moves on to explore truly novel states.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="media">
+<figure class="video" style="height:auto;width:220px;">
+<video aria-label="[Source: OpenAI blog]" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/13-exploration/noisyTV.mp4">
 
+</video>
+<figcaption>
+[Source: <a href="https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/">OpenAI blog</a>]
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> In ML, <strong>knowledge distillation</strong> is the process of teaching a student network to mimic a teacher network. In RND, the predictor attempts to “distill” the frozen, random knowledge of the target network into itself.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-montezumas-revenge" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Montezuma’s revenge</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 2fr 3fr;">
+<div class="platzhalter">
+<p><span class="media"><span class="figure video" style="height:auto;width:500px;"><video aria-label="Discovery of new rooms to satisfy curiosity. Then revisiting those rooms to maximize the extrinsic reward. [Source: OpenAI blog]" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/13-exploration/RND-montezuma.mp4"></video><span class="figcaption"><span>Discovery of new rooms to satisfy curiosity. Then revisiting those rooms to maximize the extrinsic reward. [Source: <a href="https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/">OpenAI blog</a>]</span></span></span></span><br />
+<br />
+</p>
+</div>
+<div class="platzhalter">
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:600px;">
+<img src="images/13-exploration/RND-montezuma.png" style="height:auto;width:100%;" aria-label="Spikes in the intrinsic reward at new events (Burda et al. 2019)." alt="images/13-exploration/RND-montezuma.png" />
+<figcaption>
+Spikes in the intrinsic reward at new events <span class="citation">(<a href="#ref-Burda2018randomnetworkdistillation">Burda et al. 2019</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+<p><br />
+<br />
+</p>
+<div class="fragment">
+<div class="media">
+<figure class="video" style="height:auto;width:350px;">
+<video aria-label="Good performance also for Super Mario. [Source: OpenAI blog]" controls="1" muted="1" allow="autoplay" data-autoplay="1" style="height:auto;width:100%;" data-src="videos/13-exploration/RND-mario.mp4">
+
+</video>
+<figcaption>
+Good performance also for Super Mario. [Source: <a href="https://openai.com/index/reinforcement-learning-with-prediction-based-rewards/">OpenAI blog</a>]
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-between-icm-and-rnd" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Comparison between ICM and RND</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<table>
+<thead>
+<tr>
+<th align="left">Feature</th>
+<th align="left">Intrinsic Curiosity Module (ICM)</th>
+<th align="left">Random Network Distillation (RND)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Core Mechanism</td>
+<td align="left">Predicts the next state given the current state and action (<em>forward dynamics</em>).</td>
+<td align="left">Predicts the output of a fixed, randomly initialized neural network on the current state.</td>
+</tr>
+<tr>
+<td align="left">The “Noisy TV” problem</td>
+<td align="left">Vulnerable. If a screen shows unpredictable random noise, ICM gets trapped staring at it because prediction error remains high.</td>
+<td align="left">Immune. The random target network outputs a completely deterministic (though random) function. The predictor network learns it quite easily, dropping the reward to zero.</td>
+</tr>
+<tr>
+<td align="left">Complexity</td>
+<td align="left">High. Requires training three sub-networks: an encoder, an inverse dynamics model, and a forward dynamics model.</td>
+<td align="left">Low. Requires training only one network (the predictor) to match a frozen, untrained target network.</td>
+</tr>
+<tr>
+<td align="left">Scalability</td>
+<td align="left">Harder to scale because compounding forward-prediction errors in high-dimensional state spaces create erratic reward signals.</td>
+<td align="left">Highly scalable. It handles raw very exceptionally well (and famously allowed PPO to crack Montezuma’s Revenge).</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -2286,25 +2454,71 @@ Robustness with 40 % noisy pixels.
 <p>The fundamental difference between exploration and <strong>reward shaping</strong> lies in who defines the reward and why.</p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Reward Shaping is a top-down approach where a human engineer hard-codes external hints into the environment.</li>
-<li class="fragment">Model Curiosity is a bottom-up approach where the agent generates its own internal rewards based on its own surprise and ignorance.</li>
+<li class="fragment">Reward Shaping: <strong>top-down approach</strong> where a human engineer hard-codes external hints into the environment.</li>
+<li class="fragment">Model Curiosity: <strong>bottom-up approach</strong> where the agent generates its own internal rewards based on surprise and ignorance.</li>
 </ul>
 </div>
-<h3 id="reward-shaping-the-human-guide">Reward Shaping (The Human Guide)</h3>
-<p>Reward shaping is when a human designer manually injects extra, frequent rewards into the environment to gently guide the agent toward the ultimate goal. It is the RL equivalent of playing the “Hot or Cold” game with a child.</p>
-<h3 id="how-it-works">How it works:</h3>
-<p>Instead of only giving the agent a reward of <span class="math inline">\(+1\)</span> when it reaches the end of a maze, the programmer adds an extra mathematical function that rewards the agent for getting closer to the exit. For example, every step that reduces the straight-line distance to the goal might give the agent a tiny bonus of <span class="math inline">\(+0.01\)</span>.</p>
+<div class="fragment">
+<h3 id="reward-shaping-the-human-guide">Reward shaping (the human guide)</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Instead of only giving the agent a sparse reward at the end of an episode, we add a function that rewards the agent for reaching partial objectives.</li>
+<li class="fragment">For example, every step that reduces the straight-line distance to the goal might give the agent a small bonus.</li>
+</ul>
+</div>
 <div class="grid-layout" style="grid-template-columns: 4fr 1fr;">
-<div id="the-catch-the-perverse-incentive-problem" class="platzhalter">
-<h3>The Catch: The Perverse Incentive Problem</h3>
-<p>Reward shaping is incredibly notorious for causing unintended side effects if not done perfectly. Because humans are basically telling the agent how to solve the problem rather than just what the problem is, the agent will often find loopholes to maximize the shaped reward without ever solving the actual task.</p>
-<p><em>Famous Example</em>: In a <a href="https://openai.com/index/faulty-reward-functions/">boat-racing video game</a>, researchers shaped the reward by giving the boat points for hitting targets along the track. Instead of finishing the race, the AI learned to drive in circles, infinitely loops through a specific cluster of targets, and constantly set itself on fire because doing so yielded more points than winning the actual race.</p>
+<div class="platzhalter">
+<div class="fragment">
+<h3 id="drawback-unintended-side-effects">Drawback: unintended side effects</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Reward shaping can quickly cause unintended side effects if not done perfectly.</li>
+<li class="fragment">Since humans are essentially telling the agent how to solve the problem rather than just what the problem is, the agent will often find loopholes to maximize the shaped reward without solving the actual task.</li>
+<li class="fragment"><strong>Popular Example</strong>: <a href="https://openai.com/index/faulty-reward-functions/">Boat-racing video game</a>.
+<ul class="incremental">
+<li class="fragment">Researchers shaped the reward by giving the boat points for hitting targets along the track.</li>
+<li class="fragment">Instead of finishing the race, the agent learned to drive in circles, infinitely loops through a specific cluster of targets, and constantly set itself on fire because doing so yielded more points than winning the actual race.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 <div class="media">
 <figure class="image" style="height:auto;width:400px;">
 <img src="images/13-exploration/boat-racing.gif" style="height:auto;width:100%;" alt="images/13-exploration/boat-racing.gif" />
 </figure>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-what-we-have-learned-today" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Summary / what we have learned today</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Various ways to encourage seeing previously unknown territory.
+<ul class="incremental">
+<li class="fragment">Pseudo-counts to “count” how often states have been seen, then benefit unknown states.</li>
+<li class="fragment">Bayes’ theorem / Thompson sampling to update the belief of a reward.</li>
+<li class="fragment">Information gain to select states that we believe to yield a lot of new information.</li>
+</ul></li>
+<li class="fragment">Intrinsic curiosity can be realized by adding rewards for previously unseen situations.
+<ul class="incremental">
+<li class="fragment">Novelty vs. curiosity: “Which states haven’t been seen yet?” vs. “Let’s go where we cannot predict what’s going to happen.”</li>
+</ul></li>
+<li class="fragment">Bootstrapping over ensembles of DQNs can also allow us to identify hard-to-predict territory (disagreement in the ensemble).</li>
+</ul>
 </div>
 </div>
 </div>
@@ -2323,6 +2537,9 @@ Robustness with 40 % noisy pixels.
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-Bellemare2016countbased" class="csl-entry">
 Bellemare, Marc, Sriram Srinivasan, Georg Ostrovski, Tom Schaul, David Saxton, and Remi Munos. 2016. <span>“Unifying Count-Based Exploration and Intrinsic Motivation.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by D. Lee, M. Sugiyama, U. Luxburg, I. Guyon, and R. Garnett. Vol. 29. Curran Associates, Inc.
+</div>
+<div id="ref-Burda2018randomnetworkdistillation" class="csl-entry">
+Burda, Yuri, Harrison Edwards, Amos Storkey, and Oleg Klimov. 2019. <span>“Exploration by Random Network Distillation.”</span> In <em>International Conference on Learning Representations</em>. <a href="https://openreview.net/forum?id=H1lJJnR5Ym">https://openreview.net/forum?id=H1lJJnR5Ym</a>.
 </div>
 <div id="ref-Ferreira2024mab" class="csl-entry">
 Ferreira, Rafael Pereira, Emil Schubert, and Américo Scotti. 2024. <span>“Exploring Multi-Armed Bandit (MAB) as an AI Tool for Optimising GMA-WAAM Path Planning.”</span> <em>Journal of Manufacturing and Materials Processing</em> 8 (3).
