@@ -350,7 +350,7 @@ $$I(a) = \Hc(a^*) - \ExpC{\Hc(a^*)}{r}.$$
 - Maximizing information gain would waste our time testing highly unpredictable arms that we already know have poor rewards. 
 - We need to consider the immediate loss, which we call **regret** ($\Delta$).
   - The expected regret of pulling arm $a$ is the difference between the maximum possible expected reward and the expected reward of arm $a$:
-  $$\Delta(a) = \mathbb{E}[R(A^*)] - \mathbb{E}[R(a)]$$
+  $$\Delta(a) = \mathbb{E}[R(a^*)] - \mathbb{E}[R(a)]$$
   - **Information-directed sampling** (**IDS**) defines the information ratio for each arm:
   $$\Psi(a) = \frac{\Delta(a)^2}{I(a)}$$
   - "Cost-to-benefit" ratio: regret is the cost, information gain is the benefit.

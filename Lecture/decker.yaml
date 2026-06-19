@@ -97,6 +97,7 @@ math:
     Bc: '{\mathcal{B}}'
     Dc: '{\mathcal{D}}'
     Hc: '{\mathcal{H}}'
+    Lc: '{\mathcal{L}}'
     Nc: '{\mathcal{N}}'
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
@@ -129,6 +130,7 @@ math:
     Dtrain: '{\mathcal{D}_{\mathsf{train}}}'
     Dtest: '{\mathcal{D}_{\mathsf{test}}}'
     iterate: ['{{#1}^{(#2)}}', 2]
+    iteratesub: ['{{#1}^{(#2)}_{#3}}', 3]
 
     st: ['{s_t}']
     stp: ['{s_{t+1}}']
