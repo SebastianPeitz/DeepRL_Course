@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "16.06.2026 20:00"
+        "20.06.2026 11:02"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chart": {
@@ -289,7 +289,7 @@
             {
                 "id": false,
                 "src": "14-optimal-control-deck.md",
-                "subtitle": "Optimal Control",
+                "subtitle": "Optimal Control & Feedback Control",
                 "title": "Deep Reinforcement Learning",
                 "url": "14-optimal-control-deck.html"
             },
@@ -445,7 +445,7 @@
             {
                 "id": false,
                 "src": "14-optimal-control-deck.md",
-                "subtitle": "Optimal Control",
+                "subtitle": "Optimal Control & Feedback Control",
                 "title": "Deep Reinforcement Learning",
                 "url": "14-optimal-control-deck.html"
             },
@@ -601,7 +601,7 @@
             {
                 "id": false,
                 "src": "14-optimal-control-deck.md",
-                "subtitle": "Optimal Control",
+                "subtitle": "Optimal Control & Feedback Control",
                 "title": "Deep Reinforcement Learning",
                 "url": "14-optimal-control-deck.html"
             },
@@ -757,7 +757,7 @@
             {
                 "id": false,
                 "src": "14-optimal-control-deck.md",
-                "subtitle": "Optimal Control",
+                "subtitle": "Optimal Control & Feedback Control",
                 "title": "Deep Reinforcement Learning",
                 "url": "14-optimal-control-deck.html"
             },
@@ -913,7 +913,7 @@
             {
                 "id": false,
                 "src": "14-optimal-control-deck.md",
-                "subtitle": "Optimal Control",
+                "subtitle": "Optimal Control & Feedback Control",
                 "title": "Deep Reinforcement Learning",
                 "url": "14-optimal-control-deck.html"
             },
@@ -1380,6 +1380,7 @@
                 "D_{\\mathsf{KL}}^{\\mathsf{max}}\\left( #1 \\middle \\| #2 \\right)",
                 2.0
             ],
+            "Lc": "{\\mathcal{L}}",
             "N": "{\\mathbb{N}}",
             "Nc": "{\\mathcal{N}}",
             "Normal": [
@@ -1451,6 +1452,10 @@
             "iterate": [
                 "{{#1}^{(#2)}}",
                 2.0
+            ],
+            "iteratesub": [
+                "{{#1}^{(#2)}_{#3}}",
+                3.0
             ],
             "nablaa": "{\\nabla_{\\mkern-6mu a\\mkern+2mu}}",
             "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",

@@ -1729,7 +1729,7 @@ p(A \cap B) &amp;= p\agivenb{A}{B} p(B) \fragment{ = p\agivenb{B}{A} p(A) } \\
 <li class="fragment">Maximizing information gain would waste our time testing highly unpredictable arms that we already know have poor rewards.</li>
 <li class="fragment">We need to consider the immediate loss, which we call <strong>regret</strong> (<span class="math inline">\(\Delta\)</span>).
 <ul class="incremental">
-<li class="fragment">The expected regret of pulling arm <span class="math inline">\(a\)</span> is the difference between the maximum possible expected reward and the expected reward of arm <span class="math inline">\(a\)</span>: <span class="math display">\[\Delta(a) = \mathbb{E}[R(A^*)] - \mathbb{E}[R(a)]\]</span></li>
+<li class="fragment">The expected regret of pulling arm <span class="math inline">\(a\)</span> is the difference between the maximum possible expected reward and the expected reward of arm <span class="math inline">\(a\)</span>: <span class="math display">\[\Delta(a) = \mathbb{E}[R(a^*)] - \mathbb{E}[R(a)]\]</span></li>
 <li class="fragment"><strong>Information-directed sampling</strong> (<strong>IDS</strong>) defines the information ratio for each arm: <span class="math display">\[\Psi(a) = \frac{\Delta(a)^2}{I(a)}\]</span></li>
 <li class="fragment">“Cost-to-benefit” ratio: regret is the cost, information gain is the benefit.</li>
 <li class="fragment">A low ratio means we are either getting a high reward (low regret <span class="math inline">\(\Delta\)</span>) or learning a lot about the system (high information gain <span class="math inline">\(I\)</span>), or both.</li>

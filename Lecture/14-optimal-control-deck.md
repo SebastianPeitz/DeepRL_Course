@@ -445,7 +445,7 @@ $$ \hat{Q} = \begin{bmatrix} Q & & & \\ & \ddots & & \\ & & Q & \\ & & & Q_f \en
 - We can now insert this into the linear-quadratic OCP \eqref{eq:OC_ocp_linear}:
 [$$\begin{align*} \min_{s,a} \cbracket{\sum_{t=0}^{T-1} s_t^\top Q s_t + a_t^\top R a_t} + s_T^\top Q_f s_T \quad
 &\text{s.t.}\quad s_{t+1}=A s_t + B a_t,~t=0,1,\ldots,T-1 \\
-\text{becomes}\qquad\qquad\qquad \min_{\hat{s},\hat{a}} \hat{s}^\top \hat{Q} \hat{s} + \hat{a}^\top \hat{a} \quad &\text{s.t.}\quad \hat{s} = G\hat{a} + Hs_0.
+\text{becomes}\qquad\qquad\qquad \min_{\hat{s},\hat{a}} \hat{s}^\top \hat{Q} \hat{s} + \hat{a}^\top \hat{R} \hat{a} \quad &\text{s.t.}\quad \hat{s} = G\hat{a} + Hs_0.
 \end{align*}$$]{.math-incremental}
 - **Question**: Do we have to consider $\hat{s}$ and $\hat{a}$ independently?\
 [$\Rightarrow$ Let's simply insert the constraints!
@@ -482,14 +482,55 @@ $$\begin{align*} (G\hat{a})^\top &= \hat{a}^\top G^\top\\ s_0^\top H^\top \hat{Q
 - Take the drivative with respect to $\textcolor{red}{\hat{a}}$:
 $$ \diff{}{\textcolor{red}{\hat{a}}} \cbracket{\textcolor{red}{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0}} =  2\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 G^\top \hat{Q} H \textcolor{blue}{s_0}.$$
 - Setting the gradient to zero yields a linear system (depending on the initial condition $\textcolor{blue}{s_0}$):
-$$ \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} = - G^\top \hat{Q} H \textcolor{blue}{s_0}.}$$
+$$ \begin{equation} \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} = - G^\top \hat{Q} H \textcolor{blue}{s_0}.} \label{eq:OC_ocp_linear_solution} \end{equation}$$
 :::
 
 :::
 
-<!-- ::: footer
-:bulb: The optimization variable $\textcolor{red}{\hat{a}}$ is shown in [red]{style="color: red;"}, the parametric dependency on the initial state $\textcolor{blue}{s_0}$ in [blue]{style="color: blue;"}.
-::: -->
+# Example: Control of a forklift (1)
+
+::: small
+::: columns-8-2
+::: platzhalter
+- Consider a simple vehicle driving on a plane (with mass $m$ and friction $d$):
+$$ s = \begin{bmatrix} p_1 \\ v_1 \\ p_2 \\ v_2\end{bmatrix}, \quad \dot{s} = \diff{s}{t}(t) = A_c s(t) + B_c a(t) = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & -d/m & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & -d/m\end{bmatrix} s(t) +\begin{bmatrix} 0 & 0 \\ 1 & 0 \\ 0 & 0 \\ 0 & 1 \end{bmatrix} a(t). $$
+:::
+
+![](images/14-optimal-control/Forklift.jpg){width=200px}
+
+:::
+
+::: incremental
+- This can be translated into a discrete-time system with time step $\Delta t$:
+$$ A = \exp(A_c \Delta t), \quad B = \cbracket{\int_0^{\Delta t} \exp(A(\Delta t - \tau))\dint{\tau}}B_c \fragment{ \quad\Longrightarrow\quad s_{t+1}=A s_t + B a_t. }$$
+- Control objective: Steer the forklift from $s_0=\rbracket{2~0~0~0}^\top$ to the origin with a small penalty on the control:
+$$ \min_{s,a} \sum_{t=0}^T \norm{s_t}_2^2 + \alpha \norm{a_t}_2^2 \quad\text{s.t.}\quad s_{t+1}=A s_t + B a_t. $$
+:::
+
+:::
+
+# Example: Control of a forklift (2)
+
+::: small
+::: columns-5-5
+::: incremental
+- Define individual control matrices: $$Q=\begin{bmatrix} 1 & & & \\ & 0 & & \\ & & 1 & \\ & & & 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}0.01 & \\ & 0.01\end{bmatrix}.$$
+- Assemble the matrices $\hat{Q}$ and $\hat{R}$. [With $T=50$, we get $$\hat{Q}\in\R^{204 \times 204}\quad\text{and}\quad\hat{R}\in\R^{100 \times 100}.$$]{.fragment}
+- Given the initial condition $s_0$, solve the linear system
+$$ \begin{equation} \cbracket{G^\top \hat{Q} G + \hat{R}} \hat{a} = - G^\top \hat{Q} H s_0. \tag{\ref{eq:OC_ocp_linear_solution}} \end{equation}$$
+- Simulate dynamics to get optimal trajectory $s^*$:
+$$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + H s_0. $$
+:::
+
+::: fragment
+![](images/14-optimal-control/Forklift-results2.png){width=450px}
+:::
+
+
+:::
+
+
+:::
 
 
 ------------------------------------------------------------------------------
@@ -500,13 +541,103 @@ $$ \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} = - G^\
 
 # Model predicitve control (MPC)
 
-
-
-Look at chapter 8 of [@Sutton1998]
-
 ::: small
+::: columns-1-1
+::: platzhalter
+::: incremental
+- Given a model, solving open-loop OCPs is a well-established field.
+- But there are also **drawbacks** in the application to real systems.
+  - Unforeseen events cannot be accounted for.
+  - External disturbances/uncertainties are hard/impossible to include.
+  - Smalles inaccuracies scale exopnentially over time.
+- **Question**: Can we close the loop around OCPs?
+:::
+
+::: fragment
+### Model predictive control (MPC)
+:::
+
+::: incremental
+- Let us solve the open-loop problem repeatedly on a shorter horizon $p \leq T$.
+- The "feedback" is setting the initial condition of the OCP.
+:::
 
 :::
+
+
+![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/14-optimal-control/open-closed-loop.svg){width=350px}
+
+:::
+:::
+
+# MPC scheme
+
+::: small
+::: columns-6-4
+![Source: [Wikipedia](https://de.wikipedia.org/wiki/Model_Predictive_Control).](images/14-optimal-control/MPC.svg){width=600px}
+
+::: platzhalter
+::: definition
+### The MPC loop
+
+::: incremental
+1. Measure system state $s_t$ and us it as initial state for the OCP \eqref{eq:OC_ocp}.
+1. Solve \eqref{eq:OC_ocp} using a model of the real system over a prediction horzion of length $p$.
+1. Apply first entry of $a^*$ (i.e., $a_0^*$) to the real system.
+1. Advance real system by one time step.
+1. Repeat.
+:::
+:::
+:::
+:::
+
+::: fragment
+### Pros and cons
+:::
+
+::: columns-1-1
+::: platzhalter
+[$\textcolor{green}{\mathbf{+}\text{ Very robust.}}$]{.fragment}\
+[$\textcolor{green}{\mathbf{+}\text{ No offline learning phase (if model known).}}$]{.fragment}\
+[$\textcolor{green}{\mathbf{+}\text{ Easy to include state constraints.}}$]{.fragment}\
+[$\textcolor{green}{\mathbf{+}\text{ Lots of theory.}}$ (e.g., [@GP17])]{.fragment}\
+:::
+::: platzhalter
+[$\textcolor{red}{\mathbf{-}\text{ Real-time capability (in particular for nonlinear models).}}$]{.fragment}
+[$\textcolor{red}{\mathbf{-}\text{ Control performance depends on model quality.}}$]{.fragment}
+:::
+:::
+:::
+
+# Relation to reinforcement learning
+
+::: small
+::: columns-6-4
+![](images/14-optimal-control/RL-vs-MPC.svg){width=800px}
+
+::: platzhalter
+### Trade-offs
+
+::: incremental
+- Learning a policy offline vs. solving an OCP online.
+- Expensive training vs. expensive inference.
+:::
+
+::: fragment
+### Approaches in between
+:::
+
+::: incremental
+- Explicit MPC
+- Differentiable predictive control (DPC)
+- Monte-Carlo tree search (MCTS)
+:::
+
+:::
+:::
+:::
+
+
 
 # Example: Autonomous driving
 
@@ -517,7 +648,11 @@ Trajectory planning plus MPC for following that trajectory
 :::
 
 
+# Explicit MPC
 
+::: small
+
+:::
 
 
 # Differentiable predictive control (DPC)
