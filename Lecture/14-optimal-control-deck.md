@@ -635,19 +635,33 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 ::: small
 We want to plan the trajectory of an autonomous vehicle from an initial position towards a terminal position.
 
-::: columns-1-1
+::: columns-7-5
 ::: platzhalter
 ::: incremental
-- Dynamics: Simplified **kinematic bicycle model**.\
-\
-![Source: [@Kong2015bicycle].](images/14-optimal-control/Bicycle.png){width=370px}
-- Objective: **terminal condition** $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
+- Dynamics: Simplified **kinematic bicycle model** [@Kong2015bicycle].\
+:::
+
+::: fragment
+::: columns-3-2
+![[Source](https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/BicycleModel.html).](images/14-optimal-control/Bicycle2.svg){width=370px}
+
+::: platzhalter
+$$\begin{align*}
+s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \mathsf{acc} \\ \delta \end{bmatrix}, \\
+\dot{s} &=\begin{bmatrix} s_4 \cos s_3 \\ s_4 \sin s_3 \\ \frac{s_4}{L} \tan a_2 \\ a_1 - \lambda s_4 \end{bmatrix}.
+\end{align*}$$
+:::
+:::
+:::
+
+::: incremental
+- Objective: **terminal condition** $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
 - Discretization: $\Delta t = 0.2$, $p=25$.
 :::
 :::
 
 ::: incremental
-- MPC optimization: Adam optimizer ($\eta=0.1$) for 10 steps.
+- MPC optimization: Adam ($\eta=0.1$); 10 steps.
 - Results:\
 ![](videos/14-optimal-control/MPC-bicycle.gif){width=480px}
 :::
@@ -689,14 +703,93 @@ We want to plan the trajectory of an autonomous vehicle from an initial position
 # Explicit MPC
 
 ::: small
+::: columns-3-7
+::: platzhalter
+::: incremental
+- MPC's main challenge: **large online cost**! 
+- Can we avoid this? $\Rightarrow$ Let's revisit the OCP formulation \eqref{eq:OC_ocp} in the MPC setting:
+$$\begin{equation} \begin{aligned} &\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
+\text{s.t.}\quad &\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}$$
+- This OCP is parameterized by the initial condition $\textcolor{blue}{s_0}$!
+- If we solve it for every $s_0\in\Sc$ and explicitly store $a^*(s_0)$ in a library, we can quickly retrieve it in the online phase.
+- But there are infinitely many $s_0$! :scream:
+- Options:
+  - Approximate by a finite number of $s_0$.
+  - Special case: linearity.
+:::
+:::
 
+::: fragment
+::: definition
+### The explicit linear-quadratic regulator [@Bemporad2002explicitlqr]
+
+::: columns-6-4
+
+::: platzhalter
+::: incremental
+- For linear models and quadratic costs, 
+$$\begin{align*} f(s,a)&=As+Ba,\\ \ell(s,a) &= s^\top Q s + a^\top R a, \end{align*}$$ 
+the solution space $a^*(s_0)$ for \eqref{eq:OC_mpc} is split into polygons on which the optimal feedback $a^*$ is an affine function of the initial condition $s_0$
+:::
+:::
+
+::: platzhalter
+\
+![](images/14-optimal-control/explicit-mpc.svg){width=240px .embed}
+:::
+:::
+
+::: incremental
+- Finite number of polygons $\Rightarrow$ finite number of OCPs to solve!
+- Algorithm for the **offline phase**:
+  1. Split the space of initial conditions into polygons $i=1,\ldots,N_p$.
+  1. Determine coefficients $W^i$ and $b_i$ for the affine feedback law (details in [@Bemporad2002explicitlqr]).
+- Drawback: Exponential growth of polygons with state dimension $n$.
+  - Workaround: Replace polygon by deep neural net [@Karg2020mpcdeep].
+:::
+:::
+:::
+:::
 :::
 
 
 # Differentiable predictive control (DPC)
 
 ::: small
+::: columns-5-5
 
+::: platzhalter
+::: incremental
+- Let's start with a policy network, just as in policy gradient methods: $a=\mu_\phi(s)$.
+- Inserting into the right-hand side of our model yields an autonomous system:
+$$s_{t+1}=f(s_t, \mu_\phi(s_t)).$$
+- We can now formulate a closed-loop performance criterion:
+$$L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu\phi(s_t)}. $$
+:::
+:::
+
+::: platzhalter
+![Differentiable predictive control framework [@Drogona2022].](images/14-optimal-control/DPC.png){width=750px}
+:::
+
+:::
+
+::: incremental
+- If the dynamics model $f$ (or a learned version $f_\theta$; see next lecture) is differentiable, then we can directly optimize the policy paramter $\phi$ via backpropagation and gradient descent: $$\phi \gets \phi - \eta\diff{L}{\phi}.$$
+- This is known as **differentiable predictive control** (**DPC**).
+:::
+:::
+
+# Summary / what we have learned
+
+::: small
+::: incremental
+- Knowing a model of the system dynamics can be very useful, not only for tabular reinforcement learning methods.
+- Open-loop = Planning: Given an initial condition $s_0$, find the optimal actions for an entire trajectory **once**.
+- MPC: Repeated solution of open-loop optimal control problems. 
+- Explicit MPC: Solving the open-loop problem in an offline phase in a parameterized fashion.
+- Differentiable predictive control (DPC): Policy optimization via direct differentiation through the dynamics model.
+:::
 :::
 
 
