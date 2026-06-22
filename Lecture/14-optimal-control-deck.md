@@ -515,7 +515,7 @@ $$ \min_{s,a} \sum_{t=0}^T \norm{s_t}_2^2 + \alpha \norm{a_t}_2^2 \quad\text{s.t
 ::: columns-5-5
 ::: incremental
 - Define individual control matrices: $$Q=\begin{bmatrix} 1 & & & \\ & 0 & & \\ & & 1 & \\ & & & 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}0.01 & \\ & 0.01\end{bmatrix}.$$
-- Assemble the matrices $\hat{Q}$ and $\hat{R}$. [With $T=50$, we get $$\hat{Q}\in\R^{204 \times 204}\quad\text{and}\quad\hat{R}\in\R^{100 \times 100}.$$]{.fragment}
+- Assemble the matrices $\hat{Q}$ and $\hat{R}$. [With $T=200$, we get $$\hat{Q}\in\R^{804 \times 804}\quad\text{and}\quad\hat{R}\in\R^{400 \times 400}.$$]{.fragment}
 - Given the initial condition $s_0$, solve the linear system
 $$ \begin{equation} \cbracket{G^\top \hat{Q} G + \hat{R}} \hat{a} = - G^\top \hat{Q} H s_0. \tag{\ref{eq:OC_ocp_linear_solution}} \end{equation}$$
 - Simulate dynamics to get optimal trajectory $s^*$:
@@ -523,14 +523,35 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 :::
 
 ::: fragment
-![](images/14-optimal-control/Forklift-results2.png){width=450px}
+![](images/14-optimal-control/Forklift-results.svg){.embed width=480px}
 :::
 
-
+:::
 :::
 
+<!-- # Example: Control of a forklift (2)
 
+::: small
+::: columns-5-5
+::: platzhalter
+[1. Define individual control matrices: $$Q=\begin{bmatrix} 1 & & & \\ & 0 & & \\ & & 1 & \\ & & & 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}0.01 & \\ & 0.01\end{bmatrix}.$$]{.fragment data-fragment-index=1}
 :::
+
+::: platzhalter
+[3. Given the initial condition $s_0$, solve the linear system
+$$ \begin{equation} \cbracket{G^\top \hat{Q} G + \hat{R}} \hat{a} = - G^\top \hat{Q} H s_0. \tag{\ref{eq:OC_ocp_linear_solution}} \end{equation}$$]{.fragment data-fragment-index=4}
+[4. Simulate dynamics to get optimal trajectory $s^*$:
+$$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + H s_0. $$]{.fragment data-fragment-index=5}
+:::
+:::
+
+[2. Assemble the matrices $\hat{Q}$ and $\hat{R}$.]{.fragment data-fragment-index=2} [With $T=200$, we get $\hat{Q}\in\R^{804 \times 804}$ and $\hat{R}\in\R^{400 \times 400}$.]{.fragment data-fragment-index=3}
+
+::: fragment
+![](images/14-optimal-control/Forklift-results2.svg){.embed width=1280px}
+:::
+
+::: -->
 
 
 ------------------------------------------------------------------------------
@@ -613,10 +634,12 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 
 ::: small
 ::: columns-6-4
-![](images/14-optimal-control/RL-vs-MPC.svg){width=800px}
+![](images/14-optimal-control/RL-vs-MPC.svg){width=800px .embed}
 
 ::: platzhalter
+::: fragment
 ### Trade-offs
+:::
 
 ::: incremental
 - Learning a policy offline vs. solving an OCP online.
