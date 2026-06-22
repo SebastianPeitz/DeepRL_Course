@@ -630,6 +630,30 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 :::
 :::
 
+# Example: Autonomous driving
+
+::: small
+We want to plan the trajectory of an autonomous vehicle from an initial position towards a terminal position.
+
+::: columns-1-1
+::: platzhalter
+::: incremental
+- Dynamics: Simplified **kinematic bicycle model**.\
+\
+![Source: [@Kong2015bicycle].](images/14-optimal-control/Bicycle.png){width=370px}
+- Objective: **terminal condition** $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
+- Discretization: $\Delta t = 0.2$, $p=25$.
+:::
+:::
+
+::: incremental
+- MPC optimization: Adam optimizer ($\eta=0.1$) for 10 steps.
+- Results:\
+![](videos/14-optimal-control/MPC-bicycle.gif){width=480px}
+:::
+:::
+:::
+
 # Relation to reinforcement learning
 
 ::: small
@@ -660,15 +684,6 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 :::
 :::
 
-
-
-# Example: Autonomous driving
-
-::: small
-Trajectory planning plus MPC for following that trajectory
-
-![](videos/14-optimal-control/MPC-bicycle.gif){width=500px}
-:::
 
 
 # Explicit MPC
