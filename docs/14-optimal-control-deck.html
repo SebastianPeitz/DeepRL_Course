@@ -396,7 +396,7 @@ Control</title>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment"><strong>True MDP</strong>: <span class="math inline">\(p\)</span> and <span class="math inline">\(r\)</span> (or <span class="math inline">\(f\)</span> and <span class="math inline">\(\ell\)</span>) are perfectly known a priori.</li>
-<li class="fragment"><strong>Approximated MDP</strong>: <span class="math inline">\(p\)</span> and <span class="math inline">\(r\)</span> (or <span class="math inline">\(f\)</span> and <span class="math inline">\(\ell\)</span>) need to be learned, <span class="math display">\[\tilde{p}\approx p,~ \tilde{r} \approx r \qquad \text{or} \qquad \tilde{f}\approx f,~ \tilde{\ell} \approx \ell. \]</span></li>
+<li class="fragment"><strong>Approximated MDP</strong>: <span class="math inline">\(p\)</span> and <span class="math inline">\(r\)</span> (or <span class="math inline">\(f\)</span> and <span class="math inline">\(\ell\)</span>) need to be learned, <span class="math display">\[p_\theta \approx p,~ r_\phi \approx r \qquad \text{or} \qquad f_\theta\approx f,~ \ell_\phi \approx \ell. \]</span></li>
 </ul>
 </div>
 </div>
@@ -445,7 +445,7 @@ Control</title>
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(\ell\)</span> is the <em>stage cost</em>.<br />
 <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> Closely related to the negative reward <span class="math inline">\(-r\)</span>!</span></li>
-<li class="fragment"><span class="math inline">\(L\)</span> is the <em>cost</em> that we seek to minimize.<br />
+<li class="fragment"><span class="math inline">\(L\)</span> is the <em>cost</em> that we seek to <em>minimize</em>.<br />
 <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> Closely related to value <span class="math inline">\(V\)</span>!</span></li>
 <li class="fragment">Optimal control is usually formulated as a <em>minimization problem</em>, e.g., the distance to a desired trajectory. <!-- - In this setting, how do we determine the optimal sequence of actions $a_t$?\
 $\Rightarrow$ two settings:
@@ -3931,13 +3931,15 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p><strong>for</strong> <span class="math inline">\(j=0,1,2,\ldots\)</span>:<br />
 <span class="fragment"><span class="math inline">\(\quad\)</span> simulate the system following <span class="math inline">\(\iterate{a}{j}\)</span> to get <span class="math inline">\(\iterate{s}{j}=\cbracket{\iteratesub{s}{j}{1},\ldots,\iteratesub{s}{j}{T}}\)</span></span><br />
 <span class="fragment"><span class="math inline">\(\quad\)</span> assess the performance by computing <span class="math inline">\(L\cbracket{\iterate{a}{j}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\quad\)</span> gradient descent to update our actions: <span class="math display">\[\iterate{a}{j+1} = \iterate{a}{j+1} - \eta \nabla_a L\cbracket{\iterate{a}{j}} \]</span></span></p>
+<span class="fragment"><span class="math inline">\(\quad\)</span> gradient descent to update our actions: <span class="math display">\[\iterate{a}{j+1} = \iterate{a}{j} - \eta \nabla_a L\cbracket{\iterate{a}{j}} \]</span></span></p>
 </div>
 </div>
 <div class="platzhalter">
 
 </div>
 <div class="fragment">
+<p><br />
+</p>
 <h3 id="remaining-question">Remaining question:</h3>
 <p>How do we compute the gradient <span class="math display">\[\nabla_a L\cbracket{\iterate{a}{j}}?\]</span></p>
 </div>
@@ -3965,7 +3967,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p>The procedure of computing the gradient is closely related to the backpropagation algorithm!</p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Turn the constraint into an objective via the Lagrangian formalism, where <span class="math inline">\(\lambda\)</span> is the adjoint state: <span class="math-incremental"><span class="math display">\[\begin{align*} \Lc(s,a,\lambda) = &amp;\sum_{t=0}^T \ell(s_t,a_t) + \sum_{t=0}^{T-1} \lambda^\top_{t+1}\cbracket{f(s_t,a_t)- s_{t+1}} \\
+<li class="fragment">Turn the constraint into an objective via the Lagrangian formalism, where <span class="math inline">\(\lambda\)</span> is the <a href="https://en.wikipedia.org/wiki/Adjoint_state_method"><strong>adjoint state</strong></a>: <span class="math-incremental"><span class="math display">\[\begin{align*} \Lc(s,a,\lambda) = &amp;\sum_{t=0}^T \ell(s_t,a_t) + \sum_{t=0}^{T-1} \lambda^\top_{t+1}\cbracket{f(s_t,a_t)- s_{t+1}} \\
 =&amp;\rbracket{\ell(s_0,a_0) + \lambda^\top_{1}f(s_0,a_0)} + \rbracket{\ell(s_1,a_1) + \lambda^\top_{2}f(s_1,a_1) -\lambda^\top_{1} s_1}  + \ldots + \\
 &amp;\rbracket{\ell(s_t,a_t) + \lambda^\top_{t+1}f(s_t,a_t) -\lambda^\top_{t} s_{t}} + \ldots + \rbracket{\ell(s_T,a_T) + \lambda^\top_{T} s_T}. \end{align*}\]</span></span></li>
 <li class="fragment">Necessary condition for optimality: Total derivative of <span class="math inline">\(\Lc\)</span> has to be zero: <span class="math display">\[ \pdiff{\Lc}{\lambda_t} = 0,\quad \pdiff{\Lc}{s_t} = 0, \quad \pdiff{\Lc}{a_t} = 0. \]</span></li>
@@ -3989,7 +3991,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p><span class="math display">\[\Lc(s,a,\lambda) = \sum_{t=0}^T \ell(s_t,a_t) + \sum_{t=0}^{T-1} \lambda^\top_{t+1}\cbracket{f(s_t,a_t)- s_{t+1}}\]</span></p>
 <div class="incremental">
 <ol class="incremental" start="3" style="list-style-type: decimal">
-<li class="fragment">State equation: <span class="math display">\[\pdiff{\Lc}{\lambda_t} = s_{t+1} - f(s_t,a_t) \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad s_{t+1} = f(s_t,a_t) \quad \text{for }t=0,\ldots,T-1. }\]</span></li>
+<li class="fragment">State equation: <span class="math display">\[\pdiff{\Lc}{\lambda_t} = s_{t} - f(s_{t-1},a_{t-1}) \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad s_{t+1} = f(s_t,a_t) \quad \text{for }t=0,\ldots,T-1. }\]</span></li>
 <li class="fragment">Adjoint equation: <span class="math display">\[\pdiff{\Lc}{s_t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} - \lambda_t \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad \lambda_{t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. }\]</span></li>
 <li class="fragment">Final adjoint state (<span class="math inline">\(t=T\)</span>): No influence on a future state, <span class="math inline">\(\lambda_T = \pdiff{\ell}{s_T}\)</span>.</li>
 <li class="fragment">Action gradient: <span class="math display">\[\pdiff{\Lc}{a_t} = \pdiff{\ell}{a_t} + \cbracket{\pdiff{f}{a_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. \]</span></li>
@@ -4017,7 +4019,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment"><strong>Forward simulation</strong> of the state equation: <span class="math display">\[s_{t+1} = f(s_t,a_t), \qquad t=0,1,\ldots,T-1.\]</span></li>
-<li class="fragment">“Initial condition” (= condition at final time <span class="math inline">\(T\)</span>) for the adjoint equation: <span class="math inline">\(\lambda_T = \pdiff{\ell}{s_T}.\)</span></li>
+<li class="fragment">“Initial condition” (i.e., at final time <span class="math inline">\(T\)</span>) for the adjoint equation: <span class="math inline">\(\lambda_T = \pdiff{\ell}{s_T}.\)</span></li>
 <li class="fragment"><strong>Backward simulation</strong> of the adjoint equation: <span class="math display">\[\lambda_{t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1}, \qquad t=T-1,T-2,\ldots,1,0.\]</span></li>
 <li class="fragment"><strong>Gradient calculation</strong> w.r.t. <span class="math inline">\(a\)</span>: <span class="math display">\[\pdiff{\Lc}{a_t} = \pdiff{\ell}{a_t} + \cbracket{\pdiff{f}{a_t}}^\top\lambda_{t+1}, \qquad t=0,1,\ldots,T-1.\]</span></li>
 </ul>
@@ -4056,7 +4058,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <li class="fragment">Total number of optimization variables when the state dimension is <span class="math inline">\(n\)</span> and the action dimension is <span class="math inline">\(m\)</span>: <span class="math inline">\((T+1)n + Tm\)</span>.</li>
 <li class="fragment">Solution via standard solvers for nonlinear, constrained optimization problems:
 <ul class="incremental">
-<li class="fragment">Require the gradients <span class="math inline">\(\nabla_x F(x)\)</span> and <span class="math inline">\(\nabla_x C(x)\)</span>.</li>
+<li class="fragment">Requires the gradients <span class="math inline">\(\nabla_x F(x)\)</span> and <span class="math inline">\(\nabla_x C(x)\)</span>.</li>
 <li class="fragment">The latter is a very large matrix, but it is fortunately very sparse.</li>
 </ul></li>
 </ul>
@@ -4087,18 +4089,18 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <tbody>
 <tr>
 <td align="left">Sensitivity to initialization</td>
-<td align="left">Very sensitive to poor initiall guesses <span class="math inline">\(\iterate{a}{0}\)</span>.</td>
-<td align="left">Because we initialize the entire state trajectory <span class="math inline">\(s\)</span>, the system doesn’t have to be dynamically feasible during early solver iterations <span class="math inline">\(\Rightarrow\)</span> Significantly more stable for unstable dynamics.</td>
+<td align="left"><span class="fragment">Very <strong>sensitive to poor initial guesses</strong> <span class="math inline">\(\iterate{a}{0}\)</span>.</span></td>
+<td align="left"><span class="fragment">Because we initialize the entire state trajectory <span class="math inline">\(s\)</span>, the system doesn’t have to be dynamically feasible during early solver iterations <span class="math inline">\(\Rightarrow\)</span> Significantly <strong>more stable for unstable dynamics</strong>.</span></td>
 </tr>
 <tr>
 <td align="left">Computational cost vs. convergence</td>
-<td align="left">Sequential: Fast iterations (one forward and backward pass), but may take many iterations to converge.</td>
-<td align="left">Full Discretization: Iterations computationally heavier, but standard <a href="https://en.wikipedia.org/wiki/Sequential_quadratic_programming">Sequential Quadratic Programming</a> (SQP) or <a href="https://en.wikipedia.org/wiki/Interior-point_method">Interior Point</a> methods achieve quadratic convergence near the solution, requiring far fewer total iterations.</td>
+<td align="left"><span class="fragment"><strong>Fast iterations</strong> (one forward and backward pass), but may take <strong>many iterations</strong> to converge.</span></td>
+<td align="left"><span class="fragment"><strong>Iterations more expensive</strong>, but standard <a href="https://en.wikipedia.org/wiki/Sequential_quadratic_programming">Sequential Quadratic Programming</a> (SQP) or <a href="https://en.wikipedia.org/wiki/Interior-point_method">Interior Point</a> methods achieve quadratic convergence near the solution, requiring far <strong>fewer total iterations</strong>.</span></td>
 </tr>
 <tr>
 <td align="left">Constraint Handling</td>
-<td align="left">Limits on states like <span class="math inline">\(s_{\mathsf{min}} \leq s_t \leq s_{\mathsf{max}}\)</span> or actuations (<span class="math inline">\(a_{\mathsf{min}} \leq a_t \leq a_{\mathsf{max}}\)</span>) can be handled easily. They are simply treated as bound constraints on elements of our vector <span class="math inline">\(x\)</span>.</td>
-<td align="left">Handling state constraints requires challenging penalty functions or barrier methods.</td>
+<td align="left"><span class="fragment">Handling state constraints requires <strong>challenging</strong> penalty functions or barrier methods.</span></td>
+<td align="left"><span class="fragment">Limits on states like <span class="math inline">\(s_{\mathsf{min}} \leq s_t \leq s_{\mathsf{max}}\)</span> or actuations (<span class="math inline">\(a_{\mathsf{min}} \leq a_t \leq a_{\mathsf{max}}\)</span>) <strong>can be handled easily</strong>. They are simply treated as bound constraints on elements of our vector <span class="math inline">\(x\)</span>.</span></td>
 </tr>
 </tbody>
 </table>
@@ -4125,23 +4127,26 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="box block">
 <div class="small">
 <p>Let’s consider a special (yet very common) case</p>
-<div class="grid-layout" style="grid-template-columns: 4fr 2fr;">
+<div class="grid-layout" style="grid-template-columns: 8fr 5fr;">
 <div class="platzhalter">
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment"><strong>Linear dynamics</strong>: <span class="math display">\[s_{t+1}=A s_t + B a_t, \quad\text{with }A\in\R^{n\times n}\text{ and }B\in\R^{n \times m}.\]</span></li>
-<li class="fragment"><strong>Quadratic losses</strong>: <span class="math display">\[L(s,a) = \cbracket{\sum_{t=0}^{T-1} s_t^\top Q s_t + a_t^\top R a_t} + s_T^\top Q_f s_T,\]</span> with matrices <span class="math inline">\(Q,Q_f\in\R^{n\times n}\)</span> penalizing the (terminal) state and <span class="math inline">\(R\in\R^{m\times m}\)</span> penalizing the control cost.</li>
+<li class="fragment"><strong>Quadratic losses</strong>: <span class="math display">\[L(s,a) = \cbracket{\sum_{t=0}^{T-1} s_t^\top Q s_t + a_t^\top R a_t} + s_T^\top Q_f s_T,\]</span> with matrices <span class="math inline">\(Q,Q_f\in\R^{n\times n}\)</span> penalizing the (terminal) state and<br />
+<span class="math inline">\(R\in\R^{m\times m}\)</span> penalizing the control cost.</li>
 </ul>
 </div>
 </div>
 <div class="fragment">
-<h3 id="additional-conditions">Additional conditions</h3>
+<div id="additional-conditions" class="definition">
+<h3>Additional conditions</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">The matrix <span class="math inline">\(Q\)</span> is <em>positive semidefinite</em>: <span class="math display">\[s^\top Q s \geq 0 ~\forall~s\in\R^n.\]</span></li>
 <li class="fragment">The matrix <span class="math inline">\(R\)</span> is <em>positive definite</em>: <span class="math display">\[a^\top R a \geq 0 ~\forall~a\in\R^m.\]</span></li>
 <li class="fragment">These ensure existence and uniquenes of a minimizer <span class="math inline">\(s^*,a^*\)</span>.</li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -4291,7 +4296,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Define individual control matrices: <span class="math display">\[Q=\begin{bmatrix} 1 &amp; &amp; &amp; \\ &amp; 0 &amp; &amp; \\ &amp; &amp; 1 &amp; \\ &amp; &amp; &amp; 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}0.01 &amp; \\ &amp; 0.01\end{bmatrix}.\]</span></li>
+<li class="fragment">Define individual control matrices: <span class="math display">\[Q=\begin{bmatrix} 1 &amp; &amp; &amp; \\ &amp; 0 &amp; &amp; \\ &amp; &amp; 1 &amp; \\ &amp; &amp; &amp; 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}\alpha &amp; \\ &amp; \alpha\end{bmatrix}.\]</span></li>
 <li class="fragment">Assemble the matrices <span class="math inline">\(\hat{Q}\)</span> and <span class="math inline">\(\hat{R}\)</span>. <span class="fragment">With <span class="math inline">\(T=200\)</span>, we get <span class="math display">\[\hat{Q}\in\R^{804 \times 804}\quad\text{and}\quad\hat{R}\in\R^{400 \times 400}.\]</span></span></li>
 <li class="fragment">Given the initial condition <span class="math inline">\(s_0\)</span>, solve the linear system <span class="math display">\[ \begin{equation} \cbracket{G^\top \hat{Q} G + \hat{R}} \hat{a} = - G^\top \hat{Q} H s_0. \tag{\ref{eq:OC_ocp_linear_solution}} \end{equation}\]</span></li>
 <li class="fragment">Simulate dynamics to get optimal trajectory <span class="math inline">\(s^*\)</span>: <span class="math display">\[ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + H s_0. \]</span></li>
@@ -7206,7 +7211,7 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 <ul class="incremental">
 <li class="fragment">Unforeseen events cannot be accounted for.</li>
 <li class="fragment">External disturbances/uncertainties are hard/impossible to include.</li>
-<li class="fragment">Smalles inaccuracies scale exopnentially over time.</li>
+<li class="fragment">Smalles inaccuracies scale exponentially over time.</li>
 </ul></li>
 <li class="fragment"><strong>Question</strong>: Can we close the loop around OCPs?</li>
 </ul>
@@ -7245,21 +7250,23 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="area">
 <div class="box block">
 <div class="small">
-<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<p><span class="math display">\[\begin{equation}\text{OCP:}\quad\min_{a_0,\ldots,a_{T-1}} \sum_{t=0}^T \ell(s_t,a_t) = \min_{a_0,\ldots,a_{T-1}} L(a) \quad
+\text{s.t.}\quad s_{t+1}=f(s_t,a_t),~t=0,1,\ldots,T-1. \tag{\ref{eq:OC_ocp}}\end{equation}\]</span></p>
+<div class="grid-layout" style="grid-template-columns: 1fr 1fr;">
 <div class="media">
-<figure class="image" style="height:auto;width:600px;">
+<figure class="image" style="height:auto;width:550px;">
 <img src="images/14-optimal-control/MPC.svg" style="height:auto;width:100%;" aria-label="Source: Wikipedia." alt="images/14-optimal-control/MPC.svg" />
 <figcaption>
 Source: <a href="https://de.wikipedia.org/wiki/Model_Predictive_Control">Wikipedia</a>.
 </figcaption>
 </figure>
 </div>
-<div class="platzhalter">
+<div class="fragment">
 <div id="the-mpc-loop" class="definition">
 <h3>The MPC loop</h3>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Measure system state <span class="math inline">\(s_t\)</span> and us it as initial state for the OCP <span class="math inline">\(\eqref{eq:OC_ocp}\)</span>.</li>
+<li class="fragment">Measure system state <span class="math inline">\(s_t\)</span> and use it as the initial state for the OCP <span class="math inline">\(\eqref{eq:OC_ocp}\)</span>.</li>
 <li class="fragment">Solve <span class="math inline">\(\eqref{eq:OC_ocp}\)</span> using a model of the real system over a prediction horzion of length <span class="math inline">\(p\)</span>.</li>
 <li class="fragment">Apply first entry of <span class="math inline">\(a^*\)</span> (i.e., <span class="math inline">\(a_0^*\)</span>) to the real system.</li>
 <li class="fragment">Advance real system by one time step.</li>
@@ -7312,9 +7319,9 @@ Source: <a href="https://de.wikipedia.org/wiki/Model_Predictive_Control">Wikiped
 <div class="grid-layout" style="grid-template-columns: 3fr 2fr;">
 <div class="media">
 <figure class="image" style="height:auto;width:370px;">
-<img src="images/14-optimal-control/Bicycle2.svg" style="height:auto;width:100%;" aria-label="Source." alt="images/14-optimal-control/Bicycle2.svg" />
+<img src="images/14-optimal-control/Bicycle2.svg" style="height:auto;width:100%;" aria-label="Source: Algorithms for Automated Driving." alt="images/14-optimal-control/Bicycle2.svg" />
 <figcaption>
-<a href="https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/BicycleModel.html">Source</a>.
+Source: <a href="https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/BicycleModel.html">Algorithms for Automated Driving</a>.
 </figcaption>
 </figure>
 </div>
@@ -7328,7 +7335,7 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Objective: <strong>terminal condition</strong> <span class="math display">\[\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.\]</span></li>
+<li class="fragment">Objective: <strong>terminal condition</strong> to approach target location <span class="math display">\[\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.\]</span></li>
 <li class="fragment">Discretization: <span class="math inline">\(\Delta t = 0.2\)</span>, <span class="math inline">\(p=25\)</span>.</li>
 </ul>
 </div>
@@ -7339,6 +7346,56 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <li class="fragment">Results:<br />
 <span class="media"><span class="figure image" style="height:auto;width:480px;"><img src="videos/14-optimal-control/MPC-bicycle.gif" style="height:auto;width:100%;" alt="videos/14-optimal-control/MPC-bicycle.gif" /></span></span></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="using-linearized-models-in-mpc" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Using linearized models in MPC</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Approach to avoid the large online cost in many MPC applications: use <strong>linearized dynamics</strong> instead!
+<ul class="incremental">
+<li class="fragment"><span class="emoji" data-emoji="bulb">💡</span> This is a very common approach in control theory, in particular linearization around the desired state <span class="math inline">\(s^{\mathsf{target}}\)</span>.</li>
+</ul></li>
+<li class="fragment">Approach via <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> around current state <span class="math inline">\(\overline{s}_k, \overline{a}_k\)</span>.</li>
+<li class="fragment">Introduce distance to current state: <span class="math display">\[\Delta s_t = s_t - \overline{s}_t, \quad  \Delta a_t = a_t - \overline{a}_t.\]</span></li>
+<li class="fragment">First-order approximation of the dynamics around the current state: <span class="math display">\[s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\overline{s}_{t+1} }} + \underbrace{\left. \pdiff{f}{s}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =A }} \Delta s_t  + \underbrace{\left. \pdiff{f}{a}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =B }} \Delta a_t + \Oc(\Delta s_t^2, \Delta a_t^2)\]</span> <span class="fragment"><span class="math display">\[\begin{equation} s_{t+1} - \overline{s}_{t+1} = \boxed{\Delta s_{t+1} \fragment{ \approx A \Delta s_t  + B \Delta a_t. }} \label{eq:OC_MPC_linearized} \end{equation}\]</span></span></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="mpc-with-linearized-dynamics" class="definition">
+<h3>MPC with linearized dynamics</h3>
+<p><strong>for</strong> <span class="math inline">\(t=0,1,2,\ldots\)</span>:<br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Measure</strong> the current state <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span><br />
+<span class="math inline">\(\qquad\)</span> of the real (nonlinear system).</span><br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Linearize</strong> the system dynamics<br />
+<span class="math inline">\(\qquad\)</span> around <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\eqref{eq:OC_MPC_linearized}\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Assemble</strong> matrices <span class="math inline">\(\hat{Q}_t\)</span> and <span class="math inline">\(\hat{R}_t\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Solve</strong> linear problem <span class="math inline">\(\eqref{eq:OC_ocp_linear2}\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Apply</strong> first entry to real system.</span></p>
+</div>
+<div class="fragment">
+<h3 id="new-bottlenecks">New bottlenecks</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The linearization around <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span>.</li>
+<li class="fragment">Assembly of <span class="math inline">\(\hat{Q}_t\)</span> and <span class="math inline">\(\hat{R}_t\)</span>.</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -10544,9 +10601,9 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Explicit MPC</li>
-<li class="fragment">Differentiable predictive control (DPC)</li>
-<li class="fragment">Monte-Carlo tree search (MCTS)</li>
+<li class="fragment">Explicit MPC.</li>
+<li class="fragment">Differentiable predictive control (DPC).</li>
+<li class="fragment">Monte-Carlo tree search (MCTS).</li>
 </ul>
 </div>
 </div>
@@ -10571,8 +10628,8 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">MPC’s main challenge: <strong>large online cost</strong>!</li>
-<li class="fragment">Can we avoid this? <span class="math inline">\(\Rightarrow\)</span> Let’s revisit the OCP formulation <span class="math inline">\(\eqref{eq:OC_ocp}\)</span> in the MPC setting: <span class="math display">\[\begin{equation} \begin{aligned} &amp;\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
-\text{s.t.}\quad &amp;\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}\]</span></li>
+<li class="fragment">Can we avoid this? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Let’s revisit the OCP formulation <span class="math inline">\(\eqref{eq:OC_ocp}\)</span> in the MPC setting: <span class="math display">\[\begin{equation} \begin{aligned} &amp;\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
+\text{s.t.}\quad &amp;\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}\]</span></span></li>
 <li class="fragment">This OCP is parameterized by the initial condition <span class="math inline">\(\textcolor{blue}{s_0}\)</span>!</li>
 <li class="fragment">If we solve it for every <span class="math inline">\(s_0\in\Sc\)</span> and explicitly store <span class="math inline">\(a^*(s_0)\)</span> in a library, we can quickly retrieve it in the online phase.</li>
 <li class="fragment">But there are infinitely many <span class="math inline">\(s_0\)</span>! <span class="emoji" data-emoji="scream">😱</span></li>
@@ -11194,7 +11251,7 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <figure class="image" style="height:auto;width:750px;">
 <img src="images/14-optimal-control/DPC.png" style="height:auto;width:100%;" aria-label="Differentiable predictive control framework (Drgoňa et al. 2022)." alt="images/14-optimal-control/DPC.png" />
 <figcaption>
-Differentiable predictive control framework <span class="citation">(<a href="#ref-Drogona2022">Drgoňa et al. 2022</a>)</span>.
+Differentiable predictive control framework <span class="citation">(<a href="#ref-Drgona2022">Drgoňa et al. 2022</a>)</span>.
 </figcaption>
 </figure>
 </div>
@@ -11248,7 +11305,7 @@ Differentiable predictive control framework <span class="citation">(<a href="#re
 <div id="ref-Bemporad2002explicitlqr" class="csl-entry">
 Bemporad, Alberto, Manfred Morari, Vivek Dua, and Efstratios N. Pistikopoulos. 2002. <span>“The Explicit Linear Quadratic Regulator for Constrained Systems.”</span> <em>Automatica</em> 38 (1): 3–20. doi:<a href="https://doi.org/10.1016/S0005-1098(01)00174-1">https://doi.org/10.1016/S0005-1098(01)00174-1</a>.
 </div>
-<div id="ref-Drogona2022" class="csl-entry">
+<div id="ref-Drgona2022" class="csl-entry">
 Drgoňa, Ján, Karol Kiš, Aaron Tuor, Draguna Vrabie, and Martin Klaučo. 2022. <span>“Differentiable Predictive Control: Deep Learning Alternative to Explicit Model Predictive Control for Unknown Nonlinear Systems.”</span> <em>Journal of Process Control</em> 116: 80–92.
 </div>
 <div id="ref-GP17" class="csl-entry">

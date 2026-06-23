@@ -146,7 +146,7 @@ $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$
 
 ::: incremental
 - **True MDP**: $p$ and $r$ (or $f$ and $\ell$) are perfectly known a priori.
-- **Approximated MDP**: $p$ and $r$ (or $f$ and $\ell$) need to be learned, $$\tilde{p}\approx p,~ \tilde{r} \approx r \qquad \text{or} \qquad \tilde{f}\approx f,~ \tilde{\ell} \approx \ell. $$
+- **Approximated MDP**: $p$ and $r$ (or $f$ and $\ell$) need to be learned, $$p_\theta \approx p,~ r_\phi \approx r \qquad \text{or} \qquad f_\theta\approx f,~ \ell_\phi \approx \ell. $$
 :::
 
 :::
@@ -183,7 +183,7 @@ $$\begin{equation}\begin{aligned}
 - Eq. \eqref{eq:OC_ocp} is referred to as an **optimal control problem** (**OCP**). 
   - $\ell$ is the *stage cost*.\
   [:bulb: Closely related to the negative reward $-r$!]{.fragment}
-  - $L$ is the *cost* that we seek to minimize.\
+  - $L$ is the *cost* that we seek to *minimize*.\
   [:bulb: Closely related to value $V$!]{.fragment}
   - Optimal control is usually formulated as a *minimization problem*, e.g., the distance to a desired trajectory.
 <!-- - In this setting, how do we determine the optimal sequence of actions $a_t$?\
@@ -271,7 +271,7 @@ $$\begin{equation}\begin{aligned}
 **for** $j=0,1,2,\ldots$:\
 [$\quad$ simulate the system following $\iterate{a}{j}$ to get $\iterate{s}{j}=\cbracket{\iteratesub{s}{j}{1},\ldots,\iteratesub{s}{j}{T}}$]{.fragment}\
 [$\quad$ assess the performance by computing $L\cbracket{\iterate{a}{j}}$]{.fragment}\
-[$\quad$ gradient descent to update our actions: $$\iterate{a}{j+1} = \iterate{a}{j+1} - \eta \nabla_a L\cbracket{\iterate{a}{j}} $$]{.fragment}
+[$\quad$ gradient descent to update our actions: $$\iterate{a}{j+1} = \iterate{a}{j} - \eta \nabla_a L\cbracket{\iterate{a}{j}} $$]{.fragment}
 :::
 :::
 
@@ -280,6 +280,8 @@ $$\begin{equation}\begin{aligned}
 :::
 
 ::: fragment
+\
+
 ### Remaining question:
 
 How do we compute the gradient
@@ -301,7 +303,7 @@ $$\begin{equation}\begin{aligned}
 The procedure of computing the gradient is closely related to the backpropagation algorithm!
 
 ::: incremental
-1. Turn the constraint into an objective via the Lagrangian formalism, where $\lambda$ is the adjoint state: 
+1. Turn the constraint into an objective via the Lagrangian formalism, where $\lambda$ is the [**adjoint state**](https://en.wikipedia.org/wiki/Adjoint_state_method): 
 [$$\begin{align*} \Lc(s,a,\lambda) = &\sum_{t=0}^T \ell(s_t,a_t) + \sum_{t=0}^{T-1} \lambda^\top_{t+1}\cbracket{f(s_t,a_t)- s_{t+1}} \\
 =&\rbracket{\ell(s_0,a_0) + \lambda^\top_{1}f(s_0,a_0)} + \rbracket{\ell(s_1,a_1) + \lambda^\top_{2}f(s_1,a_1) -\lambda^\top_{1} s_1}  + \ldots + \\
 &\rbracket{\ell(s_t,a_t) + \lambda^\top_{t+1}f(s_t,a_t) -\lambda^\top_{t} s_{t}} + \ldots + \rbracket{\ell(s_T,a_T) + \lambda^\top_{T} s_T}. \end{align*}$$]{.math-incremental}
@@ -319,12 +321,12 @@ $$\Lc(s,a,\lambda) = \sum_{t=0}^T \ell(s_t,a_t) + \sum_{t=0}^{T-1} \lambda^\top_
 
 ::: incremental
 3. State equation:
-$$\pdiff{\Lc}{\lambda_t} = s_{t+1} - f(s_t,a_t) \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad s_{t+1} = f(s_t,a_t) \quad \text{for }t=0,\ldots,T-1. }$$
+$$\pdiff{\Lc}{\lambda_t} = s_{t} - f(s_{t-1},a_{t-1}) \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad s_{t+1} = f(s_t,a_t) \quad \text{for }t=0,\ldots,T-1. }$$
 4. Adjoint equation:
- $$\pdiff{\Lc}{s_t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} - \lambda_t \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad \lambda_{t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. }$$
- 5. Final adjoint state ($t=T$): No influence on a future state, $\lambda_T = \pdiff{\ell}{s_T}$.
- 6. Action gradient:
- $$\pdiff{\Lc}{a_t} = \pdiff{\ell}{a_t} + \cbracket{\pdiff{f}{a_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. $$
+$$\pdiff{\Lc}{s_t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} - \lambda_t \stackrel{!}{=} 0 \fragment{ \quad \Leftrightarrow \quad \lambda_{t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. }$$
+5. Final adjoint state ($t=T$): No influence on a future state, $\lambda_T = \pdiff{\ell}{s_T}$.
+6. Action gradient:
+$$\pdiff{\Lc}{a_t} = \pdiff{\ell}{a_t} + \cbracket{\pdiff{f}{a_t}}^\top\lambda_{t+1} \quad \text{for }t=0,\ldots,T-1. $$
 :::
 :::
 
@@ -339,7 +341,7 @@ Given: Initial state $s_0$, action sequence $a=\cbracket{a_0,\ldots,a_{T-1}}$.
 
 ::: incremental
 - **Forward simulation** of the state equation: $$s_{t+1} = f(s_t,a_t), \qquad t=0,1,\ldots,T-1.$$
-- "Initial condition" (= condition at final time $T$) for the adjoint equation: $\lambda_T = \pdiff{\ell}{s_T}.$
+- "Initial condition" (i.e., at final time $T$) for the adjoint equation: $\lambda_T = \pdiff{\ell}{s_T}.$
 - **Backward simulation** of the adjoint equation: $$\lambda_{t} = \pdiff{\ell}{s_t} + \cbracket{\pdiff{f}{s_t}}^\top\lambda_{t+1}, \qquad t=T-1,T-2,\ldots,1,0.$$
 - **Gradient calculation** w.r.t. $a$: $$\pdiff{\Lc}{a_t} = \pdiff{\ell}{a_t} + \cbracket{\pdiff{f}{a_t}}^\top\lambda_{t+1}, \qquad t=0,1,\ldots,T-1.$$
 :::
@@ -366,7 +368,7 @@ Given: Initial state $s_0$, action sequence $a=\cbracket{a_0,\ldots,a_{T-1}}$.
 $$\begin{equation} \min_{x} F(x) = \sum_{t=0}^T \ell(s_t,a_t) \quad\text{s.t.}\quad C(x) = \begin{bmatrix} f(s_0,a_0) - s_1 \\ f(s_1,a_1) - s_2 \\ \vdots \\ f(s_{T-1},a_{T-1}) - s_T \end{bmatrix}=0 \label{eq:OC_ocp_discretized} \end{equation} $$
 - Total number of optimization variables when the state dimension is $n$ and the action dimension is $m$: $(T+1)n + Tm$.
 - Solution via standard solvers for nonlinear, constrained optimization problems:
-  - Require the gradients $\nabla_x F(x)$ and $\nabla_x C(x)$.
+  - Requires the gradients $\nabla_x F(x)$ and $\nabla_x C(x)$.
   - The latter is a very large matrix, but it is fortunately very sparse.
 :::
 
@@ -377,9 +379,9 @@ $$\begin{equation} \min_{x} F(x) = \sum_{t=0}^T \ell(s_t,a_t) \quad\text{s.t.}\q
 ::: small
 | | Shooting \eqref{eq:OC_ocp} | Full discretization \eqref{eq:OC_ocp_discretized} |
 | :- | :- | :- |
-| Sensitivity to initialization | Very sensitive to poor initiall guesses $\iterate{a}{0}$. | Because we initialize the entire state trajectory $s$, the system doesn't have to be dynamically feasible during early solver iterations $\Rightarrow$ Significantly more stable for unstable dynamics. |
-| Computational cost vs. convergence | Sequential: Fast iterations (one forward and backward pass), but may take many iterations to converge. | Full Discretization: Iterations computationally heavier, but standard [Sequential Quadratic Programming](https://en.wikipedia.org/wiki/Sequential_quadratic_programming) (SQP) or [Interior Point](https://en.wikipedia.org/wiki/Interior-point_method) methods achieve quadratic convergence near the solution, requiring far fewer total iterations. |
-| Constraint Handling | Limits on states like $s_{\mathsf{min}} \leq s_t \leq s_{\mathsf{max}}$ or actuations ($a_{\mathsf{min}} \leq a_t \leq a_{\mathsf{max}}$) can be handled easily. They are simply treated as bound constraints on elements of our vector $x$. | Handling state constraints requires challenging penalty functions or barrier methods.  |
+| Sensitivity to initialization | [Very **sensitive to poor initial guesses** $\iterate{a}{0}$.]{.fragment} | [Because we initialize the entire state trajectory $s$, the system doesn't have to be dynamically feasible during early solver iterations $\Rightarrow$ Significantly **more stable for unstable dynamics**.]{.fragment} |
+| Computational cost vs. convergence | [**Fast iterations** (one forward and backward pass), but may take **many iterations** to converge.]{.fragment} | [**Iterations more expensive**, but standard [Sequential Quadratic Programming](https://en.wikipedia.org/wiki/Sequential_quadratic_programming) (SQP) or [Interior Point](https://en.wikipedia.org/wiki/Interior-point_method) methods achieve quadratic convergence near the solution, requiring far **fewer total iterations**.]{.fragment} |
+| Constraint Handling | [Handling state constraints requires **challenging** penalty functions or barrier methods.]{.fragment} | [Limits on states like $s_{\mathsf{min}} \leq s_t \leq s_{\mathsf{max}}$ or actuations ($a_{\mathsf{min}} \leq a_t \leq a_{\mathsf{max}}$) **can be handled easily**. They are simply treated as bound constraints on elements of our vector $x$.]{.fragment} |
 :::
 
 ------------------------------------------------------------------------------
@@ -393,21 +395,24 @@ $$\begin{equation} \min_{x} F(x) = \sum_{t=0}^T \ell(s_t,a_t) \quad\text{s.t.}\q
 ::: small
 Let's consider a special (yet very common) case
 
-::: columns-4-2
+::: columns-8-5
 ::: platzhalter
 ::: incremental
 - **Linear dynamics**: $$s_{t+1}=A s_t + B a_t, \quad\text{with }A\in\R^{n\times n}\text{ and }B\in\R^{n \times m}.$$
 - **Quadratic losses**: $$L(s,a) = \cbracket{\sum_{t=0}^{T-1} s_t^\top Q s_t + a_t^\top R a_t} + s_T^\top Q_f s_T,$$
-with matrices $Q,Q_f\in\R^{n\times n}$ penalizing the (terminal) state and $R\in\R^{m\times m}$ penalizing the control cost.
+with matrices $Q,Q_f\in\R^{n\times n}$ penalizing the (terminal) state and\
+$R\in\R^{m\times m}$ penalizing the control cost.
 :::
 :::
 ::: fragment
+::: definition
 ### Additional conditions
 
 ::: incremental
 - The matrix $Q$ is *positive semidefinite*: $$s^\top Q s \geq 0 ~\forall~s\in\R^n.$$
 - The matrix $R$ is *positive definite*: $$a^\top R a \geq 0 ~\forall~a\in\R^m.$$
 - These ensure existence and uniquenes of a minimizer $s^*,a^*$.
+:::
 :::
 :::
 :::
@@ -514,7 +519,7 @@ $$ \min_{s,a} \sum_{t=0}^T \norm{s_t}_2^2 + \alpha \norm{a_t}_2^2 \quad\text{s.t
 ::: small
 ::: columns-5-5
 ::: incremental
-- Define individual control matrices: $$Q=\begin{bmatrix} 1 & & & \\ & 0 & & \\ & & 1 & \\ & & & 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}0.01 & \\ & 0.01\end{bmatrix}.$$
+- Define individual control matrices: $$Q=\begin{bmatrix} 1 & & & \\ & 0 & & \\ & & 1 & \\ & & & 0 \end{bmatrix},\quad Q_f=10\cdot Q, \quad R=\begin{bmatrix}\alpha & \\ & \alpha\end{bmatrix}.$$
 - Assemble the matrices $\hat{Q}$ and $\hat{R}$. [With $T=200$, we get $$\hat{Q}\in\R^{804 \times 804}\quad\text{and}\quad\hat{R}\in\R^{400 \times 400}.$$]{.fragment}
 - Given the initial condition $s_0$, solve the linear system
 $$ \begin{equation} \cbracket{G^\top \hat{Q} G + \hat{R}} \hat{a} = - G^\top \hat{Q} H s_0. \tag{\ref{eq:OC_ocp_linear_solution}} \end{equation}$$
@@ -570,7 +575,7 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 - But there are also **drawbacks** in the application to real systems.
   - Unforeseen events cannot be accounted for.
   - External disturbances/uncertainties are hard/impossible to include.
-  - Smalles inaccuracies scale exopnentially over time.
+  - Smalles inaccuracies scale exponentially over time.
 - **Question**: Can we close the loop around OCPs?
 :::
 
@@ -594,15 +599,19 @@ $$ s^*_{t+1}=A s_t^* + B a_t^* \qquad \text{or} \qquad \hat{s}^* = G\hat{a}^* + 
 # MPC scheme
 
 ::: small
-::: columns-6-4
-![Source: [Wikipedia](https://de.wikipedia.org/wiki/Model_Predictive_Control).](images/14-optimal-control/MPC.svg){width=600px}
 
-::: platzhalter
+$$\begin{equation}\text{OCP:}\quad\min_{a_0,\ldots,a_{T-1}} \sum_{t=0}^T \ell(s_t,a_t) = \min_{a_0,\ldots,a_{T-1}} L(a) \quad
+\text{s.t.}\quad s_{t+1}=f(s_t,a_t),~t=0,1,\ldots,T-1. \tag{\ref{eq:OC_ocp}}\end{equation}$$
+
+::: columns-1-1
+![Source: [Wikipedia](https://de.wikipedia.org/wiki/Model_Predictive_Control).](images/14-optimal-control/MPC.svg){width=550px}
+
+::: fragment
 ::: definition
 ### The MPC loop
 
 ::: incremental
-1. Measure system state $s_t$ and us it as initial state for the OCP \eqref{eq:OC_ocp}.
+1. Measure system state $s_t$ and use it as the initial state for the OCP \eqref{eq:OC_ocp}.
 1. Solve \eqref{eq:OC_ocp} using a model of the real system over a prediction horzion of length $p$.
 1. Apply first entry of $a^*$ (i.e., $a_0^*$) to the real system.
 1. Advance real system by one time step.
@@ -643,7 +652,7 @@ We want to plan the trajectory of an autonomous vehicle from an initial position
 
 ::: fragment
 ::: columns-3-2
-![[Source](https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/BicycleModel.html).](images/14-optimal-control/Bicycle2.svg){width=370px}
+![Source: [Algorithms for Automated Driving](https://thomasfermi.github.io/Algorithms-for-Automated-Driving/Control/BicycleModel.html).](images/14-optimal-control/Bicycle2.svg){width=370px}
 
 ::: platzhalter
 $$\begin{align*}
@@ -655,7 +664,7 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 :::
 
 ::: incremental
-- Objective: **terminal condition** $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
+- Objective: **terminal condition** to approach target location $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
 - Discretization: $\Delta t = 0.2$, $p=25$.
 :::
 :::
@@ -667,6 +676,50 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 :::
 :::
 :::
+
+# Using linearized models in MPC
+
+::: small
+::: columns-6-4
+::: incremental
+- Approach to avoid the large online cost in many MPC applications: use **linearized dynamics** instead!
+  - :bulb: This is a very common approach in control theory, in particular linearization around the desired state $s^{\mathsf{target}}$.
+- Approach via [Taylor series expansion](https://en.wikipedia.org/wiki/Taylor_series) around current state $\overline{s}_k, \overline{a}_k$.
+- Introduce distance to current state:
+$$\Delta s_t = s_t - \overline{s}_t, \quad  \Delta a_t = a_t - \overline{a}_t.$$
+- First-order approximation of the dynamics around the current state:
+$$s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\overline{s}_{t+1} }} + \underbrace{\left. \pdiff{f}{s}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =A }} \Delta s_t  + \underbrace{\left. \pdiff{f}{a}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =B }} \Delta a_t + \Oc(\Delta s_t^2, \Delta a_t^2)$$
+[$$\begin{equation} s_{t+1} - \overline{s}_{t+1} = \boxed{\Delta s_{t+1} \fragment{ \approx A \Delta s_t  + B \Delta a_t. }} \label{eq:OC_MPC_linearized} \end{equation}$$]{.fragment}
+:::
+
+::: fragment
+::: definition
+### MPC with linearized dynamics
+
+**for** $t=0,1,2,\ldots$:\
+[$\quad$ **Measure** the current state $\overline{s}_t,\overline{a}_t$\
+$\qquad$ of the real (nonlinear system).]{.fragment}\
+[$\quad$ **Linearize** the system dynamics\
+$\qquad$ around $\overline{s}_t,\overline{a}_t$ $\Rightarrow$ \eqref{eq:OC_MPC_linearized}.]{.fragment}\
+[$\quad$ **Assemble** matrices $\hat{Q}_t$ and $\hat{R}_t$.]{.fragment}\
+[$\quad$ **Solve** linear problem \eqref{eq:OC_ocp_linear2}.]{.fragment}\
+[$\quad$ **Apply** first entry to real system.]{.fragment}
+:::
+
+::: fragment
+### New bottlenecks
+:::
+
+::: incremental
+- The linearization around $\overline{s}_t,\overline{a}_t$.
+- Assembly of $\hat{Q}_t$ and $\hat{R}_t$. 
+:::
+:::
+
+:::
+:::
+
+
 
 # Relation to reinforcement learning
 
@@ -689,16 +742,14 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 :::
 
 ::: incremental
-- Explicit MPC
-- Differentiable predictive control (DPC)
-- Monte-Carlo tree search (MCTS)
+- Explicit MPC.
+- Differentiable predictive control (DPC).
+- Monte-Carlo tree search (MCTS).
 :::
 
 :::
 :::
 :::
-
-
 
 # Explicit MPC
 
@@ -707,9 +758,9 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 ::: platzhalter
 ::: incremental
 - MPC's main challenge: **large online cost**! 
-- Can we avoid this? $\Rightarrow$ Let's revisit the OCP formulation \eqref{eq:OC_ocp} in the MPC setting:
+- Can we avoid this? [$\Rightarrow$ Let's revisit the OCP formulation \eqref{eq:OC_ocp} in the MPC setting:
 $$\begin{equation} \begin{aligned} &\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
-\text{s.t.}\quad &\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}$$
+\text{s.t.}\quad &\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}$$]{.fragment}
 - This OCP is parameterized by the initial condition $\textcolor{blue}{s_0}$!
 - If we solve it for every $s_0\in\Sc$ and explicitly store $a^*(s_0)$ in a library, we can quickly retrieve it in the online phase.
 - But there are infinitely many $s_0$! :scream:
@@ -769,7 +820,7 @@ $$L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu\phi(
 :::
 
 ::: platzhalter
-![Differentiable predictive control framework [@Drogona2022].](images/14-optimal-control/DPC.png){width=750px}
+![Differentiable predictive control framework [@Drgona2022].](images/14-optimal-control/DPC.png){width=750px}
 :::
 
 :::
