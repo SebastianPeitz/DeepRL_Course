@@ -410,7 +410,7 @@ $R\in\R^{m\times m}$ penalizing the control cost.
 
 ::: incremental
 - The matrix $Q$ is *positive semidefinite*: $$s^\top Q s \geq 0 ~\forall~s\in\R^n.$$
-- The matrix $R$ is *positive definite*: $$a^\top R a \geq 0 ~\forall~a\in\R^m.$$
+- The matrix $R$ is *positive definite*: $$a^\top R a > 0 ~\forall~a\in\R^m.$$
 - These ensure existence and uniquenes of a minimizer $s^*,a^*$.
 :::
 :::
@@ -664,7 +664,7 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 :::
 
 ::: incremental
-- Objective: **terminal condition** to approach target location $$\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
+- Objective: **terminal condition** to approach target location $$\min_{a_0,\ldots,a_{p-1}} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.$$
 - Discretization: $\Delta t = 0.2$, $p=25$.
 :::
 :::
@@ -687,12 +687,17 @@ s&=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \math
 - Approach via [Taylor series expansion](https://en.wikipedia.org/wiki/Taylor_series) around current state $\overline{s}_k, \overline{a}_k$.
 - Introduce distance to current state:
 $$\Delta s_t = s_t - \overline{s}_t, \quad  \Delta a_t = a_t - \overline{a}_t.$$
-- First-order approximation of the dynamics around the current state:
+- First-order (i.e., **linear**) approximation in $\Delta s_t$ and $\Delta a_t$:
 $$s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\overline{s}_{t+1} }} + \underbrace{\left. \pdiff{f}{s}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =A }} \Delta s_t  + \underbrace{\left. \pdiff{f}{a}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =B }} \Delta a_t + \Oc(\Delta s_t^2, \Delta a_t^2)$$
 [$$\begin{equation} s_{t+1} - \overline{s}_{t+1} = \boxed{\Delta s_{t+1} \fragment{ \approx A \Delta s_t  + B \Delta a_t. }} \label{eq:OC_MPC_linearized} \end{equation}$$]{.fragment}
 :::
 
 ::: fragment
+
+::: platzhalter
+![](images/14-optimal-control/MPC.svg){width=350px}
+:::
+
 ::: definition
 ### MPC with linearized dynamics
 
@@ -701,22 +706,18 @@ $$s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\ov
 $\qquad$ of the real (nonlinear system).]{.fragment}\
 [$\quad$ **Linearize** the system dynamics\
 $\qquad$ around $\overline{s}_t,\overline{a}_t$ $\Rightarrow$ \eqref{eq:OC_MPC_linearized}.]{.fragment}\
-[$\quad$ **Assemble** matrices $\hat{Q}_t$ and $\hat{R}_t$.]{.fragment}\
+[$\quad$ **Assemble** matrices $\hat{Q}_t$ / $\hat{R}_t$ and $G_t$ / $H_t$.]{.fragment}\
 [$\quad$ **Solve** linear problem \eqref{eq:OC_ocp_linear2}.]{.fragment}\
 [$\quad$ **Apply** first entry to real system.]{.fragment}
 :::
+:::
+:::
+\
 
-::: fragment
-### New bottlenecks
-:::
+[$\qquad\qquad$**New bottlenecks**:$\qquad$]{.fragment}
+[$\bullet$ The linearization around $\overline{s}_t,\overline{a}_t$ $\qquad$]{.fragment}
+[$\bullet$  Assembly of $\hat{Q}_t$ / $\hat{R}_t$ and $G_t$ / $H_t$. ]{.fragment}
 
-::: incremental
-- The linearization around $\overline{s}_t,\overline{a}_t$.
-- Assembly of $\hat{Q}_t$ and $\hat{R}_t$. 
-:::
-:::
-
-:::
 :::
 
 
