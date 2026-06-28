@@ -101,6 +101,7 @@ math:
     Nc: '{\mathcal{N}}'
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
+    Qc: '{\mathcal{Q}}'
     Xc: '{\mathcal{X}}'
     Yc: '{\mathcal{Y}}'
     nablaa: '{\nabla_{\mkern-6mu a\mkern+2mu}}'
