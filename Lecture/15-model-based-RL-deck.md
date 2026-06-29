@@ -17,8 +17,10 @@ feedback:
   - Dyna-Q and Dyna-Q+
   - Prioritized sweeping
 - Looking into the future: Planning at decision time
+  - Heuristic search
+  - Rollouts
   - MCTS
-  - AlphaZero
+- AlphaGo \& AlphaZero
 - Learning a model
   - Dreamer architecture
   - Uncertainty estimation?
@@ -506,99 +508,375 @@ Expected vs. sample updates
 
 :::
 
-# MCTS details
+# Exploration vs. exploitation in MCTS
 
 ::: small
-- To guide this asymmetric exploration, MCTS relies on a concept from probability theory known as the Multi-Armed Bandit problem. Imagine you are in a casino facing a row of slot machines (multi-armed bandits), and you want to maximize your payouts. Do you stick with the machine that has paid out decently so far (exploitation), or do you try a different machine that you haven't played much yet (exploration)?
-- MCTS treats every choice point in the tree as a multi-armed bandit. To solve it, it uses a formula called UCB1 (Upper Confidence Bound). Or also $$UCT = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N}{n_i}}$$
-- During the Selection phase, whenever MCTS needs to choose between different child nodes, it calculates the UCB1 value for each option and picks the one with the highest score.Here is the formula:$$\text{UCB1} = \frac{w_i}{n_i} + c \times \sqrt{\frac{\ln N_i}{n_i}}$$Breaking Down the FormulaThe formula is a beautiful tug-of-war between two distinct forces:  UCB1 Score  =  [ Exploitation Component ]  +  [ Exploration Component ]
-The Exploitation Term ($\frac{w_i}{n_i}$):$w_i$ is the number of wins simulated through child node $i$ so far.$n_i$ is the number of times child node $i$ has been visited.What it does: This is simply the win rate of the node. If a move has won 80 out of 100 simulations, its win rate is $0.8$. The higher the win rate, the more attractive this node is.The Exploration Term ($\sqrt{\frac{\ln N_i}{n_i}}$):$N_i$ is the total number of times the parent node has been visited.$\ln N_i$ is the natural logarithm of that parent visit count.$n_i$ is (again) the number of times this specific child node has been visited.What it does: This measures how much we don't know about this move. Notice that $n_i$ is in the denominator. If we rarely visit a node, $n_i$ is very small, which makes this entire exploration term grow quite large. It acts as a "bonus" for neglected moves.The Exploration Constant ($c$):This is a parameter you can tune (theoretically, it is mathematically proven to be $\sqrt{2}$, but in practice, developers adjust it).What it does: It acts as a volume knob. Increase $c$, and the AI becomes adventurous, searching wildly new ideas. Decrease $c$, and the AI becomes conservative, heavily focusing only on its best-performing moves.How the Balancing Act Works in PracticeImagine a node that looks terrible at first—maybe it lost its first 2 simulations. Its exploitation score is $0$. MCTS will start ignoring it to focus on better moves.However, as MCTS simulates those other better moves thousands of times, the parent visit count ($N_i$) grows massive. Because of that $\ln N_i$ in the numerator, the Exploration Term for our ignored node steadily climbs.Eventually, the exploration bonus becomes so high that it overrides the $0\%$ win rate. MCTS is forced to say, "Okay, it's been a while, let me double-check that 'bad' move just in case I missed a brilliant trap." If the move fails again, its visit count ($n_i$) goes up, which immediately shrinks the exploration bonus back down. If it turns out to be a hidden masterpiece, its win rate starts climbing, and MCTS naturally incorporates it into its favorite strategies.
+
+<!-- To guide exploration, MCTS uses techniques we have already seen in Multi-Armed Bandit problems. -->
+
+::: incremental
+- MCTS treats every choice as a **multi-armed bandit** problem and uses an **upper confidence bound** formula called UCB1:
+$$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
+:::
+
+::: columns-5-5
+
+::: incremental
+- The Exploitation Term ($\frac{w_i}{n_i}$):
+  - $w_i$: number of wins (i.e., $r=1$) simulated through child node $i$ so far. 
+  - $n_i$: number of times child node $i$ has been visited.
+  - $\frac{w_i}{n_i}$: win rate (or average reward $\Exp{r}$) of the node.
+  - The higher the win rate, the more attractive this node is.
+
+:::
+
+::: incremental
+- The Exploration Term ($\sqrt{\frac{\ln N_i}{n_i}}$):
+  - $N_i$ is the total number of times the parent node has been visited.
+  - If we rarely visit a node, $n_i$ is very small, which makes the exploration term grow large.
+:::
+
+:::
+
+::: incremental
+- The exploration constant ($c$) is a parameter we can tune (in theory, it should be $\sqrt{2}$).
+- How the balancing works in practice:
+  - Imagine a node/move that looks bad at first (maybe it lost its first 2 simulations) $\Rightarrow$ exploitation score is $0$. 
+  - MCTS will start ignoring it to focus on better moves. 
+  - As the parent visit count ($N_i$) grows while $n_i$ remains small, the exploration term steadily increases. 
+  - Eventually, the exploration bonus becomes so high that it overrides the $0\%$ win rate.
+  - If the move fails again ($r=0$) $\qquad\qquad\Rightarrow$ exploration shrinks ($n_i \uparrow$); exploitation stays low.
+  - If it turns out to be a good move ($r=1$) $\Rightarrow$ exploration shrinks ($n_i \uparrow$); exploitation goes up $\Exp{r}\uparrow$.
+:::
+:::
+
+# AlphaGo \& AlphaZero
+
+# AlphaGo \& AlphaZero
+
+::: small
+
+::: columns-6-2
+
+::: platzhalter
+### The rules of Go
+
+::: incremental
+- Black and White place stones in turns on a $19 \times 19$ grid.
+- If a stone (or a group of stones) is surrounded by the opponent: captured/removed.
+- Score: number of captured stones plus number of surrounded fields on the board.
+:::
+
+::: fragment
+### Complexity (see David Silver's NeurIPS 2017 [presentation](https://www.youtube.com/watch?v=Wujy7OzvdJk))
+:::
+
+::: incremental
+- Estimated number of possible board positions: $10^{170}$.
+- Approximate number of game sequences: $200^{200}$.
+- **Conclusion**: Completely untractable for classical search methods!
+:::
+:::
+
+::: platzhalter
+![The first 150 moves of a Go game [[Source](https://en.wikipedia.org/wiki/Go_(game))].](images/15-model-based-RL/Go150moves.gif){ width=300px }
+:::
+
+:::
+
+
+::: fragment
+::: columns-6-2
+
+::: platzhalter
+### AlphaGo \& AlphaZero
+
+::: incremental
+- AlphaGo was the first program to beat a professional player as well as a world champion.
+- Trained on a large basis of positions assessed by human experts.
+- Then fine-tuned via self-play.
+- AlphaZero: Strongly simplified architecture, trained exclusively through self-play.
+:::
+:::
+
+![AlphaGo [@Silver2016go] [[Source](https://www.bbc.com/news/technology-35785875)].](images/00-introduction/alphago.jpg){ width=300px }
+
+:::
+:::
+
+:::
+
+# AlphaGo -- Architecture
+
+::: small
+### The AlphaGo architecture consists of several networks
+
+::: columns-8-4
+
+::: incremental
+1. Expert-trained policy network $p_\sigma\agivenb{a}{s}$.\
+[$\circ$ supervised training on 30 million moves (from the KGS Go Server).]{.fragment}\
+[$\circ$ Architecture:\
+$\quad\bullet$ $19 \times 19 \times 48$ input features,\
+$\quad\bullet$ $11$ hidden layers with $192$ channels, $3 \times 3$ conv. kernels, ReLU activation,\
+$\quad\bullet$ $1\times 1$ convolution filter with softmax activation,]{.fragment}\
+[$\Rightarrow$ probability distribution over $19 \times 19 + 1$ choices (including *pass*).]{.fragment}
+1. Improved policy network $p_\rho\agivenb{a}{s}$ by self-play.\
+[$\circ$ Same architecture as supervised learning policy.]{.fragment}
+1. Value network $v_\theta(s')$\
+[$\circ$ Predicts a scalar value $V\in[-1,1]$ for the probability of white winning from this position:\
+$\quad\bullet$ $V=-1$: certain loss,\
+$\quad\bullet$ $V=+1$: certain victory.]{.fragment}\
+[$\circ$ Same architecture as the policies, except for different readout.]{.fragment}
+1. Linear policy network $p_\pi$ for very fast rollouts. ($\approx 2\mu s$ vs. $\approx 3 ms$).
+:::
+
+::: platzhalter
+::: columns-5-5
+
+::: platzhalter
+![](images/15-model-based-RL/AlphaGo-policy.png){width=200px}
+
+::: center
+Policy networks
+:::
+:::
+
+::: platzhalter
+![](images/15-model-based-RL/AlphaGo-value.png){width=200px}
+
+::: center
+Value network
+:::
+:::
+:::
+\
+
+::: center
+Source: [@Silver2016go].
+:::
+:::
+
+
 :::
 
 
 
-# Example: AlphaZero
+:::
+
+# AlphaGo -- Training
 
 ::: small
-## The AlphaZero Loop: How the Tree Teaches the Network
+### Training procedure
 
-In traditional reinforcement learning, an agent learns by interacting directly with the environment. But in AlphaZero-style algorithms, the agent uses **MCTS as an internal simulator** to generate high-quality data.
+::: columns-7-5
 
-The genius of AlphaZero is that the neural network and the MCTS tree exist in a symbiotic loop: **The network guides the tree search, and the tree search trains the network.**
-
-```
-       +---------------------------------------+
-       |                                       |
-       v                                       |
-+--------------+    Guides Search     +-----------------+
-|  Neural Net  | -------------------> |    MCTS Tree    |
-| (Intuition)  |                      |   (Deliberation)|
-+--------------+                      +-----------------+
-       ^                                       |
-       |          Trains Network               |
-       +---------------------------------------+
-
-```
-
-Here is exactly how this training process works, step-by-step.
-
----
-
-### Step 1: Self-Play and "Thinking Time"
-
-AlphaZero plays millions of games against itself. For every single move in a game, it pauses and runs an MCTS search.
-
-Let’s say the neural network is currently a bit weak. It looks at the board and thinks, *"Move A looks okay, maybe a 50% chance of winning."* However, MCTS doesn't just rely on the network's initial reaction. It runs thousands of simulations, looks several moves ahead, and discovers a hidden tactical blunder. After the search finishes, MCTS concludes, *"Actually, Move A is terrible. Move B is much better."*
-
----
-
-### Step 2: The Tree as a Teacher (Policy Improvement)
-
-Because MCTS actually "thought" about the future, its final decision is much smarter than the neural network's initial guess. MCTS has essentially upgraded the agent's knowledge.
-
-We can represent the MCTS results as a probability distribution based on how many times each move was visited. Let's call this target distribution **$\pi$** (pi).
-
-* The neural network initially guessed: `[Move A: 70%, Move B: 30%]`
-* After searching, MCTS visited: `[Move A: 10%, Move B: 90%]` ($\pi$)
-
-We save this board state along with the MCTS recommendation ($\pi$) into a massive data bank of training examples.
-
----
-
-### Step 3: The Game Outcome (Value Estimation)
-
-The agent keeps playing using MCTS until the game naturally ends. Let's say the agent eventually wins. We go back to every single board state visited during that game and label it with the final outcome: **$z = +1$** (a win).
-
-Now, we have a perfect training dataset for our neural network consisting of three things:
-
-1. The raw board state.
-2. The smart MCTS move recommendations ($\pi$).
-3. The actual, final game outcome ($z$).
-
----
-
-### Step 4: Updating the Brain (The Loss Function)
-
-At the end of the day, we take the neural network and train it on this dataset. The network outputs two things for any board state: a move probability vector $p$, and a predicted win value $v$.
-
-We force the network to change its internal weights using a dual-purpose loss function:
-
-$$\text{Loss} = (z - v)^2 - \pi \log p + c||\theta||^2$$
-
-Let’s break down what this math is forcing the network to learn:
-
-* **$(z - v)^2$ (The Value Loss):** This minimizes the difference between the network's prediction ($v$) and who actually won the game ($z$). It teaches the network to look at a board and accurately predict, *"Am I winning or losing?"*
-* **$- \pi \log p$ (The Policy Loss):** This forces the network's raw intuition ($p$) to match the smart, deeply calculated MCTS search results ($\pi$). It teaches the network, *"Next time you see a similar board, don't waste time thinking about Move A. Make your initial guess look more like Move B."*
-* **$c||\theta||^2$ (Regularization):** A standard machine learning penalty to prevent the network from overfitting or memorizing specific games.
-
----
-
-### The Result: Exponential Growth
-
-Once the network is updated, you start the self-play process over again.
-
-Because the network’s raw intuition is now smarter, the next round of MCTS searches can start from a much higher baseline, allowing it to search even deeper and discover even more complex strategies. Through this continuous cycle of self-improvement, the system rapidly evolves from playing completely random moves to achieving superhuman grandmaster status without ever looking at a human game.
+::: incremental
+1. Train **SL policy** $p_\sigma\agivenb{a}{s}$ $\Rightarrow$ supervised with cross-entropy loss.\
+[$\circ$ given an input-output pair $(s,a)$ from the dataset, make a one-hot encoding of $a$ and minimize the cross-entropy loss.]{.fragment}\
+[$\circ$ $p_\sigma\agivenb{a}{s}$ achieved an accuracy of $57 \%$ for predicting players' moves.]{.fragment}
+1. Train the **rollout policy** $p_\pi\agivenb{a}{s}$ in the same way as the SL policy.\
+[$\circ$ $p_\pi\agivenb{a}{s}$ achieved an accuracy of $\approx 24 \%$ for predicting players' moves.]{.fragment}\
+[$\circ$ For the purpose of rollouts, this is a reasonable performance.]{.fragment}\
+[$\circ$ The more important factor is the very fast inference.]{.fragment}
 :::
+
+![](images/15-model-based-RL/AlphaGo-RL.png){width=500px}
+:::
+
+::: incremental
+3. Train the **RL policy** $p_\rho\agivenb{a}{s}$ via REINFORCE (sample $\rightarrow$ policy gradient $\rightarrow$ gradient ascent) with initial guess $p_\sigma\agivenb{a}{s}$.\
+[$\circ$ Monte-Carlo sampling over entire game trajectories.]{.fragment}\
+[$\circ$ High-variance problem $\Rightarrow$ very large number of simulated games.]{.fragment}
+3. Train the **value network** $v_\theta(s')$ in a supervised fashion via Monte-Carlo sampling.\
+[$\circ$ Use the RL policy $p_\rho\agivenb{a}{s}$ to create a large dataset (30 million samples) of near-optimal games.]{.fragment}
+:::
+
+:::
+
+# AlphaGo -- Execution/Play
+
+::: small
+::: columns-6-4
+
+::: platzhalter
+### The execution phase of AlphaGo is a version of MCTS
+
+::: incremental
+1. **Selection**: As in MCTS, but using *polynomial upper confidence trees*: $$ a_t = \arg\max_a \cbracket{Q(s, a) + U(s, a)}$$
+1. **Expansion**: Generate the legal moves from the leaf position.
+1. **Simulation**: Dual evaluation system:\
+[$\circ$ The value network $v_\theta(s')$ estimates the chance of winning.]{.fragment}\
+[$\circ$ The rollout policy $p_\pi\agivenb{a}{s}$ is used to play many games to the end.]{.fragment}\
+[$\circ$ The assessed value is a mixture of the two (often 50/50).]{.fragment}
+1. **Backup**: Update node visitation counts and winning percentages. 
+:::
+
+::: fragment
+### Selecting the actual move
+:::
+::: incremental
+- AlphaGo does **not** necessarily pick the move with the highest value. 
+- It plays the move that was visited the most times during simulations. 
+- This ensures that the chosen move is stable and has been thoroughly evaluated through multiple simulation paths. 
+:::
+:::
+
+::: fragment
+::: definition
+### Polynomial upper confidence trees (PUCT)
+
+::: incremental
+- **Exploitation term** $Q(s,a)$: averaging the values of the leave states $s_L$ via $v_\theta(s_L)$ over the plays during the simulation step.
+- **Exploration term** $U(s,a)$: a version of UCB, 
+$$U(s, a) = c_{\text{puct}} \cdot P(s, a) \cdot \frac{\sqrt{\sum_b N(s, b)}}{1 + N(s, a)}.$$
+  - $N(s, a)$ is the visit count.
+  - $\sum_b N(s, b)$ is the total visit count of the parent node.
+  - $c_{\text{puct}}$ is a hyperparameter.
+  - $P(s, a)$ is the prior probability provided by the SL Policy Network $p_\sigma\agivenb{a}{s}$.
+:::
+:::
+:::
+
+:::
+
+
+:::
+
+
+# AlphaGo -- Exploitation-exploration mechanics
+
+::: small
+When AlphaGo looks at a brand-new board state during a simulation, this is exactly what happens dynamically:
+
+::: columns-6-4
+
+::: platzhalter
+::: incremental
+1. **Setting the prior**: The SL policy network $p_\sigma\agivenb{a}{s}$ outputs a probability distribution $P(s, a)$ for all legal moves.\
+[$\circ$ "Expert" moves that look professional / human: large $P$ (e.g., $0.60$).]{.fragment}\
+[$\circ$ Odd, sub-optimal, or bizarre moves: small $P$ (e.g., $0.001$).]{.fragment}\
+[$\circ$ This $P(s, a)$ stays fixed for the rest of the search phase; it acts as a permanent multiplier for the exploration bonus.]{.fragment}
+:::
+:::
+
+::: platzhalter
+::: definition
+$$ \begin{align*} a_t &= \arg\max_a \cbracket{Q(s, a) + U(s, a)}\\
+U(s, a) &= c_{\text{puct}} \cdot P(s, a) \cdot \frac{\sqrt{\sum_b N(s, b)}}{1 + N(s, a)} \end{align*}$$
+:::
+:::
+
+:::
+
+::: incremental
+2. **Early simulations (policy dominates)**:\
+[$\circ$ At the start of the search, the visit counts $N(s, a)$ for all moves are 0.]{.fragment}\
+[$\circ$ Because $Q$ is uninitialized or 0, selection is dominated by exploration $U(s, a)$ $\Rightarrow$ driven by the policy network's $P(s, a)$.]{.fragment}\
+[$\circ$ As a result, AlphaGo's first few simulations will only explore the top moves suggested by the human SL policy.]{.fragment}
+2. **Deep search (UCB dominates)**:\
+[$\circ$ As a specific move $a$ is frequently selected, its visit count $N(s, a)$ grows.]{.fragment}\
+[$\circ$ Exploration bonus $U(s, a)$ decays $\Rightarrow$ selection relies more on the actual win rate $Q(s, a)$ discovered by the simulations.]{.fragment}\
+[$\circ$ Conversely, if a move has a decent prior probability $P(s, a)$ but AlphaGo has ignored it for a while, the numerator $\sqrt{\sum_b N(s, b)}$ keeps growing while its own $N(s, a)$ stays stagnant. This causes its exploration bonus to grow.]{.fragment}
+:::
+:::
+
+# AlphaZero
+
+::: small
+The AlphaZero framework [@Silver2017alphagozero] beat AlphaGo 100-0 (!) **and** can play multiple games (Go, Chess, Shogi).
+
+::: columns-6-4
+
+::: platzhalter
+::: fragment
+### The main changes
+:::
+
+::: incremental
+1. **Simpler architecture**. Single "two-headed" network:\
+[$\circ$ Input: Raw board position, no features.]{.fragment}\
+[$\circ$ Output: $(p,v) = f_\theta$ $\Rightarrow$ move probabilities (i.e., policy) and winning chance (i.e., value).]{.fragment}\
+[$\circ$ Training: $$ \min_\theta (z-v)^2 - \pi^\top \log p + c \norm{\theta}^2 $$]{.fragment}
+[$\quad\bullet$ Value $v$ matches game outcome $z\in\set{-1,0,+1}$.]{.fragment}\
+[$\quad\bullet$ Policy network $p$ matches MCTS probabilities $\pi$.]{.fragment}
+1. **No human data**. Starts with random weights:\
+[$\circ$ Learns entirely via RL self-play from game zero.]{.fragment}
+1. **Pure MCTS without rollouts**.\
+[$\circ$ The evaluation of a leaf node comes solely from the value head of the single neural network.]{.fragment}\
+[$\circ$ MCTS is strictly used as a policy improvement operator.]{.fragment}
+:::
+:::
+
+::: platzhalter
+![](images/15-model-based-RL/AlphaZero-selfplay.png){width=550px}
+\
+
+![](images/15-model-based-RL/AlphaZero-training.png){width=550px}
+:::
+
+:::
+:::
+
+# AlphaZero -- MCTS
+
+::: small
+![](images/15-model-based-RL/AlphaZero-MCTS.png){width=1200px}
+
+### Over the course of training,
+::: incremental
+-  4.9 million games of self-play were generated,
+- using 1,600 simulations for each MCTS, 
+- which corresponds to approximately 0.4 s thinking time per move. 
+:::
+:::
+
+::: fragment
+::: footer
+:bulb: $\alpha_\theta$ represents the final policy ($f_\theta$ plus MCTS) after training is complete.
+:::
+:::
+
+# AlphaZero -- Training procedure
+
+::: small
+::: columns-7-3
+
+::: platzhalter
+::: incremental
+1. **MCTS**: From the current actual board state $s$, run a few thousand MCTSs.
+- The neural network's policy head provides prior probabilities to guide which branches of the tree to explore.
+- The neural network's value head evaluates the leaf nodes without needing random rollouts.
+2. **Extracting the search probabilities ($\pi$)**
+- After the MCTS simulations are complete, the choices are aggregated. 
+- Counts state visitations and convert into probability vector $\pi$.
+  - $\pi$ represents a much stronger policy than the raw output of the neural network.
+3. **Choosing the move** based on $\pi$.
+- For the first several moves of a training game, select moves probabilistically proportional to $\pi$ to ensure deep exploration of the state space.
+- For the rest of the game, greedily selects the most visited move.
+4. **The game outcome**: $z = +1$ for a win, $z=0$ for a draw and $z=-1$ for a loss. 
+:::
+:::
+
+::: fragment
+### Generating the training data for $f_\theta$
+
+::: incremental
+- Every state $s$ encountered during a self-play game becomes a data point for the training buffer (e.g., if a game lasted 60 moves, it yields 60 distinct training samples).
+- Each training sample is a triplet $(s, \pi, z)$
+  - $s$: The board state (input).
+  - $\pi$: The search probabilities calculated by MCTS for that state (target for the policy head).
+  - $z$: The winner of that specific game (target for the value head).  
+- Supervised learning of $f_\theta$!
+:::
+:::
+
+:::
+
+
+
+:::
+
 
 
 ------------------------------------------------------------------------------
