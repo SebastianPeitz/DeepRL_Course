@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "23.06.2026 07:55"
+        "28.06.2026 21:02"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "14",
@@ -611,6 +611,7 @@
             ],
             "Oc": "{\\mathcal{O}}",
             "Q": "{\\mathbb{Q}}",
+            "Qc": "{\\mathcal{Q}}",
             "Qpi": "{Q^\\pi}",
             "Qpiphi": "{Q^{\\pi_\\phi}}",
             "Qstar": "{Q^*}",

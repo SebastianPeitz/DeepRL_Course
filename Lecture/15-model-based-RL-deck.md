@@ -318,7 +318,7 @@ $\quad\quad\quad$ **if** $P>\xi$ **then** insert $(\bar s,\bar a)$ into $\Qc$ wi
 # Example: Dyna Maze (3)
 
 ::: small
-![Prioritized sweeping has been found to dramatically increase the speed at which optimal solutions are found in maze tasks, often by a factor of $5$ to $10$. A typical example is shown to the right. These data are for a sequence of maze tasks of exactly the same structure as the first one where we studied varying $n$, except that they vary in the grid resolution. Prioritized sweeping maintained a decisive advantage over unprioritized Dyna-$Q$. Both systems made at most $n = 5$ updates per environmental interaction (Source: [@Sutton1998{}, Example 8.4]).](images/15-model-based-RL/PrioritizedSweeping.png){width=600px}
+![Prioritized sweeping can dramatically increase the speed at which optimal solutions are found in maze tasks such as this one. These data are for a sequence of maze tasks of exactly the same structure as the first one where we studied varying $n$, except that they vary in the grid resolution. Both systems made at most $n = 5$ updates per environmental interaction (Source: [@Sutton1998{}, Example 8.4]).](images/15-model-based-RL/PrioritizedSweeping.png){width=600px}
 :::
 
 
@@ -338,23 +338,74 @@ Expected vs. sample updates
 # Planning at decision time
 
 ::: small
-Before: Background planning
 
-Now: decision-time planning
+### What we have discussed so far: Background planning
+
+::: incremental
+- Gradually improves policy or value function if time is available.
+- Backward view: re-apply gathered experience.
+- Feasible for fast execution: policy or value estimate are available with low latency
+(important, e.g., for real-time control). 
+:::
+
+::: fragment
+### Alternative use of a model: Planning at decision time
+:::
+
+::: incremental
+- Select single next future action through planning.
+- Forward view: predict future trajectories starting from current state.
+- Typically discards previous planning outcomes (start from scratch after state transition).
+- If multiple trajectories are independent: easy parallel implementation.
+- Most useful if fast responses are not required (e.g., turn-based games or slow systems). 
+:::
+
+::: fragment
+### Question: Have we already seen planning algorithms?
+:::
+
+::: incremental
+- Yes! Optimal control and model predictive control (MPC) fall into this category.
+- Now: How to use planning and learning at the same time.
+- But first: planning in discrete settings.
+:::
+
 :::
 
 
 # Heuristic search
 
 ::: small
-- if we have a model, we can explore all possibilities
-- curse of dimensionality
-- HS: Stop exploration of tree at some point and replace neglected piece by some hand crafted heuristic
-  - Very fast
-  - Inaccurate if the heuristic is bad
-  - Very hard to find a good heuristic
+::: columns-4-5
 
-![Heuristic search can be implemented as a sequence of one-step updates (shown here outlined in blue) backing up values from the leaf nodes toward the root. The ordering shown here is for a selective depth-first search (Source: [@Sutton1998{}, Fig. 8.9]).](images/15-model-based-RL/HeuristicSearch.png){width=600px}
+::: platzhalter
+::: incremental
+- If we have a model, we can explore all possible state-action sequences from our current state $s$.
+- Challenge: the *curse of dimensionality*. With an increasing prediction horizon, the number of options increases exponentially!
+  - For example, let's assume that we have $\abs{\Ac}=3$ choices in each step.
+  - First prediction step: $3$ choices.
+  - Second prediction step: $9$ choices.
+  - Tenth prediction steps: $3^{10} = 59,049$ choices. 
+:::
+
+:::
+
+::: fragment
+![Similar to dynamic programming, Heuristic search can be implemented as a sequence of one-step updates (shown here outlined in blue) backing up values from the leaf nodes toward the root. The ordering shown here is for a selective depth-first search (Source: [@Sutton1998{}, Fig. 8.9]).](images/15-model-based-RL/HeuristicSearch.png){width=650px}
+:::
+
+:::
+
+::: fragment
+### Heuristic search:
+:::
+
+::: incremental
+- Stop exploration of the tree at some point and replace neglected sequence by some hand crafted heuristic.
+- The heuristic has to be very fast such that we can play assess many states and go deep into the tree.
+- Drawback: Inaccurate if the heuristic is bad.
+  - It can be very hard to find a good heuristic.
+:::
 
 :::
 
@@ -362,28 +413,97 @@ Now: decision-time planning
 # Rollout algorithms
 
 ::: small
-- Instead of a heuristic, take all possible actions $a$ in $s_t$, then for each, follow some rollout policy $\pi^r$ to the end many times
-- We get an MC estimate of the value along these branches
-- Theoretical argument: policy improvement theorem. If policy $\pi^r$ is the same for all experiments and the value for one action is higher then for another, then the policy is better according to the PIT
+::: columns-5-5
 
+::: platzhalter
+### Alternative to a heuristic?
+
+::: incremental
+- If finding a heuristic is hard, we can instead use a so-called **rollout policy** $\pi^r$.
+- $\pi^r$ the doesn't have to be very good, but fast to evaluate.
+- Approach: take all possible actions $a$ in $s$, then for each, follow some rollout policy $\pi^r$ to the end many times.
+- Theoretical argument: policy improvement theorem. 
+  - If $\pi^r$ is the same for all experiments and the value for one action is higher than for another, then the policy is better according to the PIT.
+:::
+:::
+
+::: fragment
 ![Simplified processing diagram of rollout algorithms (Adapted from [@Abdelwanis2026{}, Fig. 7.12]).](images/15-model-based-RL/Rollout.svg){width=600px}
+:::
+
+:::
+
+::: fragment
+### Question: Which function does the rollout serve?
+:::
+
+::: incremental
+- We have seen a very similar structure in temporal difference learning: [The TD target is $y_t = r_t + \gamma V(s_{t+1})$.]{.fragment}
+- The rollout yields a Monte-Carlo estimate of the value along the branches of the decision tree.
+:::
+
+
 :::
 
 
 # Monte-Carlo Tree Search (MCTS)
 
 ::: small
-- Setting: Playing games $\Rightarrow$ +1 one if a game is won; 0 otherwise. $\Rightarrow$ we can rate an action by the winning chance (empirically: number of wins divided by number of games played with this starting action)
-- The following steps are repeated until thinking time is up
-  1. **Selection** Starting at the root (current state), you navigate down the existing tree by choosing the most promising nodes. To balance exploring new moves vs. exploiting known good moves, MCTS usually uses a formula called UCB1 (Upper Confidence Bound). You keep going down until you reach a node that isn't fully expanded yet.
-  2. **Expansion** Unless the selected node represents the end of the game, you create one (or more) new child nodes from it, expanding your tree's frontier by one step.
-  3. **Simulation (The Rollout)** From this brand-new node, you perform a classic rollout—simulating the rest of the game rapidly until a final win/loss result is achieved.
-  4. **Backpropagation** You take the result of that simulation (e.g., $+1$ for a win, $0$ for a loss) and pass it back up through all the nodes you visited during the Selection phase. Every node along that path updates its statistics (total wins / total visits).
-- After running these four steps thousands of times in a fraction of a second, your search tree becomes highly asymmetric. It will have explored deeply into paths that look promising, while barely wasting any time on paths that lead to quick losses.
-- When your thinking time is up, MCTS looks at the immediate children of the root node and chooses the one that was visited the most. You make that move in the real world, the opponent responds, and you start the MCTS process all over again from the new state.
-- This elegant progression—from raw trial-and-error RL, to guessing with heuristics, to sampling with rollouts, and finally to the targeted, asymmetric tree growth of MCTS—is exactly what powered revolutionary AI systems like AlphaGo.
+::: incremental
+- Let's explore MCTS in the special setting of playing games: $r=1$ if a game is won; $r=0$ otherwise.
+  - We can rate an action by the winning chance (number of wins divided by number of games played with this starting action).
+:::
 
-![Monte Carlo Tree Search. When the environment changes to a new state, MCTS executes as many iterations as possible before an action needs to be selected, incrementally building a tree whose root node represents the current state. Each iteration consists of the four operations **Selection**, **Expansion** (though possibly skipped on some iterations), **Simulation**, and **Backup**, as explained in the text and illustrated by the bold arrows in the trees (Source: [@Sutton1998{}, Fig. 8.10]).](images/15-model-based-RL/MCTS.png){width=600px}
+::: fragment
+::: columns-6-4
+
+::: definition
+### Monte-Carlo Tree Search (MCTS)
+
+::: incremental
+1. **Selection** Starting at the root $s$, navigate down the existing tree by choosing the *most promising* nodes.\
+  [$\circ$ *Upper Confidence Bound* to balance exploration/exploitation.]{.fragment}\
+  [$\circ$ Move down the tree until a node isn't fully expanded yet.]{.fragment}
+2. **Expansion** Unless terminal, create new child node(s).
+3. **Simulation** Fast *rollout* until win/loss $\Rightarrow$ $r=1$ / $r=0$.
+4. **Backpropagation** Pass $r$ back through all nodes visited during selection phase and update node statistics ($\#$ wins / $\#$ visits).
+:::
+:::
+
+![Monte Carlo Tree Search (Source: [@Sutton1998{}, Fig. 8.10]).](images/15-model-based-RL/MCTS.png){width=520px}
+
+:::
+:::
+
+
+::: platzhalter
+::: fragment
+### Execution
+:::
+
+::: columns-5-5-4
+
+::: incremental
+- Many MCTS runs: tree becomes highly asymmetric. 
+  - Deep exploration of paths that look promising.
+  - Little time on paths that lead to quick losses.
+:::
+
+::: incremental
+- When the thinking time is up: 
+  - Compare immediate children of the root node.
+  - Choose the one that was visited the most. 
+  - Make that move in the real world.
+:::
+
+::: incremental
+- After opponent move, start MCTS again from the new state. 
+:::
+:::
+
+:::
+
+
 :::
 
 # MCTS details

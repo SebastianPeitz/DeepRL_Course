@@ -4143,7 +4143,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">The matrix <span class="math inline">\(Q\)</span> is <em>positive semidefinite</em>: <span class="math display">\[s^\top Q s \geq 0 ~\forall~s\in\R^n.\]</span></li>
-<li class="fragment">The matrix <span class="math inline">\(R\)</span> is <em>positive definite</em>: <span class="math display">\[a^\top R a \geq 0 ~\forall~a\in\R^m.\]</span></li>
+<li class="fragment">The matrix <span class="math inline">\(R\)</span> is <em>positive definite</em>: <span class="math display">\[a^\top R a &gt; 0 ~\forall~a\in\R^m.\]</span></li>
 <li class="fragment">These ensure existence and uniquenes of a minimizer <span class="math inline">\(s^*,a^*\)</span>.</li>
 </ul>
 </div>
@@ -7335,7 +7335,7 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Objective: <strong>terminal condition</strong> to approach target location <span class="math display">\[\min_{a_1,\ldots,a_p} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.\]</span></li>
+<li class="fragment">Objective: <strong>terminal condition</strong> to approach target location <span class="math display">\[\min_{a_0,\ldots,a_{p-1}} \ell(s_p) = \norm{s_p - s_p^\mathsf{target}}_2^2\quad\text{s.t.}\quad \mathsf{bicycle~model}.\]</span></li>
 <li class="fragment">Discretization: <span class="math inline">\(\Delta t = 0.2\)</span>, <span class="math inline">\(p=25\)</span>.</li>
 </ul>
 </div>
@@ -7372,10 +7372,17 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 </ul></li>
 <li class="fragment">Approach via <a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series expansion</a> around current state <span class="math inline">\(\overline{s}_k, \overline{a}_k\)</span>.</li>
 <li class="fragment">Introduce distance to current state: <span class="math display">\[\Delta s_t = s_t - \overline{s}_t, \quad  \Delta a_t = a_t - \overline{a}_t.\]</span></li>
-<li class="fragment">First-order approximation of the dynamics around the current state: <span class="math display">\[s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\overline{s}_{t+1} }} + \underbrace{\left. \pdiff{f}{s}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =A }} \Delta s_t  + \underbrace{\left. \pdiff{f}{a}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =B }} \Delta a_t + \Oc(\Delta s_t^2, \Delta a_t^2)\]</span> <span class="fragment"><span class="math display">\[\begin{equation} s_{t+1} - \overline{s}_{t+1} = \boxed{\Delta s_{t+1} \fragment{ \approx A \Delta s_t  + B \Delta a_t. }} \label{eq:OC_MPC_linearized} \end{equation}\]</span></span></li>
+<li class="fragment">First-order (i.e., <strong>linear</strong>) approximation in <span class="math inline">\(\Delta s_t\)</span> and <span class="math inline">\(\Delta a_t\)</span>: <span class="math display">\[s_{t+1} \approx \underbrace{f(\overline{s}_t,\overline{a}_t)}_{\fragment{ =\overline{s}_{t+1} }} + \underbrace{\left. \pdiff{f}{s}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =A }} \Delta s_t  + \underbrace{\left. \pdiff{f}{a}\right|_{(\overline{s}_t,\overline{a}_t)}}_{\fragment{ =B }} \Delta a_t + \Oc(\Delta s_t^2, \Delta a_t^2)\]</span> <span class="fragment"><span class="math display">\[\begin{equation} s_{t+1} - \overline{s}_{t+1} = \boxed{\Delta s_{t+1} \fragment{ \approx A \Delta s_t  + B \Delta a_t. }} \label{eq:OC_MPC_linearized} \end{equation}\]</span></span></li>
 </ul>
 </div>
 <div class="fragment">
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:350px;">
+<img src="images/14-optimal-control/MPC.svg" style="height:auto;width:100%;" alt="images/14-optimal-control/MPC.svg" />
+</figure>
+</div>
+</div>
 <div id="mpc-with-linearized-dynamics" class="definition">
 <h3>MPC with linearized dynamics</h3>
 <p><strong>for</strong> <span class="math inline">\(t=0,1,2,\ldots\)</span>:<br />
@@ -7383,21 +7390,15 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <span class="math inline">\(\qquad\)</span> of the real (nonlinear system).</span><br />
 <span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Linearize</strong> the system dynamics<br />
 <span class="math inline">\(\qquad\)</span> around <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\eqref{eq:OC_MPC_linearized}\)</span>.</span><br />
-<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Assemble</strong> matrices <span class="math inline">\(\hat{Q}_t\)</span> and <span class="math inline">\(\hat{R}_t\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Assemble</strong> matrices <span class="math inline">\(\hat{Q}_t\)</span> / <span class="math inline">\(\hat{R}_t\)</span> and <span class="math inline">\(G_t\)</span> / <span class="math inline">\(H_t\)</span>.</span><br />
 <span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Solve</strong> linear problem <span class="math inline">\(\eqref{eq:OC_ocp_linear2}\)</span>.</span><br />
 <span class="fragment"><span class="math inline">\(\quad\)</span> <strong>Apply</strong> first entry to real system.</span></p>
 </div>
-<div class="fragment">
-<h3 id="new-bottlenecks">New bottlenecks</h3>
-</div>
-<div class="incremental">
-<ul class="incremental">
-<li class="fragment">The linearization around <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span>.</li>
-<li class="fragment">Assembly of <span class="math inline">\(\hat{Q}_t\)</span> and <span class="math inline">\(\hat{R}_t\)</span>.</li>
-</ul>
 </div>
 </div>
-</div>
+<p><br />
+</p>
+<p><span class="fragment"><span class="math inline">\(\qquad\qquad\)</span><strong>New bottlenecks</strong>:<span class="math inline">\(\qquad\)</span></span> <span class="fragment"><span class="math inline">\(\bullet\)</span> The linearization around <span class="math inline">\(\overline{s}_t,\overline{a}_t\)</span> <span class="math inline">\(\qquad\)</span></span> <span class="fragment"><span class="math inline">\(\bullet\)</span> Assembly of <span class="math inline">\(\hat{Q}_t\)</span> / <span class="math inline">\(\hat{R}_t\)</span> and <span class="math inline">\(G_t\)</span> / <span class="math inline">\(H_t\)</span>.</span></p>
 </div>
 </div>
 </div>
