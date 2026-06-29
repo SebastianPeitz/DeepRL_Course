@@ -195,9 +195,11 @@ learning</title>
 </ul></li>
 <li>Looking into the future: Planning at decision time
 <ul>
+<li>Heuristic search</li>
+<li>Rollouts</li>
 <li>MCTS</li>
-<li>AlphaZero</li>
 </ul></li>
+<li>AlphaGo &amp; AlphaZero</li>
 <li>Learning a model
 <ul>
 <li>Dreamer architecture</li>
@@ -948,19 +950,56 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 </div>
 </div>
 </section>
-<section id="mcts-details" class="slide level1">
+<section id="exploration-vs.-exploitation-in-mcts" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>MCTS details</h1>
+<h1>Exploration vs. exploitation in MCTS</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
-<ul>
-<li>To guide this asymmetric exploration, MCTS relies on a concept from probability theory known as the Multi-Armed Bandit problem. Imagine you are in a casino facing a row of slot machines (multi-armed bandits), and you want to maximize your payouts. Do you stick with the machine that has paid out decently so far (exploitation), or do you try a different machine that you haven’t played much yet (exploration)?</li>
-<li>MCTS treats every choice point in the tree as a multi-armed bandit. To solve it, it uses a formula called UCB1 (Upper Confidence Bound). Or also <span class="math display">\[UCT = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N}{n_i}}\]</span></li>
-<li>During the Selection phase, whenever MCTS needs to choose between different child nodes, it calculates the UCB1 value for each option and picks the one with the highest score.Here is the formula:<span class="math display">\[\text{UCB1} = \frac{w_i}{n_i} + c \times \sqrt{\frac{\ln N_i}{n_i}}\]</span>Breaking Down the FormulaThe formula is a beautiful tug-of-war between two distinct forces: UCB1 Score = [ Exploitation Component ] + [ Exploration Component ] The Exploitation Term (<span class="math inline">\(\frac{w_i}{n_i}\)</span>):<span class="math inline">\(w_i\)</span> is the number of wins simulated through child node <span class="math inline">\(i\)</span> so far.<span class="math inline">\(n_i\)</span> is the number of times child node <span class="math inline">\(i\)</span> has been visited.What it does: This is simply the win rate of the node. If a move has won 80 out of 100 simulations, its win rate is <span class="math inline">\(0.8\)</span>. The higher the win rate, the more attractive this node is.The Exploration Term (<span class="math inline">\(\sqrt{\frac{\ln N_i}{n_i}}\)</span>):<span class="math inline">\(N_i\)</span> is the total number of times the parent node has been visited.<span class="math inline">\(\ln N_i\)</span> is the natural logarithm of that parent visit count.<span class="math inline">\(n_i\)</span> is (again) the number of times this specific child node has been visited.What it does: This measures how much we don’t know about this move. Notice that <span class="math inline">\(n_i\)</span> is in the denominator. If we rarely visit a node, <span class="math inline">\(n_i\)</span> is very small, which makes this entire exploration term grow quite large. It acts as a “bonus” for neglected moves.The Exploration Constant (<span class="math inline">\(c\)</span>):This is a parameter you can tune (theoretically, it is mathematically proven to be <span class="math inline">\(\sqrt{2}\)</span>, but in practice, developers adjust it).What it does: It acts as a volume knob. Increase <span class="math inline">\(c\)</span>, and the AI becomes adventurous, searching wildly new ideas. Decrease <span class="math inline">\(c\)</span>, and the AI becomes conservative, heavily focusing only on its best-performing moves.How the Balancing Act Works in PracticeImagine a node that looks terrible at first—maybe it lost its first 2 simulations. Its exploitation score is <span class="math inline">\(0\)</span>. MCTS will start ignoring it to focus on better moves.However, as MCTS simulates those other better moves thousands of times, the parent visit count (<span class="math inline">\(N_i\)</span>) grows massive. Because of that <span class="math inline">\(\ln N_i\)</span> in the numerator, the Exploration Term for our ignored node steadily climbs.Eventually, the exploration bonus becomes so high that it overrides the <span class="math inline">\(0\%\)</span> win rate. MCTS is forced to say, “Okay, it’s been a while, let me double-check that ‘bad’ move just in case I missed a brilliant trap.” If the move fails again, its visit count (<span class="math inline">\(n_i\)</span>) goes up, which immediately shrinks the exploration bonus back down. If it turns out to be a hidden masterpiece, its win rate starts climbing, and MCTS naturally incorporates it into its favorite strategies.</li>
+<!-- To guide exploration, MCTS uses techniques we have already seen in Multi-Armed Bandit problems. -->
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">MCTS treats every choice as a <strong>multi-armed bandit</strong> problem and uses an <strong>upper confidence bound</strong> formula called UCB1: <span class="math display">\[\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.\]</span></li>
 </ul>
+</div>
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The Exploitation Term (<span class="math inline">\(\frac{w_i}{n_i}\)</span>):
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(w_i\)</span>: number of wins (i.e., <span class="math inline">\(r=1\)</span>) simulated through child node <span class="math inline">\(i\)</span> so far.</li>
+<li class="fragment"><span class="math inline">\(n_i\)</span>: number of times child node <span class="math inline">\(i\)</span> has been visited.</li>
+<li class="fragment"><span class="math inline">\(\frac{w_i}{n_i}\)</span>: win rate (or average reward <span class="math inline">\(\Exp{r}\)</span>) of the node.</li>
+<li class="fragment">The higher the win rate, the more attractive this node is.</li>
+</ul></li>
+</ul>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The Exploration Term (<span class="math inline">\(\sqrt{\frac{\ln N_i}{n_i}}\)</span>):
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(N_i\)</span> is the total number of times the parent node has been visited.</li>
+<li class="fragment">If we rarely visit a node, <span class="math inline">\(n_i\)</span> is very small, which makes the exploration term grow large.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The exploration constant (<span class="math inline">\(c\)</span>) is a parameter we can tune (in theory, it should be <span class="math inline">\(\sqrt{2}\)</span>).</li>
+<li class="fragment">How the balancing works in practice:
+<ul class="incremental">
+<li class="fragment">Imagine a node/move that looks bad at first (maybe it lost its first 2 simulations) <span class="math inline">\(\Rightarrow\)</span> exploitation score is <span class="math inline">\(0\)</span>.</li>
+<li class="fragment">MCTS will start ignoring it to focus on better moves.</li>
+<li class="fragment">As the parent visit count (<span class="math inline">\(N_i\)</span>) grows while <span class="math inline">\(n_i\)</span> remains small, the exploration term steadily increases.</li>
+<li class="fragment">Eventually, the exploration bonus becomes so high that it overrides the <span class="math inline">\(0\%\)</span> win rate.</li>
+<li class="fragment">If the move fails again (<span class="math inline">\(r=0\)</span>) <span class="math inline">\(\qquad\qquad\Rightarrow\)</span> exploration shrinks (<span class="math inline">\(n_i \uparrow\)</span>); exploitation stays low.</li>
+<li class="fragment">If it turns out to be a good move (<span class="math inline">\(r=1\)</span>) <span class="math inline">\(\Rightarrow\)</span> exploration shrinks (<span class="math inline">\(n_i \uparrow\)</span>); exploitation goes up <span class="math inline">\(\Exp{r}\uparrow\)</span>.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -968,70 +1007,432 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 </div>
 </div>
 </section>
-<section id="example-alphazero" class="slide level1">
+<section id="alphago-alphazero" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Example: AlphaZero</h1>
+<h1>AlphaGo &amp; AlphaZero</h1>
+</div>
+</div>
+</section>
+<section id="alphago-alphazero-1" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaGo &amp; AlphaZero</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
-<div id="the-alphazero-loop-how-the-tree-teaches-the-network" class="small">
-<h2>The AlphaZero Loop: How the Tree Teaches the Network</h2>
-<p>In traditional reinforcement learning, an agent learns by interacting directly with the environment. But in AlphaZero-style algorithms, the agent uses <strong>MCTS as an internal simulator</strong> to generate high-quality data.</p>
-<p>The genius of AlphaZero is that the neural network and the MCTS tree exist in a symbiotic loop: <strong>The network guides the tree search, and the tree search trains the network.</strong></p>
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 2fr;">
+<div class="platzhalter">
+<h3 id="the-rules-of-go">The rules of Go</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Black and White place stones in turns on a <span class="math inline">\(19 \times 19\)</span> grid.</li>
+<li class="fragment">If a stone (or a group of stones) is surrounded by the opponent: captured/removed.</li>
+<li class="fragment">Score: number of captured stones plus number of surrounded fields on the board.</li>
+</ul>
+</div>
+<div class="fragment">
+<h3 id="complexity-see-david-silvers-neurips-2017-presentation">Complexity (see David Silver’s NeurIPS 2017 <a href="https://www.youtube.com/watch?v=Wujy7OzvdJk">presentation</a>)</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Estimated number of possible board positions: <span class="math inline">\(10^{170}\)</span>.</li>
+<li class="fragment">Approximate number of game sequences: <span class="math inline">\(200^{200}\)</span>.</li>
+<li class="fragment"><strong>Conclusion</strong>: Completely untractable for classical search methods!</li>
+</ul>
+</div>
+</div>
+<div class="platzhalter">
 <div class="media">
-<figure class="code">
-<pre><code>       +---------------------------------------+
-       |                                       |
-       v                                       |
-+--------------+    Guides Search     +-----------------+
-|  Neural Net  | -------------------&gt; |    MCTS Tree    |
-| (Intuition)  |                      |   (Deliberation)|
-+--------------+                      +-----------------+
-       ^                                       |
-       |          Trains Network               |
-       +---------------------------------------+
-</code></pre>
+<figure class="image" style="height:auto;width:300px;">
+<img src="images/15-model-based-RL/Go150moves.gif" style="height:auto;width:100%;" aria-label="The first 150 moves of a Go game [Source]." alt="images/15-model-based-RL/Go150moves.gif" />
+<figcaption>
+The first 150 moves of a Go game [<a href="https://en.wikipedia.org/wiki/Go_(game)">Source</a>].
+</figcaption>
 </figure>
 </div>
-<p>Here is exactly how this training process works, step-by-step.</p>
-<hr />
-<h3 id="step-1-self-play-and-thinking-time">Step 1: Self-Play and “Thinking Time”</h3>
-<p>AlphaZero plays millions of games against itself. For every single move in a game, it pauses and runs an MCTS search.</p>
-<p>Let’s say the neural network is currently a bit weak. It looks at the board and thinks, <em>“Move A looks okay, maybe a 50% chance of winning.”</em> However, MCTS doesn’t just rely on the network’s initial reaction. It runs thousands of simulations, looks several moves ahead, and discovers a hidden tactical blunder. After the search finishes, MCTS concludes, <em>“Actually, Move A is terrible. Move B is much better.”</em></p>
-<hr />
-<h3 id="step-2-the-tree-as-a-teacher-policy-improvement">Step 2: The Tree as a Teacher (Policy Improvement)</h3>
-<p>Because MCTS actually “thought” about the future, its final decision is much smarter than the neural network’s initial guess. MCTS has essentially upgraded the agent’s knowledge.</p>
-<p>We can represent the MCTS results as a probability distribution based on how many times each move was visited. Let’s call this target distribution <strong><span class="math inline">\(\pi\)</span></strong> (pi).</p>
-<ul>
-<li>The neural network initially guessed: <code>[Move A: 70%, Move B: 30%]</code></li>
-<li>After searching, MCTS visited: <code>[Move A: 10%, Move B: 90%]</code> (<span class="math inline">\(\pi\)</span>)</li>
+</div>
+</div>
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 6fr 2fr;">
+<div id="alphago-alphazero-2" class="platzhalter">
+<h3>AlphaGo &amp; AlphaZero</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">AlphaGo was the first program to beat a professional player as well as a world champion.</li>
+<li class="fragment">Trained on a large basis of positions assessed by human experts.</li>
+<li class="fragment">Then fine-tuned via self-play.</li>
+<li class="fragment">AlphaZero: Strongly simplified architecture, trained exclusively through self-play.</li>
 </ul>
-<p>We save this board state along with the MCTS recommendation (<span class="math inline">\(\pi\)</span>) into a massive data bank of training examples.</p>
-<hr />
-<h3 id="step-3-the-game-outcome-value-estimation">Step 3: The Game Outcome (Value Estimation)</h3>
-<p>The agent keeps playing using MCTS until the game naturally ends. Let’s say the agent eventually wins. We go back to every single board state visited during that game and label it with the final outcome: <strong><span class="math inline">\(z = +1\)</span></strong> (a win).</p>
-<p>Now, we have a perfect training dataset for our neural network consisting of three things:</p>
-<ol style="list-style-type: decimal">
-<li>The raw board state.</li>
-<li>The smart MCTS move recommendations (<span class="math inline">\(\pi\)</span>).</li>
-<li>The actual, final game outcome (<span class="math inline">\(z\)</span>).</li>
+</div>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:300px;">
+<img src="images/00-introduction/alphago.jpg" style="height:auto;width:100%;" aria-label="AlphaGo (Silver et al. 2016) [Source]." alt="images/00-introduction/alphago.jpg" />
+<figcaption>
+AlphaGo <span class="citation">(<a href="#ref-Silver2016go">Silver et al. 2016</a>)</span> [<a href="https://www.bbc.com/news/technology-35785875">Source</a>].
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphago-architecture" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaGo – Architecture</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="the-alphago-architecture-consists-of-several-networks" class="small">
+<h3>The AlphaGo architecture consists of several networks</h3>
+<div class="grid-layout" style="grid-template-columns: 8fr 4fr;">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Expert-trained policy network <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span>.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> supervised training on 30 million moves (from the KGS Go Server).</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Architecture:<br />
+<span class="math inline">\(\quad\bullet\)</span> <span class="math inline">\(19 \times 19 \times 48\)</span> input features,<br />
+<span class="math inline">\(\quad\bullet\)</span> <span class="math inline">\(11\)</span> hidden layers with <span class="math inline">\(192\)</span> channels, <span class="math inline">\(3 \times 3\)</span> conv. kernels, ReLU activation,<br />
+<span class="math inline">\(\quad\bullet\)</span> <span class="math inline">\(1\times 1\)</span> convolution filter with softmax activation,</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> probability distribution over <span class="math inline">\(19 \times 19 + 1\)</span> choices (including <em>pass</em>).</span></li>
+<li class="fragment">Improved policy network <span class="math inline">\(p_\rho\agivenb{a}{s}\)</span> by self-play.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Same architecture as supervised learning policy.</span></li>
+<li class="fragment">Value network <span class="math inline">\(v_\theta(s&#39;)\)</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Predicts a scalar value <span class="math inline">\(V\in[-1,1]\)</span> for the probability of white winning from this position:<br />
+<span class="math inline">\(\quad\bullet\)</span> <span class="math inline">\(V=-1\)</span>: certain loss,<br />
+<span class="math inline">\(\quad\bullet\)</span> <span class="math inline">\(V=+1\)</span>: certain victory.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Same architecture as the policies, except for different readout.</span></li>
+<li class="fragment">Linear policy network <span class="math inline">\(p_\pi\)</span> for very fast rollouts. (<span class="math inline">\(\approx 2\mu s\)</span> vs. <span class="math inline">\(\approx 3 ms\)</span>).</li>
 </ol>
-<hr />
-<h3 id="step-4-updating-the-brain-the-loss-function">Step 4: Updating the Brain (The Loss Function)</h3>
-<p>At the end of the day, we take the neural network and train it on this dataset. The network outputs two things for any board state: a move probability vector <span class="math inline">\(p\)</span>, and a predicted win value <span class="math inline">\(v\)</span>.</p>
-<p>We force the network to change its internal weights using a dual-purpose loss function:</p>
-<p><span class="math display">\[\text{Loss} = (z - v)^2 - \pi \log p + c||\theta||^2\]</span></p>
-<p>Let’s break down what this math is forcing the network to learn:</p>
-<ul>
-<li><strong><span class="math inline">\((z - v)^2\)</span> (The Value Loss):</strong> This minimizes the difference between the network’s prediction (<span class="math inline">\(v\)</span>) and who actually won the game (<span class="math inline">\(z\)</span>). It teaches the network to look at a board and accurately predict, <em>“Am I winning or losing?”</em></li>
-<li><strong><span class="math inline">\(- \pi \log p\)</span> (The Policy Loss):</strong> This forces the network’s raw intuition (<span class="math inline">\(p\)</span>) to match the smart, deeply calculated MCTS search results (<span class="math inline">\(\pi\)</span>). It teaches the network, <em>“Next time you see a similar board, don’t waste time thinking about Move A. Make your initial guess look more like Move B.”</em></li>
-<li><strong><span class="math inline">\(c||\theta||^2\)</span> (Regularization):</strong> A standard machine learning penalty to prevent the network from overfitting or memorizing specific games.</li>
+</div>
+<div class="platzhalter">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:200px;">
+<img src="images/15-model-based-RL/AlphaGo-policy.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaGo-policy.png" />
+</figure>
+</div>
+<div class="center">
+<p>Policy networks</p>
+</div>
+</div>
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:200px;">
+<img src="images/15-model-based-RL/AlphaGo-value.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaGo-value.png" />
+</figure>
+</div>
+<div class="center">
+<p>Value network</p>
+</div>
+</div>
+</div>
+<p><br />
+</p>
+<div class="center">
+<p>Source: <span class="citation">(<a href="#ref-Silver2016go">Silver et al. 2016</a>)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphago-training" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaGo – Training</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div id="training-procedure" class="small">
+<h3>Training procedure</h3>
+<div class="grid-layout" style="grid-template-columns: 7fr 5fr;">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Train <strong>SL policy</strong> <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span> <span class="math inline">\(\Rightarrow\)</span> supervised with cross-entropy loss.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> given an input-output pair <span class="math inline">\((s,a)\)</span> from the dataset, make a one-hot encoding of <span class="math inline">\(a\)</span> and minimize the cross-entropy loss.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span> achieved an accuracy of <span class="math inline">\(57 \%\)</span> for predicting players’ moves.</span></li>
+<li class="fragment">Train the <strong>rollout policy</strong> <span class="math inline">\(p_\pi\agivenb{a}{s}\)</span> in the same way as the SL policy.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> <span class="math inline">\(p_\pi\agivenb{a}{s}\)</span> achieved an accuracy of <span class="math inline">\(\approx 24 \%\)</span> for predicting players’ moves.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> For the purpose of rollouts, this is a reasonable performance.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> The more important factor is the very fast inference.</span></li>
+</ol>
+</div>
+<div class="media">
+<figure class="image" style="height:auto;width:500px;">
+<img src="images/15-model-based-RL/AlphaGo-RL.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaGo-RL.png" />
+</figure>
+</div>
+</div>
+<div class="incremental">
+<ol class="incremental" start="3" style="list-style-type: decimal">
+<li class="fragment">Train the <strong>RL policy</strong> <span class="math inline">\(p_\rho\agivenb{a}{s}\)</span> via REINFORCE (sample <span class="math inline">\(\rightarrow\)</span> policy gradient <span class="math inline">\(\rightarrow\)</span> gradient ascent) with initial guess <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span>.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Monte-Carlo sampling over entire game trajectories.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> High-variance problem <span class="math inline">\(\Rightarrow\)</span> very large number of simulated games.</span></li>
+<li class="fragment">Train the <strong>value network</strong> <span class="math inline">\(v_\theta(s&#39;)\)</span> in a supervised fashion via Monte-Carlo sampling.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Use the RL policy <span class="math inline">\(p_\rho\agivenb{a}{s}\)</span> to create a large dataset (30 million samples) of near-optimal games.</span></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphago-executionplay" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaGo – Execution/Play</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="platzhalter">
+<h3 id="the-execution-phase-of-alphago-is-a-version-of-mcts">The execution phase of AlphaGo is a version of MCTS</h3>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>Selection</strong>: As in MCTS, but using <em>polynomial upper confidence trees</em>: <span class="math display">\[ a_t = \arg\max_a \cbracket{Q(s, a) + U(s, a)}\]</span></li>
+<li class="fragment"><strong>Expansion</strong>: Generate the legal moves from the leaf position.</li>
+<li class="fragment"><strong>Simulation</strong>: Dual evaluation system:<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> The value network <span class="math inline">\(v_\theta(s&#39;)\)</span> estimates the chance of winning.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> The rollout policy <span class="math inline">\(p_\pi\agivenb{a}{s}\)</span> is used to play many games to the end.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> The assessed value is a mixture of the two (often 50/50).</span></li>
+<li class="fragment"><strong>Backup</strong>: Update node visitation counts and winning percentages.</li>
+</ol>
+</div>
+<div class="fragment">
+<h3 id="selecting-the-actual-move">Selecting the actual move</h3>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">AlphaGo does <strong>not</strong> necessarily pick the move with the highest value.</li>
+<li class="fragment">It plays the move that was visited the most times during simulations.</li>
+<li class="fragment">This ensures that the chosen move is stable and has been thoroughly evaluated through multiple simulation paths.</li>
 </ul>
-<hr />
-<h3 id="the-result-exponential-growth">The Result: Exponential Growth</h3>
-<p>Once the network is updated, you start the self-play process over again.</p>
-<p>Because the network’s raw intuition is now smarter, the next round of MCTS searches can start from a much higher baseline, allowing it to search even deeper and discover even more complex strategies. Through this continuous cycle of self-improvement, the system rapidly evolves from playing completely random moves to achieving superhuman grandmaster status without ever looking at a human game.</p>
+</div>
+</div>
+<div class="fragment">
+<div id="polynomial-upper-confidence-trees-puct" class="definition">
+<h3>Polynomial upper confidence trees (PUCT)</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment"><strong>Exploitation term</strong> <span class="math inline">\(Q(s,a)\)</span>: averaging the values of the leave states <span class="math inline">\(s_L\)</span> via <span class="math inline">\(v_\theta(s_L)\)</span> over the plays during the simulation step.</li>
+<li class="fragment"><strong>Exploration term</strong> <span class="math inline">\(U(s,a)\)</span>: a version of UCB, <span class="math display">\[U(s, a) = c_{\text{puct}} \cdot P(s, a) \cdot \frac{\sqrt{\sum_b N(s, b)}}{1 + N(s, a)}.\]</span>
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(N(s, a)\)</span> is the visit count.</li>
+<li class="fragment"><span class="math inline">\(\sum_b N(s, b)\)</span> is the total visit count of the parent node.</li>
+<li class="fragment"><span class="math inline">\(c_{\text{puct}}\)</span> is a hyperparameter.</li>
+<li class="fragment"><span class="math inline">\(P(s, a)\)</span> is the prior probability provided by the SL Policy Network <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span>.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphago-exploitation-exploration-mechanics" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaGo – Exploitation-exploration mechanics</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>When AlphaGo looks at a brand-new board state during a simulation, this is exactly what happens dynamically:</p>
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>Setting the prior</strong>: The SL policy network <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span> outputs a probability distribution <span class="math inline">\(P(s, a)\)</span> for all legal moves.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> “Expert” moves that look professional / human: large <span class="math inline">\(P\)</span> (e.g., <span class="math inline">\(0.60\)</span>).</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Odd, sub-optimal, or bizarre moves: small <span class="math inline">\(P\)</span> (e.g., <span class="math inline">\(0.001\)</span>).</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> This <span class="math inline">\(P(s, a)\)</span> stays fixed for the rest of the search phase; it acts as a permanent multiplier for the exploration bonus.</span></li>
+</ol>
+</div>
+</div>
+<div class="platzhalter">
+<div class="definition">
+<p><span class="math display">\[ \begin{align*} a_t &amp;= \arg\max_a \cbracket{Q(s, a) + U(s, a)}\\
+U(s, a) &amp;= c_{\text{puct}} \cdot P(s, a) \cdot \frac{\sqrt{\sum_b N(s, b)}}{1 + N(s, a)} \end{align*}\]</span></p>
+</div>
+</div>
+</div>
+<div class="incremental">
+<ol class="incremental" start="2" style="list-style-type: decimal">
+<li class="fragment"><strong>Early simulations (policy dominates)</strong>:<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> At the start of the search, the visit counts <span class="math inline">\(N(s, a)\)</span> for all moves are 0.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Because <span class="math inline">\(Q\)</span> is uninitialized or 0, selection is dominated by exploration <span class="math inline">\(U(s, a)\)</span> <span class="math inline">\(\Rightarrow\)</span> driven by the policy network’s <span class="math inline">\(P(s, a)\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> As a result, AlphaGo’s first few simulations will only explore the top moves suggested by the human SL policy.</span></li>
+<li class="fragment"><strong>Deep search (UCB dominates)</strong>:<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> As a specific move <span class="math inline">\(a\)</span> is frequently selected, its visit count <span class="math inline">\(N(s, a)\)</span> grows.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Exploration bonus <span class="math inline">\(U(s, a)\)</span> decays <span class="math inline">\(\Rightarrow\)</span> selection relies more on the actual win rate <span class="math inline">\(Q(s, a)\)</span> discovered by the simulations.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Conversely, if a move has a decent prior probability <span class="math inline">\(P(s, a)\)</span> but AlphaGo has ignored it for a while, the numerator <span class="math inline">\(\sqrt{\sum_b N(s, b)}\)</span> keeps growing while its own <span class="math inline">\(N(s, a)\)</span> stays stagnant. This causes its exploration bonus to grow.</span></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphazero" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaZero</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>The AlphaZero framework <span class="citation">(<a href="#ref-Silver2017alphagozero">Silver et al. 2017</a>)</span> beat AlphaGo 100-0 (!) <strong>and</strong> can play multiple games (Go, Chess, Shogi).</p>
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
+<div class="platzhalter">
+<div class="fragment">
+<h3 id="the-main-changes">The main changes</h3>
+</div>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>Simpler architecture</strong>. Single “two-headed” network:<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Input: Raw board position, no features.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Output: <span class="math inline">\((p,v) = f_\theta\)</span> <span class="math inline">\(\Rightarrow\)</span> move probabilities (i.e., policy) and winning chance (i.e., value).</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Training: <span class="math display">\[ \begin{equation} \min_\theta (z-v)^2 - \pi^\top \log p + c \norm{\theta}^2 \label{eq:MBRL_AlphaZero} \end{equation} \]</span></span> <span class="fragment"><span class="math inline">\(\quad\bullet\)</span> Value <span class="math inline">\(v\)</span> matches game outcome <span class="math inline">\(z\in\set{-1,0,+1}\)</span>.</span><br />
+<span class="fragment"><span class="math inline">\(\quad\bullet\)</span> Policy network <span class="math inline">\(p\)</span> matches MCTS probabilities <span class="math inline">\(\pi\)</span>.</span></li>
+<li class="fragment"><strong>No human data</strong>. Starts with random weights:<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Learns entirely via RL self-play from game zero.</span></li>
+<li class="fragment"><strong>Pure MCTS without rollouts</strong>.<br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> The evaluation of a leaf node comes solely from the value head of the single neural network.</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> MCTS is strictly used as a policy improvement operator.</span></li>
+</ol>
+</div>
+</div>
+<div class="platzhalter">
+<p><span class="media"><span class="figure image" style="height:auto;width:550px;"><img src="images/15-model-based-RL/AlphaZero-selfplay.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaZero-selfplay.png" /></span></span><br />
+</p>
+<div class="media">
+<figure class="image" style="height:auto;width:550px;">
+<img src="images/15-model-based-RL/AlphaZero-training.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaZero-training.png" />
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphazero-mcts" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaZero – MCTS</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="media">
+<figure class="image" style="height:auto;width:1200px;">
+<img src="images/15-model-based-RL/AlphaZero-MCTS.png" style="height:auto;width:100%;" alt="images/15-model-based-RL/AlphaZero-MCTS.png" />
+</figure>
+</div>
+<h3 id="over-the-course-of-training">Over the course of training,</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">4.9 million games of self-play were generated,</li>
+<li class="fragment">using 1,600 simulations for each MCTS,</li>
+<li class="fragment">which corresponds to approximately 0.4 s thinking time per move.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> <span class="math inline">\(\alpha_\theta\)</span> represents the final policy (<span class="math inline">\(f_\theta\)</span> plus MCTS) after training is complete.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="alphazero-training-procedure" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>AlphaZero – Training procedure</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>MCTS</strong>: From the current actual board state <span class="math inline">\(s\)</span>, run a few thousand MCTSs.</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">The neural network’s policy head provides prior probabilities to guide which branches of the tree to explore.</li>
+<li class="fragment">The neural network’s value head evaluates the leaf nodes without needing random rollouts.</li>
+</ul>
+<ol class="incremental" start="2" style="list-style-type: decimal">
+<li class="fragment"><strong>Extracting the search probabilities (<span class="math inline">\(\pi\)</span>)</strong></li>
+</ol>
+<ul class="incremental">
+<li class="fragment">After the MCTS simulations are complete, the choices are aggregated.</li>
+<li class="fragment">Counts state visitations and convert into probability vector <span class="math inline">\(\pi\)</span>.
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(\pi\)</span> represents a much stronger policy than the raw output of the neural network.</li>
+</ul></li>
+</ul>
+<ol class="incremental" start="3" style="list-style-type: decimal">
+<li class="fragment"><strong>Choosing the move</strong> based on <span class="math inline">\(\pi\)</span>.</li>
+</ol>
+<ul class="incremental">
+<li class="fragment">For the first several moves of a training game, select moves probabilistically proportional to <span class="math inline">\(\pi\)</span> to ensure deep exploration of the state space.</li>
+<li class="fragment">For the rest of the game, greedily selects the most visited move.</li>
+</ul>
+<ol class="incremental" start="4" style="list-style-type: decimal">
+<li class="fragment"><strong>The game outcome</strong>: <span class="math inline">\(z = +1\)</span> for a win, <span class="math inline">\(z=0\)</span> for a draw and <span class="math inline">\(z=-1\)</span> for a loss.</li>
+</ol>
+</div>
+</div>
+<div class="fragment">
+<h3 id="generating-the-training-data-for-f_theta">Generating the training data for <span class="math inline">\(f_\theta\)</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Every state <span class="math inline">\(s\)</span> encountered during a self-play game becomes a data point for the training buffer (e.g., if a game lasted 60 moves, it yields 60 distinct training samples).</li>
+<li class="fragment">Each training sample is a triplet <span class="math inline">\((s, \pi, z)\)</span>
+<ul class="incremental">
+<li class="fragment"><span class="math inline">\(s\)</span>: The board state (input).</li>
+<li class="fragment"><span class="math inline">\(\pi\)</span>: The search probabilities calculated by MCTS for that state (target for the policy head).</li>
+<li class="fragment"><span class="math inline">\(z\)</span>: The winner of that specific game (target for the value head).<br />
+</li>
+</ul></li>
+<li class="fragment">Supervised learning of <span class="math inline">\(f_\theta\)</span> via <span class="math inline">\(\eqref{eq:MBRL_AlphaZero}\)</span>!</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1046,40 +1447,67 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 </div>
 </div>
 </section>
-<section id="surrogate-modeling" class="slide level1">
+<section id="surrogate-modeling-world-models" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Surrogate modeling</h1>
+<h1>Surrogate modeling / world models</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>aka World models</p>
+<p>If we do not have a model, but still want to use model-based RL, we can try to <strong>learn a model from experience</strong>.</p>
+<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
+<div class="platzhalter">
+<div class="fragment">
+<h3 id="procedure">Procedure:</h3>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="challenges-questions-regarding-world-modeling" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Challenges &amp; questions regarding world modeling</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="small">
-<ul>
-<li>Data acquisition
-<ul>
-<li>Which data should we use?</li>
-<li>How much data?</li>
-<li>Collected under which actions?</li>
-</ul></li>
-<li>The policy changes the state distribution: <span class="math inline">\(\rho_\pi\)</span>.</li>
-<li>Intertwining RL and model learning?</li>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Collect <strong>sample sequences</strong> follwing some policy <span class="math inline">\(\pi\)</span>.</li>
+<li class="fragment">Optional: Learn a compression into some <strong>latent representation</strong>.</li>
+<li class="fragment"><strong>Train predictor</strong> for new (latent) states and rewards.</li>
+<li class="fragment">Optional: <strong>Decode</strong> latent states to full states (or observations).</li>
+<li class="fragment">We can then perform RL on this <strong>world model</strong>.</li>
 </ul>
+</div>
+<div class="fragment">
+<div id="challenges-questions" class="definition">
+<h3>Challenges &amp; questions</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Data acquisition
+<ul class="incremental">
+<li class="fragment">Which data should we use?</li>
+<li class="fragment">How much data?</li>
+<li class="fragment">Collected under which actions?</li>
+</ul></li>
+<li class="fragment">The policy changes the state distribution: <span class="math inline">\(\rho_\pi\)</span>.</li>
+<li class="fragment">Intertwining RL and model learning?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="platzhalter">
+<p><span class="media"><span class="figure image" style="height:auto;width:550px;"><img src="images/15-model-based-RL/Dreamer-worldmodel.gif" style="height:auto;width:100%;" aria-label="Wolrd model (Source: Danijar Hafner’s Google Research blog post)." alt="images/15-model-based-RL/Dreamer-worldmodel.gif" /><span class="figcaption"><span>Wolrd model (Source: <a href="https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/">Danijar Hafner’s Google Research blog post</a>).</span></span></span></span><br />
+</p>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:550px;">
+<img src="images/15-model-based-RL/Dreamer-prediction.png" style="height:auto;width:100%;" aria-label="Prediction (Source: Danijar Hafner’s Google Research blog post)." alt="images/15-model-based-RL/Dreamer-prediction.png" />
+<figcaption>
+Prediction (Source: <a href="https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/">Danijar Hafner’s Google Research blog post</a>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="footer">
+<p><span class="emoji" data-emoji="bulb">💡</span> In the mathematics / dynamical systems communities, world models have been studied for a very long time under the term <strong>surrogate models</strong>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1212,7 +1640,41 @@ Making use of symmetries, we can replace a single large agent by many identical,
 <div class="area">
 <div class="box block">
 <div class="small">
-
+<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Do we have to use some standard algorithm such as PPO or SAC with a learned world model?</li>
+<li class="fragment">Such models are usually end-to-end differentiable via backpropagation.<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Differentiable Predictive Control (DPC)!</span></li>
+<li class="fragment">That’s the concept of Google’s <strong>Dreamer</strong> architectures <span class="citation">(<a href="#ref-Hafner2020dreamer">Hafner et al. 2020</a>; <a href="#ref-Hafner2021dreamer2">Hafner et al. 2021</a>; <a href="#ref-Hafner2025dreamer3">Hafner et al. 2025</a>)</span>:
+<ul class="incremental">
+<li class="fragment">Learn a world model.</li>
+<li class="fragment">Model rollout over a small number of steps (e.g., <span class="math inline">\(p=15\)</span>) following the current policy <span class="math inline">\(\pi_\phi\)</span>.</li>
+<li class="fragment">Backpropagation through time (BPTT) to determine the gradient of the policy parameters <span class="math inline">\(\phi\)</span> w.r.t. the closed-loop performance measure.</li>
+<li class="fragment">Execute policy on real environment and collect new experience.</li>
+<li class="fragment">Repeat.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="platzhalter">
+<div class="fragment">
+<p><span class="media"><span class="figure image" style="height:auto;width:550px;"><img src="images/15-model-based-RL/Dreamer-backprop.gif" style="height:auto;width:100%;" aria-label="Source: Danijar Hafner’s Google Research blog post." alt="images/15-model-based-RL/Dreamer-backprop.gif" /><span class="figcaption"><span>Source: <a href="https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/">Danijar Hafner’s Google Research blog post</a>.</span></span></span></span><br />
+</p>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:550px;">
+<img src="images/15-model-based-RL/DreamerV1_mujoco.gif" style="height:auto;width:100%;" aria-label="Source: Danijar Hafner’s Google Research blog post." alt="images/15-model-based-RL/DreamerV1_mujoco.gif" />
+<figcaption>
+Source: <a href="https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/">Danijar Hafner’s Google Research blog post</a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1228,34 +1690,54 @@ Making use of symmetries, we can replace a single large agent by many identical,
 <div class="area">
 <div class="box block">
 <div class="small">
-
+<p>Similar to DPC, we can also use world models in the MPC context:</p>
+<div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
+<div class="platzhalter">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Learn a dynamics model from sampled sequences.</li>
+<li class="fragment">Use the model in an online open-loop optimal control problem.</li>
+<li class="fragment">Close the loop via MPC feedback (initialize the OCP with the measured state <span class="math inline">\(s_t\)</span>).</li>
+</ul>
 </div>
+<div class="fragment">
+<h3 id="advantage-real-time-capability-if-the-world-model-is-fast">Advantage: Real-time capability if the world model is fast</h3>
+</div>
+</div>
+<div class="platzhalter">
+<div class="media">
+<figure class="image" style="height:auto;width:550px;">
+<img src="images/14-optimal-control/MPC.svg" style="height:auto;width:100%;" aria-label="Source: Wikipedia." alt="images/14-optimal-control/MPC.svg" />
+<figcaption>
+Source: <a href="https://de.wikipedia.org/wiki/Model_Predictive_Control">Wikipedia</a>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<!-- # Uncertainty estimation
+
+::: small
+
+:::
+
+
+# Ensembles
+
+::: small
+
+::: -->
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="uncertainty-estimation" class="slide level1">
+<section id="summary-what-we-have-learned" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Uncertainty estimation</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="small">
-
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="ensembles" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Ensembles</h1>
+<h1>Summary / what we have learned</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -1279,11 +1761,26 @@ Making use of symmetries, we can replace a single large agent by many identical,
 <div id="ref-Abdelwanis2026" class="csl-entry">
 Abdelwanis, Ali, Barnabas Haucke-Korber, Darius Jakobeit, Wilhelm Kirchgässner, Marvin Meyer, Maximilian Schenke, Hendrik Vater, Oliver Wallscheid, and Daniel Weber. 2026. <span>“Reinforcement Learning: A Comprehensive Open-Source Course.”</span> <em>Journal of Open Source Education</em> 9 (97). The Open Journal: 306. doi:<a href="https://doi.org/10.21105/jose.00306">10.21105/jose.00306</a>.
 </div>
+<div id="ref-Hafner2021dreamer2" class="csl-entry">
+Hafner, Danijar, Timothy P Lillicrap, Mohammad Norouzi, and Jimmy Ba. 2021. <span>“Mastering Atari with Discrete World Models.”</span> In <em>International Conference on Learning Representations (<span>ICLR</span>)</em>.
+</div>
+<div id="ref-Hafner2020dreamer" class="csl-entry">
+Hafner, Danijar, Timothy Lillicrap, Jimmy Ba, and Mohammad Norouzi. 2020. <span>“Dream to Control: Learning Behaviors by Latent Imagination.”</span> In <em>International Conference on Learning Representations (<span>ICLR</span>)</em>.
+</div>
+<div id="ref-Hafner2025dreamer3" class="csl-entry">
+Hafner, Danijar, Jurgis Pasukonis, Jimmy Ba, and Timothy Lillicrap. 2025. <span>“Mastering Diverse Control Tasks Through World Models.”</span> <em>Nature</em> 640 (8059): 647–53.
+</div>
 <div id="ref-PSC+24" class="csl-entry">
 Peitz, Sebastian, Jan Stenner, Vikas Chidananda, Oliver Wallscheid, Steven L. Brunton, and Kunihiko Taira. 2024. <span>“Distributed Control of Partial Differential Equations Using Convolutional Reinforcement Learning.”</span> <em>Physica D: Nonlinear Phenomena</em> 461: 134096.
 </div>
 <div id="ref-Plotzki2026koopmanRL" class="csl-entry">
 Plotzki, Tim, and Sebastian Peitz. 2026. <span>“Koopman-Based Surrogate Modeling for Reinforcement-Learning-Control of <span>R</span>ayleigh-<span>B</span>enard Convection.”</span> <em>arXiv:2603.28074</em>.
+</div>
+<div id="ref-Silver2016go" class="csl-entry">
+Silver, David, Aja Huang, Chris J. Maddison, Arthur Guez, Laurent Sifre, George van den Driessche, Julian Schrittwieser, et al. 2016. <span>“Mastering the Game of Go with Deep Neural Networks and Tree Search.”</span> <em>Nature</em> 529 (7587): 484–89.
+</div>
+<div id="ref-Silver2017alphagozero" class="csl-entry">
+Silver, David, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja Huang, Arthur Guez, Thomas Hubert, et al. 2017. <span>“Mastering the Game of Go Without Human Knowledge.”</span> <em>Nature</em> 550 (7676): 354–59.
 </div>
 <div id="ref-Sutton1998" class="csl-entry">
 Sutton, R. S., and A. G. Barto. 1998. <em>Reinforcement Learning: An Introduction</em>. MIT Press.

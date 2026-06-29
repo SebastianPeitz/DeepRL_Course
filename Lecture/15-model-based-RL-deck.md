@@ -797,7 +797,7 @@ The AlphaZero framework [@Silver2017alphagozero] beat AlphaGo 100-0 (!) **and** 
 1. **Simpler architecture**. Single "two-headed" network:\
 [$\circ$ Input: Raw board position, no features.]{.fragment}\
 [$\circ$ Output: $(p,v) = f_\theta$ $\Rightarrow$ move probabilities (i.e., policy) and winning chance (i.e., value).]{.fragment}\
-[$\circ$ Training: $$ \min_\theta (z-v)^2 - \pi^\top \log p + c \norm{\theta}^2 $$]{.fragment}
+[$\circ$ Training: $$ \begin{equation} \min_\theta (z-v)^2 - \pi^\top \log p + c \norm{\theta}^2 \label{eq:MBRL_AlphaZero} \end{equation} $$]{.fragment}
 [$\quad\bullet$ Value $v$ matches game outcome $z\in\set{-1,0,+1}$.]{.fragment}\
 [$\quad\bullet$ Policy network $p$ matches MCTS probabilities $\pi$.]{.fragment}
 1. **No human data**. Starts with random weights:\
@@ -867,7 +867,7 @@ The AlphaZero framework [@Silver2017alphagozero] beat AlphaGo 100-0 (!) **and** 
   - $s$: The board state (input).
   - $\pi$: The search probabilities calculated by MCTS for that state (target for the policy head).
   - $z$: The winner of that specific game (target for the value head).  
-- Supervised learning of $f_\theta$!
+- Supervised learning of $f_\theta$ via \eqref{eq:MBRL_AlphaZero}!
 :::
 :::
 
@@ -885,22 +885,61 @@ The AlphaZero framework [@Silver2017alphagozero] beat AlphaGo 100-0 (!) **and** 
 
 ------------------------------------------------------------------------------
 
-# Surrogate modeling
+# Surrogate modeling / world models
 
 ::: small
-aka World models
+If we do not have a model, but still want to use model-based RL, we can try to **learn a model from experience**.
+
+::: columns-6-5
+::: platzhalter
+::: fragment
+### Procedure:
 :::
 
+::: incremental
+- Collect **sample sequences** follwing some policy $\pi$.
+- Optional: Learn a compression into some **latent representation**.
+- **Train predictor** for new (latent) states and rewards.
+- Optional: **Decode** latent states to full states (or observations).
+- We can then perform RL on this **world model**.
+:::
 
-# Challenges \& questions regarding world modeling
+::: fragment
+::: definition
+### Challenges \& questions
 
-::: small
+::: incremental
 - Data acquisition
   - Which data should we use?
   - How much data?
   - Collected under which actions?
 - The policy changes the state distribution: $\rho_\pi$.
-- Intertwining RL and model learning?
+- Intertwining RL and model learning? 
+:::
+:::
+:::
+
+:::
+
+::: platzhalter
+![Wolrd model (Source: [Danijar Hafner's Google Research blog post](https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/)).](images/15-model-based-RL/Dreamer-worldmodel.gif){width=550px}
+\
+
+::: fragment
+![Prediction (Source: [Danijar Hafner's Google Research blog post](https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/)).](images/15-model-based-RL/Dreamer-prediction.png){width=550px}
+:::
+:::
+
+:::
+
+
+
+:::
+
+::: fragment
+::: footer
+:bulb: In the mathematics / dynamical systems communities, world models have been studied for a very long time under the term **surrogate models**.
+:::
 :::
 
 # Example: Rayleigh-Bénard convection (1)
@@ -983,18 +1022,65 @@ Results from [@Plotzki2026koopmanRL]
 # The dreamer architecture
 
 ::: small
+::: columns-6-5
 
+::: platzhalter
+::: incremental
+- Do we have to use some standard algorithm such as PPO or SAC with a learned world model?
+- Such models are usually end-to-end differentiable via backpropagation.\
+[$\Rightarrow$ Differentiable Predictive Control (DPC)!]{.fragment}
+- That's the concept of Google's **Dreamer** architectures [@Hafner2020dreamer; @Hafner2021dreamer2; @Hafner2025dreamer3]:
+  - Learn a world model.
+  - Model rollout over a small number of steps (e.g., $p=15$) following the current policy $\pi_\phi$.
+  - Backpropagation through time (BPTT) to determine the gradient of the policy parameters $\phi$ w.r.t. the closed-loop performance measure.
+  - Execute policy on real environment and collect new experience.
+  - Repeat.
+:::
+:::
+
+::: platzhalter
+::: fragment
+![Source: [Danijar Hafner's Google Research blog post](https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/).](images/15-model-based-RL/Dreamer-backprop.gif){width=550px}
+\
+
+::: fragment
+![Source: [Danijar Hafner's Google Research blog post](https://research.google/blog/introducing-dreamer-scalable-reinforcement-learning-using-world-models/).](images/15-model-based-RL/DreamerV1_mujoco.gif){width=550px}
+:::
+:::
+:::
+:::
 :::
 
 
 # Data-driven MPC
 
 ::: small
+Similar to DPC, we can also use world models in the MPC context:
+
+::: columns-6-5
+
+::: platzhalter
+::: incremental
+- Learn a dynamics model from sampled sequences.
+- Use the model in an online open-loop optimal control problem.
+- Close the loop via MPC feedback (initialize the OCP with the measured state $s_t$).
+:::
+
+::: fragment
+### Advantage: Real-time capability if the world model is fast
+:::
+:::
+
+::: platzhalter
+![Source: [Wikipedia](https://de.wikipedia.org/wiki/Model_Predictive_Control).](images/14-optimal-control/MPC.svg){width=550px}
+:::
+
+:::
 
 :::
 
 
-# Uncertainty estimation
+<!-- # Uncertainty estimation
 
 ::: small
 
@@ -1005,7 +1091,14 @@ Results from [@Plotzki2026koopmanRL]
 
 ::: small
 
+::: -->
+
+# Summary / what we have learned
+
+::: small
+
 :::
+
 
 
 # References
