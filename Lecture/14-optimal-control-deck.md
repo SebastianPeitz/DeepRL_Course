@@ -816,7 +816,7 @@ the solution space $a^*(s_0)$ for \eqref{eq:OC_mpc} is split into polygons on wh
 - Inserting into the right-hand side of our model yields an autonomous system:
 $$s_{t+1}=f(s_t, \mu_\phi(s_t)).$$
 - We can now formulate a closed-loop performance criterion:
-$$L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu\phi(s_t)}. $$
+$$L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu_\phi(s_t)}. $$
 :::
 :::
 

@@ -618,7 +618,7 @@ All learning control methods face a dilemma:
 
 ::: incremental
 - Use two policies: 
-  - **Behavior policy** $b\agivenb{a}{s}$: exploratory, used to generate behavior.
+  - **Behavior policy** $\pi_\beta\agivenb{a}{s}$: exploratory, used to generate behavior.
   - **Target policy** $\pias$: learns from that experience to become the optimal policy.
 - Use cases:
   - Learn from observing humans or other agents/controllers.
@@ -635,7 +635,7 @@ All learning control methods face a dilemma:
 ### MC off-policy prediction problem statement.
 
 - Both policies are considered fixed (that's the *prediction* assumption).
-- Estimate $V^\pi$ or $Q^\pi$ while following $b\agivenb{a}{s}$.
+- Estimate $V^\pi$ or $Q^\pi$ while following $\pi_\beta\agivenb{a}{s}$.
 :::
 
 \
@@ -645,10 +645,10 @@ All learning control methods face a dilemma:
 :::
 
 ::: incremental
-- **Coverage**: every action taken under $\pi$ must be (at least occasionally) taken under $b$ as well.
-$$ \pias > 0 \quad\Rightarrow\quad b\agivenb{a}{s}>0 \qquad \forall s\in\Sc, a\in\Ac. $$
+- **Coverage**: every action taken under $\pi$ must be (at least occasionally) taken under $\pi_\beta$ as well.
+$$ \pias > 0 \quad\Rightarrow\quad \pi_\beta\agivenb{a}{s}>0 \qquad \forall s\in\Sc, a\in\Ac. $$
 - Consequence:
-  - In any state where $b\neq \pi$, $b$ has to be a stochastic policy.
+  - In any state where $\pi_\beta\neq \pi$, $\pi_\beta$ has to be a stochastic policy.
   - Nevertheless, $\pi$ may be either stochastic or deterministic.
 :::
 :::
@@ -674,14 +674,14 @@ $$ \pias > 0 \quad\Rightarrow\quad b\agivenb{a}{s}>0 \qquad \forall s\in\Sc, a\i
 :::
 
 ::: incremental
-- We want to know the expected value under a target distribution $\pi(s)$, but only have samples from another distribution $b(s)$.
+- We want to know the expected value under a target distribution $\pi(s)$, but only have samples from another distribution $\pi_\beta(s)$.
 - We calculate the **importance weight**:
-$$w = \frac{\pi(s)}{b(s)}$$
-- If a sample is common in $\pi$ but rare in $b$, we give it a high weight (it is *important*).
-- If a sample is rare in $\pi$ but common in $b$, we give it a low weight.
+$$w = \frac{\pi(s)}{\pi_\beta(s)}$$
+- If a sample is common in $\pi$ but rare in $\pi_\beta$, we give it a high weight (it is *important*).
+- If a sample is rare in $\pi$ but common in $\pi_\beta$, we give it a low weight.
 :::
 
-[**Caveat:** if $\rho$ is large (distinctly different policies) the estimate’s variance is large (i.e., *uncertain* for small numbers of samples).]{.fragment}
+[**Caveat:** if $w$ is large (distinctly different policies) the estimate’s variance is large (i.e., *uncertain* for small numbers of samples).]{.fragment}
 :::
 
 
@@ -702,9 +702,9 @@ $$]{.math-incremental}
 
 The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step $k$ to $T$ is
 $$
-\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
-\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
-\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}}.}
 $$
 :::
 :::
@@ -718,8 +718,8 @@ $$
 
 ::: small
 ::: incremental
-- We wish to estimate the expected returns $g_t$ under the target policy $\pi$, but we only have $g_t$ due to the behavior policy $b$. 
-- These returns have the wrong expectation: $$\ExpC{g_t}{s_t=s} = V^b(s).$$ 
+- We wish to estimate the expected returns $g_t$ under the target policy $\pi$, but we only have $g_t$ due to the behavior policy $\pi_\beta$. 
+- These returns have the wrong expectation: $$\ExpC{g_t}{s_t=s} = V^\beta(s).$$ 
 - Importance sampling: $$\ExpC{\rho_{k:T}\, g_t}{s_t=s} = V^\pi(s).$$
 :::
 
@@ -751,7 +751,7 @@ $$
 ::: definition
 ### WIS: State-value estimation via Monte Carlo importance sampling
 
-Estimating the state value $V^\pi$ following $b$ using **weighted importance sampling** (**WIS**) results in a slightly different scaling:
+Estimating the state value $V^\pi$ following $\pi_\beta$ using **weighted importance sampling** (**WIS**) results in a slightly different scaling:
 $$ 
 \begin{equation}
 V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:MC_WIS}
@@ -812,15 +812,15 @@ $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
 $\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
-$\quad\quad$ $w \gets w \frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}$
+$\quad\quad$ $w \gets w \frac{\policy{a_t}{s_t}}{\pi_\beta\agivenb{a_t}{s_t}}$
 :::
 
 ::: platzhalter
 [**Variation**: On-policy]{.fragment}
 
 ::: incremental
-- $b=\pi$ .
-- $\frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1$.
+- $\pi_\beta=\pi$ .
+- $\frac{\policy{a_t}{s_t}}{\pi_\beta\agivenb{a_t}{s_t}}=1$.
 - $w=1$.
 - $c(s,a)$ becomves the counter for the number of visits (i.e., $n(s,a)$).
 :::
@@ -853,7 +853,7 @@ $\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t
 $\quad\quad$ $\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t,a)$ (with ties broken consistently)\
 $\quad\quad$ **if** $\pi(s_t)\neq a_t$ **then**\
 $\quad\quad\quad$ Exit inner loop and proceed to next episode\
-$\quad\quad$ $w \gets w \frac{1}{b\agivenb{a_t}{s_t}}$
+$\quad\quad$ $w \gets w \frac{1}{\pi_\beta\agivenb{a_t}{s_t}}$
 :::
 :::
 

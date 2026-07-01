@@ -14,7 +14,7 @@ feedback:
 # Content
 
 - Revisiting the past: Dyna-style algorithms
-  - Dyna-Q and Dyna-Q+
+  - Dyna-$Q$ and Dyna-$Q+$
   - Prioritized sweeping
 - Looking into the future: Planning at decision time
   - Heuristic search
@@ -23,8 +23,6 @@ feedback:
 - AlphaGo \& AlphaZero
 - Learning a model
   - Dreamer architecture
-  - Uncertainty estimation?
-  - Learned ensembles
 
 # Where are we?
 
@@ -52,11 +50,8 @@ Table: Lecture contents
 - *Learning* and *planning* are closely related in RL [@Sutton1998].
 - The key difference is the *origin of the training data*:
   - **Learning**: **real experience**,
-  - **Planning**: **simulated experience**.\
-  \
-  \
-  \
-- Simplest example: $Q$-learning vs. $Q$-planning:
+  - **Planning**: **simulated experience**.
+- Simplest example: $Q$-learning vs. $Q$-planning.
 :::
 
 ![](images/15-model-based-RL/direct-indirect.png){width=300px}
@@ -122,10 +117,11 @@ Easiest way to create a model: Remember past $a$, $s\rightarrow s'$ and $r$.
 ### Algorithm: Dyna-$Q$ (Tabular RL)
 
 **loop forever**:\
-$\quad$ Sample action $a$ $\epsilon$-greedily using the current $Q$ estimate\
+<!-- $\quad$ Sample action $a$ $\epsilon$-greedily using the current $Q$ estimate\ -->
+$\quad$ Sample $a \sim \pi\agivenb{\cdot}{s,Q}$ (e.g. $\epsilon$-greedy)\
 $\quad$ Take action $a$, observe reward $r$ and next state $s'$\
 $\quad$ $Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s',\hat a)- Q(s,a)\right]$\
-$\quad$ Add transition to our $\mathsf{model}$\
+$\quad$ Add transition to our $\mathsf{model}$ of previous experiences\
 $\quad$ **for** $i=1,\ldots,n$:\
 $\quad\quad$ $s \gets$ random previous state\
 $\quad\quad$ $a \gets$ random previous action\
@@ -178,9 +174,9 @@ In the previous maze example, the environment was perfect and the transitions de
 :::
   
 ::: incremental
-- The environment is stochastic and only a limited number of samples have been observed.
-- The model was learned using function approximation that has generalized imperfectly.
-- The environment has changed and its new behavior has not yet been observed.
+- The environment is stochastic and only a **limited number of samples** have been observed.
+- The model was learned using function approximation and has **generalized imperfectly**.
+- The **environment has changed** and its new behavior has not yet been observed.
 :::
 \
 
@@ -207,7 +203,7 @@ In the previous maze example, the environment was perfect and the transitions de
 Two changes can help our simple Dyna-$Q$ algorithm to foster exploration.
 
 ::: fragment
-### 1. For each state, *count* the time $\tau$ since it has been revisited last (where $\kappa>0$ is a hyperparameter) and augment the reward by a bonus: $$r + \kappa \sqrt{\tau}.$$
+### 1. For each state, *count* the time $\tau$ since it has been revisited last (where $\kappa>0$ is a hyperparameter) and augment the reward by a bonus: $$\hat r = r + \kappa \sqrt{\tau}.$$
 :::
 
 ::: incremental
@@ -242,8 +238,8 @@ $\quad\qquad\qquad$ ([*Planning*]{style="color: blue;"})\
 $\quad$ **for** $i=1,\ldots,n$:\
 $\quad\quad$ $s \gets$ random previous state\
 $\quad\quad$ $a \gets$ random previous action\
-$\quad\quad$ $r,s' \gets$ $\mathsf{model}(s,a)$\
-$\quad\quad$ $Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s',\hat a)- Q(s,a)\right]$
+$\quad\quad$ $\hat r,s' \gets$ $\mathsf{model}(s,a)$\
+$\quad\quad$ $Q(s,a) \gets Q(s,a) + \alpha \left[\hat r + \gamma \max_{\hat a} Q(s',\hat a)- Q(s,a)\right]$
 :::
 :::
 
@@ -276,7 +272,7 @@ $\quad\quad$ $Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s',\
 
 ::: platzhalter
 ::: {.definition}
-### Algorithm: Dyna-$Q$ (Tabular RL)
+### Algorithm: Prioritized sweeping
 *initialize*: $Q(s,a)$, $\mathsf{model}(s,a)$ for all $s,a$,\
 empty queue $\Qc$, threshold $\xi>0$.
 
@@ -299,7 +295,7 @@ $\quad\quad\quad$ **if** $P>\xi$ **then** insert $(\bar s,\bar a)$ into $\Qc$ wi
 
 ::: platzhalter
 ::: incremental
-- Dyna-Q (randomly) samples from the memory buffer.
+- Dyna-$Q$ (randomly) samples from the memory buffer.
   - Many planning updates maybe pointless, e.g., zero-valued state updates during early training.
   - In large state-action spaces: inefficient search since transitions are chosen far away from optimal
   policies.
@@ -341,7 +337,8 @@ Expected vs. sample updates
 
 ::: small
 
-### What we have discussed so far: Background planning
+::: definition
+### Background planning (what we have discussed so far)
 
 ::: incremental
 - Gradually improves policy or value function if time is available.
@@ -349,10 +346,11 @@ Expected vs. sample updates
 - Feasible for fast execution: policy or value estimate are available with low latency
 (important, e.g., for real-time control). 
 :::
+:::
 
 ::: fragment
+::: definition
 ### Alternative use of a model: Planning at decision time
-:::
 
 ::: incremental
 - Select single next future action through planning.
@@ -360,6 +358,8 @@ Expected vs. sample updates
 - Typically discards previous planning outcomes (start from scratch after state transition).
 - If multiple trajectories are independent: easy parallel implementation.
 - Most useful if fast responses are not required (e.g., turn-based games or slow systems). 
+:::
+:::
 :::
 
 ::: fragment
@@ -441,7 +441,7 @@ Expected vs. sample updates
 
 ::: incremental
 - We have seen a very similar structure in temporal difference learning: [The TD target is $y_t = r_t + \gamma V(s_{t+1})$.]{.fragment}
-- The rollout yields a Monte-Carlo estimate of the value along the branches of the decision tree.
+- The rollout yields a Monte-Carlo estimate of the value $V(s_{t+1})$ along the branches of the decision tree.
 :::
 
 
@@ -492,7 +492,7 @@ Expected vs. sample updates
 :::
 
 ::: incremental
-- When the thinking time is up: 
+- When the *thinking time* is up: 
   - Compare immediate children of the root node.
   - Choose the one that was visited the most. 
   - Make that move in the real world.
@@ -522,7 +522,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 ::: columns-5-5
 
 ::: incremental
-- The Exploitation Term ($\frac{w_i}{n_i}$):
+- The **exploitation** term ($\frac{w_i}{n_i}$):
   - $w_i$: number of wins (i.e., $r=1$) simulated through child node $i$ so far. 
   - $n_i$: number of times child node $i$ has been visited.
   - $\frac{w_i}{n_i}$: win rate (or average reward $\Exp{r}$) of the node.
@@ -531,7 +531,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 :::
 
 ::: incremental
-- The Exploration Term ($\sqrt{\frac{\ln N_i}{n_i}}$):
+- The **exploration** term ($\sqrt{\frac{\ln N_i}{n_i}}$):
   - $N_i$ is the total number of times the parent node has been visited.
   - If we rarely visit a node, $n_i$ is very small, which makes the exploration term grow large.
 :::
@@ -543,7 +543,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 - How the balancing works in practice:
   - Imagine a node/move that looks bad at first (maybe it lost its first 2 simulations) $\Rightarrow$ exploitation score is $0$. 
   - MCTS will start ignoring it to focus on better moves. 
-  - As the parent visit count ($N_i$) grows while $n_i$ remains small, the exploration term steadily increases. 
+  - As the parent visit count $N_i$ grows while $n_i$ remains small, the exploration term steadily increases. 
   - Eventually, the exploration bonus becomes so high that it overrides the $0\%$ win rate.
   - If the move fails again ($r=0$) $\qquad\qquad\Rightarrow$ exploration shrinks ($n_i \uparrow$); exploitation stays low.
   - If it turns out to be a good move ($r=1$) $\Rightarrow$ exploration shrinks ($n_i \uparrow$); exploitation goes up $\Exp{r}\uparrow$.
@@ -559,7 +559,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 ::: columns-6-2
 
 ::: platzhalter
-### The rules of Go
+### The rules of Go (strongly simplified)
 
 ::: incremental
 - Black and White place stones in turns on a $19 \times 19$ grid.
@@ -593,8 +593,8 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 
 ::: incremental
 - AlphaGo was the first program to beat a professional player as well as a world champion.
-- Trained on a large basis of positions assessed by human experts.
-- Then fine-tuned via self-play.
+  - Trained on a large basis of positions assessed by human experts.
+  - Then fine-tuned via self-play.
 - AlphaZero: Strongly simplified architecture, trained exclusively through self-play.
 :::
 :::
@@ -747,7 +747,7 @@ $$U(s, a) = c_{\text{puct}} \cdot P(s, a) \cdot \frac{\sqrt{\sum_b N(s, b)}}{1 +
 # AlphaGo -- Exploitation-exploration mechanics
 
 ::: small
-When AlphaGo looks at a brand-new board state during a simulation, this is exactly what happens dynamically:
+When AlphaGo looks at a new board state during a simulation, this is what happens dynamically:
 
 ::: columns-6-4
 
@@ -755,7 +755,7 @@ When AlphaGo looks at a brand-new board state during a simulation, this is exact
 ::: incremental
 1. **Setting the prior**: The SL policy network $p_\sigma\agivenb{a}{s}$ outputs a probability distribution $P(s, a)$ for all legal moves.\
 [$\circ$ "Expert" moves that look professional / human: large $P$ (e.g., $0.60$).]{.fragment}\
-[$\circ$ Odd, sub-optimal, or bizarre moves: small $P$ (e.g., $0.001$).]{.fragment}\
+[$\circ$ Odd or sub-optimal moves: small $P$ (e.g., $0.001$).]{.fragment}\
 [$\circ$ This $P(s, a)$ stays fixed for the rest of the search phase; it acts as a permanent multiplier for the exploration bonus.]{.fragment}
 :::
 :::
@@ -1096,7 +1096,17 @@ Similar to DPC, we can also use world models in the MPC context:
 # Summary / what we have learned
 
 ::: small
-
+- Revisiting the past: Dyna-style algorithms 
+  - Dyna-$Q$ and Dyna-$Q+$ revisit past state transitions
+  - With newer $Q$ approximations, we can learn from the same experience multiple times
+  - Prioritized sweeping allows us to revisit more important updates more frequently
+- Looking into the future: Planning at decision time using predictive models
+  - Heuristic search, rollouts and MCTS to obtain MC estimates of the value function at a given state
+- AlphaGo \& AlphaZero
+- Learning a model
+  - World models / surrogate models from sampled trajectories
+  - Interplay between modeling and RL is very important
+  - Dreamer architecture = DPC with world models
 :::
 
 
