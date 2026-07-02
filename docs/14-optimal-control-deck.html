@@ -11243,7 +11243,7 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <ul class="incremental">
 <li class="fragment">Let’s start with a policy network, just as in policy gradient methods: <span class="math inline">\(a=\mu_\phi(s)\)</span>.</li>
 <li class="fragment">Inserting into the right-hand side of our model yields an autonomous system: <span class="math display">\[s_{t+1}=f(s_t, \mu_\phi(s_t)).\]</span></li>
-<li class="fragment">We can now formulate a closed-loop performance criterion: <span class="math display">\[L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu\phi(s_t)}. \]</span></li>
+<li class="fragment">We can now formulate a closed-loop performance criterion: <span class="math display">\[L(\phi) = \sum_{t=1}^T \norm{s_t - s_t^\mathsf{target}} + \alpha\norm{\mu_\phi(s_t)}. \]</span></li>
 </ul>
 </div>
 </div>

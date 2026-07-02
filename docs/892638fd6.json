@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "29.06.2026 16:16"
+        "02.07.2026 13:19"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "8",
@@ -680,6 +680,9 @@
                 "{{#1}^{(#2)}_{#3}}",
                 3.0
             ],
+            "minuspoint": [
+                "\\textcolor{red}{\\mathbf{-}}"
+            ],
             "nablaa": "{\\nabla_{\\mkern-6mu a\\mkern+2mu}}",
             "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
             "nablaphiprime": "{\\nabla_{\\mkern-6mu \\phi\\prime \\mkern+2mu}}",
@@ -703,6 +706,9 @@
             "pias": "{\\pi\\left( a  \\middle| s \\right)}",
             "piphi": "{\\pi_\\phi}",
             "piprime": "{\\pi^{\\prime}}",
+            "pluspoint": [
+                "\\textcolor{green}{\\mathbf{+}}"
+            ],
             "policy": [
                 "{\\pi\\left( #1  \\middle| #2 \\right)}",
                 2.0

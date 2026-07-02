@@ -2168,7 +2168,7 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <ul class="incremental">
 <li class="fragment">Use two policies:
 <ul class="incremental">
-<li class="fragment"><strong>Behavior policy</strong> <span class="math inline">\(b\agivenb{a}{s}\)</span>: exploratory, used to generate behavior.</li>
+<li class="fragment"><strong>Behavior policy</strong> <span class="math inline">\(\pi_\beta\agivenb{a}{s}\)</span>: exploratory, used to generate behavior.</li>
 <li class="fragment"><strong>Target policy</strong> <span class="math inline">\(\pias\)</span>: learns from that experience to become the optimal policy.</li>
 </ul></li>
 <li class="fragment">Use cases:
@@ -2198,7 +2198,7 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <h3>MC off-policy prediction problem statement.</h3>
 <ul>
 <li>Both policies are considered fixed (that’s the <em>prediction</em> assumption).</li>
-<li>Estimate <span class="math inline">\(V^\pi\)</span> or <span class="math inline">\(Q^\pi\)</span> while following <span class="math inline">\(b\agivenb{a}{s}\)</span>.</li>
+<li>Estimate <span class="math inline">\(V^\pi\)</span> or <span class="math inline">\(Q^\pi\)</span> while following <span class="math inline">\(\pi_\beta\agivenb{a}{s}\)</span>.</li>
 </ul>
 </div>
 <p><br />
@@ -2208,10 +2208,10 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><strong>Coverage</strong>: every action taken under <span class="math inline">\(\pi\)</span> must be (at least occasionally) taken under <span class="math inline">\(b\)</span> as well. <span class="math display">\[ \pias &gt; 0 \quad\Rightarrow\quad b\agivenb{a}{s}&gt;0 \qquad \forall s\in\Sc, a\in\Ac. \]</span></li>
+<li class="fragment"><strong>Coverage</strong>: every action taken under <span class="math inline">\(\pi\)</span> must be (at least occasionally) taken under <span class="math inline">\(\pi_\beta\)</span> as well. <span class="math display">\[ \pias &gt; 0 \quad\Rightarrow\quad \pi_\beta\agivenb{a}{s}&gt;0 \qquad \forall s\in\Sc, a\in\Ac. \]</span></li>
 <li class="fragment">Consequence:
 <ul class="incremental">
-<li class="fragment">In any state where <span class="math inline">\(b\neq \pi\)</span>, <span class="math inline">\(b\)</span> has to be a stochastic policy.</li>
+<li class="fragment">In any state where <span class="math inline">\(\pi_\beta\neq \pi\)</span>, <span class="math inline">\(\pi_\beta\)</span> has to be a stochastic policy.</li>
 <li class="fragment">Nevertheless, <span class="math inline">\(\pi\)</span> may be either stochastic or deterministic.</li>
 </ul></li>
 </ul>
@@ -2253,13 +2253,13 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">We want to know the expected value under a target distribution <span class="math inline">\(\pi(s)\)</span>, but only have samples from another distribution <span class="math inline">\(b(s)\)</span>.</li>
-<li class="fragment">We calculate the <strong>importance weight</strong>: <span class="math display">\[w = \frac{\pi(s)}{b(s)}\]</span></li>
-<li class="fragment">If a sample is common in <span class="math inline">\(\pi\)</span> but rare in <span class="math inline">\(b\)</span>, we give it a high weight (it is <em>important</em>).</li>
-<li class="fragment">If a sample is rare in <span class="math inline">\(\pi\)</span> but common in <span class="math inline">\(b\)</span>, we give it a low weight.</li>
+<li class="fragment">We want to know the expected value under a target distribution <span class="math inline">\(\pi(s)\)</span>, but only have samples from another distribution <span class="math inline">\(\pi_\beta(s)\)</span>.</li>
+<li class="fragment">We calculate the <strong>importance weight</strong>: <span class="math display">\[w = \frac{\pi(s)}{\pi_\beta(s)}\]</span></li>
+<li class="fragment">If a sample is common in <span class="math inline">\(\pi\)</span> but rare in <span class="math inline">\(\pi_\beta\)</span>, we give it a high weight (it is <em>important</em>).</li>
+<li class="fragment">If a sample is rare in <span class="math inline">\(\pi\)</span> but common in <span class="math inline">\(\pi_\beta\)</span>, we give it a low weight.</li>
 </ul>
 </div>
-<p><span class="fragment"><strong>Caveat:</strong> if <span class="math inline">\(\rho\)</span> is large (distinctly different policies) the estimate’s variance is large (i.e., <em>uncertain</em> for small numbers of samples).</span></p>
+<p><span class="fragment"><strong>Caveat:</strong> if <span class="math inline">\(w\)</span> is large (distinctly different policies) the estimate’s variance is large (i.e., <em>uncertain</em> for small numbers of samples).</span></p>
 </div>
 </div>
 </div>
@@ -2285,9 +2285,9 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <div id="importance-sampling-ratio" class="definition">
 <h3>Importance sampling ratio</h3>
 <p>The relative probability of a trajectory under the target and behavior policy, the importance sampling ratio, from sample step <span class="math inline">\(k\)</span> to <span class="math inline">\(T\)</span> is <span class="math display">\[
-\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
-\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
-\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} b\agivenb{a_k}{s_k}}.}
+\rho_{t:T} = \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}\pC{s_{k+1}}{s_{k},a_{k}}} 
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}\cancel{\pC{s_{k+1}}{s_{k},a_{k}}}}}
+\fragment{= \frac{\prod_{k=t}^{T-1} \policy{a_k}{s_k}}{\prod_{k=t}^{T-1} \pi_\beta\agivenb{a_k}{s_k}}.}
 \]</span></p>
 </div>
 </div>
@@ -2311,8 +2311,8 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">We wish to estimate the expected returns <span class="math inline">\(g_t\)</span> under the target policy <span class="math inline">\(\pi\)</span>, but we only have <span class="math inline">\(g_t\)</span> due to the behavior policy <span class="math inline">\(b\)</span>.</li>
-<li class="fragment">These returns have the wrong expectation: <span class="math display">\[\ExpC{g_t}{s_t=s} = V^b(s).\]</span></li>
+<li class="fragment">We wish to estimate the expected returns <span class="math inline">\(g_t\)</span> under the target policy <span class="math inline">\(\pi\)</span>, but we only have <span class="math inline">\(g_t\)</span> due to the behavior policy <span class="math inline">\(\pi_\beta\)</span>.</li>
+<li class="fragment">These returns have the wrong expectation: <span class="math display">\[\ExpC{g_t}{s_t=s} = V^\beta(s).\]</span></li>
 <li class="fragment">Importance sampling: <span class="math display">\[\ExpC{\rho_{k:T}\, g_t}{s_t=s} = V^\pi(s).\]</span></li>
 </ul>
 </div>
@@ -2350,7 +2350,7 @@ V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(
 <div class="fragment">
 <div id="wis-state-value-estimation-via-monte-carlo-importance-sampling" class="definition">
 <h3>WIS: State-value estimation via Monte Carlo importance sampling</h3>
-<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following <span class="math inline">\(b\)</span> using <strong>weighted importance sampling</strong> (<strong>WIS</strong>) results in a slightly different scaling: <span class="math display">\[ 
+<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following <span class="math inline">\(\pi_\beta\)</span> using <strong>weighted importance sampling</strong> (<strong>WIS</strong>) results in a slightly different scaling: <span class="math display">\[ 
 \begin{equation}
 V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}}. \tag{WIS} \label{eq:MC_WIS}
 \end{equation}
@@ -2426,14 +2426,14 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{w}{c(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}\)</span></p>
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{\policy{a_t}{s_t}}{\pi_\beta\agivenb{a_t}{s_t}}\)</span></p>
 </div>
 <div class="platzhalter">
 <p><span class="fragment"><strong>Variation</strong>: On-policy</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span class="math inline">\(b=\pi\)</span> .</li>
-<li class="fragment"><span class="math inline">\(\frac{\policy{a_t}{s_t}}{b\agivenb{a_t}{s_t}}=1\)</span>.</li>
+<li class="fragment"><span class="math inline">\(\pi_\beta=\pi\)</span> .</li>
+<li class="fragment"><span class="math inline">\(\frac{\policy{a_t}{s_t}}{\pi_\beta\agivenb{a_t}{s_t}}=1\)</span>.</li>
 <li class="fragment"><span class="math inline">\(w=1\)</span>.</li>
 <li class="fragment"><span class="math inline">\(c(s,a)\)</span> becomves the counter for the number of visits (i.e., <span class="math inline">\(n(s,a)\)</span>).</li>
 </ul>
@@ -2474,7 +2474,7 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t,a)\)</span> (with ties broken consistently)<br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(\pi(s_t)\neq a_t\)</span> <strong>then</strong><br />
 <span class="math inline">\(\quad\quad\quad\)</span> Exit inner loop and proceed to next episode<br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{1}{b\agivenb{a_t}{s_t}}\)</span></p>
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(w \gets w \frac{1}{\pi_\beta\agivenb{a_t}{s_t}}\)</span></p>
 </div>
 </div>
 </div>

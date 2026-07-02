@@ -190,7 +190,7 @@ learning</title>
 <ul>
 <li>Revisiting the past: Dyna-style algorithms
 <ul>
-<li>Dyna-Q and Dyna-Q+</li>
+<li>Dyna-<span class="math inline">\(Q\)</span> and Dyna-<span class="math inline">\(Q+\)</span></li>
 <li>Prioritized sweeping</li>
 </ul></li>
 <li>Looking into the future: Planning at decision time
@@ -203,8 +203,6 @@ learning</title>
 <li>Learning a model
 <ul>
 <li>Dreamer architecture</li>
-<li>Uncertainty estimation?</li>
-<li>Learned ensembles</li>
 </ul></li>
 </ul>
 </div>
@@ -295,13 +293,9 @@ learning</title>
 <li class="fragment">The key difference is the <em>origin of the training data</em>:
 <ul class="incremental">
 <li class="fragment"><strong>Learning</strong>: <strong>real experience</strong>,</li>
-<li class="fragment"><strong>Planning</strong>: <strong>simulated experience</strong>.<br />
-<br />
-<br />
-<br />
-</li>
+<li class="fragment"><strong>Planning</strong>: <strong>simulated experience</strong>.</li>
 </ul></li>
-<li class="fragment">Simplest example: <span class="math inline">\(Q\)</span>-learning vs. <span class="math inline">\(Q\)</span>-planning:</li>
+<li class="fragment">Simplest example: <span class="math inline">\(Q\)</span>-learning vs. <span class="math inline">\(Q\)</span>-planning.</li>
 </ul>
 </div>
 <div class="media">
@@ -362,10 +356,10 @@ learning</title>
 <div id="algorithm-dyna-q-tabular-rl" class="definition">
 <h3>Algorithm: Dyna-<span class="math inline">\(Q\)</span> (Tabular RL)</h3>
 <p><strong>loop forever</strong>:<br />
-<span class="math inline">\(\quad\)</span> Sample action <span class="math inline">\(a\)</span> <span class="math inline">\(\epsilon\)</span>-greedily using the current <span class="math inline">\(Q\)</span> estimate<br />
+<!-- $\quad$ Sample action $a$ $\epsilon$-greedily using the current $Q$ estimate\ --> <span class="math inline">\(\quad\)</span> Sample <span class="math inline">\(a \sim \pi\agivenb{\cdot}{s,Q}\)</span> (e.g. <span class="math inline">\(\epsilon\)</span>-greedy)<br />
 <span class="math inline">\(\quad\)</span> Take action <span class="math inline">\(a\)</span>, observe reward <span class="math inline">\(r\)</span> and next state <span class="math inline">\(s&#39;\)</span><br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s&#39;,\hat a)- Q(s,a)\right]\)</span><br />
-<span class="math inline">\(\quad\)</span> Add transition to our <span class="math inline">\(\mathsf{model}\)</span><br />
+<span class="math inline">\(\quad\)</span> Add transition to our <span class="math inline">\(\mathsf{model}\)</span> of previous experiences<br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(i=1,\ldots,n\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(s \gets\)</span> random previous state<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(a \gets\)</span> random previous action<br />
@@ -506,9 +500,9 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The environment is stochastic and only a limited number of samples have been observed.</li>
-<li class="fragment">The model was learned using function approximation that has generalized imperfectly.</li>
-<li class="fragment">The environment has changed and its new behavior has not yet been observed.</li>
+<li class="fragment">The environment is stochastic and only a <strong>limited number of samples</strong> have been observed.</li>
+<li class="fragment">The model was learned using function approximation and has <strong>generalized imperfectly</strong>.</li>
+<li class="fragment">The <strong>environment has changed</strong> and its new behavior has not yet been observed.</li>
 </ul>
 </div>
 <p><br />
@@ -543,7 +537,7 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 <div class="platzhalter">
 <p>Two changes can help our simple Dyna-<span class="math inline">\(Q\)</span> algorithm to foster exploration.</p>
 <div class="fragment">
-<h3 id="for-each-state-count-the-time-tau-since-it-has-been-revisited-last-where-kappa0-is-a-hyperparameter-and-augment-the-reward-by-a-bonus-r-kappa-sqrttau.">1. For each state, <em>count</em> the time <span class="math inline">\(\tau\)</span> since it has been revisited last (where <span class="math inline">\(\kappa&gt;0\)</span> is a hyperparameter) and augment the reward by a bonus: <span class="math display">\[r + \kappa \sqrt{\tau}.\]</span></h3>
+<h3 id="for-each-state-count-the-time-tau-since-it-has-been-revisited-last-where-kappa0-is-a-hyperparameter-and-augment-the-reward-by-a-bonus-hat-r-r-kappa-sqrttau.">1. For each state, <em>count</em> the time <span class="math inline">\(\tau\)</span> since it has been revisited last (where <span class="math inline">\(\kappa&gt;0\)</span> is a hyperparameter) and augment the reward by a bonus: <span class="math display">\[\hat r = r + \kappa \sqrt{\tau}.\]</span></h3>
 </div>
 <div class="incremental">
 <ul class="incremental">
@@ -578,8 +572,8 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(i=1,\ldots,n\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(s \gets\)</span> random previous state<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(a \gets\)</span> random previous action<br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(r,s&#39; \gets\)</span> <span class="math inline">\(\mathsf{model}(s,a)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s&#39;,\hat a)- Q(s,a)\right]\)</span></p>
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\hat r,s&#39; \gets\)</span> <span class="math inline">\(\mathsf{model}(s,a)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(Q(s,a) \gets Q(s,a) + \alpha \left[\hat r + \gamma \max_{\hat a} Q(s&#39;,\hat a)- Q(s,a)\right]\)</span></p>
 </div>
 </div>
 </div>
@@ -637,8 +631,8 @@ Average performance of Dyna agents on a shortcut task. The left environment was 
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="platzhalter">
-<div id="algorithm-dyna-q-tabular-rl-2" class="definition">
-<h3>Algorithm: Dyna-<span class="math inline">\(Q\)</span> (Tabular RL)</h3>
+<div id="algorithm-prioritized-sweeping" class="definition">
+<h3>Algorithm: Prioritized sweeping</h3>
 <p><em>initialize</em>: <span class="math inline">\(Q(s,a)\)</span>, <span class="math inline">\(\mathsf{model}(s,a)\)</span> for all <span class="math inline">\(s,a\)</span>,<br />
 empty queue <span class="math inline">\(\Qc\)</span>, threshold <span class="math inline">\(\xi&gt;0\)</span>.</p>
 <p><strong>loop forever</strong>:<br />
@@ -660,7 +654,7 @@ empty queue <span class="math inline">\(\Qc\)</span>, threshold <span class="mat
 <div class="platzhalter">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Dyna-Q (randomly) samples from the memory buffer.
+<li class="fragment">Dyna-<span class="math inline">\(Q\)</span> (randomly) samples from the memory buffer.
 <ul class="incremental">
 <li class="fragment">Many planning updates maybe pointless, e.g., zero-valued state updates during early training.</li>
 <li class="fragment">In large state-action spaces: inefficient search since transitions are chosen far away from optimal policies.</li>
@@ -730,7 +724,8 @@ Expected vs. sample updates
 <div class="area">
 <div class="box block">
 <div class="small">
-<h3 id="what-we-have-discussed-so-far-background-planning">What we have discussed so far: Background planning</h3>
+<div id="background-planning-what-we-have-discussed-so-far" class="definition">
+<h3>Background planning (what we have discussed so far)</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Gradually improves policy or value function if time is available.</li>
@@ -738,9 +733,10 @@ Expected vs. sample updates
 <li class="fragment">Feasible for fast execution: policy or value estimate are available with low latency (important, e.g., for real-time control).</li>
 </ul>
 </div>
-<div class="fragment">
-<h3 id="alternative-use-of-a-model-planning-at-decision-time">Alternative use of a model: Planning at decision time</h3>
 </div>
+<div class="fragment">
+<div id="alternative-use-of-a-model-planning-at-decision-time" class="definition">
+<h3>Alternative use of a model: Planning at decision time</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Select single next future action through planning.</li>
@@ -749,6 +745,8 @@ Expected vs. sample updates
 <li class="fragment">If multiple trajectories are independent: easy parallel implementation.</li>
 <li class="fragment">Most useful if fast responses are not required (e.g., turn-based games or slow systems).</li>
 </ul>
+</div>
+</div>
 </div>
 <div class="fragment">
 <h3 id="question-have-we-already-seen-planning-algorithms">Question: Have we already seen planning algorithms?</h3>
@@ -861,7 +859,7 @@ Simplified processing diagram of rollout algorithms (Adapted from <span class="c
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">We have seen a very similar structure in temporal difference learning: <span class="fragment">The TD target is <span class="math inline">\(y_t = r_t + \gamma V(s_{t+1})\)</span>.</span></li>
-<li class="fragment">The rollout yields a Monte-Carlo estimate of the value along the branches of the decision tree.</li>
+<li class="fragment">The rollout yields a Monte-Carlo estimate of the value <span class="math inline">\(V(s_{t+1})\)</span> along the branches of the decision tree.</li>
 </ul>
 </div>
 </div>
@@ -928,7 +926,7 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">When the thinking time is up:
+<li class="fragment">When the <em>thinking time</em> is up:
 <ul class="incremental">
 <li class="fragment">Compare immediate children of the root node.</li>
 <li class="fragment">Choose the one that was visited the most.</li>
@@ -967,7 +965,7 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The Exploitation Term (<span class="math inline">\(\frac{w_i}{n_i}\)</span>):
+<li class="fragment">The <strong>exploitation</strong> term (<span class="math inline">\(\frac{w_i}{n_i}\)</span>):
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(w_i\)</span>: number of wins (i.e., <span class="math inline">\(r=1\)</span>) simulated through child node <span class="math inline">\(i\)</span> so far.</li>
 <li class="fragment"><span class="math inline">\(n_i\)</span>: number of times child node <span class="math inline">\(i\)</span> has been visited.</li>
@@ -978,7 +976,7 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">The Exploration Term (<span class="math inline">\(\sqrt{\frac{\ln N_i}{n_i}}\)</span>):
+<li class="fragment">The <strong>exploration</strong> term (<span class="math inline">\(\sqrt{\frac{\ln N_i}{n_i}}\)</span>):
 <ul class="incremental">
 <li class="fragment"><span class="math inline">\(N_i\)</span> is the total number of times the parent node has been visited.</li>
 <li class="fragment">If we rarely visit a node, <span class="math inline">\(n_i\)</span> is very small, which makes the exploration term grow large.</li>
@@ -993,7 +991,7 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 <ul class="incremental">
 <li class="fragment">Imagine a node/move that looks bad at first (maybe it lost its first 2 simulations) <span class="math inline">\(\Rightarrow\)</span> exploitation score is <span class="math inline">\(0\)</span>.</li>
 <li class="fragment">MCTS will start ignoring it to focus on better moves.</li>
-<li class="fragment">As the parent visit count (<span class="math inline">\(N_i\)</span>) grows while <span class="math inline">\(n_i\)</span> remains small, the exploration term steadily increases.</li>
+<li class="fragment">As the parent visit count <span class="math inline">\(N_i\)</span> grows while <span class="math inline">\(n_i\)</span> remains small, the exploration term steadily increases.</li>
 <li class="fragment">Eventually, the exploration bonus becomes so high that it overrides the <span class="math inline">\(0\%\)</span> win rate.</li>
 <li class="fragment">If the move fails again (<span class="math inline">\(r=0\)</span>) <span class="math inline">\(\qquad\qquad\Rightarrow\)</span> exploration shrinks (<span class="math inline">\(n_i \uparrow\)</span>); exploitation stays low.</li>
 <li class="fragment">If it turns out to be a good move (<span class="math inline">\(r=1\)</span>) <span class="math inline">\(\Rightarrow\)</span> exploration shrinks (<span class="math inline">\(n_i \uparrow\)</span>); exploitation goes up <span class="math inline">\(\Exp{r}\uparrow\)</span>.</li>
@@ -1024,7 +1022,7 @@ Monte Carlo Tree Search (Source: <span class="citation">(<a href="#ref-Sutton199
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 6fr 2fr;">
 <div class="platzhalter">
-<h3 id="the-rules-of-go">The rules of Go</h3>
+<h3 id="the-rules-of-go-strongly-simplified">The rules of Go (strongly simplified)</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Black and White place stones in turns on a <span class="math inline">\(19 \times 19\)</span> grid.</li>
@@ -1060,9 +1058,11 @@ The first 150 moves of a Go game [<a href="https://en.wikipedia.org/wiki/Go_(gam
 <h3>AlphaGo &amp; AlphaZero</h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">AlphaGo was the first program to beat a professional player as well as a world champion.</li>
+<li class="fragment">AlphaGo was the first program to beat a professional player as well as a world champion.
+<ul class="incremental">
 <li class="fragment">Trained on a large basis of positions assessed by human experts.</li>
 <li class="fragment">Then fine-tuned via self-play.</li>
+</ul></li>
 <li class="fragment">AlphaZero: Strongly simplified architecture, trained exclusively through self-play.</li>
 </ul>
 </div>
@@ -1259,14 +1259,14 @@ AlphaGo <span class="citation">(<a href="#ref-Silver2016go">Silver et al. 2016</
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>When AlphaGo looks at a brand-new board state during a simulation, this is exactly what happens dynamically:</p>
+<p>When AlphaGo looks at a new board state during a simulation, this is what happens dynamically:</p>
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="platzhalter">
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
 <li class="fragment"><strong>Setting the prior</strong>: The SL policy network <span class="math inline">\(p_\sigma\agivenb{a}{s}\)</span> outputs a probability distribution <span class="math inline">\(P(s, a)\)</span> for all legal moves.<br />
 <span class="fragment"><span class="math inline">\(\circ\)</span> “Expert” moves that look professional / human: large <span class="math inline">\(P\)</span> (e.g., <span class="math inline">\(0.60\)</span>).</span><br />
-<span class="fragment"><span class="math inline">\(\circ\)</span> Odd, sub-optimal, or bizarre moves: small <span class="math inline">\(P\)</span> (e.g., <span class="math inline">\(0.001\)</span>).</span><br />
+<span class="fragment"><span class="math inline">\(\circ\)</span> Odd or sub-optimal moves: small <span class="math inline">\(P\)</span> (e.g., <span class="math inline">\(0.001\)</span>).</span><br />
 <span class="fragment"><span class="math inline">\(\circ\)</span> This <span class="math inline">\(P(s, a)\)</span> stays fixed for the rest of the search phase; it acts as a permanent multiplier for the exploration bonus.</span></li>
 </ol>
 </div>
@@ -1742,7 +1742,25 @@ Source: <a href="https://de.wikipedia.org/wiki/Model_Predictive_Control">Wikiped
 <div class="area">
 <div class="box block">
 <div class="small">
-
+<ul>
+<li>Revisiting the past: Dyna-style algorithms
+<ul>
+<li>Dyna-<span class="math inline">\(Q\)</span> and Dyna-<span class="math inline">\(Q+\)</span> revisit past state transitions</li>
+<li>With newer <span class="math inline">\(Q\)</span> approximations, we can learn from the same experience multiple times</li>
+<li>Prioritized sweeping allows us to revisit more important updates more frequently</li>
+</ul></li>
+<li>Looking into the future: Planning at decision time using predictive models
+<ul>
+<li>Heuristic search, rollouts and MCTS to obtain MC estimates of the value function at a given state</li>
+</ul></li>
+<li>AlphaGo &amp; AlphaZero</li>
+<li>Learning a model
+<ul>
+<li>World models / surrogate models from sampled trajectories</li>
+<li>Interplay between modeling and RL is very important</li>
+<li>Dreamer architecture = DPC with world models</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>

@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "29.06.2026 16:16"
+        "02.07.2026 12:40"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "6",
@@ -238,6 +238,9 @@
         }
     },
     "documentPath": ".",
+    "editor": {
+        "link-prefix": "zed://file"
+    },
     "exclude-directories": [
         "Beispiele"
     ],
@@ -540,6 +543,8 @@
             "handout",
             "pdf"
         ],
+        "listShowsDeckSubtitle": true,
+        "listShowsDeckTitle": true,
         "manual": true,
         "progress": true,
         "search": true,
@@ -680,6 +685,9 @@
                 "{{#1}^{(#2)}_{#3}}",
                 3.0
             ],
+            "minuspoint": [
+                "\\textcolor{red}{\\mathbf{-}}"
+            ],
             "nablaa": "{\\nabla_{\\mkern-6mu a\\mkern+2mu}}",
             "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
             "nablaphiprime": "{\\nabla_{\\mkern-6mu \\phi\\prime \\mkern+2mu}}",
@@ -703,6 +711,9 @@
             "pias": "{\\pi\\left( a  \\middle| s \\right)}",
             "piphi": "{\\pi_\\phi}",
             "piprime": "{\\pi^{\\prime}}",
+            "pluspoint": [
+                "\\textcolor{green}{\\mathbf{+}}"
+            ],
             "policy": [
                 "{\\pi\\left( #1  \\middle| #2 \\right)}",
                 2.0
@@ -860,6 +871,138 @@
     ],
     "subtitle": "Brief Introduction to Deep Learning",
     "supportPath": "support",
+    "targets": {
+        "decks": {
+            "public/00-intro-deck.html": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-deck.html": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-deck.html": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-deck.html": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-deck.html": "04-monte-carlo-deck.md",
+            "public/05-td-learning-deck.html": "05-td-learning-deck.md",
+            "public/06-deep-learning-deck.html": "06-deep-learning-deck.md",
+            "public/07-value-approximation-deck.html": "07-value-approximation-deck.md",
+            "public/08-q-learning-deck.html": "08-q-learning-deck.md",
+            "public/09-policy-gradients-deck.html": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-deck.html": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-deck.html": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-deck.html": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-deck.html": "13-exploration-deck.md",
+            "public/14-optimal-control-deck.html": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-deck.html": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-deck.html": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-deck.html": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-deck.html": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-deck.html": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-deck.html": "20-scientific-standards-deck.md",
+            "public/99-notation-deck.html": "99-notation-deck.md"
+        },
+        "decksPdf": {
+            "public/00-intro-deck.pdf": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-deck.pdf": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-deck.pdf": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-deck.pdf": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-deck.pdf": "04-monte-carlo-deck.md",
+            "public/05-td-learning-deck.pdf": "05-td-learning-deck.md",
+            "public/06-deep-learning-deck.pdf": "06-deep-learning-deck.md",
+            "public/07-value-approximation-deck.pdf": "07-value-approximation-deck.md",
+            "public/08-q-learning-deck.pdf": "08-q-learning-deck.md",
+            "public/09-policy-gradients-deck.pdf": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-deck.pdf": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-deck.pdf": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-deck.pdf": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-deck.pdf": "13-exploration-deck.md",
+            "public/14-optimal-control-deck.pdf": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-deck.pdf": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-deck.pdf": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-deck.pdf": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-deck.pdf": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-deck.pdf": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-deck.pdf": "20-scientific-standards-deck.md",
+            "public/99-notation-deck.pdf": "99-notation-deck.md"
+        },
+        "exams": {},
+        "handouts": {
+            "public/00-intro-handout.html": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-handout.html": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-handout.html": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-handout.html": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-handout.html": "04-monte-carlo-deck.md",
+            "public/05-td-learning-handout.html": "05-td-learning-deck.md",
+            "public/06-deep-learning-handout.html": "06-deep-learning-deck.md",
+            "public/07-value-approximation-handout.html": "07-value-approximation-deck.md",
+            "public/08-q-learning-handout.html": "08-q-learning-deck.md",
+            "public/09-policy-gradients-handout.html": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-handout.html": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-handout.html": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-handout.html": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-handout.html": "13-exploration-deck.md",
+            "public/14-optimal-control-handout.html": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-handout.html": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-handout.html": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-handout.html": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-handout.html": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-handout.html": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-handout.html": "20-scientific-standards-deck.md",
+            "public/99-notation-handout.html": "99-notation-deck.md"
+        },
+        "handoutsPdf": {
+            "public/00-intro-handout.pdf": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-handout.pdf": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-handout.pdf": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-handout.pdf": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-handout.pdf": "04-monte-carlo-deck.md",
+            "public/05-td-learning-handout.pdf": "05-td-learning-deck.md",
+            "public/06-deep-learning-handout.pdf": "06-deep-learning-deck.md",
+            "public/07-value-approximation-handout.pdf": "07-value-approximation-deck.md",
+            "public/08-q-learning-handout.pdf": "08-q-learning-deck.md",
+            "public/09-policy-gradients-handout.pdf": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-handout.pdf": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-handout.pdf": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-handout.pdf": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-handout.pdf": "13-exploration-deck.md",
+            "public/14-optimal-control-handout.pdf": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-handout.pdf": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-handout.pdf": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-handout.pdf": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-handout.pdf": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-handout.pdf": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-handout.pdf": "20-scientific-standards-deck.md",
+            "public/99-notation-handout.pdf": "99-notation-deck.md"
+        },
+        "pages": {},
+        "pagesPdf": {},
+        "questions": {},
+        "sources": [
+            "00-intro-deck.md",
+            "01-multi-armed-bandits-deck.md",
+            "02-MDPs-deck.md",
+            "03-dynamic-programming-deck.md",
+            "04-monte-carlo-deck.md",
+            "05-td-learning-deck.md",
+            "06-deep-learning-deck.md",
+            "07-value-approximation-deck.md",
+            "08-q-learning-deck.md",
+            "09-policy-gradients-deck.md",
+            "10-actor-critic-deck.md",
+            "11-advanced-algorithms-part1-deck.md",
+            "12-advanced-algorithms-part2-deck.md",
+            "13-exploration-deck.md",
+            "14-optimal-control-deck.md",
+            "15-model-based-RL-deck.md",
+            "16-offline-RL-deck.md",
+            "17-imitation-learning-deck.md",
+            "18-transfer-learning-deck.md",
+            "19-multi-agent-RL-deck.md",
+            "20-scientific-standards-deck.md",
+            "99-notation-deck.md"
+        ],
+        "static": {
+            "public/assets/inf-logo.svg": "assets/inf-logo.svg",
+            "public/styles/mafi-deck.css": "styles/mafi-deck.css",
+            "public/styles/mafi-menu.css": "styles/mafi-menu.css",
+            "public/styles/mafi-page.css": "styles/mafi-page.css"
+        }
+    },
     "template": {
         "deck": {
             "css": [

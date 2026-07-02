@@ -57,11 +57,11 @@ templates:
 |         | Model-based reinforcement learning                   |        [slides:](15-model-based-RL)            |
 |   **4** | **Advanced topics**                                  |                                                |
 |         | Offline reinforcement learning                       |        [slides:](16-offline-RL)                |
-|         | Imitation learning                                   |                                                | <!-- [slides:](17-imitation-learning) | -->
-|         | Transfer learning                                    |                                                | <!-- [slides:](18-transfer-learning)  | -->
 |   **∞** | **Notation**                                         |                                                |
 |         | Notation                                             |        [slides:](99-notation)                  |
 
+<!-- |         | Imitation learning                                   |        [slides:](17-imitation-learning)        | -->
+<!-- |         | Transfer learning                                    |        [slides:](18-transfer-learning)         | -->
 <!-- |         | Multi-agent reinforcement learning                   |        [slides:](19-multi-agent-RL)            | -->
 <!-- |         | Scientific standards in reinforcement learning       |        [slides:](20-scientific-standards)      | -->
 

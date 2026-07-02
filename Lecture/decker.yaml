@@ -165,6 +165,9 @@ math:
     KLdivmax: ['D_{\mathsf{KL}}^{\mathsf{max}}\left( #1 \middle \| #2 \right)', 2]
     KLdivavg: ['\bar{D}_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
 
+    pluspoint: ['\textcolor{green}{\mathbf{+}}']
+    minuspoint: ['\textcolor{red}{\mathbf{-}}']
+
     set: ['{\left\{ #1 \right\}}', 1]
     cbracket: ['{\left( #1 \right)}', 1]
     rbracket: ['{\left[ #1 \right]}', 1]
