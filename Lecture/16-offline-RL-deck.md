@@ -25,10 +25,10 @@ feedback:
   - RL + BC (behavioral cloning)
   - advantage-weighted regression
   - Batch-constrained $Q$-learning
-- 
-  - Conservative $Q$-learning
 - Implicit $Q$-learning
+- Conservative $Q$-learning
 - Offline-to-online RL
+- Model-based offline RL
 
 # Where are we?
 
@@ -271,37 +271,42 @@ Table: The key ideas in imitation learning
 
 ::: small
 
+::: columns-3-2
 ::: incremental
 1. **Find the "good stuff"** in a dataset full of good and bad behaviors.\
 [**Example**, consider a dataset of various drivers:]{.fragment}\
 [$\circ$ with imitation learning, we would find the average performance :thumbsdown:]{.fragment}\
 [$\circ$ with offline RL, we hope to extract a policy mimicking the best driver's performance :thumbsup:]{.fragment}
-:::
-
-
-::: columns-3-1-1
-::: incremental
 2. **Generalization**: good behavior in one place may suggest good behavior in another place.\
 [**Driving example**: we improve upon the best driver by generalizing to unseen situations.]{.fragment}
+3. **“Stitching”**: parts of good behaviors can be recombined.
 :::
 
+::: platzhalter
 ::: fragment
-![Source: [D4RL](https://sites.google.com/view/d4rl-anonymous/).](images/16-offline-RL/maze2D.gif){width=150px}
-:::
+::: columns-1-1
+
+![](images/16-offline-RL/maze2D.gif){width=150px}
+
 
 ::: fragment
 ![](images/16-offline-RL/maze2D-route.svg){width=150px}
 :::
+
 :::
-
-
-::: columns-3-2
-::: incremental
-3. **“Stitching”**: parts of good behaviors can be recombined.
+::: center
+Generalization (Source: [D4RL](https://sites.google.com/view/d4rl-anonymous/)).
+:::
+\
+ 
 :::
 
 ::: fragment
-![Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).](images/16-offline-RL/stitching.svg){width=400px .embed}
+![](images/16-offline-RL/stitching.svg){width=400px .embed}
+
+Stitching (Source: Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/)).
+:::
+
 :::
 :::
 
@@ -562,17 +567,284 @@ $$ \KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}}\leq \epsilon. $
 
 ------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------
+# Adding constraints
 
-# Value-regularization \& pessimism
+::: small
+::: incremental
+- Simplest approach to avoid overestimation: constrain the distance between behavior policy $\pi_\beta$ and the learned policy $\piphi$.
+- Remember the KL divergence?
+$$ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \log\pi_\phi\agivenb{a}{s} }{a\sim\pi_\beta\agivenb{\cdot}{s}}. } $$
+- Constraining the distance yields a constrained optimization problem:
+$$\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\agivenb{\cdot}{s}} \qquad\text{s.t.}\qquad \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}\leq \epsilon. \label{eq:OFF_constrained_policy} \end{equation}$$
+  - Where have we seen this before? [$\Rightarrow$ Natural policy gradient!]{.fragment}
+:::
 
-------------------------------------------------------------------------------
+::: columns-6-5
+
+::: incremental
+- Via [Lagrange multipliers](https://en.wikipedia.org/wiki/Lagrange_multiplier): additional term in the actor loss function:
+$$\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}$$
+[$$\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \log\piphi\agivenb{a}{s} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}$$]{.fragment}
+  - To solve \eqref{eq:OFF_constrained_policy}, we need to solve for both $\phi$ **and** the Lagrange multiplier $\lambda$.
+  - Alternative: treat $\lambda$ as a hyperparameter.
+:::
+
+::: fragment
+::: definition
+### AC + BC methods
+
+Methods of the type \eqref{eq:OFF_ACBC} are often termed "AC+BC":\
+*actor-critic plus [behavior cloning](https://en.wikipedia.org/wiki/Imitation_learning#Behavior_Cloning),*\
+as the term $\log\piphi\agivenb{a}{s}$ is typical in BC methods. Popular examples:\
+$\bullet$ TD3 + BC, $\quad\bullet$ DDPG + BC,\
+$\bullet$ SAC + BC.
+:::
+:::
+
+:::
+
+:::
+
+
+# Forward KL versus reverse KL
+
+::: small
+::: incremental
+- Remember: the KL divergence is not a real [metric](https://en.wikipedia.org/wiki/Metric_space#Definition). [In particular, it violates the symmetry condition, i.e.,
+$$\begin{align*} 
+\KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}} = \Expsub{\log\frac{\piphi\agivenb{a}{s}}{\pi_\beta\agivenb{a}{s}}}{a\sim\piphi\agivenb{\cdot}{s}} \neq \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\piphi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} = \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}.
+\end{align*}$$]{.fragment}
+:::
+
+::: columns-7-5
+
+::: incremental
+- **Forward KL** a.k.a. "mode covering":
+$$\begin{align*}
+\KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\piphi\agivenb{\cdot}{s}} = \Expsub{\log\pi_\beta\agivenb{a}{s} - \log\piphi\agivenb{a}{s} }{a\sim\pi_\beta\agivenb{\cdot}{s}}.
+\end{align*}$$
+- **Reverse KL** a.k.a. "mode seeking":
+$$\begin{align*}
+\KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}} &= \Expsub{\log\piphi\agivenb{a}{s} - \log\pi_\beta\agivenb{a}{s} }{a\sim\piphi\agivenb{\cdot}{s}}\\
+&=-\Expsub{\log\pi_\beta\agivenb{a}{s} }{a\sim\piphi\agivenb{\cdot}{s}} - \Hc(\piphi\agivenb{\cdot}{s}).
+\end{align*}$$
+:::
+
+::: fragment
+\
+![Mode seeking vs. mode covering (inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/)).](images/16-offline-RL/KL-mode-seeking-covering.svg){width=450px .embed}
+:::
+
+:::
+
+::: columns-5-5
+
+::: incremental
+- Mode covering: What happens if for some $(s,a)$,\
+[Mode covering:]{style="color: white;"} $\pi_\phi\agivenb{a}{s}=0$ while $\pi_\beta\agivenb{a}{s}>0$?
+  - KL divergence :boom: [$\Rightarrow$ Need to cover everything from the dataset!]{.fragment}
+- Mode covering: What happens if for some $(s,a)$,\
+[Mode covering:]{style="color: white;"} $\pi_\beta\agivenb{a}{s}=0$ while $\pi_\phi\agivenb{a}{s}>0$?
+  - KL divergence :boom: [$\Rightarrow$ Need to ensure $\pi_\phi$ stays within a subset of $\pi_\beta$.]{.fragment}
+:::
+
+::: fragment
+::: definition
+### Which one is desirable?
+
+::: incremental
+- Mode seeking is what we actually want.
+- Extract the best behavior from a dataset.
+- However, it is harder to realize, which is why we often use mode covering in practice, see *AC + BC*.
+:::
+:::
+:::
+
+:::
+
+
+:::
+
+
+# How to learn $\pi_\beta$ if we don't know it {menu-title="How to learn the behavior policy if we don't know it"}
+
+::: small
+::: incremental
+- Constraining the KL divergence requires knowledge of the behavior policy $\pi_\beta$.
+- What can we do if we don't know it? [$\Rightarrow$ extract it from the dataset!]{.fragment}
+:::
+
+::: fragment
+::: definition
+### Behavior cloning.
+
+::: incremental
+- Given a dataset $\Dc=\set{(s_i,a_i)}_{i=1}^N$, we have a probabilistic supervised learning problem.
+- Find the probability distribution $\pi_\psi\agivenb{a}{s}$ giving rise to $\Dc$.
+- In other words maximize the likelihood of $a_i$ given $s_i$ over $\Dc$.
+- Approaches:
+:::
+
+::: fragment
+::: columns-1-20-25
+
+::: platzhalter
+ 
+:::
+
+::: fragment
+$\circ$ Variational autoencoder (VAE) [@Kingma2022vae]:\
+![Adapted from [Wikipedia](https://en.wikipedia.org/wiki/Variational_autoencoder).](images/16-offline-RL/VAE.png){width=400px}
+:::
+
+::: platzhalter
+$\circ$ Gaussian policy: $\pi_\psi\agivenb{a}{s} = \Nc(\mu_\psi(s), \sigma^2_\psi(s))$.
+
+::: fragment
+$\circ$ Generative modeling\
+<!-- ![Sources: [Nvidia blog](https://developer.nvidia.com/blog/improving-diffusion-models-as-an-alternative-to-gans-part-2/) / [Steven Gong's blog](https://stevengong.co/notes/Flow-Matching).](images/16-offline-RL/Diffusion.png){width=600px} -->
+![Source: [Medium.com](https://medium.com/@hasfuraa/flow-matching-and-diffusion-deep-dive-b080f7782654).](images/16-offline-RL/Diffusion2.png){width=600px}
+
+:::
+:::
+
+:::
+:::
+:::
+:::
+:::
+
+# Alternative to KL divergence
+
+::: small
+
+::: incremental
+- The KL divergence is a natural choice for the policy constraint, but not necessarily the best one:\
+:::
+
+::: columns-1-25-20
+
+::: platzhalter
+ 
+:::
+
+::: platzhalter
+[$\pluspoint$ [Mathematically tractable / closed-form solutions.]{style="color: green;"}]{.fragment}\
+[$\pluspoint$ [Direct penalization of OOD actions.]{style="color: green;"}]{.fragment}\
+[$\pluspoint$ [Smooth/soft regularization with tunable hyperparameter $\lambda$.]{style="color: green;"}]{.fragment}\
+:::
+
+::: platzhalter
+[$\minuspoint$ [Asymmetry (forward KL vs. reverse KL).]{style="color: red;"}]{.fragment}\
+[$\minuspoint$ [Overly conservative in unseen regions.]{style="color: red;"}]{.fragment}\
+[$\minuspoint$ [Sensitive to behavior policy estimation.]{style="color: red;"}]{.fragment}
+:::
+
+:::
+
+::: incremental
+- More generally, **we do not even want the two distributions to match**!
+- We just want to find the best behavior supported by the dataset.
+- Alternative: Minimizing [Maximum Mean Discrepancy (MMD)](https://en.wikipedia.org/wiki/Kernel_embedding_of_distributions#Measuring_distance_between_distributions), see [@Kumar2019stabilizing]:
+$$MMD^2(\pi, \beta) = \Exp{k(a_\pi, a_\pi')} - 2\Exp{k(a_\pi, a_\beta)} + \Exp{k(a_\beta, a_\beta')}.$$
+  - $k$ is a kernel function for implicitly evaluating inner products between feature vectors: $k(a_\pi, a_\beta) = \psi(a_\pi)^\top \psi(a_\beta)$.
+  - $\mathbb{E}[k(a_\pi, a_\pi')]$: How close to each other are the actions generated by our policy?
+  - $- 2\mathbb{E}[k(a_\pi, a_\beta)]$: How close are our actions to the dataset actions?
+  - $\mathbb{E}[k(a_\beta, a_\beta')]$: The internal variance of the dataset actions (a constant baseline).
+:::
+
+::: columns-1-20-25
+
+::: platzhalter
+ 
+:::
+
+::: platzhalter
+[$\pluspoint$ [Bypasses densitiy estimation / works on samples .]{style="color: green;"}]{.fragment}\
+[$\pluspoint$ [No infinite penalty on unsupported actions.]{style="color: green;"}]{.fragment}\
+[$\pluspoint$ [Allows for multimodel generalization.]{style="color: green;"}]{.fragment}\
+:::
+
+::: platzhalter
+[$\minuspoint$ [Computationally expensive.]{style="color: red;"}]{.fragment}\
+[$\minuspoint$ [High sample variance / hard to tune the kernel bandwidth.]{style="color: red;"}]{.fragment}\
+[$\minuspoint$ [Curse of dimensionality.]{style="color: red;"}]{.fragment}
+:::
+
+:::
+
+
+:::
+
+
+
+
+# The BRAC framework
+
+::: small
+::: definition
+### Unification of various approaches in the BRAC framework
+
+In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BRAC)*. 
+
+::: incremental
+- This can be seen as a unification of many methods.
+- The constraint can be enforced in two different ways
+  - In the policy approximation (*Policy Regularization*)
+  - In the value or $Q$ function approximation (*Value Regularization*)
+- The constraint is defined as a general distance metric.
+  - The KL divergence and MMD are then special cases.
+- Additional design choice: How to approximate the expectation.
+:::
+:::
+:::
+
 
 ------------------------------------------------------------------------------
 
 # Implicit $Q$-learning {menu-title="Implicit Q-learning"}
 
 ------------------------------------------------------------------------------
+
+
+# Advantage-weighted regression
+
+::: small
+[@Peng2019advantageweightedregression]
+:::
+
+# Implicit $Q$-learning (IQL)
+
+::: small
+
+
+:::
+
+------------------------------------------------------------------------------
+
+# Value-regularization \& pessimism
+
+------------------------------------------------------------------------------
+
+# Conservative $Q$-learning {menu-title="Conservative Q-learning"}
+
+::: small
+
+:::
+
+
+------------------------------------------------------------------------------
+
+# Model-based offline RL
+
+------------------------------------------------------------------------------
+
+# Learning a model, then RL
+
+::: small
+
+:::
+
 
 
 ------------------------------------------------------------------------------
