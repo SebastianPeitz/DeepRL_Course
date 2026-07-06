@@ -14,6 +14,7 @@ feedback:
 
 # Content
 
+::: small
 - Learning policies from datasets
 - Offline reinforcement learning
   - Distributional shifts
@@ -22,13 +23,14 @@ feedback:
   - Algorithmic evolution of methods
 - Policy constraint methods
   - Forward and backward KL divergence
-  - RL + BC (behavioral cloning)
+  - RL + BC (behavior cloning)
   - advantage-weighted regression
   - Batch-constrained $Q$-learning
 - Implicit $Q$-learning
 - Conservative $Q$-learning
 - Offline-to-online RL
 - Model-based offline RL
+:::
 
 # Where are we?
 
@@ -43,8 +45,6 @@ feedback:
 |  14-15  | Optimal \& feedback control, MPC, planning, model-based RL   | Planning \& control when we know the model | 
 |         | **Advanced Topics**                                          |                                          |
 |   [16]{style="color: red;"}    | [Offline reinforcement learning]{style="color: red;"}                       | [RL with a static, given dataset]{style="color: red;"} |
-|         | Imitation learning                                           |                                          |
-|         | Transfer learning                                            |                                          |
 
 Table: Lecture contents
 :::
@@ -84,7 +84,7 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 ::: platzhalter
 ::: definition
-### Behavioral cloning (BC)
+### Behavior cloning (BC)
 
 ::: incremental
 - Treats imitation as **supervised learning**. Inputs: expert states; Outputs/Labels: expert actions as labels
@@ -144,7 +144,7 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 [$\pluspoint$ [Directly fixes covariate shift.]{style="color: green;"}]{.fragment}
 
-[$\pluspoint$ [forces the agent to learn how to recover from its own mistakes.]{style="color: green;"}]{.fragment}
+[$\pluspoint$ [Forces the agent to learn how to recover from its own mistakes.]{style="color: green;"}]{.fragment}
 
 [$\minuspoint$ [Requires an expert to be constantly available and online during training to label data.]{style="color: red;"}]{.fragment}
 
@@ -197,7 +197,7 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 | Algorithm (class) | Key concept |
 | :- | :- |
-| Behavioral cloning (BC) | Copy data (i.e., "expert" as closely as possible).
+| Behavior cloning (BC) | Copy data (i.e., "expert" as closely as possible).
 | Inverse RL (IRL) | Identify reward from data $\Rightarrow$ then standard RL.
 | Dataset aggregation (DAgger) | Expert corrects faulty behavior (meaning there is an online component).
 | Generative advarsarial imitation learning (GAIL) | The generative version of BC mimicking trajectories.
@@ -693,7 +693,7 @@ $$\begin{align*}
 :::
 
 ::: fragment
-$\circ$ Variational autoencoder (VAE) [@Kingma2022vae]:\
+$\circ$ Variational autoencoder (VAE) [@Kingma2013vae]:\
 ![Adapted from [Wikipedia](https://en.wikipedia.org/wiki/Variational_autoencoder).](images/16-offline-RL/VAE.png){width=400px}
 :::
 

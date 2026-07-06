@@ -187,6 +187,7 @@ Learning</title>
 <div class="layout">
 <div class="area">
 <div class="box block">
+<div class="small">
 <ul>
 <li>Learning policies from datasets</li>
 <li>Offline reinforcement learning
@@ -199,7 +200,7 @@ Learning</title>
 <li>Policy constraint methods
 <ul>
 <li>Forward and backward KL divergence</li>
-<li>RL + BC (behavioral cloning)</li>
+<li>RL + BC (behavior cloning)</li>
 <li>advantage-weighted regression</li>
 <li>Batch-constrained <span class="math inline">\(Q\)</span>-learning</li>
 </ul></li>
@@ -208,6 +209,7 @@ Learning</title>
 <li>Offline-to-online RL</li>
 <li>Model-based offline RL</li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -272,16 +274,6 @@ Learning</title>
 <td align="left"><span style="color: red;">Offline reinforcement learning</span></td>
 <td align="left"><span style="color: red;">RL with a static, given dataset</span></td>
 </tr>
-<tr>
-<td align="center"></td>
-<td align="left">Imitation learning</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="left">Transfer learning</td>
-<td align="left"></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -342,8 +334,8 @@ Learning</title>
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="platzhalter">
-<div id="behavioral-cloning-bc" class="definition">
-<h3>Behavioral cloning (BC)</h3>
+<div id="behavior-cloning-bc" class="definition">
+<h3>Behavior cloning (BC)</h3>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Treats imitation as <strong>supervised learning</strong>. Inputs: expert states; Outputs/Labels: expert actions as labels</li>
@@ -403,7 +395,7 @@ Learning</title>
 </ul>
 </div>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Directly fixes covariate shift.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">forces the agent to learn how to recover from its own mistakes.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Forces the agent to learn how to recover from its own mistakes.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Requires an expert to be constantly available and online during training to label data.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Exhausting for humans and frequently impossible for complex setups.</span></span></p>
 </div>
@@ -470,7 +462,7 @@ Inspired by Generative Adversarial Networks (GANs).
 </thead>
 <tbody>
 <tr>
-<td align="left">Behavioral cloning (BC)</td>
+<td align="left">Behavior cloning (BC)</td>
 <td align="left">Copy data (i.e., “expert” as closely as possible).</td>
 </tr>
 <tr>
@@ -13065,7 +13057,7 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 
 </div>
 <div class="fragment">
-<p><span class="math inline">\(\circ\)</span> Variational autoencoder (VAE) <span class="citation">(<a href="#ref-Kingma2022vae">Kingma and Welling 2022</a>)</span>:<br />
+<p><span class="math inline">\(\circ\)</span> Variational autoencoder (VAE) <span class="citation">(<a href="#ref-Kingma2013vae">Kingma and Welling 2013</a>)</span>:<br />
 <span class="media"><span class="figure image" style="height:auto;width:400px;"><img src="images/16-offline-RL/VAE.png" style="height:auto;width:100%;" aria-label="Adapted from Wikipedia." alt="images/16-offline-RL/VAE.png" /><span class="figcaption"><span>Adapted from <a href="https://en.wikipedia.org/wiki/Variational_autoencoder">Wikipedia</a>.</span></span></span></span></p>
 </div>
 <div class="platzhalter">
@@ -13334,8 +13326,8 @@ Goodfellow, Ian J., Jonathon Shlens, and Christian Szegedy. 2015. <span>“Expla
 <div id="ref-Ho2016gail" class="csl-entry">
 Ho, Jonathan, and Stefano Ermon. 2016. <span>“Generative Adversarial Imitation Learning.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by D. Lee, M. Sugiyama, U. Luxburg, I. Guyon, and R. Garnett. Vol. 29. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2016/file/cc7e2b878868cbae992d1fb743995d8f-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2016/file/cc7e2b878868cbae992d1fb743995d8f-Paper.pdf</a>.
 </div>
-<div id="ref-Kingma2022vae" class="csl-entry">
-Kingma, Diederik P, and Max Welling. 2022. <span>“Auto-Encoding Variational <span>B</span>ayes.”</span> <em>arXiv:1312.6114</em>.
+<div id="ref-Kingma2013vae" class="csl-entry">
+Kingma, Diederik P, and Max Welling. 2013. <span>“Auto-Encoding Variational <span>B</span>ayes.”</span> <em>arXiv:1312.6114</em>.
 </div>
 <div id="ref-Kumar2019stabilizing" class="csl-entry">
 Kumar, Aviral, Justin Fu, Matthew Soh, George Tucker, and Sergey Levine. 2019. <span>“Stabilizing Off-Policy <span>Q</span>-Learning via Bootstrapping Error Reduction.”</span> <em>Advances in Neural Information Processing Systems</em> 32.
