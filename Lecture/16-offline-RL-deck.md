@@ -276,7 +276,7 @@ Table: The key ideas in imitation learning
 1. **Find the "good stuff"** in a dataset full of good and bad behaviors.\
 [**Example**, consider a dataset of various drivers:]{.fragment}\
 [$\circ$ with imitation learning, we would find the average performance :thumbsdown:]{.fragment}\
-[$\circ$ with offline RL, we hope to extract a policy mimicking the best driver's performance :thumbsup:]{.fragment}
+[$\circ$ with offline RL, we hope to extract a policy mimicking the best driver's performance *in each situation* :thumbsup:]{.fragment}
 2. **Generalization**: good behavior in one place may suggest good behavior in another place.\
 [**Driving example**: we improve upon the best driver by generalizing to unseen situations.]{.fragment}
 3. **“Stitching”**: parts of good behaviors can be recombined.
@@ -337,7 +337,7 @@ Stitching (Source: Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.ed
 
 ::: incremental
 - Is this good or bad?
-- How can we know we have never seen it?
+- How can we know if we have never seen it?
 :::
 
 [Inspired by Sergey Levine's [CS285 lecture](https://rail.eecs.berkeley.edu/deeprlcourse/).]{.footer}
@@ -544,13 +544,13 @@ The following strategies (or classes of approaches) are the most common ones tod
 $$ \KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}}\leq \epsilon. $$
 
 ::: fragment
-2. **Value-regularization \& pessimism**: Go anywhere, but assume what you haven't seen is dangerous $\Rightarrow$ avoid overestimation.
-
-![Inspired by [@Levine2020offlinerltutorial].](images/16-offline-RL/argmax-distribution.svg){width=400px}
+2. **Implicit $Q$-learning**: Implicitly define constraints to avoid behavior policy $\pi_\beta$. 
 :::
 
 ::: fragment
-3. **Implicit $Q$-learning**: Avoid out-of-distribution actions in updates. 
+3. **Value-regularization \& pessimism**: Go anywhere, but assume what you haven't seen is dangerous $\Rightarrow$ avoid overestimation.
+
+![Inspired by [@Levine2020offlinerltutorial].](images/16-offline-RL/argmax-distribution.svg){width=400px}
 :::
 \
 
@@ -593,7 +593,7 @@ $$\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}
 ::: definition
 ### AC + BC methods
 
-Methods of the type \eqref{eq:OFF_ACBC} are often termed "AC+BC":\
+Methods of the type \eqref{eq:OFF_ACBC} are often termed "AC + BC":\
 *actor-critic plus [behavior cloning](https://en.wikipedia.org/wiki/Imitation_learning#Behavior_Cloning),*\
 as the term $\log\piphi\agivenb{a}{s}$ is typical in BC methods. Popular examples:\
 $\bullet$ TD3 + BC, $\quad\bullet$ DDPG + BC,\
@@ -790,14 +790,114 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 ::: incremental
 - This can be seen as a unification of many methods.
 - The constraint can be enforced in two different ways
-  - In the policy approximation (*Policy Regularization*)
-  - In the value or $Q$ function approximation (*Value Regularization*)
+  - In the policy approximation (*policy regularization*)
+  - In the value or $Q$ function approximation (*value regularization*, coming up next)
 - The constraint is defined as a general distance metric.
   - The KL divergence and MMD are then special cases.
 - Additional design choice: How to approximate the expectation.
 :::
 :::
 :::
+
+------------------------------------------------------------------------------
+
+# Value-regularization \& pessimism
+
+------------------------------------------------------------------------------
+
+# Conservative $Q$-learning {menu-title="Conservative Q-learning"}
+
+::: small
+::: incremental
+- We have seen that overestimation of $Q$-values outside the offline dataset $\Dc$ is the main source of failure for offline RL.
+- *Policy constraint methods* (previously): Penalize deviations of the policy from the behavior policy $\pi_\beta$.
+- Alternative: Penalize the $Q$-function outside $\Dc$ [$\Rightarrow$ **value regularization**!]{.fragment}
+- This is what **conservative $Q$-learning** (CQL, [@Kumar2020conservativeqlearning]) does:\
+[$\Rightarrow$ introduce a lower bound (a pessimistic approximation) of the actual $Q$-function.]{.fragment}
+- We can then simply use the pessimistic $Q$-function in $Q$-learning or Actor-Critic methods.
+:::
+
+::: fragment
+::: columns-7-3
+
+![Source: [Berkley AI Research (BAIR) blog](https://bair.berkeley.edu/blog/2020/12/07/offline/).](images/16-offline-RL/CQL-conservative.png){width=700px}
+
+::: fragment
+![](images/16-offline-RL/CQL-Qlearning.svg){width=300px}
+:::
+:::
+:::
+
+
+::: fragment
+### Question: How can we achieve this?
+:::
+:::
+
+# The idea behind CQL
+
+::: small
+::: columns-5-5
+::: incremental
+- How do we reduce the $Q$-function estimate outside our dataset?
+  - Just reduce $Q$ *everywhere*...
+  - then increase it again in the *region supported by the dataset*!
+- The $Q$-learning step with TD($0$): [:bulb: We here use an on-policy estimator, as is used in continuous control algorithms such as SAC. A $Q$-learning version were we maximize over actions in the target $y$ is equally possible [@Kumar2020conservativeqlearning].]{.footer .fragment}
+$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{s,a,r,s'\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a'\sim\pi_\phi\agivenb{\cdot}{s'}}}_{y} - Q_\theta(s,a)\Big)^2\Big].$$
+- Extend target $y$ by a conservative penalty term:
+$$ \hat{y} = y + \alpha \Expsub{\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}}{s\sim\Dc}. $$
+  - We need to find a policy $\mu$ that maximally reduces the estimate of $Q_\theta$.
+  - Resulting $Q$-function lower-bounds the true $Q$-function point-wise.
+- This raises two issues:
+  1. We don't want a reduction on the parts supported by $\Dc$.
+  2. Computation of $\mu$ is an expensive optimization problem in itself!
+:::
+
+::: fragment
+::: definition
+### The CQL($H$) framework [@Kumar2020conservativeqlearning]
+
+::: incremental
+- Reduce $Q$ everywhere, boost it on the dataset:
+$$ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}\\
+&- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} $$
+- Add KL-divergence regularizer to $\Rightarrow$ closed-form solution (similar to SAC):
+$$ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}}\\
+&- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} $$
+<!-- $$\hat{y} = y +  \alpha \cdot \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s, a)}{a \sim \mathcal{D}}}{s \sim \mathcal{D}}.$$ -->
+- Lower bound on expected value: $$ \Expsub{Q_\theta(s,a)}{a \sim \pi} \le V^\pi(s).$$
+:::
+
+:::
+:::
+:::
+:::
+
+# Algorithmic implementation of CQL($H$) {menu-title="Algorithmic implementation of CQL(H)"}
+
+::: small
+::: incremental
+- Penalty term on our $Q$-function approximation:
+$$ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. $$ 
+- Challenge: Monte Carlo sampling of the integral over $\Ac$!
+- Uniform sampling will likely miss the large-$Q$ sections [$\Rightarrow$ We need a suitable approximation from data.]{.fragment}
+- Proposal in [@Kumar2020conservativeqlearning]: A mixture of three sets
+  1. **Uniform actions ($a \sim U(\Ac)$)**: ensures exploratino of the entire action space; reduces overestimation peaks in distant regions of the action space.
+  2. **Current policy actions ($a \sim \pi_\phi\agivenb{\cdot}{s}$)**: exploits the highest peaks in the current $Q$-function $\Rightarrow$ directly targets overestimations $\pi_\phi$ is trying to exploit.
+  3. **Next-state policy actions ($a \sim \pi_\phi\agivenb{\cdot}{s'}$)**: In the Bellman equation, the target value is calculated using the policy's action at the next state ($a' \sim \pi(s')$). If $Q(s', a')$ is overestimated, that error propagates back to $Q(s, a)$ via the TD update.
+- We would have to perform importance sampling to go from $\int \exp(Q_\theta(s, a)) \dint{a} \approx \frac{1}{N} \sum_{i=1}^N \exp(Q_\theta(s, a_i))$ to this sum of three terms. [However, we ignore this in practice:]{.fragment}
+[$$ \begin{align*} I(s) &= \log\cbracket{\frac{1}{3}\cbracket{\Expsub{\exp{Q_\theta(s, a)}}{a \sim U(\Ac)} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s}} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s'}}}}, \\
+\hat{y} &= y + \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s,s'\sim\Dc}. \end{align*} $$]{.math-incremental} 
+:::
+:::
+
+# Example: Complex gripping tasks
+
+::: small
+![Source: [Berkley AI Research (BAIR) blog](https://bair.berkeley.edu/blog/2020/12/07/offline/).](https://bair.berkeley.edu/blog/2020/12/07/offline/){ width=1200px height=550px .print .iframe }
+<!-- ![Source: [Berkley AI Research (BAIR) blog](https://bair.berkeley.edu/blog/2020/12/07/offline/).](websites/BAIR_OfflineRL.html){ width=1200px height=550px .print .iframe } -->
+:::
+
 
 
 ------------------------------------------------------------------------------
@@ -820,20 +920,8 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 
 :::
 
-------------------------------------------------------------------------------
 
-# Value-regularization \& pessimism
-
-------------------------------------------------------------------------------
-
-# Conservative $Q$-learning {menu-title="Conservative Q-learning"}
-
-::: small
-
-:::
-
-
-------------------------------------------------------------------------------
+<!-- ------------------------------------------------------------------------------
 
 # Model-based offline RL
 
@@ -843,11 +931,11 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 
 ::: small
 
-:::
+::: -->
 
 
 
-------------------------------------------------------------------------------
+<!-- ------------------------------------------------------------------------------
 
 # Offline-to-online RL
 
@@ -857,9 +945,9 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 
 ::: small
 [@Ball2023offlineRL]
-:::
+::: -->
 
-------------------------------------------------------------------------------
+<!-- ------------------------------------------------------------------------------
 
 # Benchmarking
 
@@ -869,8 +957,21 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 
 ::: small
 [https://sites.google.com/view/d4rl-anonymous/](https://sites.google.com/view/d4rl-anonymous/).
-:::
+::: -->
 
+
+# Summary / what we have learned
+
+::: small
+- Offline RL: Learn policies from a fixed, unchangeable dataset $\Dc$
+- Main challenges:
+  - Distribution shift between learned policy $\pi$ and dataset policy $\pi_\beta$
+  - Overestimation of $Q$ outisde the dataset $\Dc$
+- Approaches to address this:
+  - Constrain the policy $\Rightarrow$ Explicit policy constraint methods (e.g., AC + BC)
+  - Pessimistically modify the $Q$-function outside $\Dc$ $\Rightarrow$ Conservative $Q$-learning
+  - Avoid out-of-distribution actions altogether $\Rightarrow$ Implicit $Q$-learning
+:::
 
 # References
 

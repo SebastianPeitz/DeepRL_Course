@@ -579,7 +579,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 :::
 
 ::: platzhalter
-![The first 150 moves of a Go game [[Source](https://en.wikipedia.org/wiki/Go_(game))].](images/15-model-based-RL/Go150moves.gif){ width=300px }
+![The first 150 moves of a Go game ([Source](https://en.wikipedia.org/wiki/Go_(game))).](images/15-model-based-RL/Go150moves.gif){ width=300px }
 :::
 
 :::
@@ -599,7 +599,7 @@ $$\text{UCB1} = \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}.$$
 :::
 :::
 
-![AlphaGo [@Silver2016go] [[Source](https://www.bbc.com/news/technology-35785875)].](images/00-introduction/alphago.jpg){ width=300px }
+![AlphaGo [@Silver2016go] ([Source](https://www.bbc.com/news/technology-35785875)).](images/00-introduction/alphago.jpg){ width=300px }
 
 :::
 :::
@@ -956,7 +956,7 @@ If we do not have a model, but still want to use model-based RL, we can try to *
 :::
 
 ::: fragment
-![Making use of symmetries, we can replace a single large agent by many identical, smaller ones. [Source: [@PSC+24]]](images/15-model-based-RL/RBC_MARL.png){width=450px}
+![Making use of symmetries, we can replace a single large agent by many identical, smaller ones (Source: [@PSC+24]).](images/15-model-based-RL/RBC_MARL.png){width=450px}
 :::
 
 :::

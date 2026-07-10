@@ -9139,7 +9139,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <li class="fragment"><strong>Find the “good stuff”</strong> in a dataset full of good and bad behaviors.<br />
 <span class="fragment"><strong>Example</strong>, consider a dataset of various drivers:</span><br />
 <span class="fragment"><span class="math inline">\(\circ\)</span> with imitation learning, we would find the average performance <span class="emoji" data-emoji="thumbsdown">👎</span></span><br />
-<span class="fragment"><span class="math inline">\(\circ\)</span> with offline RL, we hope to extract a policy mimicking the best driver’s performance <span class="emoji" data-emoji="thumbsup">👍</span></span></li>
+<span class="fragment"><span class="math inline">\(\circ\)</span> with offline RL, we hope to extract a policy mimicking the best driver’s performance <em>in each situation</em> <span class="emoji" data-emoji="thumbsup">👍</span></span></li>
 <li class="fragment"><strong>Generalization</strong>: good behavior in one place may suggest good behavior in another place.<br />
 <span class="fragment"><strong>Driving example</strong>: we improve upon the best driver by generalizing to unseen situations.</span></li>
 <li class="fragment"><strong>“Stitching”</strong>: parts of good behaviors can be recombined.</li>
@@ -9506,7 +9506,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Is this good or bad?</li>
-<li class="fragment">How can we know we have never seen it?</li>
+<li class="fragment">How can we know if we have never seen it?</li>
 </ul>
 </div>
 <p><span class="footer">Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcourse/">CS285 lecture</a>.</span></p>
@@ -12020,6 +12020,11 @@ Adversarial example <span class="citation">(<a href="#ref-Goodfellow2015adversar
 </ol>
 <div class="fragment">
 <ol start="2" style="list-style-type: decimal">
+<li><strong>Implicit <span class="math inline">\(Q\)</span>-learning</strong>: Implicitly define constraints to avoid behavior policy <span class="math inline">\(\pi_\beta\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" style="list-style-type: decimal">
 <li><strong>Value-regularization &amp; pessimism</strong>: Go anywhere, but assume what you haven’t seen is dangerous <span class="math inline">\(\Rightarrow\)</span> avoid overestimation.</li>
 </ol>
 <div class="media">
@@ -12030,11 +12035,6 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 </figcaption>
 </figure>
 </div>
-</div>
-<div class="fragment">
-<ol start="3" style="list-style-type: decimal">
-<li><strong>Implicit <span class="math inline">\(Q\)</span>-learning</strong>: Avoid out-of-distribution actions in updates.</li>
-</ol>
 </div>
 <p><br />
 </p>
@@ -12088,7 +12088,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="fragment">
 <div id="ac-bc-methods" class="definition">
 <h3>AC + BC methods</h3>
-<p>Methods of the type <span class="math inline">\(\eqref{eq:OFF_ACBC}\)</span> are often termed “AC+BC”:<br />
+<p>Methods of the type <span class="math inline">\(\eqref{eq:OFF_ACBC}\)</span> are often termed “AC + BC”:<br />
 <em>actor-critic plus <a href="https://en.wikipedia.org/wiki/Imitation_learning#Behavior_Cloning">behavior cloning</a>,</em><br />
 as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typical in BC methods. Popular examples:<br />
 <span class="math inline">\(\bullet\)</span> TD3 + BC, <span class="math inline">\(\quad\bullet\)</span> DDPG + BC,<br />
@@ -13160,8 +13160,8 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 <li class="fragment">This can be seen as a unification of many methods.</li>
 <li class="fragment">The constraint can be enforced in two different ways
 <ul class="incremental">
-<li class="fragment">In the policy approximation (<em>Policy Regularization</em>)</li>
-<li class="fragment">In the value or <span class="math inline">\(Q\)</span> function approximation (<em>Value Regularization</em>)</li>
+<li class="fragment">In the policy approximation (<em>policy regularization</em>)</li>
+<li class="fragment">In the value or <span class="math inline">\(Q\)</span> function approximation (<em>value regularization</em>, coming up next)</li>
 </ul></li>
 <li class="fragment">The constraint is defined as a general distance metric.
 <ul class="incremental">
@@ -13171,6 +13171,157 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 </ul>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="value-regularization-pessimism" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Value-regularization &amp; pessimism</h1>
+</div>
+</div>
+</section>
+<section id="conservative-q-learning" class="slide level1" menu-title="Conservative Q-learning">
+<div class="decker">
+<div class="alignment">
+<h1>Conservative <span class="math inline">\(Q\)</span>-learning</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We have seen that overestimation of <span class="math inline">\(Q\)</span>-values outside the offline dataset <span class="math inline">\(\Dc\)</span> is the main source of failure for offline RL.</li>
+<li class="fragment"><em>Policy constraint methods</em> (previously): Penalize deviations of the policy from the behavior policy <span class="math inline">\(\pi_\beta\)</span>.</li>
+<li class="fragment">Alternative: Penalize the <span class="math inline">\(Q\)</span>-function outside <span class="math inline">\(\Dc\)</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <strong>value regularization</strong>!</span></li>
+<li class="fragment">This is what <strong>conservative <span class="math inline">\(Q\)</span>-learning</strong> (CQL, <span class="citation">(<a href="#ref-Kumar2020conservativeqlearning">Kumar et al. 2020</a>)</span>) does:<br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> introduce a lower bound (a pessimistic approximation) of the actual <span class="math inline">\(Q\)</span>-function.</span></li>
+<li class="fragment">We can then simply use the pessimistic <span class="math inline">\(Q\)</span>-function in <span class="math inline">\(Q\)</span>-learning or Actor-Critic methods.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
+<div class="media">
+<figure class="image" style="height:auto;width:700px;">
+<img src="images/16-offline-RL/CQL-conservative.png" style="height:auto;width:100%;" aria-label="Source: Berkley AI Research (BAIR) blog." alt="images/16-offline-RL/CQL-conservative.png" />
+<figcaption>
+Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI Research (BAIR) blog</a>.
+</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<div class="media">
+<figure class="image" style="height:auto;width:300px;">
+<img src="images/16-offline-RL/CQL-Qlearning.svg" style="height:auto;width:100%;" alt="images/16-offline-RL/CQL-Qlearning.svg" />
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<h3 id="question-how-can-we-achieve-this">Question: How can we achieve this?</h3>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-idea-behind-cql" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>The idea behind CQL</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">How do we reduce the <span class="math inline">\(Q\)</span>-function estimate outside our dataset?
+<ul class="incremental">
+<li class="fragment">Just reduce <span class="math inline">\(Q\)</span> <em>everywhere</em>…</li>
+<li class="fragment">then increase it again in the <em>region supported by the dataset</em>!</li>
+</ul></li>
+<li class="fragment">The <span class="math inline">\(Q\)</span>-learning step with TD(<span class="math inline">\(0\)</span>): <span class="footer fragment"><span class="emoji" data-emoji="bulb">💡</span> We here use an on-policy estimator, as is used in continuous control algorithms such as SAC. A <span class="math inline">\(Q\)</span>-learning version were we maximize over actions in the target <span class="math inline">\(y\)</span> is equally possible <span class="citation">(<a href="#ref-Kumar2020conservativeqlearning">Kumar et al. 2020</a>)</span>.</span> <span class="math display">\[\theta \gets \arg\min_\theta \frac{1}{2}\E_{s,a,r,s&#39;\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a&#39;\sim\pi_\phi\agivenb{\cdot}{s&#39;}}}_{y} - Q_\theta(s,a)\Big)^2\Big].\]</span></li>
+<li class="fragment">Extend target <span class="math inline">\(y\)</span> by a conservative penalty term: <span class="math display">\[ \hat{y} = y + \alpha \Expsub{\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}}{s\sim\Dc}. \]</span>
+<ul class="incremental">
+<li class="fragment">We need to find a policy <span class="math inline">\(\mu\)</span> that maximally reduces the estimate of <span class="math inline">\(Q_\theta\)</span>.</li>
+<li class="fragment">Resulting <span class="math inline">\(Q\)</span>-function lower-bounds the true <span class="math inline">\(Q\)</span>-function point-wise.</li>
+</ul></li>
+<li class="fragment">This raises two issues:
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">We don’t want a reduction on the parts supported by <span class="math inline">\(\Dc\)</span>.</li>
+<li class="fragment">Computation of <span class="math inline">\(\mu\)</span> is an expensive optimization problem in itself!</li>
+</ol></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="the-cqlh-framework-kumar2020conservativeqlearning" class="definition">
+<h3>The CQL(<span class="math inline">\(H\)</span>) framework <span class="citation">(<a href="#ref-Kumar2020conservativeqlearning">Kumar et al. 2020</a>)</span></h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Reduce <span class="math inline">\(Q\)</span> everywhere, boost it on the dataset: <span class="math display">\[ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&amp;\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}\\
+&amp;- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} \]</span></li>
+<li class="fragment">Add KL-divergence regularizer to <span class="math inline">\(\Rightarrow\)</span> closed-form solution (similar to SAC): <span class="math display">\[ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&amp;\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}}\\
+&amp;- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} \]</span> <!-- $$\hat{y} = y +  \alpha \cdot \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s, a)}{a \sim \mathcal{D}}}{s \sim \mathcal{D}}.$$ --></li>
+<li class="fragment">Lower bound on expected value: <span class="math display">\[ \Expsub{Q_\theta(s,a)}{a \sim \pi} \le V^\pi(s).\]</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="algorithmic-implementation-of-cqlh" class="slide level1" menu-title="Algorithmic implementation of CQL(H)">
+<div class="decker">
+<div class="alignment">
+<h1>Algorithmic implementation of CQL(<span class="math inline">\(H\)</span>)</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Penalty term on our <span class="math inline">\(Q\)</span>-function approximation: <span class="math display">\[ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. \]</span></li>
+<li class="fragment">Challenge: Monte Carlo sampling of the integral over <span class="math inline">\(\Ac\)</span>!</li>
+<li class="fragment">Uniform sampling will likely miss the large-<span class="math inline">\(Q\)</span> sections <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> We need a suitable approximation from data.</span></li>
+<li class="fragment">Proposal in <span class="citation">(<a href="#ref-Kumar2020conservativeqlearning">Kumar et al. 2020</a>)</span>: A mixture of three sets
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment"><strong>Uniform actions (<span class="math inline">\(a \sim U(\Ac)\)</span>)</strong>: ensures exploratino of the entire action space; reduces overestimation peaks in distant regions of the action space.</li>
+<li class="fragment"><strong>Current policy actions (<span class="math inline">\(a \sim \pi_\phi\agivenb{\cdot}{s}\)</span>)</strong>: exploits the highest peaks in the current <span class="math inline">\(Q\)</span>-function <span class="math inline">\(\Rightarrow\)</span> directly targets overestimations <span class="math inline">\(\pi_\phi\)</span> is trying to exploit.</li>
+<li class="fragment"><strong>Next-state policy actions (<span class="math inline">\(a \sim \pi_\phi\agivenb{\cdot}{s&#39;}\)</span>)</strong>: In the Bellman equation, the target value is calculated using the policy’s action at the next state (<span class="math inline">\(a&#39; \sim \pi(s&#39;)\)</span>). If <span class="math inline">\(Q(s&#39;, a&#39;)\)</span> is overestimated, that error propagates back to <span class="math inline">\(Q(s, a)\)</span> via the TD update.</li>
+</ol></li>
+<li class="fragment">We would have to perform importance sampling to go from <span class="math inline">\(\int \exp(Q_\theta(s, a)) \dint{a} \approx \frac{1}{N} \sum_{i=1}^N \exp(Q_\theta(s, a_i))\)</span> to this sum of three terms. <span class="fragment">However, we ignore this in practice:</span> <span class="math-incremental"><span class="math display">\[ \begin{align*} I(s) &amp;= \log\cbracket{\frac{1}{3}\cbracket{\Expsub{\exp{Q_\theta(s, a)}}{a \sim U(\Ac)} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s}} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s&#39;}}}}, \\
+\hat{y} &amp;= y + \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s,s&#39;\sim\Dc}. \end{align*} \]</span></span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-complex-gripping-tasks" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Example: Complex gripping tasks</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p><span class="media"><span class="figure iframe print" style="width:1200px;height:auto;"><iframe title="Source: Berkley AI Research (BAIR) blog." aria-label="Source: Berkley AI Research (BAIR) blog." style="width:100%;height:550px;" allow="fullscreen" data-src="https://bair.berkeley.edu/blog/2020/12/07/offline/"></iframe><span class="figcaption"><span>Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI Research (BAIR) blog</a>.</span></span></span></span> <!-- ![Source: [Berkley AI Research (BAIR) blog](https://bair.berkeley.edu/blog/2020/12/07/offline/).](websites/BAIR_OfflineRL.html){ width=1200px height=550px .print .iframe } --></p>
 </div>
 </div>
 </div>
@@ -13211,97 +13362,67 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 <div class="small">
 
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="value-regularization-pessimism" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Value-regularization &amp; pessimism</h1>
-</div>
-</div>
-</section>
-<section id="conservative-q-learning" class="slide level1" menu-title="Conservative Q-learning">
-<div class="decker">
-<div class="alignment">
-<h1>Conservative <span class="math inline">\(Q\)</span>-learning</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="small">
+<!-- ------------------------------------------------------------------------------
 
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="model-based-offline-rl" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Model-based offline RL</h1>
-</div>
-</div>
-</section>
-<section id="learning-a-model-then-rl" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Learning a model, then RL</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="small">
+# Model-based offline RL
 
-</div>
+------------------------------------------------------------------------------
+
+# Learning a model, then RL
+
+::: small
+
+::: -->
+<!-- ------------------------------------------------------------------------------
+
+# Offline-to-online RL
+
+------------------------------------------------------------------------------
+
+# A straightforward engineering approach
+
+::: small
+[@Ball2023offlineRL]
+::: -->
+<!-- ------------------------------------------------------------------------------
+
+# Benchmarking
+
+------------------------------------------------------------------------------
+
+# The D4RL benchmark
+
+::: small
+[https://sites.google.com/view/d4rl-anonymous/](https://sites.google.com/view/d4rl-anonymous/).
+::: -->
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="offline-to-online-rl" class="slide level1">
+<section id="summary-what-we-have-learned" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Offline-to-online RL</h1>
-</div>
-</div>
-</section>
-<section id="a-straightforward-engineering-approach" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>A straightforward engineering approach</h1>
+<h1>Summary / what we have learned</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
 <div class="small">
-<p><span class="citation">(<a href="#ref-Ball2023offlineRL">Ball et al. 2023</a>)</span></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="benchmarking" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>Benchmarking</h1>
-</div>
-</div>
-</section>
-<section id="the-d4rl-benchmark" class="slide level1">
-<div class="decker">
-<div class="alignment">
-<h1>The D4RL benchmark</h1>
-<div class="layout">
-<div class="area">
-<div class="box block">
-<div class="small">
-<p><a href="https://sites.google.com/view/d4rl-anonymous/">https://sites.google.com/view/d4rl-anonymous/</a>.</p>
+<ul>
+<li>Offline RL: Learn policies from a fixed, unchangeable dataset <span class="math inline">\(\Dc\)</span></li>
+<li>Main challenges:
+<ul>
+<li>Distribution shift between learned policy <span class="math inline">\(\pi\)</span> and dataset policy <span class="math inline">\(\pi_\beta\)</span></li>
+<li>Overestimation of <span class="math inline">\(Q\)</span> outisde the dataset <span class="math inline">\(\Dc\)</span></li>
+</ul></li>
+<li>Approaches to address this:
+<ul>
+<li>Constrain the policy <span class="math inline">\(\Rightarrow\)</span> Explicit policy constraint methods (e.g., AC + BC)</li>
+<li>Pessimistically modify the <span class="math inline">\(Q\)</span>-function outside <span class="math inline">\(\Dc\)</span> <span class="math inline">\(\Rightarrow\)</span> Conservative <span class="math inline">\(Q\)</span>-learning</li>
+<li>Avoid out-of-distribution actions altogether <span class="math inline">\(\Rightarrow\)</span> Implicit <span class="math inline">\(Q\)</span>-learning</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>
@@ -13317,9 +13438,6 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 <div class="area">
 <div class="box block">
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Ball2023offlineRL" class="csl-entry">
-Ball, Philip J., Laura Smith, Ilya Kostrikov, and Sergey Levine. 2023. <span>“Efficient Online Reinforcement Learning with Offline Data.”</span> In <em>Proceedings of the 40th International Conference on Machine Learning</em>, edited by Andreas Krause, Emma Brunskill, Kyunghyun Cho, Barbara Engelhardt, Sivan Sabato, and Jonathan Scarlett, 202:1577–94. Proceedings of Machine Learning Research. PMLR.
-</div>
 <div id="ref-Goodfellow2015adversarial" class="csl-entry">
 Goodfellow, Ian J., Jonathon Shlens, and Christian Szegedy. 2015. <span>“Explaining and Harnessing Adversarial Examples.”</span> In <em>International Conference on Learning Representations (<span>ICLR</span>)</em>.
 </div>
@@ -13331,6 +13449,9 @@ Kingma, Diederik P, and Max Welling. 2013. <span>“Auto-Encoding Variational <s
 </div>
 <div id="ref-Kumar2019stabilizing" class="csl-entry">
 Kumar, Aviral, Justin Fu, Matthew Soh, George Tucker, and Sergey Levine. 2019. <span>“Stabilizing Off-Policy <span>Q</span>-Learning via Bootstrapping Error Reduction.”</span> <em>Advances in Neural Information Processing Systems</em> 32.
+</div>
+<div id="ref-Kumar2020conservativeqlearning" class="csl-entry">
+Kumar, Aviral, Aurick Zhou, George Tucker, and Sergey Levine. 2020. <span>“Conservative <span>Q</span>-Learning for Offline Reinforcement Learning.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by H. Larochelle, M. Ranzato, R. Hadsell, M. F. Balcan, and H. Lin, 33:1179–91. Curran Associates, Inc.
 </div>
 <div id="ref-Levine2020offlinerltutorial" class="csl-entry">
 Levine, Sergey, Aviral Kumar, George Tucker, and Justin Fu. 2020. <span>“Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems.”</span> <em>arXiv:2005.01643</em>.
