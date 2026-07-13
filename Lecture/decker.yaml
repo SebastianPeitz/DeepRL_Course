@@ -102,6 +102,7 @@ math:
     Sc: '{\mathcal{S}}'
     Oc: '{\mathcal{O}}'
     Qc: '{\mathcal{Q}}'
+    Rc: '{\mathcal{R}}'
     Xc: '{\mathcal{X}}'
     Yc: '{\mathcal{Y}}'
     nablaa: '{\nabla_{\mkern-6mu a\mkern+2mu}}'

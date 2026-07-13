@@ -544,13 +544,14 @@ The following strategies (or classes of approaches) are the most common ones tod
 $$ \KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}}\leq \epsilon. $$
 
 ::: fragment
-2. **Implicit $Q$-learning**: Implicitly define constraints to avoid behavior policy $\pi_\beta$. 
-:::
-
-::: fragment
-3. **Value-regularization \& pessimism**: Go anywhere, but assume what you haven't seen is dangerous $\Rightarrow$ avoid overestimation.
+2. **Value-regularization \& pessimism**: Go anywhere, but assume what you haven't seen is dangerous $\Rightarrow$ avoid overestimation.
 
 ![Inspired by [@Levine2020offlinerltutorial].](images/16-offline-RL/argmax-distribution.svg){width=400px}
+:::
+
+
+::: fragment 
+3. **Implicit $Q$-learning**: Implicitly define constraints to avoid leaving the support of the behavior policy $\pi_\beta$. 
 :::
 \
 
@@ -837,15 +838,15 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 # The idea behind CQL
 
 ::: small
-::: columns-5-5
+::: columns-7-5
 ::: incremental
 - How do we reduce the $Q$-function estimate outside our dataset?
   - Just reduce $Q$ *everywhere*...
   - then increase it again in the *region supported by the dataset*!
 - The $Q$-learning step with TD($0$): [:bulb: We here use an on-policy estimator, as is used in continuous control algorithms such as SAC. A $Q$-learning version were we maximize over actions in the target $y$ is equally possible [@Kumar2020conservativeqlearning].]{.footer .fragment}
-$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{s,a,r,s'\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a'\sim\pi_\phi\agivenb{\cdot}{s'}}}_{y} - Q_\theta(s,a)\Big)^2\Big].$$
-- Extend target $y$ by a conservative penalty term:
-$$ \hat{y} = y + \alpha \Expsub{\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}}{s\sim\Dc}. $$
+$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a'\sim\pi_\phi\agivenb{\cdot}{s'}}}_{y} - Q_\theta(s,a)\Big)^2\Big].$$
+- Add a conservative penalty term:
+$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \underbrace{\max_\mu \Expsub{Q_\theta(s,a)}{s\sim\Dc,a\sim\mu\agivenb{\cdot}{s}}}_{=\Rc}.$$
   - We need to find a policy $\mu$ that maximally reduces the estimate of $Q_\theta$.
   - Resulting $Q$-function lower-bounds the true $Q$-function point-wise.
 - This raises two issues:
@@ -859,12 +860,10 @@ $$ \hat{y} = y + \alpha \Expsub{\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb
 
 ::: incremental
 - Reduce $Q$ everywhere, boost it on the dataset:
-$$ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&\max_\mu \Expsub{Q_\theta(s,a)}{a\sim\mu\agivenb{\cdot}{s}}\\
-&- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} $$
+$$ \begin{align*} \hat{\Rc} = \Rc - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}. \end{align*} $$
 - Add KL-divergence regularizer to $\Rightarrow$ closed-form solution (similar to SAC):
-$$ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}}\\
+$$ \begin{align*} \hat{\Rc} = \E_{s\sim\Dc} \Big[&\log \cbracket{\int_\Ac \exp(Q_\theta(s, a)) \dint{a}} \\
 &- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} $$
-<!-- $$\hat{y} = y +  \alpha \cdot \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s, a)}{a \sim \mathcal{D}}}{s \sim \mathcal{D}}.$$ -->
 - Lower bound on expected value: $$ \Expsub{Q_\theta(s,a)}{a \sim \pi} \le V^\pi(s).$$
 :::
 
@@ -878,7 +877,8 @@ $$ \begin{align*} \hat{y} = y + \alpha \E_{s\sim\Dc} \Big[&\log \cbracket{\int \
 ::: small
 ::: incremental
 - Penalty term on our $Q$-function approximation:
-$$ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. $$ 
+$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{\log \cbracket{\int_\Ac \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}.$$
+<!-- $$ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a}} - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. $$  -->
 - Challenge: Monte Carlo sampling of the integral over $\Ac$!
 - Uniform sampling will likely miss the large-$Q$ sections [$\Rightarrow$ We need a suitable approximation from data.]{.fragment}
 - Proposal in [@Kumar2020conservativeqlearning]: A mixture of three sets
@@ -887,7 +887,7 @@ $$ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a
   3. **Next-state policy actions ($a \sim \pi_\phi\agivenb{\cdot}{s'}$)**: In the Bellman equation, the target value is calculated using the policy's action at the next state ($a' \sim \pi(s')$). If $Q(s', a')$ is overestimated, that error propagates back to $Q(s, a)$ via the TD update.
 - We would have to perform importance sampling to go from $\int \exp(Q_\theta(s, a)) \dint{a} \approx \frac{1}{N} \sum_{i=1}^N \exp(Q_\theta(s, a_i))$ to this sum of three terms. [However, we ignore this in practice:]{.fragment}
 [$$ \begin{align*} I(s) &= \log\cbracket{\frac{1}{3}\cbracket{\Expsub{\exp{Q_\theta(s, a)}}{a \sim U(\Ac)} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s}} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s'}}}}, \\
-\hat{y} &= y + \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s,s'\sim\Dc}. \end{align*} $$]{.math-incremental} 
+\theta &\gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. \end{align*} $$]{.math-incremental} 
 :::
 :::
 
@@ -906,17 +906,271 @@ $$ \hat{y} = y + \alpha \Expsub{\log \cbracket{\int \exp(Q_\theta(s, a)) \dint{a
 
 ------------------------------------------------------------------------------
 
+# What we have seen until now (and why we need something better)
+
+::: small
+::: columns-5-5
+
+::: platzhalter
+::: definition
+## Explicit Policy Constraints (e.g., BEAR [@Kumar2019stabilizing] or BRAC [@Wu2019brac])
+
+::: incremental
+- Restrict the learned policy $\pi\agivenb{a}{s}$ to stay close to the behavior policy $\pi_\beta\agivenb{a}{s}$ that collected the dataset. 
+- Typically using a distance metric like KL-Divergence.  
+:::
+
+::: fragment
+**Drawbacks**: 
+:::
+
+::: incremental
+- Requires explicit modeling of the behavior policy $\pi_\beta$. 
+- If $\Dc$ comes from human demonstrators or multiple mixed policies, $\pi_\beta$ is highly complex and multimodal. 
+- Accurately fitting it is very difficult, and any error in $\pi_\beta$ propagates into the learned policy. 
+:::
+:::
+:::
+
+::: fragment
+::: definition
+### Conservative Q-Learning (CQL, e.g., [@Kumar2020conservativeqlearning])
+
+::: incremental
+- Instead of constraining the policy, CQL modifies the objective to learn a conservative lower-bound $Q$-function.
+- Penalty on the $Q$-values of out-of-distribution actions.
+:::
+
+::: fragment
+**Drawbacks:**
+:::
+
+::: incremental
+- CQL requires sampling OOD actions during training to penalize them, which makes it computationally heavy. 
+- Can be excessively conservative, reducing performance on tasks that require stitching together different good sub-trajectories. 
+- Very sensitive to hyperparameter tuning.  
+:::
+
+:::
+:::
+
+:::
+:::
+
+# The motivating question behind implicit $Q$-learning {menu-title="The motivating question behind implicit Q-learning"}
+
+::: small
+## What if we never evaluate an out-of-distribution action during training at all? 
+
+[Instead of constraining the policy explicitly or penalizing unseen actions, IQL constrains the optimization implicitly by querying the $Q$-function only on state-action pairs that actually exist in the dataset.]{.fragment}
+
+[**Benefits of IQL** [@Kostrikov2021implicitqlearning]:]{.fragment}
+
+::: incremental
+- **No OOD action evaluation**: Avoids the maximization bias because the $Q$-function is never evaluated on unseen actions.
+- **No behavior policy estimation**: No need to learn or approximate $\pi_\beta$, eliminating the main source of compounding errors.
+- **Sub-trajectory stitching**: Enables the agent to take the best parts of different suboptimal trajectories and combine them into an optimal path.
+- **Computational efficiency**: Because it only uses in-sample data, training is significantly faster and more stable than CQL.
+:::
+:::
+
+
 
 # Advantage-weighted regression
 
 ::: small
-[@Peng2019advantageweightedregression]
+### Let's consider the chess example 
+
+::: columns-7-3
+
+::: platzhalter
+::: incremental
+- Imagine we are trying to learn how to play chess purely by watching a large database of past games. 
+  - Some games were played by grandmasters, some by mediocre players or even beginners. 
+  - If we copy every move equally (standard *Behavior Cloning (BC)*), we will become a mediocre player because we are copying the mistakes of the beginners just as much as the great moves of the masters.
+- Ideally, we want to copy the actions that led to *better-than-expected* outcomes and ignore (or suppress) the actions that led to poor outcomes.
+:::
+::: fragment
+### Advanted-weighted regression (AWR, [@Peng2019advantageweightedregression]): 
+
+::: incremental
+- Imitation learning on the dataset.
+- State-action pairs are weighted by an exponential function of the "advantage" (i.e., how much better the action was compared to the average action from that state).
+- Can be seen as weighted BC.  
+:::
+:::
+:::
+
+![Chess board [[Source](https://commons.wikimedia.org/wiki/File:Through_the_Looking-Glass_chess_game.gif)]](images/00-introduction/chess.gif){ height=300px }
+
+:::
+:::
+
+# Mathematical derivation of AWR
+
+::: small
+### Remember trust region policy optmization (TRPO)?
+
+::: incremental
+- Optimize the policy, but don't let it move too far away from the current one!
+- The main reason (besides avoiding large update steps): mathematical approximation.
+  - We needed to take the expectation of our objective function w.r.t. the "wrong" distribution to make it work.
+  - Instead of sampling from the new policy that we're optimizing, we took the expectation w.r.t. the old policy.
+  - Only if these are not too far apart, were we allowed to do this (and capable of deriving a bound for the error).
+:::
+
+::: fragment
+### The starting point of AWR
+:::
+
+::: incremental
+- Maximize the expected advantage $\eta(\pi)$ of our policy $\pi$ over the baseline policy $\pi_\beta$:
+$$ \eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^\pi, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\rho^\pi, a\sim\pias}, $$
+  - where $g\sum_{t=0}^\infty \gamma^t r_t$ is the return from a trajectory following $\pi$,
+  - and the value $V^{\pi_\beta}(s)$ is the same return, only following the behavior policy $\pi_\beta$.
+- We cannot sample from the state distribution $\rho^\pi$ $\Rightarrow$ sample from the dataset $\Dc$ and optimize a *surrogate objective* $\hat\eta(\pi)$:
+$$ \hat\eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^{\pi_\beta}, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\textcolor{red}{\Dc}, a\sim\pias}.$$ 
+- Similar to TRPO:
+$$\begin{equation} \pi^* = \arg\max_\pi \hat\eta(\pi) \qquad \text{s.t.}\qquad \KLdivavg{\pi}{\pi_\beta} \leq \epsilon. \label{eq:OFF_expected_advantage} \end{equation}$$
+:::
+
+:::
+
+# Solution to the AWR problem
+
+::: small
+::: columns-7-4
+
+::: incremental
+- Method of Lagrange multipliers $\Rightarrow$ closed-form analytical solution of \eqref{eq:OFF_expected_advantage}:
+$$\pi^*\agivenb{a}{s} \propto \pi_\beta\agivenb{a}{s} \exp\left( \frac{1}{\alpha} A^{\pi_\beta}(s, a) \right),$$
+with temperature hyperparameter $\alpha$.
+  - If $A > 0$: $\exp(\frac{1}{\alpha}A) > 1$ $\Rightarrow$ The probability of picking this action increases relative to the dataset.
+  - If $A < 0$: $\exp(\frac{1}{\alpha}A) < 1$ $\Rightarrow$ The probability of picking this action decreases. 
+- To find a neural network policy $\pi_\phi\agivenb{a}{s}$, we approximate this optimal target policy by minimizing their KL divergence: $\min_\phi \KLdivavg{\pi^*}{\pi_\phi}$.
+- Insert the analytical solution $\Rightarrow$ $\pi_\beta\agivenb{a}{s}$ cancels out\
+[$\Rightarrow$ weighted maximum likelihood loss:
+$$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\beta} \right) \log \pi_\phi\agivenb{a}{s}}{(s, a) \sim \Dc}. \label{eq:OFF_awr_policy} \end{equation}$$]{.fragment}
+- To compute the weight $\exp(\frac{1}{\alpha} A^{\pi_\beta}(s, a))$, we need the advantage. 
+  - Train a standard baseline value function $V_\theta(s)$ via MSE on the dataset $\Dc$:
+  $$\begin{equation} L_V(\theta) = \Expsub{(g - V_\theta(s))^2}{s\sim\Dc}. \label{eq:OFF_awr_value} \end{equation}$$
+:::
+
+::: fragment
+::: definition
+### The AWR algorithm
+
+::: incremental
+1. Fit value function approximation $V_\theta(s)$ to the data set $\Dc$: $$ \min_\theta L_\mathsf{value}(\theta). $$
+2. Optimize policy by approximating the analytically optimal policy: $$ \max_\phi L_\mathsf{policy}(\phi).$$ 
+:::
+:::
+
+[$\pluspoint$ [Simple to implement.]{style="color: green;"}]{.fragment}
+
+[$\minuspoint$ [Single-step policy improvement.]{style="color: red;"}]{.fragment}
+
+[$\minuspoint$ [Because AWR relies on static dataset returns $g$ rather than propagating future values via Bellman backups ($Q(s,a) = r + \gamma \max V(s')$), it cannot stitch trajectories.]{style="color: red;"}]{.fragment}
+:::
+:::
+
 :::
 
 # Implicit $Q$-learning (IQL)
 
 ::: small
+### Limitations of AWR
 
+::: incremental
+- It requires entire trajectories to compute Monte Carlo estimates of the value. 
+- It computes the *average*/*expected* value via the Monte Carlo approximation.
+- As AWR relies on learning entire trajectory returns, it can only replicate the best full trajectories already present in the data.
+:::
+
+::: fragment
+### Proposed changes in implicit $Q$-learning (IQL [@Kostrikov2021implicitqlearning])
+::: 
+
+::: incremental
+1. Use TD-learning instead of Monte Carlo sampling, i.e.,
+[$$\begin{align*}  
+L_\mathsf{TD}(\theta) &= \Expsub{r + \gamma Q_\bar{\theta}(s',a') - Q_\theta(s,a)}{(s,a,r,s',a')\sim\Dc} \qquad &&\text{(SARSA)} \\
+\text{or}\qquad L_\mathsf{TD}(\theta) &= \Expsub{r + \gamma \max_{\hat{a}\in\Ac} Q_\bar{\theta}(s',\hat{a}) - Q_\theta(s,a)}{(s,a,r,s')\sim\Dc}. \qquad &&\text{($Q$-learning)} 
+\end{align*}$$]{.math-incremental}
+1. Do not estimate the mean, but the best possible $Q$-function supported by the data:
+$$ L_\mathsf{TD}(\theta) = \E_{(s,a,r,s')\sim\Dc} \Big[r + \gamma \max_{\hat{a}\in\Ac \\ \text{s.t.}~\pi_\beta\agivenb{\hat{a}}{s'}>0 } Q_\bar{\theta}(s',\hat{a}) - Q_\theta(s,a)\Big].$$
+:::
+
+[**Approach**: Expectile regression plus AWR!]{.fragment}
+
+:::
+
+# Expectile regression loss
+
+::: small
+::: incremental
+- In statistical learning, it can be beneficial to perform *asymmetrical regression*.
+- That is, we weight positive devaitions differently from negative deviations:
+$$ L^\tau_2(u) = \abs{\tau - \mathbb{1}(u<0)}x^2 = \begin{cases} (1-\tau) u^2 & \text{if }u > 0 \\ \tau u^2 & \text{if }u \leq 0  \end{cases}. $$ 
+:::
+
+::: fragment
+![Source: [@Kostrikov2021implicitqlearning].](images/16-offline-RL/Expectile.svg){width=800px .embed} 
+:::
+:::
+
+# The IQL algorithm
+
+::: small
+::: columns-7-3
+
+::: platzhalter
+::: definition
+### Implicit $Q$-learning (IQL [@Kostrikov2021implicitqlearning])
+
+Given: A dataset $\Dc$
+
+::: incremental
+- Estimate the value function by MSE optimization similar to \eqref{eq:OFF_awr_value}, but using the **expectile loss** and a target $Q$ network $Q_\bar{\theta}$: 
+$$\begin{equation} L_V(\psi) = \Expsub{L^\tau_2(Q_\bar{\theta}(s,a) - V_\psi(s))}{(s,a)\sim\Dc}. \label{eq:OFF_iql_value} \end{equation}$$
+- Train a $Q$-network using the value network and TD learning: 
+$$\begin{equation} L_Q(\theta) = \Expsub{r + \gamma V_\psi(s') - Q_\theta(s,a)}{(s,a,r,s')\sim\Dc}. \label{eq:OFF_iql_q} \end{equation}$$
+- Train the policy network similar to AWR (Eq. \eqref{eq:OFF_awr_policy}):
+$$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} Q_{\bar{\theta}}(s,a) - V_\psi(s) \right) \log \pi_\phi\agivenb{a}{s}}{(s, a) \sim \Dc}. \label{eq:OFF_iql_policy} \end{equation}$$
+:::
+
+[**Note**: If we can get access to new data, the above procedure can be repeated iteratively with incoming data, after updating the *replay buffer* $\Dc$.]{.fragment}
+
+:::
+:::
+
+::: fragment
+![Source: [@Kostrikov2021implicitqlearning{}, Figure 2].](images/16-offline-RL/IQL-example.svg){width=350 .embed}
+:::
+
+:::
+
+:::
+
+[:bulb: In principle, we could also train \eqref{eq:OFF_iql_q} directly, without training a separate value network via \eqref{eq:OFF_iql_value}. But the authors of [@Kostrikov2021implicitqlearning] argue that this can lead to the exploitation of "lucky samples", whereas the value averages out such conincidences.]{.fragment .footer}
+
+# Some results
+
+::: small
+::: columns-5-5
+
+::: platzhalter
+![Averaged normalized scores on MuJoCo locomotion and Ant Maze tasks (Source: [@Kostrikov2021implicitqlearning{}, Table 1]).](images/16-offline-RL/IQL-results-table.png){width=1000px}
+
+
+![Ant maze in various sizes (small, medium, large).](images/16-offline-RL/IQL-AntMaze-domains.png){width=300px}
+:::
+
+::: fragment
+![The influence of the expectile loss (Source: [@Kostrikov2021implicitqlearning{}, Figure 3]).](images/16-offline-RL/IQL-AntMaze-results.png){width=300px}
+:::
+
+:::
 
 :::
 
