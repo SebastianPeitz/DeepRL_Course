@@ -1115,7 +1115,7 @@ $$ L^\tau_2(u) = \abs{\tau - \mathbb{1}(u<0)}x^2 = \begin{cases} (1-\tau) u^2 & 
 :::
 
 ::: fragment
-![Source: [@Kostrikov2021implicitqlearning].](images/16-offline-RL/Expectile.svg){width=800px .embed} 
+![**Left**: The asymmetric squared loss used for expectile regression. τ = 0.5 corresponds to the standard mean squared error loss, while τ = 0.9 gives more weight to positive differences. **Center**: Expectiles of a normal distribution. **Right**: an example of estimating state conditional expectiles of a two-dimensional random variable. Each x corresponds to a distribution over y. We can approximate a maximum of this random variable with expectile regression: τ = 0.5 correspond to the conditional mean statistics of the distribution, while τ ≈ 1 approximates the maximum operator over in-support values of y. (Source: [@Kostrikov2021implicitqlearning{}, Figure 1]).](images/16-offline-RL/Expectile.svg){width=800px .embed} 
 :::
 :::
 
@@ -1145,7 +1145,7 @@ $$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} Q_{\bar{\t
 :::
 
 ::: fragment
-![Source: [@Kostrikov2021implicitqlearning{}, Figure 2].](images/16-offline-RL/IQL-example.svg){width=350 .embed}
+![IQL on a toy umaze environment (a). When the data is heavily corrupted by suboptimal actions, one-step policy evaluation results in a value function that degrades to zero far from the rewarding states too quickly (c). IQL learns a near-optimal value function, combining the best properties of SARSA-style evaluation with the ability to perform multi-step dynamic programming, leading to value functions that are much closer to optimality (shown in (b)) and producing a much better policy (d). (Source: [@Kostrikov2021implicitqlearning{}, Figure 2]).](images/16-offline-RL/IQL-example.svg){width=350 .embed}
 :::
 
 :::

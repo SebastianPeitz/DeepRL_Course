@@ -372,7 +372,7 @@ Consider a simple Markov reward process (MRP; no actions), for which we want to 
 :::
 
 ::: fragment
-![**TD($0$) learning** for the random walk. **Left**: Different numbers of iterations ( α=0.1 ). **Middle**: Learning curves for different values of α. **Right**: Batch training.](images/05-td-learning/Example-RandomWalk-2.svg){ .embed width=1280px }
+![**TD(0) learning** for the random walk. **Left**: Different numbers of iterations ( α=0.1 ). **Middle**: Learning curves for different values of α. **Right**: Batch training.](images/05-td-learning/Example-RandomWalk-2.svg){ .embed width=1280px }
 :::
 :::
 
