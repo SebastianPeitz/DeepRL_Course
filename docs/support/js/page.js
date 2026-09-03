@@ -9,7 +9,7 @@ function initPage() {
 
   observer = new IntersectionObserver(cameIntoView, options);
   let targets = document.querySelectorAll("[data-src]");
-  for (const target of targets) {
+  for (target of targets) {
     observer.observe(target);
   }
 }

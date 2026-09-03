@@ -17,7 +17,7 @@ feedback:
 ::: small
 - Learning policies from datasets
 - Offline reinforcement learning
-  - Distributional shifts
+  - Distribution shifts
   - Overestimation bias
   - Relation to imitation learning
   - Algorithmic evolution of methods
@@ -26,10 +26,10 @@ feedback:
   - RL + BC (behavior cloning)
   - advantage-weighted regression
   - Batch-constrained $Q$-learning
-- Implicit $Q$-learning
 - Conservative $Q$-learning
-- Offline-to-online RL
-- Model-based offline RL
+- Implicit $Q$-learning
+<!-- - Offline-to-online RL
+- Model-based offline RL -->
 :::
 
 # Where are we?
@@ -378,7 +378,7 @@ $$ Q_\theta \gets r + \gamma \E_{s'\sim \psprimesa}\Big[\underbrace{\max_{a'\in\
 
 
 
-# Distributional shifts (1)
+# Distribution shifts (1)
 
 ::: small
 ::: columns-5-1-5
@@ -393,8 +393,8 @@ $$ Q_\theta \gets r + \gamma \E_{s'\sim \psprimesa}\Big[\underbrace{\max_{a'\in\
 **Formally**:
 [$$\begin{align*} 
 \Dc &= \set{(s_i,a_i,s'_i,r_i)}_{i=1}^N \\
-s &\sim \rho_\beta(s) \\
 a &\sim \pi_\beta\agivenb{a}{s} \quad \fragment{ \text{(generally unknown)} } \\
+s &\sim \rho_\beta(s) \\
 s' &\sim \psprimesa
 \end{align*}$$]{.math-incremental}
 :::
@@ -422,7 +422,7 @@ $$\text{RL objective:}\quad \max_\phi \sum_{t=0}^T \Expsub{\gamma^t r_t}{s\sim\r
 
 :::
 
-# Distributional shifts (2)
+# Distribution shifts (2)
 
 ::: small
 ::: columns-6-4
@@ -574,7 +574,7 @@ $$ \KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}}\leq \epsilon. $
 ::: incremental
 - Simplest approach to avoid overestimation: constrain the distance between behavior policy $\pi_\beta$ and the learned policy $\piphi$.
 - Remember the KL divergence?
-$$ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \log\pi_\phi\agivenb{a}{s} }{a\sim\pi_\beta\agivenb{\cdot}{s}}. } $$
+$$ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \textcolor{blue}{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } $$
 - Constraining the distance yields a constrained optimization problem:
 $$\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\agivenb{\cdot}{s}} \qquad\text{s.t.}\qquad \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}\leq \epsilon. \label{eq:OFF_constrained_policy} \end{equation}$$
   - Where have we seen this before? [$\Rightarrow$ Natural policy gradient!]{.fragment}
@@ -585,7 +585,7 @@ $$\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\ag
 ::: incremental
 - Via [Lagrange multipliers](https://en.wikipedia.org/wiki/Lagrange_multiplier): additional term in the actor loss function:
 $$\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}$$
-[$$\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \log\piphi\agivenb{a}{s} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}$$]{.fragment}
+[$$\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \textcolor{blue}{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}$$]{.fragment}
   - To solve \eqref{eq:OFF_constrained_policy}, we need to solve for both $\phi$ **and** the Lagrange multiplier $\lambda$.
   - Alternative: treat $\lambda$ as a hyperparameter.
 :::
@@ -644,8 +644,8 @@ $$\begin{align*}
 - Mode covering: What happens if for some $(s,a)$,\
 [Mode covering:]{style="color: white;"} $\pi_\phi\agivenb{a}{s}=0$ while $\pi_\beta\agivenb{a}{s}>0$?
   - KL divergence :boom: [$\Rightarrow$ Need to cover everything from the dataset!]{.fragment}
-- Mode covering: What happens if for some $(s,a)$,\
-[Mode covering:]{style="color: white;"} $\pi_\beta\agivenb{a}{s}=0$ while $\pi_\phi\agivenb{a}{s}>0$?
+- Mode seeking: What happens if for some $(s,a)$,\
+[Mode seeking:]{style="color: white;"} $\pi_\beta\agivenb{a}{s}=0$ while $\pi_\phi\agivenb{a}{s}>0$?
   - KL divergence :boom: [$\Rightarrow$ Need to ensure $\pi_\phi$ stays within a subset of $\pi_\beta$.]{.fragment}
 :::
 
@@ -846,7 +846,7 @@ In [@Wu2019brac], the authors present the *Behavior Regularized Actor-Critic (BR
 - The $Q$-learning step with TD($0$): [:bulb: We here use an on-policy estimator, as is used in continuous control algorithms such as SAC. A $Q$-learning version were we maximize over actions in the target $y$ is equally possible [@Kumar2020conservativeqlearning].]{.footer .fragment}
 $$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a'\sim\pi_\phi\agivenb{\cdot}{s'}}}_{y} - Q_\theta(s,a)\Big)^2\Big].$$
 - Add a conservative penalty term:
-$$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \underbrace{\max_\mu \Expsub{Q_\theta(s,a)}{s\sim\Dc,a\sim\mu\agivenb{\cdot}{s}}}_{=\Rc}.$$
+$$\theta \gets \arg\min_\theta \Big(\frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \underbrace{\max_\mu \Expsub{Q_\theta(s,a)}{s\sim\Dc,a\sim\mu\agivenb{\cdot}{s}}}_{=\Rc}\Big).$$
   - We need to find a policy $\mu$ that maximally reduces the estimate of $Q_\theta$.
   - Resulting $Q$-function lower-bounds the true $Q$-function point-wise.
 - This raises two issues:
@@ -861,7 +861,7 @@ $$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q
 ::: incremental
 - Reduce $Q$ everywhere, boost it on the dataset:
 $$ \begin{align*} \hat{\Rc} = \Rc - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}. \end{align*} $$
-- Add KL-divergence regularizer to $\Rightarrow$ closed-form solution (similar to SAC):
+- Add KL-divergence regularizer $\Rightarrow$ closed-form solution (similar to SAC):
 $$ \begin{align*} \hat{\Rc} = \E_{s\sim\Dc} \Big[&\log \cbracket{\int_\Ac \exp(Q_\theta(s, a)) \dint{a}} \\
 &- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} $$
 - Lower bound on expected value: $$ \Expsub{Q_\theta(s,a)}{a \sim \pi} \le V^\pi(s).$$
@@ -887,7 +887,7 @@ $$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q
   3. **Next-state policy actions ($a \sim \pi_\phi\agivenb{\cdot}{s'}$)**: In the Bellman equation, the target value is calculated using the policy's action at the next state ($a' \sim \pi(s')$). If $Q(s', a')$ is overestimated, that error propagates back to $Q(s, a)$ via the TD update.
 - We would have to perform importance sampling to go from $\int \exp(Q_\theta(s, a)) \dint{a} \approx \frac{1}{N} \sum_{i=1}^N \exp(Q_\theta(s, a_i))$ to this sum of three terms. [However, we ignore this in practice:]{.fragment}
 [$$ \begin{align*} I(s) &= \log\cbracket{\frac{1}{3}\cbracket{\Expsub{\exp{Q_\theta(s, a)}}{a \sim U(\Ac)} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s}} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s'}}}}, \\
-\theta &\gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. \end{align*} $$]{.math-incremental} 
+\theta &\gets \arg\min_\theta \Big(\frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}\Big). \end{align*} $$]{.math-incremental} 
 :::
 :::
 
@@ -962,7 +962,7 @@ $$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q
 ::: small
 ## What if we never evaluate an out-of-distribution action during training at all? 
 
-[Instead of constraining the policy explicitly or penalizing unseen actions, IQL constrains the optimization implicitly by querying the $Q$-function only on state-action pairs that actually exist in the dataset.]{.fragment}
+[Instead of constraining the policy explicitly or penalizing unseen actions, IQL constrains the optimization implicitly by evaluating the $Q$-function only on state-action pairs $(s,a)$ that actually exist in the dataset.]{.fragment}
 
 [**Benefits of IQL** [@Kostrikov2021implicitqlearning]:]{.fragment}
 
@@ -996,7 +996,7 @@ $$\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s')\sim\Dc} \Big[\Big(y - Q
 ::: incremental
 - Imitation learning on the dataset.
 - State-action pairs are weighted by an exponential function of the "advantage" (i.e., how much better the action was compared to the average action from that state).
-- Can be seen as weighted BC.  
+- Can be seen as *weighted behavior cloning* (*BC*).
 :::
 :::
 :::
@@ -1042,14 +1042,14 @@ $$\begin{equation} \pi^* = \arg\max_\pi \hat\eta(\pi) \qquad \text{s.t.}\qquad \
 ::: columns-7-4
 
 ::: incremental
-- Method of Lagrange multipliers $\Rightarrow$ closed-form analytical solution of \eqref{eq:OFF_expected_advantage}:
+- Method of [Lagrange multipliers](https://en.wikipedia.org/wiki/Lagrange_multiplier) $\Rightarrow$ closed-form analytical solution of \eqref{eq:OFF_expected_advantage}:
 $$\pi^*\agivenb{a}{s} \propto \pi_\beta\agivenb{a}{s} \exp\left( \frac{1}{\alpha} A^{\pi_\beta}(s, a) \right),$$
 with temperature hyperparameter $\alpha$.
   - If $A > 0$: $\exp(\frac{1}{\alpha}A) > 1$ $\Rightarrow$ The probability of picking this action increases relative to the dataset.
   - If $A < 0$: $\exp(\frac{1}{\alpha}A) < 1$ $\Rightarrow$ The probability of picking this action decreases. 
 - To find a neural network policy $\pi_\phi\agivenb{a}{s}$, we approximate this optimal target policy by minimizing their KL divergence: $\min_\phi \KLdivavg{\pi^*}{\pi_\phi}$.
 - Insert the analytical solution $\Rightarrow$ $\pi_\beta\agivenb{a}{s}$ cancels out\
-[$\Rightarrow$ weighted maximum likelihood loss:
+[$\Rightarrow$ **weighted maximum likelihood loss**:
 $$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\beta} \right) \log \pi_\phi\agivenb{a}{s}}{(s, a) \sim \Dc}. \label{eq:OFF_awr_policy} \end{equation}$$]{.fragment}
 - To compute the weight $\exp(\frac{1}{\alpha} A^{\pi_\beta}(s, a))$, we need the advantage. 
   - Train a standard baseline value function $V_\theta(s)$ via MSE on the dataset $\Dc$:
@@ -1061,8 +1061,8 @@ $$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\be
 ### The AWR algorithm
 
 ::: incremental
-1. Fit value function approximation $V_\theta(s)$ to the data set $\Dc$: $$ \min_\theta L_\mathsf{value}(\theta). $$
-2. Optimize policy by approximating the analytically optimal policy: $$ \max_\phi L_\mathsf{policy}(\phi).$$ 
+1. Fit value function approximation $V_\theta(s)$ to the data set $\Dc$: $$ \min_\theta L_V(\theta). $$
+2. Optimize policy by approximating the analytically optimal policy: $$ \max_\phi L_\pi(\phi).$$ 
 :::
 :::
 
@@ -1088,7 +1088,7 @@ $$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\be
 :::
 
 ::: fragment
-### Proposed changes in implicit $Q$-learning (IQL [@Kostrikov2021implicitqlearning])
+### Proposed changes in implicit $Q$-learning (IQL, [@Kostrikov2021implicitqlearning])
 ::: 
 
 ::: incremental
@@ -1126,7 +1126,7 @@ $$ L^\tau_2(u) = \abs{\tau - \mathbb{1}(u<0)}x^2 = \begin{cases} (1-\tau) u^2 & 
 
 ::: platzhalter
 ::: definition
-### Implicit $Q$-learning (IQL [@Kostrikov2021implicitqlearning])
+### Implicit $Q$-learning (IQL, [@Kostrikov2021implicitqlearning])
 
 Given: A dataset $\Dc$
 

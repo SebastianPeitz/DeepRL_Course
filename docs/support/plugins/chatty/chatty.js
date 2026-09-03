@@ -1,7 +1,6 @@
 import setup from "../../chatty/chatty.js";
 
 let Reveal;
-let dialog;
 
 function createGUI(deck) {
   // first check whether chatty is configured
@@ -10,17 +9,10 @@ function createGUI(deck) {
   if (!server || !prompt) return;
 
   // create dialog
-  dialog = document.createElement("dialog");
+  let dialog = document.createElement("div");
   dialog.id = "chatty-popover";
-  dialog.setAttribute("closedby", "any");
+  dialog.popover = "auto";
   document.body.appendChild(dialog);
-  dialog.onclick = (e) => {
-    // workaround for stupid Safari
-    if (e.target === e.currentTarget) {
-      e.stopPropagation();
-      dialog.close();
-    }
-  };
 
   // fill dialog with chatty content
   setup(dialog, Reveal);
@@ -28,12 +20,11 @@ function createGUI(deck) {
   // create button
   let button = document.createElement("button");
   button.id = "chatty-button";
+  button.popoverTargetElement = dialog;
+  button.popoverTargetAction = "toggle";
   button.title = button.ariaLabel =
     navigator.language === "de" ? "Prof. Bot fragen" : "Ask Prof. Bot";
   button.className = "fa-button fa-solid fa-robot";
-  button.onclick = () => {
-    dialog.showModal();
-  };
 
   // place button
   if (!Reveal.hasPlugin("ui-anchors")) {
@@ -50,10 +41,10 @@ function createGUI(deck) {
       description:
         navigator.language === "de"
           ? "Chatte mit Prof. Bot"
-          : "Chat with Prof. Bot"
+          : "Chat with Prof. Bot",
     },
     () => {
-      dialog.showModal();
+      dialog.togglePopover();
     }
   );
 }
@@ -64,13 +55,6 @@ const Plugin = {
     Reveal = deck;
     Reveal.on("ready", createGUI);
   },
-  send: (input) => {
-    dialog.sendToChatty(input);
-    dialog.showModal();
-  },
-  show: () => {
-    dialog.showModal();
-  }
 };
 
 export default Plugin;

@@ -84,8 +84,6 @@ let currentFragmentIndex = 0;
 let undoHistory = [];
 const undoBufferSize = 10;
 
-let storedKeyboardConfig;
-
 // get configuration options from Reveal deck
 function readConfig() {
   config = Reveal.getConfig().whiteboard || {};
@@ -106,12 +104,12 @@ function readConfig() {
     "var(--base0C)",
     "var(--base0D)",
     "var(--base0E)",
-    "var(--base0F)"
+    "var(--base0F)",
   ];
 
   // reveal setting wrt slide dimension
-  pageHeight = parseInt(Reveal.getConfig().height);
-  pageWidth = parseInt(Reveal.getConfig().width);
+  pageHeight = Reveal.getConfig().height;
+  pageWidth = Reveal.getConfig().width;
 
   // reveal elements
   slides = document.querySelector(".reveal .slides");
@@ -134,74 +132,6 @@ const weHaveCoalescedEvents = !!(
 );
 let userShouldBeWarned = !weHavePointerEvents || !weHaveCoalescedEvents;
 let userHasBeenWarned = false;
-
-/************************************************************************
- * Localization
- ************************************************************************/
-
-const germanLocalization = {
-  manual_save: "Sofort abspeichern",
-  toggle_autosave: "Automatisches Speichern umschalten",
-  toggle_grid: "Raster ein-/ausblenden",
-  add_page: "Whiteboard Seite hinzufügen",
-  select_or_change_pen: "Stiftmodus an- und umstellen",
-  pick_eraser: "Radierer auswählen",
-  pick_laserpointer: "Laserpointer auswählen",
-  toggle_whiteboard_mode: "Whiteboardmodus umschalten",
-  undo: "Letzte Handlung rückgängig machen",
-  paint_stroke: "Linie zeichnen",
-  erase_stroke: "Linie radieren",
-  pick_color: "Farbe auswählen",
-  pick_radius: "Radius auswählen",
-  keybinds: {
-    clear: "Whiteboard: Folie reinigen",
-    laserpointer: "Whiteboard: Laserpointer umschalten",
-    eraser: "Whiteboard: Radierer umschalten",
-    whitebard: "Whiteboard: An-/Abschalten",
-    color: "Whiteboard: Farbe ",
-    radius2: "Whiteboard: Stiftgröße Radius 2",
-    radius4: "Whiteboard: Stiftgröße Radius 4",
-    radius6: "Whiteboard: Stiftgröße Radius 6"
-  }
-};
-
-const englishLocalization = {
-  manual_save: "Manual Save",
-  toggle_autosave: "Toggle Auto-Save",
-  toggle_grid: "Toggle Grid",
-  add_page: "Add Page",
-  select_or_change_pen: "Pick or Change Pen",
-  pick_eraser: "Pick Eraser",
-  pick_laserpointer: "Pick Laserpointer",
-  toggle_whiteboard_mode: "Toggle Whiteboard Mode",
-  undo: "Undo last action",
-  paint_stroke: "paint stroke",
-  erase_stroke: "erase stroke",
-  pick_color: "Pick Color",
-  pick_radius: "Pick Radius",
-  keybinds: {
-    clear: "Whiteboard: Clear slide",
-    laserpointer: "Whiteboard: Toggle laserpointer",
-    eraser: "Whiteboard: Toggle eraser",
-    whitebard: "Whiteboard: De-/Activate",
-    color: "Whiteboard: Color ",
-    radius2: "Whiteboard: Pen radius 2",
-    radius4: "Whiteboard: Pen radius 4",
-    radius6: "Whiteboard: Pen radius 6"
-  }
-};
-
-let l10n;
-const lang = Decker.meta.lang || navigator.language;
-if (lang === "de") {
-  l10n = germanLocalization;
-} else {
-  l10n = englishLocalization;
-}
-
-/************************************************************************
- * Functionality
- ************************************************************************/
 
 function warnUser() {
   if (!weHavePointerEvents) {
@@ -231,61 +161,24 @@ let buttonPen;
 let buttonEraser;
 let buttonLaser;
 let colorPicker;
-
-function isPanelVisible() {
-  return buttons.classList.contains("showMenu");
-}
+let hoverTimer;
 
 function hidePanel() {
-  if (isPanelVisible()) {
-    buttons.classList.remove("showMenu");
-    hideColorPicker();
-    document.removeEventListener("pointerdown", clickHidesPanel, true);
-  }
+  buttons.classList.remove("visible");
+  hideColorPicker();
 }
 
 function showPanel() {
-  buttons.classList.add("showMenu");
-  clearTimeout(autoToggleTimer);
-  document.addEventListener("pointerdown", clickHidesPanel, true);
-}
-
-function clickHidesPanel(evt) {
-  if (isPanelVisible() && !buttons.contains(evt.target)) {
-    killEvent(evt);
-    hidePanel();
-  }
+  buttons.classList.add("visible");
+  clearInterval(hoverTimer);
 }
 
 // function to generate a button
-function createRadioButton(classes, callback, active = false, tooltip) {
+function createButton(classes, callback, active = false, tooltip) {
   let b = document.createElement("button");
   b.className = "fa-button whiteboard " + classes;
   b.onclick = callback;
-  b.ariaChecked = active;
-  b.role = "radio";
-  if (tooltip) b.title = tooltip;
-  if (tooltip) b.setAttribute("aria-label", tooltip);
-  buttons.appendChild(b);
-  return b;
-}
-
-function createActionButton(classes, callback, tooltip) {
-  let b = document.createElement("button");
-  b.className = "fa-button whiteboard " + classes;
-  b.onclick = callback;
-  if (tooltip) b.title = tooltip;
-  if (tooltip) b.setAttribute("aria-label", tooltip);
-  buttons.appendChild(b);
-  return b;
-}
-
-function createToggleButton(classes, callback, active = false, tooltip) {
-  let b = document.createElement("button");
-  b.className = "fa-button whiteboard " + classes;
-  b.onclick = callback;
-  b.ariaPressed = active;
-  b.role = "switch";
+  b.dataset.active = active;
   if (tooltip) b.title = tooltip;
   if (tooltip) b.setAttribute("aria-label", tooltip);
   buttons.appendChild(b);
@@ -298,38 +191,50 @@ function createGUI() {
   buttons.id = "whiteboardButtons";
   buttons.classList.add("presenter-only");
 
-  buttonDownload = createActionButton(
+  // handle hover visibility of panel
+  buttons.onmouseenter = (evt) => {
+    clearInterval(hoverTimer);
+  };
+  buttons.onmouseleave = (evt) => {
+    hoverTimer = setInterval(hidePanel, 3000);
+  };
+
+  buttonDownload = createButton(
     "fas fa-download",
     saveAnnotations,
-    l10n.manual_save
+    false,
+    "Manual Save"
   );
 
-  buttonSave = createToggleButton(
+  buttonSave = createButton(
     "fas fa-save checkbox",
     toggleAutoSave,
     autosave,
-    l10n.toggle_autosave
+    "Toggle Auto-Save"
   );
+  buttonSave.setAttribute("role", "switch");
 
-  buttonGrid = createToggleButton(
+  buttonGrid = createButton(
     "fas fa-border-all checkbox",
     toggleGrid,
     false,
-    l10n.toggle_grid
+    "Toggle Grid"
   );
+  buttonGrid.setAttribute("role", "switch");
 
-  buttonAdd = createActionButton(
+  buttonAdd = createButton(
     "fas fa-plus",
     addWhiteboardPage,
-    l10n.add_page
+    true,
+    "Add Whiteboard Page"
   );
 
-  buttonUndo = createActionButton("fas fa-undo", undo, l10n.undo);
+  buttonUndo = createButton("fas fa-undo", undo, false, "Undo");
 
-  buttonPen = createRadioButton(
+  buttonPen = createButton(
     "fas fa-pen radiobutton",
     () => {
-      if (!buttons.classList.contains("showMenu")) {
+      if (!buttons.classList.contains("visible")) {
         showPanel();
         buttonPen.focus();
         return;
@@ -341,14 +246,15 @@ function createGUI() {
       }
     },
     false,
-    l10n.select_or_change_pen
+    "Select or change Pen"
   );
+  buttonPen.setAttribute("role", "switch");
   buttonPen.style.position = "relative";
 
-  buttonEraser = createRadioButton(
+  buttonEraser = createButton(
     "fas fa-eraser radiobutton",
     () => {
-      if (!buttons.classList.contains("showMenu")) {
+      if (!buttons.classList.contains("visible")) {
         showPanel();
         buttonEraser.focus();
         return;
@@ -356,13 +262,14 @@ function createGUI() {
       selectTool(ERASER);
     },
     false,
-    l10n.pick_eraser
+    "Pick Eraser"
   );
+  buttonEraser.setAttribute("role", "switch");
 
-  buttonLaser = createRadioButton(
+  buttonLaser = createButton(
     "fas fa-magic radiobutton",
     () => {
-      if (!buttons.classList.contains("showMenu")) {
+      if (!buttons.classList.contains("visible")) {
         showPanel();
         buttonLaser.focus();
         return;
@@ -370,14 +277,15 @@ function createGUI() {
       selectTool(LASER);
     },
     false,
-    l10n.pick_laserpointer
+    "Pick Laserpointer"
   );
+  buttonLaser.setAttribute("role", "switch");
 
-  buttonWhiteboard = createActionButton(
+  buttonWhiteboard = createButton(
     "fas fa-edit checkbox",
     toggleWhiteboard,
     false,
-    l10n.toggle_whiteboard_mode
+    "Toggle Whiteboard Mode"
   );
   buttonWhiteboard.id = "whiteboardButton";
 
@@ -399,8 +307,8 @@ function createGUI() {
       selectPenColor(color);
       evt.stopImmediatePropagation();
     };
-    b.title = l10n.pick_color;
-    b.setAttribute("aria-label", l10n.pick_color);
+    b.tooltip = color;
+    b.setAttribute("aria-label", color);
     b.style.color = color;
     colorPicker.appendChild(b);
   });
@@ -415,8 +323,8 @@ function createGUI() {
       selectPenRadius(r);
       evt.stopImmediatePropagation();
     };
-    b.title = l10n.pick_radius + ": " + radius;
-    b.setAttribute("aria-label", l10n.pick_radius + ": " + radius);
+    b.tooltip = radius;
+    b.setAttribute("aria-label", radius);
     colorPicker.appendChild(b);
   }
 }
@@ -491,8 +399,7 @@ function createGridPattern() {
   svg.style.width = "10px";
   svg.style.height = "10px";
   svg.style.pointerEvents = "none";
-  const viewport = Reveal.getViewportElement();
-  viewport.insertBefore(svg, viewport.firstChild);
+  slides.insertBefore(svg, slides.firstChild);
 
   const h = Math.floor(Math.min(pageWidth, pageHeight) / 25);
   const rectWidth = pageWidth - 2;
@@ -625,23 +532,30 @@ function selectTool(newTool) {
   tool = newTool;
 
   // update tool icons, update cursor
+  buttonLaser.dataset.active =
+    buttonEraser.dataset.active =
+    buttonPen.dataset.active =
+      false;
   buttonLaser.setAttribute("aria-checked", "false");
   buttonEraser.setAttribute("aria-checked", "false");
   buttonPen.setAttribute("aria-checked", "false");
 
   switch (tool) {
     case PEN:
+      buttonPen.dataset.active = true;
       buttonPen.setAttribute("aria-checked", "true");
       buttonPen.style.color = penColor;
       selectCursor(penCursor);
       break;
 
     case ERASER:
+      buttonEraser.dataset.active = true;
       buttonEraser.setAttribute("aria-checked", "true");
       selectCursor(eraserCursor);
       break;
 
     case LASER:
+      buttonLaser.dataset.active = true;
       buttonLaser.setAttribute("aria-checked", "true");
       selectCursor(laserCursor);
       break;
@@ -656,14 +570,6 @@ function selectTool(newTool) {
 function toggleLaser() {
   if (tool == LASER) selectTool(PEN);
   else selectTool(LASER);
-}
-
-/*
- * switch between eraser and pen
- */
-function toggleEraser() {
-  if (tool == ERASER) selectTool(PEN);
-  else selectTool(ERASER);
 }
 
 function toggleColorPicker() {
@@ -698,7 +604,7 @@ function enableWhiteboard() {
   clearTimeout(autoToggleTimer);
 
   // show scrollbar
-  slides.classList.add("whiteboard-active");
+  slides.classList.add("active");
 
   // show buttons
   buttons.classList.add("active");
@@ -715,7 +621,7 @@ function disableWhiteboard() {
   clearTimeout(autoToggleTimer);
 
   // hide scrollbar
-  slides.classList.remove("whiteboard-active");
+  slides.classList.remove("active");
 
   // hide buttons
   buttons.classList.remove("active");
@@ -744,11 +650,7 @@ function toggleWhiteboard(state) {
 let autoToggleTimer;
 function autoToggleOff(evt) {
   if (evt.pointerType == "pen") {
-    if (
-      whiteboardActive &&
-      evt.target.classList.contains("whiteboard") &&
-      !isPanelVisible()
-    ) {
+    if (whiteboardActive) {
       clearTimeout(autoToggleTimer);
       autoToggleTimer = setTimeout(disableWhiteboard, 2000);
     }
@@ -822,11 +724,8 @@ function setWhiteboardHeight(svgHeight) {
   if (rect) rect.setAttribute("height", svgHeight - pageHeight);
 
   // update scrollbar of slides container
-  if (needScrollbar) {
-    slides.classList.add("needScrollbar");
-  } else {
-    slides.classList.remove("needScrollbar");
-  }
+  if (needScrollbar) slides.classList.add("needScrollbar");
+  else slides.classList.remove("needScrollbar");
 
   // adjust with of slides container to accomodate scrollbar
   let currentWidth = slides.clientWidth;
@@ -858,7 +757,7 @@ function setWhiteboardHeight(svgHeight) {
  */
 function clearSlide() {
   if (!whiteboardActive) return;
-  if (confirm(l10n.delete_confirmation)) {
+  if (confirm("Delete notes and board on this slide?")) {
     let strokes = svg.querySelectorAll("svg>path");
     if (strokes) {
       strokes.forEach((stroke) => {
@@ -870,7 +769,7 @@ function clearSlide() {
     let grid = svg.querySelector("svg>rect");
     if (grid) {
       grid.remove();
-      buttonGrid.ariaPressed = false;
+      buttonGrid.dataset.active = false;
       needToSave(true);
     }
 
@@ -904,7 +803,8 @@ function toggleGrid() {
   let rect = getGridRect();
   if (rect) {
     rect.remove();
-    buttonGrid.ariaPressed = false;
+    buttonGrid.dataset.active = false;
+    buttonGrid.setAttribute("aria-checked", false);
   }
 
   // otherwise, add it
@@ -924,7 +824,8 @@ function toggleGrid() {
     rect.style.stroke = "none";
     rect.style.pointerEvents = "none";
 
-    buttonGrid.setAttribute("aria-pressed", "true");
+    buttonGrid.dataset.active = true;
+    buttonGrid.setAttribute("aria-checked", "true");
   }
 
   needToSave(true);
@@ -935,7 +836,9 @@ function toggleGrid() {
  */
 function toggleAutoSave() {
   autosave = !autosave;
-  buttonSave.ariaPressed = autosave;
+  buttonSave.dataset.active = autosave;
+  buttonSave.setAttribute("aria-checked", autosave);
+  console.log("autosave: " + autosave);
 }
 
 /*****************************************************************
@@ -944,14 +847,14 @@ function toggleAutoSave() {
 
 function clearUndoHistory() {
   undoHistory = [];
-  buttonUndo.ariaDisabled = false;
-  buttonUndo.title = l10n.undo;
+  buttonUndo.dataset.active = false;
+  buttonUndo.title = "undo";
 }
 
 function pushUndoHistory(action) {
   undoHistory.push({ action: action, svg: svg.innerHTML });
-  buttonUndo.ariaDisabled = false;
-  buttonUndo.title = l10n.undo + ": " + action;
+  buttonUndo.dataset.active = true;
+  buttonUndo.title = "undo: " + action;
   if (undoHistory.length > undoBufferSize) undoHistory.shift();
 }
 
@@ -961,11 +864,11 @@ function undo() {
 
     if (undoHistory.length) {
       let action = undoHistory[undoHistory.length - 1].action;
-      buttonUndo.title = l10n.undo + ": " + action;
-      buttonUndo.ariaDisabled = false;
+      buttonUndo.title = "undo: " + action;
+      buttonUndo.dataset.active = true;
     } else {
-      buttonUndo.ariaDisabled = true;
-      buttonUndo.title = l10n.undo;
+      buttonUndo.dataset.active = false;
+      buttonUndo.title = "undo";
     }
 
     needToSave(true);
@@ -982,6 +885,17 @@ function undo() {
  */
 function loadAnnotationsFromURL() {
   return new Promise(function (resolve) {
+    // electron? try to load annotation from local file
+    if (window.electronApp) {
+      window.electronApp.loadAnnotation(annotationURL()).then((storage) => {
+        if (storage) {
+          parseAnnotations(storage);
+          resolve();
+          return;
+        }
+      });
+    }
+
     // determine scribble filename
     let filename = annotationURL();
 
@@ -1115,7 +1029,7 @@ function annotationData() {
     if (svg.children.length) {
       storage.annotations.push({
         slide: svg.parentElement.id,
-        svg: svg.innerHTML
+        svg: svg.innerHTML,
       });
     }
   });
@@ -1128,7 +1042,7 @@ function annotationData() {
  */
 function annotationBlob() {
   return new Blob([JSON.stringify(annotationData())], {
-    type: "application/json"
+    type: "application/json",
   });
 }
 
@@ -1136,11 +1050,17 @@ function annotationBlob() {
  * save annotations to decker server
  */
 function saveAnnotations() {
-  // cannot save annotations in electron app
-  if (window.Decker.isElectron()) return;
-
   // clear remaining laser strokes
   clearLaserStrokes();
+
+  // electron app? then save to file and return
+  if (window.electronApp) {
+    if (window.electronApp.saveAnnotation(annotationData(), annotationURL())) {
+      console.log("whiteboard annotations saved to local file");
+      needToSave(false);
+    }
+    return;
+  }
 
   // also save to downloads folder (just to be save(r))
   let a = document.createElement("a");
@@ -1264,7 +1184,7 @@ function startStroke(evt) {
   if (isLaserStroke) {
     stroke.classList.add("laser");
   } else {
-    pushUndoHistory(l10n.paint_stroke);
+    pushUndoHistory("paint stroke");
     stroke.style.stroke = penColor;
     stroke.style.strokeWidth = penWidth + "px";
   }
@@ -1272,7 +1192,7 @@ function startStroke(evt) {
   // add point, convert to Bezier spline
   points = [
     [mouseX, mouseY],
-    [mouseX, mouseY]
+    [mouseX, mouseY],
   ];
   renderStroke(points, stroke);
 
@@ -1352,7 +1272,7 @@ function eraseStroke(evt) {
 
   svg.querySelectorAll("path").forEach((stroke) => {
     if (isPointInStroke(stroke, point)) {
-      pushUndoHistory(l10n.erase_stroke);
+      pushUndoHistory("erase stroke");
       stroke.remove();
       needToSave(true);
     }
@@ -1595,7 +1515,7 @@ function slideChanged(evt) {
     fragmentChanged();
 
     // update SVG grid icon
-    buttonGrid.ariaPressed = !!svg && !!getGridRect();
+    buttonGrid.dataset.active = !!svg && !!getGridRect();
 
     // clear undo history (updates icon)
     clearUndoHistory();
@@ -1689,22 +1609,17 @@ function setupCallbacks() {
 
 function setupKeyBindings() {
   Reveal.addKeyBinding(
-    { keyCode: 46, key: "Delete", description: l10n.keybinds.clear },
+    { keyCode: 46, key: "Delete", description: "Whiteboard: Clear Slide" },
     clearSlide
   );
 
   Reveal.addKeyBinding(
-    { keyCode: 76, key: "L", description: l10n.keybinds.laserpointer },
+    { keyCode: 76, key: "L", description: "Whiteboard: Toggle laser pointer" },
     toggleLaser
   );
 
   Reveal.addKeyBinding(
-    { keyCode: 69, key: "E", description: l10n.keybinds.eraser },
-    toggleEraser
-  );
-
-  Reveal.addKeyBinding(
-    { keyCode: 87, key: "W", description: l10n.keybinds.whiteboard },
+    { keyCode: 87, key: "W", description: "Whiteboard: Toggle on/off" },
     toggleWhiteboard
   );
 
@@ -1714,7 +1629,7 @@ function setupKeyBindings() {
       {
         keyCode: 49 + i,
         key: String.fromCharCode(49 + i),
-        description: l10n.keybinds.color + i
+        description: `Whiteboard: Color ${i}`,
       },
       () => {
         selectPenColor(penColors[i === 0 ? 0 : i + 8]);
@@ -1723,21 +1638,21 @@ function setupKeyBindings() {
   }
 
   Reveal.addKeyBinding(
-    { keyCode: 56, key: "8", description: l10n.keybinds.radius2 },
+    { keyCode: 56, key: "8", description: "Whiteboard: Pen radius 2" },
     () => {
       selectPenRadius(2);
     }
   );
 
   Reveal.addKeyBinding(
-    { keyCode: 57, key: "9", description: l10n.keybinds.radius4 },
+    { keyCode: 57, key: "9", description: "Whiteboard: Pen radius 4" },
     () => {
       selectPenRadius(4);
     }
   );
 
   Reveal.addKeyBinding(
-    { keyCode: 48, key: "0", description: l10n.keybinds.radius6 },
+    { keyCode: 48, key: "0", description: "Whiteboard: Pen radius 6" },
     () => {
       selectPenRadius(6);
     }
@@ -1777,32 +1692,11 @@ const Plugin = {
     selectPenColor(penColors[0]);
     selectPenRadius(2);
 
-    /* Allow the focused slides with scrollbar to be navigated with up & down arrow keys */
-
-    const slidesElement = Reveal.getSlidesElement();
-
-    const suppressor = (event) => {
-      if (!slidesElement.classList.contains("needScrollbar")) {
-        return;
-      }
-      if (
-        event.code === "ArrowUp" ||
-        event.code === "ArrowDown" ||
-        event.code === "PageUp" ||
-        event.code === "PageDown" ||
-        event.code === "Space"
-      ) {
-        event.stopPropagation();
-      }
-    };
-
-    slidesElement.addEventListener("keydown", suppressor);
-
     // load annotations
     return new Promise((resolve) => loadAnnotationsFromURL().then(resolve));
   },
 
-  saveAnnotations: saveAnnotations
+  saveAnnotations: saveAnnotations,
 };
 
 export default Plugin;

@@ -1,5 +1,3 @@
-@import url("./colors.css");
-
 :root {
   /* These are for internal calculations */
   --list-indent: 1.5em;
@@ -46,10 +44,10 @@
   --secondary-color: var(--accent1);
 
   --hover-color: var(--accent3);
-  --focus-color: var(--accent1);
   --code-background-color: var(--shade1);
 
   --highlight-color: var(--accent3-bg);
+  --flying-focus-color: red;
 
   --icon-active-color: var(--accent3);
   --icon-disabled-color: var(--shade2);
@@ -57,7 +55,6 @@
   --icon-hover-color: var(--hover-color);
   --icon-background-color: rgba(0, 0, 0, 0);
   --icon-border-radius: 0.2em;
-  --icon-shadow-color: var(--foreground-color);
 
   --whiteboard-background-color: var(--shade1);
   --whiteboard-border-color: var(--shade2);
@@ -89,8 +86,7 @@
   --green-border-color: var(--accent3);
   --red-background-color: var(--accent0-bbg);
   --red-border-color: var(--accent0);
-}
 
-.dark {
-  --icon-shadow-color: var(--background-color);
+  /* make Henrik's style nicer */
+  --list-indent: 0.5em;
 }

@@ -192,7 +192,7 @@ Learning</title>
 <li>Learning policies from datasets</li>
 <li>Offline reinforcement learning
 <ul>
-<li>Distributional shifts</li>
+<li>Distribution shifts</li>
 <li>Overestimation bias</li>
 <li>Relation to imitation learning</li>
 <li>Algorithmic evolution of methods</li>
@@ -204,10 +204,9 @@ Learning</title>
 <li>advantage-weighted regression</li>
 <li>Batch-constrained <span class="math inline">\(Q\)</span>-learning</li>
 </ul></li>
-<li>Implicit <span class="math inline">\(Q\)</span>-learning</li>
 <li>Conservative <span class="math inline">\(Q\)</span>-learning</li>
-<li>Offline-to-online RL</li>
-<li>Model-based offline RL</li>
+<li>Implicit <span class="math inline">\(Q\)</span>-learning <!-- - Offline-to-online RL
+- Model-based offline RL --></li>
 </ul>
 </div>
 </div>
@@ -9550,10 +9549,10 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 </div>
 </div>
 </section>
-<section id="distributional-shifts-1" class="slide level1">
+<section id="distribution-shifts-1" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Distributional shifts (1)</h1>
+<h1>Distribution shifts (1)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -9573,8 +9572,8 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="fragment">
 <p><strong>Formally</strong>: <span class="math-incremental"><span class="math display">\[\begin{align*} 
 \Dc &amp;= \set{(s_i,a_i,s&#39;_i,r_i)}_{i=1}^N \\
-s &amp;\sim \rho_\beta(s) \\
 a &amp;\sim \pi_\beta\agivenb{a}{s} \quad \fragment{ \text{(generally unknown)} } \\
+s &amp;\sim \rho_\beta(s) \\
 s&#39; &amp;\sim \psprimesa
 \end{align*}\]</span></span></p>
 </div>
@@ -11215,10 +11214,10 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </section>
-<section id="distributional-shifts-2" class="slide level1">
+<section id="distribution-shifts-2" class="slide level1">
 <div class="decker">
 <div class="alignment">
-<h1>Distributional shifts (2)</h1>
+<h1>Distribution shifts (2)</h1>
 <div class="layout">
 <div class="area">
 <div class="box block">
@@ -12068,7 +12067,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Simplest approach to avoid overestimation: constrain the distance between behavior policy <span class="math inline">\(\pi_\beta\)</span> and the learned policy <span class="math inline">\(\piphi\)</span>.</li>
-<li class="fragment">Remember the KL divergence? <span class="math display">\[ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \log\pi_\phi\agivenb{a}{s} }{a\sim\pi_\beta\agivenb{\cdot}{s}}. } \]</span></li>
+<li class="fragment">Remember the KL divergence? <span class="math display">\[ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \textcolor{blue}{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } \]</span></li>
 <li class="fragment">Constraining the distance yields a constrained optimization problem: <span class="math display">\[\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\agivenb{\cdot}{s}} \qquad\text{s.t.}\qquad \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}\leq \epsilon. \label{eq:OFF_constrained_policy} \end{equation}\]</span>
 <ul class="incremental">
 <li class="fragment">Where have we seen this before? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Natural policy gradient!</span></li>
@@ -12078,7 +12077,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Via <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>: additional term in the actor loss function: <span class="math display">\[\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}\]</span> <span class="fragment"><span class="math display">\[\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \log\piphi\agivenb{a}{s} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}\]</span></span>
+<li class="fragment">Via <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>: additional term in the actor loss function: <span class="math display">\[\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}\]</span> <span class="fragment"><span class="math display">\[\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \textcolor{blue}{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}\]</span></span>
 <ul class="incremental">
 <li class="fragment">To solve <span class="math inline">\(\eqref{eq:OFF_constrained_policy}\)</span>, we need to solve for both <span class="math inline">\(\phi\)</span> <strong>and</strong> the Lagrange multiplier <span class="math inline">\(\lambda\)</span>.</li>
 <li class="fragment">Alternative: treat <span class="math inline">\(\lambda\)</span> as a hyperparameter.</li>
@@ -12999,8 +12998,8 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 <ul class="incremental">
 <li class="fragment">KL divergence <span class="emoji" data-emoji="boom">💥</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Need to cover everything from the dataset!</span></li>
 </ul></li>
-<li class="fragment">Mode covering: What happens if for some <span class="math inline">\((s,a)\)</span>,<br />
-<span style="color: white;">Mode covering:</span> <span class="math inline">\(\pi_\beta\agivenb{a}{s}=0\)</span> while <span class="math inline">\(\pi_\phi\agivenb{a}{s}&gt;0\)</span>?
+<li class="fragment">Mode seeking: What happens if for some <span class="math inline">\((s,a)\)</span>,<br />
+<span style="color: white;">Mode seeking:</span> <span class="math inline">\(\pi_\beta\agivenb{a}{s}=0\)</span> while <span class="math inline">\(\pi_\phi\agivenb{a}{s}&gt;0\)</span>?
 <ul class="incremental">
 <li class="fragment">KL divergence <span class="emoji" data-emoji="boom">💥</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Need to ensure <span class="math inline">\(\pi_\phi\)</span> stays within a subset of <span class="math inline">\(\pi_\beta\)</span>.</span></li>
 </ul></li>
@@ -13249,7 +13248,7 @@ Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI 
 <li class="fragment">then increase it again in the <em>region supported by the dataset</em>!</li>
 </ul></li>
 <li class="fragment">The <span class="math inline">\(Q\)</span>-learning step with TD(<span class="math inline">\(0\)</span>): <span class="footer fragment"><span class="emoji" data-emoji="bulb">💡</span> We here use an on-policy estimator, as is used in continuous control algorithms such as SAC. A <span class="math inline">\(Q\)</span>-learning version were we maximize over actions in the target <span class="math inline">\(y\)</span> is equally possible <span class="citation">(<a href="#ref-Kumar2020conservativeqlearning">Kumar et al. 2020</a>)</span>.</span> <span class="math display">\[\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s&#39;)\sim\Dc} \Big[\Big(\underbrace{r + \gamma \Expsub{Q_{\bar{\theta}}(s,a)}{a&#39;\sim\pi_\phi\agivenb{\cdot}{s&#39;}}}_{y} - Q_\theta(s,a)\Big)^2\Big].\]</span></li>
-<li class="fragment">Add a conservative penalty term: <span class="math display">\[\theta \gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s&#39;)\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \underbrace{\max_\mu \Expsub{Q_\theta(s,a)}{s\sim\Dc,a\sim\mu\agivenb{\cdot}{s}}}_{=\Rc}.\]</span>
+<li class="fragment">Add a conservative penalty term: <span class="math display">\[\theta \gets \arg\min_\theta \Big(\frac{1}{2}\E_{(s,a,r,s&#39;)\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \underbrace{\max_\mu \Expsub{Q_\theta(s,a)}{s\sim\Dc,a\sim\mu\agivenb{\cdot}{s}}}_{=\Rc}\Big).\]</span>
 <ul class="incremental">
 <li class="fragment">We need to find a policy <span class="math inline">\(\mu\)</span> that maximally reduces the estimate of <span class="math inline">\(Q_\theta\)</span>.</li>
 <li class="fragment">Resulting <span class="math inline">\(Q\)</span>-function lower-bounds the true <span class="math inline">\(Q\)</span>-function point-wise.</li>
@@ -13267,7 +13266,7 @@ Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI 
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Reduce <span class="math inline">\(Q\)</span> everywhere, boost it on the dataset: <span class="math display">\[ \begin{align*} \hat{\Rc} = \Rc - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}. \end{align*} \]</span></li>
-<li class="fragment">Add KL-divergence regularizer to <span class="math inline">\(\Rightarrow\)</span> closed-form solution (similar to SAC): <span class="math display">\[ \begin{align*} \hat{\Rc} = \E_{s\sim\Dc} \Big[&amp;\log \cbracket{\int_\Ac \exp(Q_\theta(s, a)) \dint{a}} \\
+<li class="fragment">Add KL-divergence regularizer <span class="math inline">\(\Rightarrow\)</span> closed-form solution (similar to SAC): <span class="math display">\[ \begin{align*} \hat{\Rc} = \E_{s\sim\Dc} \Big[&amp;\log \cbracket{\int_\Ac \exp(Q_\theta(s, a)) \dint{a}} \\
 &amp;- \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}\Big]. \end{align*} \]</span></li>
 <li class="fragment">Lower bound on expected value: <span class="math display">\[ \Expsub{Q_\theta(s,a)}{a \sim \pi} \le V^\pi(s).\]</span></li>
 </ul>
@@ -13302,7 +13301,7 @@ Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI 
 <li class="fragment"><strong>Next-state policy actions (<span class="math inline">\(a \sim \pi_\phi\agivenb{\cdot}{s&#39;}\)</span>)</strong>: In the Bellman equation, the target value is calculated using the policy’s action at the next state (<span class="math inline">\(a&#39; \sim \pi(s&#39;)\)</span>). If <span class="math inline">\(Q(s&#39;, a&#39;)\)</span> is overestimated, that error propagates back to <span class="math inline">\(Q(s, a)\)</span> via the TD update.</li>
 </ol></li>
 <li class="fragment">We would have to perform importance sampling to go from <span class="math inline">\(\int \exp(Q_\theta(s, a)) \dint{a} \approx \frac{1}{N} \sum_{i=1}^N \exp(Q_\theta(s, a_i))\)</span> to this sum of three terms. <span class="fragment">However, we ignore this in practice:</span> <span class="math-incremental"><span class="math display">\[ \begin{align*} I(s) &amp;= \log\cbracket{\frac{1}{3}\cbracket{\Expsub{\exp{Q_\theta(s, a)}}{a \sim U(\Ac)} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s}} + \Expsub{\exp{Q_\theta(s, a)}}{a \sim \pi_\phi\agivenb{\cdot}{s&#39;}}}}, \\
-\theta &amp;\gets \arg\min_\theta \frac{1}{2}\E_{(s,a,r,s&#39;)\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}. \end{align*} \]</span></span></li>
+\theta &amp;\gets \arg\min_\theta \Big(\frac{1}{2}\E_{(s,a,r,s&#39;)\sim\Dc} \Big[\Big(y - Q_\theta(s,a)\Big)^2 \Big]+ \alpha \Expsub{I(s) - \Expsub{Q_\theta(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}}}{s\sim\Dc}\Big). \end{align*} \]</span></span></li>
 </ul>
 </div>
 </div>
@@ -13405,7 +13404,7 @@ Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI 
 <div class="box block">
 <div id="what-if-we-never-evaluate-an-out-of-distribution-action-during-training-at-all" class="small">
 <h2>What if we never evaluate an out-of-distribution action during training at all?</h2>
-<p><span class="fragment">Instead of constraining the policy explicitly or penalizing unseen actions, IQL constrains the optimization implicitly by querying the <span class="math inline">\(Q\)</span>-function only on state-action pairs that actually exist in the dataset.</span></p>
+<p><span class="fragment">Instead of constraining the policy explicitly or penalizing unseen actions, IQL constrains the optimization implicitly by evaluating the <span class="math inline">\(Q\)</span>-function only on state-action pairs <span class="math inline">\((s,a)\)</span> that actually exist in the dataset.</span></p>
 <p><span class="fragment"><strong>Benefits of IQL</strong> <span class="citation">(<a href="#ref-Kostrikov2021implicitqlearning">Kostrikov, Nair, and Levine 2021</a>)</span>:</span></p>
 <div class="incremental">
 <ul class="incremental">
@@ -13449,8 +13448,7 @@ Source: <a href="https://bair.berkeley.edu/blog/2020/12/07/offline/">Berkley AI 
 <ul class="incremental">
 <li class="fragment">Imitation learning on the dataset.</li>
 <li class="fragment">State-action pairs are weighted by an exponential function of the “advantage” (i.e., how much better the action was compared to the average action from that state).</li>
-<li class="fragment">Can be seen as weighted BC.<br />
-</li>
+<li class="fragment">Can be seen as <em>weighted behavior cloning</em> (<em>BC</em>).</li>
 </ul>
 </div>
 </div>
@@ -13523,14 +13521,14 @@ Chess board [<a href="https://commons.wikimedia.org/wiki/File:Through_the_Lookin
 <div class="grid-layout" style="grid-template-columns: 7fr 4fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Method of Lagrange multipliers <span class="math inline">\(\Rightarrow\)</span> closed-form analytical solution of <span class="math inline">\(\eqref{eq:OFF_expected_advantage}\)</span>: <span class="math display">\[\pi^*\agivenb{a}{s} \propto \pi_\beta\agivenb{a}{s} \exp\left( \frac{1}{\alpha} A^{\pi_\beta}(s, a) \right),\]</span> with temperature hyperparameter <span class="math inline">\(\alpha\)</span>.
+<li class="fragment">Method of <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a> <span class="math inline">\(\Rightarrow\)</span> closed-form analytical solution of <span class="math inline">\(\eqref{eq:OFF_expected_advantage}\)</span>: <span class="math display">\[\pi^*\agivenb{a}{s} \propto \pi_\beta\agivenb{a}{s} \exp\left( \frac{1}{\alpha} A^{\pi_\beta}(s, a) \right),\]</span> with temperature hyperparameter <span class="math inline">\(\alpha\)</span>.
 <ul class="incremental">
 <li class="fragment">If <span class="math inline">\(A &gt; 0\)</span>: <span class="math inline">\(\exp(\frac{1}{\alpha}A) &gt; 1\)</span> <span class="math inline">\(\Rightarrow\)</span> The probability of picking this action increases relative to the dataset.</li>
 <li class="fragment">If <span class="math inline">\(A &lt; 0\)</span>: <span class="math inline">\(\exp(\frac{1}{\alpha}A) &lt; 1\)</span> <span class="math inline">\(\Rightarrow\)</span> The probability of picking this action decreases.</li>
 </ul></li>
 <li class="fragment">To find a neural network policy <span class="math inline">\(\pi_\phi\agivenb{a}{s}\)</span>, we approximate this optimal target policy by minimizing their KL divergence: <span class="math inline">\(\min_\phi \KLdivavg{\pi^*}{\pi_\phi}\)</span>.</li>
 <li class="fragment">Insert the analytical solution <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\pi_\beta\agivenb{a}{s}\)</span> cancels out<br />
-<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> weighted maximum likelihood loss: <span class="math display">\[\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\beta} \right) \log \pi_\phi\agivenb{a}{s}}{(s, a) \sim \Dc}. \label{eq:OFF_awr_policy} \end{equation}\]</span></span></li>
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <strong>weighted maximum likelihood loss</strong>: <span class="math display">\[\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\beta} \right) \log \pi_\phi\agivenb{a}{s}}{(s, a) \sim \Dc}. \label{eq:OFF_awr_policy} \end{equation}\]</span></span></li>
 <li class="fragment">To compute the weight <span class="math inline">\(\exp(\frac{1}{\alpha} A^{\pi_\beta}(s, a))\)</span>, we need the advantage.
 <ul class="incremental">
 <li class="fragment">Train a standard baseline value function <span class="math inline">\(V_\theta(s)\)</span> via MSE on the dataset <span class="math inline">\(\Dc\)</span>: <span class="math display">\[\begin{equation} L_V(\theta) = \Expsub{(g - V_\theta(s))^2}{s\sim\Dc}. \label{eq:OFF_awr_value} \end{equation}\]</span></li>
@@ -13542,8 +13540,8 @@ Chess board [<a href="https://commons.wikimedia.org/wiki/File:Through_the_Lookin
 <h3>The AWR algorithm</h3>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Fit value function approximation <span class="math inline">\(V_\theta(s)\)</span> to the data set <span class="math inline">\(\Dc\)</span>: <span class="math display">\[ \min_\theta L_\mathsf{value}(\theta). \]</span></li>
-<li class="fragment">Optimize policy by approximating the analytically optimal policy: <span class="math display">\[ \max_\phi L_\mathsf{policy}(\phi).\]</span></li>
+<li class="fragment">Fit value function approximation <span class="math inline">\(V_\theta(s)\)</span> to the data set <span class="math inline">\(\Dc\)</span>: <span class="math display">\[ \min_\theta L_V(\theta). \]</span></li>
+<li class="fragment">Optimize policy by approximating the analytically optimal policy: <span class="math display">\[ \max_\phi L_\pi(\phi).\]</span></li>
 </ol>
 </div>
 </div>
@@ -13576,7 +13574,7 @@ Chess board [<a href="https://commons.wikimedia.org/wiki/File:Through_the_Lookin
 </ul>
 </div>
 <div class="fragment">
-<h3 id="proposed-changes-in-implicit-q-learning-iql-kostrikov2021implicitqlearning">Proposed changes in implicit <span class="math inline">\(Q\)</span>-learning (IQL <span class="citation">(<a href="#ref-Kostrikov2021implicitqlearning">Kostrikov, Nair, and Levine 2021</a>)</span>)</h3>
+<h3 id="proposed-changes-in-implicit-q-learning-iql-kostrikov2021implicitqlearning">Proposed changes in implicit <span class="math inline">\(Q\)</span>-learning (IQL, <span class="citation">(<a href="#ref-Kostrikov2021implicitqlearning">Kostrikov, Nair, and Levine 2021</a>)</span>)</h3>
 </div>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
@@ -13704,7 +13702,7 @@ L_\mathsf{TD}(\theta) &amp;= \Expsub{r + \gamma Q_\bar{\theta}(s&#39;,a&#39;) - 
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div class="platzhalter">
 <div id="implicit-q-learning-iql-kostrikov2021implicitqlearning" class="definition">
-<h3>Implicit <span class="math inline">\(Q\)</span>-learning (IQL <span class="citation">(<a href="#ref-Kostrikov2021implicitqlearning">Kostrikov, Nair, and Levine 2021</a>)</span>)</h3>
+<h3>Implicit <span class="math inline">\(Q\)</span>-learning (IQL, <span class="citation">(<a href="#ref-Kostrikov2021implicitqlearning">Kostrikov, Nair, and Levine 2021</a>)</span>)</h3>
 <p>Given: A dataset <span class="math inline">\(\Dc\)</span></p>
 <div class="incremental">
 <ul class="incremental">

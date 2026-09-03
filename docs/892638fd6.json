@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "14.07.2026 07:23"
+        "19.08.2026 06:17"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "8",
@@ -895,6 +895,7 @@
             "public/18-transfer-learning-deck.html": "18-transfer-learning-deck.md",
             "public/19-multi-agent-RL-deck.html": "19-multi-agent-RL-deck.md",
             "public/20-scientific-standards-deck.html": "20-scientific-standards-deck.md",
+            "public/90-exam-deck.html": "90-exam-deck.md",
             "public/99-notation-deck.html": "99-notation-deck.md"
         },
         "decksPdf": {
@@ -919,6 +920,7 @@
             "public/18-transfer-learning-deck.pdf": "18-transfer-learning-deck.md",
             "public/19-multi-agent-RL-deck.pdf": "19-multi-agent-RL-deck.md",
             "public/20-scientific-standards-deck.pdf": "20-scientific-standards-deck.md",
+            "public/90-exam-deck.pdf": "90-exam-deck.md",
             "public/99-notation-deck.pdf": "99-notation-deck.md"
         },
         "handouts": {
@@ -943,6 +945,7 @@
             "public/18-transfer-learning-handout.html": "18-transfer-learning-deck.md",
             "public/19-multi-agent-RL-handout.html": "19-multi-agent-RL-deck.md",
             "public/20-scientific-standards-handout.html": "20-scientific-standards-deck.md",
+            "public/90-exam-handout.html": "90-exam-deck.md",
             "public/99-notation-handout.html": "99-notation-deck.md"
         },
         "handoutsPdf": {
@@ -967,6 +970,7 @@
             "public/18-transfer-learning-handout.pdf": "18-transfer-learning-deck.md",
             "public/19-multi-agent-RL-handout.pdf": "19-multi-agent-RL-deck.md",
             "public/20-scientific-standards-handout.pdf": "20-scientific-standards-deck.md",
+            "public/90-exam-handout.pdf": "90-exam-deck.md",
             "public/99-notation-handout.pdf": "99-notation-deck.md"
         },
         "pages": {},
@@ -994,6 +998,7 @@
             "18-transfer-learning-deck.md",
             "19-multi-agent-RL-deck.md",
             "20-scientific-standards-deck.md",
+            "90-exam-deck.md",
             "99-notation-deck.md"
         ],
         "static": {

@@ -19,7 +19,6 @@
 
 class UIAnchorsPlugin {
   id = "ui-anchors";
-  anchors = [];
   top_left_anchor = undefined;
   top_right_anchor = undefined;
   bottom_left_anchor = undefined;
@@ -84,12 +83,6 @@ class UIAnchorsPlugin {
     this.bottom_right_anchor.appendChild(button);
   }
 
-  setInert(inert) {
-    for (const anchor of this.anchors) {
-      anchor.inert = inert;
-    }
-  }
-
   init(reveal) {
     this.top_left_anchor = this.createAnchor("top-left-anchor");
     this.top_right_anchor = this.createAnchor("top-right-anchor");
@@ -97,15 +90,9 @@ class UIAnchorsPlugin {
     this.bottom_center_anchor = this.createAnchor("bottom-center-anchor");
     this.bottom_right_anchor = this.createAnchor("bottom-right-anchor");
 
-    this.anchors.push(this.top_left_anchor);
-    this.anchors.push(this.top_right_anchor);
-    this.anchors.push(this.bottom_left_anchor);
-    this.anchors.push(this.bottom_center_anchor);
-    this.anchors.push(this.bottom_right_anchor);
-
     let reveal_element = reveal.getViewportElement();
-    reveal_element.prepend(this.top_right_anchor);
     reveal_element.prepend(this.top_left_anchor);
+    reveal_element.appendChild(this.top_right_anchor);
     reveal_element.appendChild(this.bottom_left_anchor);
     reveal_element.appendChild(this.bottom_center_anchor);
     reveal_element.appendChild(this.bottom_right_anchor);

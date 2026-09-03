@@ -1,15 +1,13 @@
 @import url("../vendor/fontawesome/css/all.css");
+@import url("../fonts/lato.css");
 
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
 
-:root {
-  --root-font-size: 32px;
-}
-
 body {
   background: var(--background-color);
+  font-family: "Lato", sans-serif;
   color: var(--foreground-color);
   accent-color: var(--accent3);
 }
@@ -18,17 +16,17 @@ body.reveal-viewport {
   --inner-width: calc(
     var(--slide-width) - 2 * var(--block-border-width) - 2 * var(--block-outset)
   );
-  line-height: 1.5;
 }
 
 .reveal {
-  font-size: var(--root-font-size);
+  font-size: 32px;
   font-weight: normal;
 }
 
 .reveal .slides > section {
   width: var(--slide-width);
   height: var(--slide-height);
+  line-height: 1.5;
   text-align: left;
   padding: 0;
 }
@@ -55,17 +53,13 @@ body.reveal-viewport {
   max-width: 100%;
 }
 
-/* WITH centering (also for section titles) */
-.reveal .slides section.center,
-.reveal .slides section.section,
-.reveal section:has(h1:only-child) {
-  & > .decker {
-    align-items: center;
-    justify-content: center;
-    & > .alignment {
-      width: auto;
-    }
-  }
+/* WITH centering */
+.reveal .slides section.center > .decker {
+  align-items: center;
+  justify-content: center;
+}
+.reveal .slides section.center > .decker > .alignment {
+  width: auto;
 }
 
 /* WITH centering, but VERTICAL centering disabled */
@@ -97,6 +91,18 @@ div.block {
  * font sizes and styles
  *********************************************/
 
+.reveal .tiny {
+  font-size: 0.5em;
+}
+
+.reveal .small {
+  font-size: 0.7em;
+}
+
+.reveal .large {
+  font-size: 1.2em;
+}
+
 del {
   color: var(--accent0);
 }
@@ -108,7 +114,7 @@ del {
 }
 
 /*********************************************
- * frame box
+ * frame box 
  *********************************************/
 
 .reveal .boxed {
@@ -280,18 +286,6 @@ div.grid-layout {
   display: none;
 }
 
-.reveal h1:has(.sr-only:only-child) {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
 /* section headers */
 .reveal section.section h1,
 .reveal section h1:only-child {
@@ -403,6 +397,7 @@ div.align-right > p {
 
 .reveal :is(ul, ol, dl) li {
   margin-bottom: 0.5em;
+  margin-left: 1em;
   padding-left: 0.2em;
 }
 
@@ -419,6 +414,7 @@ div.align-right > p {
   display: block;
   margin-top: 0.3em;
   font-size: 0.8em;
+  margin-left: 0.5em;
 }
 
 .reveal :is(ul, ol) li :is(ul, ol) li {
@@ -478,9 +474,7 @@ div.align-right > p {
   padding: 0.5em;
   font-style: italic;
   border: 1px solid var(--shade1);
-  @media not print {
-    box-shadow: 2px 2px 4px var(--shade1);
-  }
+  box-shadow: 2px 2px 4px var(--shade1);
   width: auto;
 }
 
@@ -499,18 +493,18 @@ div.align-right > p {
  **************************************************/
 
 /* code block */
-.reveal .media .code pre {
+div.sourceCode > pre.sourceCode {
   display: block;
   position: relative;
   margin: auto;
   padding: 0.5em 0.75em;
-  text-align: left;
+  /* width: auto; */
+  text-align: center;
   max-height: 500px;
   overflow: auto;
   background: var(--shade1);
   border: 1px solid var(--shade2);
   border-radius: 4px;
-  font-size: 0.5em;
 }
 
 /* inline source code */
@@ -528,6 +522,7 @@ pre > code.sourceCode {
   padding: 0;
   white-space: pre;
   position: relative;
+  font-size: 0.5em;
   overflow: auto;
   max-height: 100%;
   box-sizing: border-box;
@@ -578,7 +573,7 @@ pre.line-numbers code > span > a:first-child::before {
   color: var(--shade3);
 }
 
-/* MacOS only shows scrollbars when they are used, which is not a
+/* MacOS only shows scrollbars when they are used, which is not a 
    good idea for code blocks. The following settings show the scrollbar.
    Only works on WebKit browswers (Chrome, Safari), not on Firefox. */
 .reveal pre::-webkit-scrollbar {
@@ -698,16 +693,16 @@ code span.wa {
   width: unset;
   margin: auto;
   border-collapse: collapse;
-  border-spacing: 0.07em;
-  border-top: 0.07em solid var(--shade6);
-  border-bottom: 0.07em solid var(--shade6);
+  border-spacing: 2px;
+  border-top: 2px solid var(--shade6);
+  border-bottom: 2px solid var(--shade6);
   text-align: center;
   margin-bottom: 1em;
   line-height: 1.5em;
 }
 
 .reveal table caption {
-  margin: 0.35em 0px 0px 0px;
+  margin: 10px 0px 0px 0px;
   line-height: 1.2;
   font-style: italic;
   font-size: 0.8em;
@@ -720,7 +715,7 @@ code span.wa {
 }
 
 .reveal table thead {
-  border-bottom: 0.035em solid var(--shade6);
+  border-bottom: 1px solid var(--shade6);
 }
 
 .reveal table th,
@@ -853,23 +848,10 @@ span.sequence {
   display: contents;
 }
 
-/* this block allows to show the first item w/o fragment, but to still remove it when the second item is activated */
-.reveal .stack:has(.current-fragment) > p > :not(.current-fragment),
-.reveal .stack:has(.current-fragment) > :not(.current-fragment) {
-  visibility: hidden;
-}
-.reveal .stack:has(.current-fragment) :has(.current-fragment) {
-  visibility: inherit !important;
-}
-
-/* hide non-active stack items
+/* hide non-active stack items 
   (use hidden instead of display:none to avoid layout shifts) */
 @media not print {
-  .reveal
-    .slides
-    section
-    .stack:has(.current-fragment)
-    .fragment:not(.current-fragment) {
+  .reveal .slides section .stack .fragment:not(.current-fragment) {
     visibility: hidden;
   }
 }
@@ -927,7 +909,6 @@ section#title-slide h1 {
   margin: 20px !important;
   box-sizing: border-box;
   line-height: 1.5;
-  text-wrap: balance;
 }
 
 section#title-slide h2 {
@@ -940,9 +921,9 @@ section#title-slide h2 {
   line-height: 1.5;
 }
 
-section#title-slide div.teaser img {
+section#title-slide img.teaser {
   margin: 30px 0 0 0;
-  height: 200px;
+  height: 250px;
   width: auto;
   object-fit: contain;
 }
@@ -954,13 +935,6 @@ section#title-slide div.author {
   font-size: 1em;
   text-align: center;
   color: var(--shade6);
-}
-
-section#title-slide div.author > img {
-  margin: 30px 0 20px 0;
-  height: 150px;
-  width: auto;
-  object-fit: contain;
 }
 
 section#title-slide div.affiliation {
@@ -1020,12 +994,8 @@ section#title-slide .decker-link:hover {
   font-size: 0.75em;
 }
 
-.reveal:has(.slides section:first-child.present) .slide-number {
-  visibility: hidden;
-}
-
 /*********************************************
- * COMMENT BUBBLES & POP-UP
+ * COMMENT BUBBLES
  *********************************************/
 
 .reveal .bubble {
@@ -1036,46 +1006,6 @@ section#title-slide .decker-link:hover {
   padding: 10px;
   margin: 0.1em auto 0.5em auto;
   border-radius: 5px;
-}
-
-[popup] {
-  display: block;
-  position: absolute;
-  @media not print {
-    box-shadow: 0 0 30px 15px rgba(0, 0, 0, 0.4);
-  }
-  border: 2px solid var(--accent3-fg);
-  z-index: 3000;
-  background: var(--accent3);
-  color: white;
-  font-size: 1.25em;
-  padding: 0.5em;
-  border-radius: 0.25em;
-  font-weight: bold;
-  text-wrap: balance;
-  text-align: center;
-}
-
-/* A centered block. This is very clever. */
-[popup="center"] {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: center;
-}
-
-/* A centered box that is also tilted up. */
-[popup="center-up"] {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-23deg) scale(1);
-}
-
-/* A centered box that is also tilted down. */
-[popup="center-down"] {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(23deg) scale(1);
 }
 
 /*********************************************
@@ -1122,7 +1052,7 @@ section#title-slide .decker-link:hover {
  *********************************************/
 
 /* hide checkbox */
-.reveal ul.task-list > li > label > input[type="checkbox"] {
+.reveal ul.task-list li > input[type="checkbox"] {
   display: none;
 }
 /* hide item bullets */
@@ -1182,13 +1112,6 @@ section#title-slide .decker-link:hover {
   fill: var(--icon-hover-color);
 }
 
-/* avoid too fat font when exporting PDF */
-@media print {
-  mjx-container[jax="SVG"] :is(use[data-c], path[data-c]) {
-    stroke-width: 0;
-  }
-}
-
 /*********************************************
  * fullscreen for iframes
  *********************************************/
@@ -1219,6 +1142,35 @@ section#title-slide .decker-link:hover {
 
 .reveal div.fs-container:fullscreen > iframe {
   border: none;
+}
+
+.reveal button.fs-button {
+  z-index: 100;
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+  outline: none;
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  opacity: 0;
+  color: var(--icon-inactive-color);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.reveal div.fs-container:hover > button.fs-button {
+  opacity: 0.5;
+}
+
+.reveal div.fs-container > button.fs-button:hover {
+  opacity: 1;
+  color: var(--icon-active-color);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 /*********************************************
@@ -1348,7 +1300,7 @@ section#title-slide .decker-link:hover {
   font-variant: normal;
   text-rendering: auto;
   font-weight: 900;
-  font-family: "Font Awesome 7 Free";
+  font-family: "Font Awesome 5 Free";
   content: var(--quiz-icon);
   position: absolute;
   font-size: 15px;
@@ -1494,7 +1446,7 @@ section#title-slide .decker-link:hover {
   font-variant: normal;
   text-rendering: auto;
   font-weight: 900;
-  font-family: "Font Awesome 7 Free";
+  font-family: "Font Awesome 5 Free";
   content: var(--quiz-icon);
   position: absolute;
   font-size: 15px;
@@ -1605,9 +1557,14 @@ section#title-slide .decker-link:hover {
 * various hacks
 *********************************************/
 
-/* get higher contrast for hovered elements in menu */
-#decker-menu ul.slide-list > li:hover > a {
-  color: white;
+.decker-anchor > button.fa-button {
+  border-radius: 999px;
+  transition: background-color 0.1s;
+  background-color: transparent;
+}
+.decker-anchor > button.fa-button:hover,
+.decker-anchor > button.fa-button:focus {
+  background-color: var(--background-color);
 }
 
 /*********************************************
@@ -1622,15 +1579,12 @@ html.dark .light-only {
 html.dark
   .media
   :is(figure, .figure)
-  :not(.MathJax)
-  > :is(svg, img, canvas[data-chart]) {
+  :is(svg, img, div.chart-container, iframe) {
   background-color: white;
   filter: brightness(90%) contrast(90%);
-  border-radius: 0;
 }
 
-/* put white background on the image instead of the container */
-html.dark section#title-slide .logo img {
+html.dark section#title-slide .logo {
   background-color: var(--shade7);
   border-radius: 0.5rem;
 }
@@ -1644,7 +1598,7 @@ html.a11y {
 }
 
 html.a11y .reveal a {
-  /* color: var(--blueish); */
+  color: var(--blueish);
   text-decoration: underline;
   transition: transform 0.1s ease-out 0s;
 }

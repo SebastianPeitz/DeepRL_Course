@@ -42,7 +42,9 @@ let uiState;
 
 let localization;
 
-let pluginButton;
+function transition(name) {
+  return (_) => uiState.transition(name);
+}
 
 // The state of this plugins UI. All possible legal states sre encoded in
 // `uiStates`. Each state has set of possible transition actions together with
@@ -186,8 +188,7 @@ function jumpToTime(index) {
 
 // Looks up the index of the current Reveal slide in the explainTimes array.
 function currentRevealSlideIndex() {
-  if (!explainTimesPlay) return -1;
-  const slideId = Reveal.getCurrentSlide().id;
+  let slideId = Reveal.getCurrentSlide().id;
   return explainTimesPlay.findIndex((i) => i.slideId === slideId);
 }
 
@@ -209,22 +210,9 @@ function prev() {
   jumpToTime(currentVideoSlideIndex() - 1);
 }
 
-// store player volume in local storage
-function storePlayerVolume() {
-  if (player) {
-    // get current volume
-    let vol = player.volume();
-    // round to two digits
-    vol = Math.round(vol * 100) / 100;
-    // save in local storage
-    localStorage.setItem(player.storage, vol);
-  }
-}
-
 // Stops the video and navigates Reveal to the current slide.
 function stop() {
   player.pause();
-  storePlayerVolume();
   goToSlide(currentVideoSlideIndex());
   return true;
 }
@@ -297,7 +285,7 @@ class Timing {
     let slideId = Reveal.getCurrentSlide().id;
     this.previousSlide = {
       slideId: slideId,
-      timeIn: time
+      timeIn: time,
     };
 
     this.timeIntervals.push(this.previousSlide);
@@ -309,7 +297,7 @@ class Timing {
     if (this.previousSlide) this.previousSlide.timeOut = this.timeStamp();
     let json = JSON.stringify(this.timeIntervals, null, 4);
     return new Blob([json], {
-      type: "application/json"
+      type: "application/json",
     });
   }
 }
@@ -326,10 +314,10 @@ async function captureScreen() {
       width: recWidth,
       height: recHeight,
       cursor: "always",
-      resizeMode: "crop-and-scale"
+      resizeMode: "crop-and-scale",
     },
     audio: true,
-    selfBrowserSurface: "include"
+    selfBrowserSurface: "include",
   });
 
   let video = desktopStream.getVideoTracks()[0].getSettings();
@@ -359,9 +347,9 @@ async function captureMicrophone() {
       video: false,
       audio: {
         deviceId: micSelect.value ? { exact: micSelect.value } : undefined,
-        echoCancellation: true,
-        noiseSuppression: true
-      }
+        echoCancellation: false,
+        noiseSuppression: true,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -415,9 +403,9 @@ async function captureCamera() {
         deviceId: camSelect.value ? { exact: camSelect.value } : undefined,
         width: camWidth,
         height: camHeight,
-        frameRate: { max: 30 }
+        frameRate: { max: 30 },
       },
-      audio: false
+      audio: false,
     });
   } catch (error) {
     console.error(error);
@@ -466,7 +454,7 @@ async function captureCamera() {
 function mergeStreams() {
   const tracks = [
     ...desktopStream.getVideoTracks(),
-    ...mergeAudioStreams(desktopStream, voiceStream)
+    ...mergeAudioStreams(desktopStream, voiceStream),
   ];
   stream = new MediaStream(tracks);
 
@@ -530,9 +518,6 @@ async function getDevices() {
 }
 
 async function setupRecorder() {
-  if (!Decker.isPresenterMode()) {
-    Decker.togglePresenterMode();
-  }
   try {
     stream = null;
 
@@ -558,16 +543,13 @@ async function setupRecorder() {
     // capture video stream of webcam
     await captureCamera();
 
-    recordButton.ariaDisabled = "false";
-    pauseButton.ariaDisabled = "true";
-    stopButton.ariaDisabled = "true";
+    recordButton.disabled = undefined;
+    pauseButton.disabled = true;
+    stopButton.disabled = true;
 
     // open panel to select camera and mic
     openRecordPanel();
 
-    // disable plugin menu button
-    pluginButton.ariaDisabled = "true";
-    pluginButton.setLabel(localization.invalid_state);
     return true;
   } catch (e) {
     console.error(e);
@@ -609,7 +591,7 @@ async function startRecording() {
     let options = [
       { text: localization.append, value: "APPEND" },
       { text: localization.replace, value: "REPLACE" },
-      { text: localization.cancel, value: "CANCEL" }
+      { text: localization.cancel, value: "CANCEL" },
     ];
     let messageElement = document.createElement("div");
     let messageText = document.createElement("p");
@@ -644,7 +626,7 @@ async function startRecording() {
   // setup recorder (let the browser choose the codec)
   recorder = new MediaRecorder(stream, {
     // mimeType: "video/webm; codecs=h264",
-    mimeType: "video/webm"
+    mimeType: "video/webm",
   });
 
   recorder.ondataavailable = (e) => blobs.push(e.data);
@@ -728,12 +710,12 @@ async function startRecording() {
       if (exists && recordingType === "APPEND") {
         appendVideo({
           data: vblob,
-          filename: deckRecordingUrl()
+          filename: deckRecordingUrl(),
         });
       } else {
         replaceVideo({
           data: vblob,
-          filename: deckRecordingUrl()
+          filename: deckRecordingUrl(),
         });
       }
     } catch (e) {
@@ -772,9 +754,9 @@ async function startRecording() {
   };
 
   recorder.start();
-  recordButton.ariaDisabled = "true";
-  pauseButton.ariaDisabled = "false";
-  stopButton.ariaDisabled = "false";
+  recordButton.disabled = true;
+  pauseButton.disabled = undefined;
+  stopButton.disabled = undefined;
   micSelect.disabled = true;
   camSelect.disabled = true;
   return true;
@@ -782,28 +764,26 @@ async function startRecording() {
 
 function pauseRecording() {
   recorder.pause();
-  recordButton.ariaDisabled = "true";
-  pauseButton.ariaDisabled = "false";
-  pauseButton.ariaPressed = "true";
-  stopButton.ariaDisabled = "false";
+  recordButton.disabled = true;
+  pauseButton.disabled = undefined;
+  stopButton.disabled = undefined;
   return true;
 }
 
 function resumeRecording() {
   recorder.resume();
-  recordButton.ariaDisabled = "true";
-  pauseButton.ariaDisabled = "false";
-  pauseButton.ariaPressed = "false";
-  stopButton.ariaDisabled = "false";
+  recordButton.disabled = true;
+  pauseButton.disabled = undefined;
+  stopButton.disabled = undefined;
   return true;
 }
 
 function stopRecording() {
   recorder.stop();
   stream.getTracks().forEach((s) => s.stop());
-  recordButton.ariaDisabled = "false";
-  pauseButton.ariaDisabled = "true";
-  stopButton.ariaDisabled = "true";
+  recordButton.disabled = undefined;
+  pauseButton.disabled = true;
+  stopButton.disabled = true;
   micSelect.disabled = undefined;
   camSelect.disabled = undefined;
 
@@ -885,7 +865,7 @@ function createPlayerGUI() {
   playPanel = createElement({
     type: "div",
     id: "explain-panel",
-    parent: document.body
+    parent: document.body,
   });
 
   playButton = createElement({
@@ -893,7 +873,7 @@ function createPlayerGUI() {
     id: "explain-play",
     classes: "explain fa-button fas fa-play",
     title: "Play video recording",
-    onclick: () => uiState.transition("play")
+    onclick: transition("play"),
   });
 
   if (Reveal.hasPlugin("ui-anchors")) {
@@ -906,7 +886,7 @@ function createPlayerGUI() {
     type: "video",
     id: "explain-video",
     classes: "video-js",
-    parent: playPanel
+    parent: playPanel,
   });
 
   // setup video-js
@@ -916,65 +896,52 @@ function createPlayerGUI() {
     controls: true,
     autoplay: false,
     preload: "metadata",
-    playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-    playsinline: true,
-    html5: { nativeTextTracks: true },
+    playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 3],
     controlBar: {
       playToggle: true,
-      volumePanel: { inline: false },
+      volumePanel: true,
       currentTimeDisplay: true,
       timeDivider: false,
       durationDisplay: false,
       remainingTimeDisplay: true,
       playbackRateMenuButton: true,
       fullscreenToggle: true,
-      pictureInPictureToggle: false
+      pictureInPictureToggle: false,
     },
     userActions: {
-      // mouse click toggles play/pause
-      click: true,
       // disable going to fullscreen by double click
       doubleClick: false,
       // our keyboard shortcuts
       hotkeys: function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+
         switch (event.code) {
           // space or k: play/pause
           case "Space":
           case "KeyK":
-            event.stopPropagation();
-            event.preventDefault();
             if (this.paused()) this.play();
             else this.pause();
             break;
 
-          // Page Up/Page Down: skip slides
-          case "PageUp":
-            event.stopPropagation();
-            event.preventDefault();
+          // left/right: skip slides
+          case "ArrowLeft":
             prev();
             break;
-          case "PageDown":
-            event.stopPropagation();
-            event.preventDefault();
+          case "ArrowRight":
             next();
             break;
 
           // up/down: increase/decrease volume by 5%
           case "ArrowUp":
-            event.stopPropagation();
-            event.preventDefault();
             this.volume(Math.min(1.0, this.volume() + 0.05));
             break;
           case "ArrowDown":
-            event.stopPropagation();
-            event.preventDefault();
             this.volume(Math.max(0.0, this.volume() - 0.05));
             break;
 
           // c: toggle captions
           case "KeyC":
-            event.stopPropagation();
-            event.preventDefault();
             let tracks = player.textTracks();
             for (let i = 0; i < tracks.length; i++) {
               if (tracks[i].kind === "captions") {
@@ -984,36 +951,26 @@ function createPlayerGUI() {
             }
             break;
 
-          // left/right or j/l: jump backward/forward by 10sec
-          case "ArrowLeft":
+          // j/l: jump backward/forward by 10sec
           case "KeyJ":
-            event.stopPropagation();
-            event.preventDefault();
             player.currentTime(player.currentTime() - 10);
             break;
-          case "ArrowRight":
           case "KeyL":
-            event.stopPropagation();
-            event.preventDefault();
             player.currentTime(player.currentTime() + 10);
             break;
 
           // m: mute/unmute
           case "KeyM":
-            event.stopPropagation();
-            event.preventDefault();
             this.muted(!this.muted());
             break;
 
           // esc: stop and hide video
           case "Escape":
-            event.stopPropagation();
-            event.preventDefault();
             uiState.transition("stop");
             break;
         }
-      }
-    }
+      },
+    },
   });
   // use double tap on left/right part of player to jump backward/forward by 10sec
   let lastTap = null;
@@ -1038,7 +995,7 @@ function createPlayerGUI() {
     lastTap = now;
   });
 
-  player.on("ended", () => uiState.transition("stop"));
+  player.on("ended", transition("stop"));
 
   player.on("error", (_) => {
     console.error(
@@ -1054,7 +1011,7 @@ function createPlayerGUI() {
       className: "vjs-icon-cancel",
       clickHandler: function () {
         uiState.transition("stop");
-      }
+      },
     },
     0
   );
@@ -1066,7 +1023,7 @@ function createPlayerGUI() {
       className: "vjs-icon-previous-item",
       clickHandler: function () {
         prev();
-      }
+      },
     },
     1
   );
@@ -1078,15 +1035,10 @@ function createPlayerGUI() {
       className: "vjs-icon-next-item",
       clickHandler: function () {
         next();
-      }
+      },
     },
     3
   );
-
-  // restore previous volume from localStorage
-  player.storage = "decker-explain-volume";
-  const storedVolume = localStorage.getItem(player.storage);
-  if (storedVolume) player.volume(storedVolume);
 }
 
 function toggleRecordPanel() {
@@ -1129,7 +1081,7 @@ function focusable(element) {
   return [
     ...element.querySelectorAll(
       'button,[href],select,textarea,input:not([type="hidden"]),[tabindex]:not([tabindex="-1"])'
-    )
+    ),
   ];
 }
 
@@ -1137,7 +1089,7 @@ async function createRecordingGUI() {
   recordPanel = createElement({
     type: "div",
     id: "record-panel",
-    parent: document.body
+    parent: document.body,
   });
 
   recordToggle = createElement({
@@ -1147,7 +1099,7 @@ async function createRecordingGUI() {
     parent: recordPanel,
     onclick: (event) => {
       toggleRecordPanel();
-    }
+    },
   });
 
   let row;
@@ -1155,26 +1107,26 @@ async function createRecordingGUI() {
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   recordIndicator = createElement({
     type: "i",
     id: "record-indicator",
     classes: "fas indicator",
-    parent: row
+    parent: row,
   });
 
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   volumeMeter = createElement({
     type: "meter",
     id: "audio-meter",
-    parent: row
+    parent: row,
   });
   volumeMeter.value = -60;
   volumeMeter.min = -60;
@@ -1185,13 +1137,13 @@ async function createRecordingGUI() {
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   voiceIndicator = createElement({
     type: "i",
     classes: "indicator fas fa-microphone",
-    parent: row
+    parent: row,
   });
 
   voiceGainSlider = createElement({
@@ -1199,19 +1151,19 @@ async function createRecordingGUI() {
     id: "voice-gain-slider",
     classes: "gain-slider",
     title: "Microphone Audio Gain",
-    parent: row
+    parent: row,
   });
 
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   desktopIndicator = createElement({
     type: "i",
     classes: "indicator fas fa-tv",
-    parent: row
+    parent: row,
   });
 
   desktopGainSlider = createElement({
@@ -1219,7 +1171,7 @@ async function createRecordingGUI() {
     id: "desktop-gain-slider",
     classes: "gain-slider",
     title: "Desktop Audio Gain",
-    parent: row
+    parent: row,
   });
   setupGainSlider(desktopGain, desktopGainSlider);
 
@@ -1227,14 +1179,14 @@ async function createRecordingGUI() {
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   micIndicator = createElement({
     type: "i",
     classes: "indicator fas fa-microphone",
     title: "Select microphone",
-    parent: row
+    parent: row,
   });
 
   micSelect = createElement({
@@ -1242,7 +1194,7 @@ async function createRecordingGUI() {
     id: "mic-select",
     classes: "input-select",
     title: "Select microphone",
-    parent: row
+    parent: row,
   });
   micSelect.onchange = captureMicrophone;
 
@@ -1250,14 +1202,14 @@ async function createRecordingGUI() {
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   camIndicator = createElement({
     type: "i",
     classes: "indicator fas fa-camera",
     title: "Select camera",
-    parent: row
+    parent: row,
   });
 
   camSelect = createElement({
@@ -1265,107 +1217,90 @@ async function createRecordingGUI() {
     id: "cam-select",
     classes: "input-select",
     title: "Select camera",
-    parent: row
+    parent: row,
   });
   camSelect.onchange = captureCamera;
 
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   createElement({
     type: "i",
     classes: "indicator fas fa-camera",
     title: "Camera capture size",
-    parent: row
+    parent: row,
   });
 
   cameraCaptureSize = createElement({
     type: "span",
     classes: "capture-size",
-    parent: row
+    parent: row,
   });
 
   createElement({
     type: "i",
     classes: "indicator fas fa-tv",
     title: "Screen capture size",
-    parent: row
+    parent: row,
   });
 
   screenCaptureSize = createElement({
     type: "span",
     classes: "capture-size",
-    parent: row
+    parent: row,
   });
 
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   createElement({
     type: "i",
     classes: "indicator fas fa-stopwatch",
     title: "Recording time",
-    parent: row
+    parent: row,
   });
 
   recordingTime = createElement({
     type: "span",
     classes: "capture-size",
     title: "Recording timer",
-    parent: row
+    parent: row,
   });
 
   row = createElement({
     type: "div",
     classes: "controls-row",
-    parent: recordPanel
+    parent: recordPanel,
   });
 
   recordButton = createElement({
     type: "button",
-    classes: "explain record-button fas fa-play-circle fa-button",
+    classes: "explain record-button fas fa-play-circle",
     title: "Start recording",
     parent: row,
-    onclick: () => {
-      console.log("start");
-      if (recordButton.ariaDisabled === "true") {
-        console.log("cancel");
-        return;
-      }
-      uiState.transition("record");
-    }
+    onclick: transition("record"),
   });
 
   pauseButton = createElement({
     type: "button",
-    classes: "explain pause-button fas fa-pause-circle fa-button",
+    classes: "explain pause-button fas fa-pause-circle",
     title: "Pause/resume recording",
     parent: row,
-    onclick: () => {
-      if (pauseButton.ariaDisabled === "true") {
-        return;
-      }
-      uiState.transition("pause");
-    }
+    onclick: transition("pause"),
   });
 
   stopButton = createElement({
     type: "button",
-    classes: "explain stop-button fas fa-stop-circle fa-button",
+    classes: "explain stop-button fas fa-stop-circle",
     title: "Stop recording",
     parent: row,
-    onclick: () => {
-      if (stopButton.ariaDisabled === "true") {
-        return;
-      }
-      uiState.transition("stop");
-    }
+    onclick: transition("stop"),
   });
 
   /* inert everything but the toggle button */
@@ -1391,7 +1326,7 @@ function setupGainSlider(gain, slider) {
 
   slider.output = createElement({
     type: "output",
-    parent: slider.parentElement
+    parent: slider.parentElement,
   });
 
   slider.oninput = function () {
@@ -1411,7 +1346,7 @@ function createCameraGUI() {
     type: "video",
     id: "camera-video",
     classes: "camera-panel",
-    parent: document.body
+    parent: document.body,
   });
   cameraVideo.muted = true; // don't want audio in this stream
 
@@ -1419,7 +1354,7 @@ function createCameraGUI() {
     type: "canvas",
     id: "camera-canvas",
     classes: "camera-panel",
-    parent: document.body
+    parent: document.body,
   });
   if (gsBackground) {
     cameraCanvas.style.backgroundImage = `url('${gsBackground}')`;
@@ -1755,12 +1690,6 @@ async function setupPlayer() {
       explainTimesPlay = await fetchResourceJSON(explainTimesUrl);
       player.src({ type: "video/mp4", src: explainVideoUrl });
 
-      updatePlayButton();
-
-      // ayy1 mode?
-      const a11yPlugin = Reveal.getPlugin("a11y");
-      const a11y = !!(a11yPlugin && a11yPlugin.a11yMode());
-
       let vtt;
 
       // "old" version of VTT w/o language specifier
@@ -1772,7 +1701,6 @@ async function setupPlayer() {
             kind: "captions",
             srclang: document.documentElement.lang,
             src: vtt,
-            default: a11y
           },
           false
         );
@@ -1782,7 +1710,7 @@ async function setupPlayer() {
       vtt = deckUrlBase() + "-recording-en.vtt";
       if (await resourceExists(vtt)) {
         player.addRemoteTextTrack(
-          { kind: "captions", srclang: "en", src: vtt, default: a11y },
+          { kind: "captions", srclang: "en", src: vtt },
           false
         );
       }
@@ -1793,7 +1721,7 @@ async function setupPlayer() {
         vtt = deckUrlBase() + "-recording-" + lang + ".vtt";
         if (await resourceExists(vtt)) {
           player.addRemoteTextTrack(
-            { kind: "captions", srclang: lang, src: vtt, default: a11y },
+            { kind: "captions", srclang: lang, src: vtt },
             false
           );
         }
@@ -1826,9 +1754,6 @@ function setupCallbacks() {
     toggleCamera
   );
 
-  // Store video player volume on page leave
-  window.addEventListener("beforeunload", storePlayerVolume);
-
   // Intercept page leave when we are recording
   window.addEventListener("beforeunload", (evt) => {
     if (uiState.in("RECORDER_PAUSED", "RECORDING")) {
@@ -1837,14 +1762,6 @@ function setupCallbacks() {
       return evt.returnValue;
     }
   });
-
-  // show/hide play button, depending on slides is found in times array
-  Reveal.addEventListener("slidechanged", updatePlayButton);
-}
-
-function updatePlayButton() {
-  playButton.style.display =
-    currentRevealSlideIndex() == -1 ? "none" : "initial";
 }
 
 // export the plugin
@@ -1878,45 +1795,45 @@ const Plugin = {
         name: "INIT",
         transition: {
           setupPlayer: { action: setupPlayer, next: "PLAYER_READY" },
-          setupRecorder: { action: setupRecorder, next: "RECORDER_READY" }
-        }
+          setupRecorder: { action: setupRecorder, next: "RECORDER_READY" },
+        },
       },
       PLAYER_READY: {
         name: "PLAYER_READY",
         transition: {
           play: { action: play, next: "PLAYING" },
-          setupRecorder: { action: setupRecorder, next: "RECORDER_READY" }
-        }
+          setupRecorder: { action: setupRecorder, next: "RECORDER_READY" },
+        },
       },
       PLAYING: {
         name: "PLAYING",
         transition: {
-          stop: { action: stop, next: "PLAYER_READY" }
-        }
+          stop: { action: stop, next: "PLAYER_READY" },
+        },
       },
       RECORDER_READY: {
         name: "RECORDER_READY",
         transition: {
-          // cancel: { action: enableViewButton, next: "INIT" },
-          record: { action: startRecording, next: "RECORDING" }
-        }
+          cancel: { action: null, next: "INIT" },
+          record: { action: startRecording, next: "RECORDING" },
+        },
       },
       RECORDING: {
         name: "RECORDING",
         transition: {
           cancel: { action: stopRecording, next: "INIT" },
           stop: { action: stopRecording, next: "INIT" },
-          pause: { action: pauseRecording, next: "RECORDER_PAUSED" }
-        }
+          pause: { action: pauseRecording, next: "RECORDER_PAUSED" },
+        },
       },
       RECORDER_PAUSED: {
         name: "RECORDER_PAUSED",
         transition: {
           cancel: { action: stopRecording, next: "INIT" },
           stop: { action: stopRecording, next: "INIT" },
-          pause: { action: resumeRecording, next: "RECORDING" }
-        }
-      }
+          pause: { action: resumeRecording, next: "RECORDING" },
+        },
+      },
     });
     // Try to connect to an existing video.
     uiState.transition("setupPlayer");
@@ -1930,8 +1847,6 @@ const Plugin = {
       append: "Append",
       replace: "Replace",
       cancel: "Cancel",
-      init_recording: "Initialise Screen Recording (R)",
-      invalid_state: "Recording was already initialized.",
       no_camera_stream: "No camera stream available.",
       replacement_title: "Append or Replace?",
       replacement_warning:
@@ -1939,8 +1854,6 @@ const Plugin = {
       Do you want to append to the existing recording or replace it?",
       accept: "Accept",
       abort: "Abort",
-      presenter_mode_error:
-        'Please activate <strong style="color: var(--color-info)">presenter mode</strong> first.'
     };
 
     if (lang === "de") {
@@ -1948,8 +1861,6 @@ const Plugin = {
         append: "Anhängen",
         replace: "Ersetzen",
         cancel: "Abbrechen",
-        init_recording: "Bildschirmaufnahme vorbereiten",
-        invalid_state: "Aufnamesystem wurde bereits initialisiert.",
         no_camera_stream: "Kein Kamerastream verfügbar.",
         replacement_title: "Anhängen oder Ersetzen?",
         replacement_warning:
@@ -1957,57 +1868,15 @@ const Plugin = {
         Soll die Aufnahme an das bereits existierende Video angehangen werden oder es ersetzen?",
         accept: "Akzeptieren",
         abort: "Abbrechen",
-        presenter_mode_error:
-          'Bitte aktivieren Sie zuerst den <strong style="color: var(--color-info)">Präsentationsmodus</strong>.'
       };
     }
-    deck.addEventListener("ready", () => {
-      Decker.addPresenterModeListener((mode) => {
-        if (pluginButton) {
-          if (
-            mode &&
-            uiState.name() !== "RECORDER_READY" &&
-            uiState.name() !== "RECORDING" &&
-            uiState.name() !== "RECORDER_PAUSED"
-          ) {
-            pluginButton.ariaDisabled = "false";
-          } else {
-            pluginButton.ariaDisabled = "true";
-          }
-        }
-      });
-      const menuPlugin = deck.getPlugin("decker-menu");
-      if (menuPlugin && !!menuPlugin.addPluginButton) {
-        pluginButton = menuPlugin.addPluginButton(
-          "decker-menu-recording-button",
-          "fas fa-video",
-          localization.init_recording,
-          () => {
-            if (pluginButton.ariaDisabled === "true") {
-              return;
-            }
-            switch (uiState.name()) {
-              case "INIT":
-              case "PLAYER_READY":
-                uiState.transition("setupRecorder");
-                break;
-              default:
-                Decker.flashMessage(
-                  `<span>${localization.invalid_state}</span>`
-                );
-            }
-          }
-        );
-        pluginButton.ariaDisabled = "true";
-      }
-    });
   },
 
   playVideo: play,
   stopVideo: stop,
   isVideoPlaying: () => {
     return uiState.is("PLAYING");
-  }
+  },
 };
 
 export default Plugin;

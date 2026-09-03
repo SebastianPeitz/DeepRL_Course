@@ -1,12 +1,7 @@
 html.handout #handout-container {
   margin: auto;
-  overflow: unset;
-  touch-action: pan-x pan-y pinch-zoom;
-  scroll-behavior: smooth;
-}
-
-html.handout .reveal-viewport {
   overflow: auto;
+  touch-action: pan-x pan-y;
 }
 
 /* hide standard reveal element in handout mode, since it consumes space
@@ -18,7 +13,6 @@ html.handout :not(#handout-container).reveal {
 html.handout .reveal .slides {
   display: block;
   width: var(--slide-width);
-  transform: scale(var(--scale-factor));
   transform-origin: top center;
   translate: -50% 0;
   left: 50%;
@@ -92,8 +86,10 @@ html.handout .reveal .pause-overlay {
   display: none;
 }
 
-html.handout .reveal .stack,
-html.handout .reveal .stack > p,
+html.handout .reveal .stack > p {
+  display: block;
+}
+
 html.handout .reveal .stack span.media {
   display: block;
 }
@@ -102,17 +98,17 @@ html.handout .reveal .slides section .stack {
   counter-reset: stack-item;
 }
 
-html.handout .reveal .slides section .stack .media {
+html.handout .reveal .slides section .stack .fragment {
   position: relative;
   border: 1px solid var(--foreground-color);
   margin: 0.5rem;
 }
 
-html.handout .reveal .slides section .stack .media img {
+html.handout .reveal .slides section .stack .fragment img {
   border: none;
 }
 
-html.handout .reveal .slides section .stack .media::before {
+html.handout .reveal .slides section .stack .fragment::before {
   counter-increment: stack-item;
   content: counter(stack-item);
   color: var(--foreground-color);
@@ -132,6 +128,10 @@ html.handout .reveal .slides section .stack .fragment:not(.current-fragment) {
   visibility: visible;
 }
 
+html.handout .decker-anchor #explain-play,
+html.handout .decker-anchor .open-button {
+  display: none;
+}
 html .decker-anchor #handout-plus,
 html .decker-anchor #handout-minus {
   display: none;
@@ -139,104 +139,4 @@ html .decker-anchor #handout-minus {
 html.handout .decker-anchor #handout-plus,
 html.handout .decker-anchor #handout-minus {
   display: inline-block;
-}
-
-.handout .decker {
-  position: relative;
-}
-
-.handout-feedback-container {
-  text-align: center;
-  background-color: var(--shade1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.5em;
-  border: 2px solid var(--shade2);
-  border-radius: 0 0 1em 1em;
-  margin-bottom: 0.5em !important;
-}
-
-.handout-feedback-comments {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 0.5em;
-  font-size: 1.5rem;
-  margin-top: 0.5em;
-}
-
-.handout-feedback-answer,
-.handout-feedback-comment {
-  position: relative;
-  font-size: 1em;
-  font-weight: normal;
-  padding: 0.5em;
-  border-radius: 0.5em;
-  text-align: left;
-  box-sizing: border-box;
-  background-color: var(--background-color);
-}
-
-.handout-feedback-comment {
-  margin-right: 5em;
-  margin-left: 3em;
-  justify-content: flex-start;
-
-  &:before {
-    content: "🤔";
-    font-size: 1.7em;
-    position: absolute;
-    left: -2em;
-    top: 0;
-    width: 1.5em;
-    height: 1.5em;
-    text-align: center;
-    border: none;
-  }
-
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0.7em;
-    left: -0.9em;
-    bottom: auto;
-    border-width: 0.6em 0.9em 0.6em 0;
-    border-style: solid;
-    border-color: transparent var(--background-color);
-    display: block;
-    width: 0;
-  }
-}
-
-.handout-feedback-answer {
-  margin-left: 5em;
-  margin-right: 3em;
-  justify-content: flex-end;
-
-  &:before {
-    content: "🎓";
-    font-size: 1.7em;
-    position: absolute;
-    right: -2em;
-    top: 0;
-    width: 1.5em;
-    height: 1.5em;
-    text-align: center;
-    border: none;
-  }
-
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0.7em;
-    right: -0.9em;
-    bottom: auto;
-    border-width: 0.6em 0 0.6em 0.9em;
-    border-style: solid;
-    border-color: transparent var(--background-color);
-    display: block;
-    width: 0;
-  }
 }

@@ -57,7 +57,9 @@ templates:
 |         | Model-based reinforcement learning                   |        [slides:](15-model-based-RL)            |
 |   **4** | **Advanced topics**                                  |                                                |
 |         | Offline reinforcement learning                       |        [slides:](16-offline-RL)                |
-|   **∞** | **Notation**                                         |                                                |
+|   **∞** | **Exam**                                             |                                                |
+|         | Exam details and exemplary questions                 |        [slides:](90-exam)                      |
+|         | **Notation**                                         |                                                |
 |         | Notation                                             |        [slides:](99-notation)                  |
 
 <!-- |         | Imitation learning                                   |        [slides:](17-imitation-learning)        | -->

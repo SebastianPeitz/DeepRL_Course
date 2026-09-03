@@ -13,20 +13,28 @@ section div.alignment {
 }
 
 /* This value depends on the height of the slide that Reveal sets. */
-div.sourceCode {
-  max-height: var(--code-block-max-height);
-  overflow: auto;
+section pre {
+  max-height: 500px;
+}
+
+/* Override Pandoc's setting.  */
+.sourceCode {
+  overflow: hidden;
+}
+
+pre,
+pre.sourceCode {
+  overflow: scroll;
 }
 
 /* Make this behave like a normal pre element. Used for inline code display. */
 span.pre {
   display: block;
-  max-height: calc(var(--code-block-max-height) / 2);
+  max-height: 500px;
   white-space: pre;
   unicode-bidi: embed;
-  overflow: auto;
+  overflow: scroll;
 }
-
 span.pre code {
   white-space: pre;
 }

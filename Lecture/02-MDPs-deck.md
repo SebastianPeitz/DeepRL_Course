@@ -655,7 +655,7 @@ $$ Q^\pi(s_t, a_t) = \ExpCsub{r_{t}+\gamma Q^\pi(s_{t+1}, a_{t+1})}{s_t,a_t}{\pi
 
 ::: fragment
 In finite MDPs, the action value can be directly linked to the state value:
-$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{\pC{r}{s_t, a_t}} + \gamma \sum_{s_t\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
+$$\begin{equation} Q^\pi(s_t, a_t) = \Exp{\pC{r}{s_t, a_t}} + \gamma \sum_{s_{t+1}\in\Sc} p^\pi\agivenb{s_{t+1}}{s_t} V^\pi(s_{t+1}). \label{eq:MDP_BellmanQ} \end{equation}$$
 :::
 
 # Bellman expectation equation \& forest tree example (1)

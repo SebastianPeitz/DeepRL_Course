@@ -1029,7 +1029,7 @@ Results from [@Plotzki2026koopmanRL]
 - Do we have to use some standard algorithm such as PPO or SAC with a learned world model?
 - Such models are usually end-to-end differentiable via backpropagation.\
 [$\Rightarrow$ Differentiable Predictive Control (DPC)!]{.fragment}
-- That's the concept of Google's **Dreamer** architectures [@Hafner2020dreamer; @Hafner2021dreamer2; @Hafner2025dreamer3]:
+- That's the concept of the **Dreamer** architectures [@Hafner2020dreamer; @Hafner2021dreamer2; @Hafner2025dreamer3]:
   - Learn a world model.
   - Model rollout over a small number of steps (e.g., $p=15$) following the current policy $\pi_\phi$.
   - Backpropagation through time (BPTT) to determine the gradient of the policy parameters $\phi$ w.r.t. the closed-loop performance measure.

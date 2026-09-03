@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Prof. Dr. Sebastian Peitz">
+  <title> Deep Reinforcement Learning:  Exam preparation</title>
+
+  <!-- PWA stuff -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="support/pwa/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#84b819" />
+  <link rel="manifest" href="support/pwa/manifest.webmanifest" crossorigin="use-credentials" />
+
+  <link rel="shortcut icon" href="support/assets/favicon.ico">
+
+  <script type="module">
+    /* Store JSON encoded Pandoc meta data in a global variable. */
+    import initializeDecker from "./support/js/decker.js";
+    initializeDecker("f9f9318d4.json");
+  </script>
+
+    <!-- Default values for CSS variables can live here. They can be overridden by
+    meta data values. -->
+    <link rel="stylesheet" href="support/css/variables.css">
+
+    <!-- Transfer meta data values from keys `palette.colors` and `css-variables`
+    into a style sheet. Default values can come from `variables.css`. -->
+    <style class="css-declarations">
+      :root {
+                --shade7: #1d1f21;
+                --shade6: #282a2e;
+                --shade5: #4d4d4c;
+                --shade4: #969896;
+                --shade3: #8e908c;
+                --shade2: #d6d6d6;
+                --shade1: #eeeeee;
+                --shade0: #ffffff;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #8959a8;
+                --base0D: #2a9ddf;
+                --base0C: #3e999f;
+                --base0B: #84b819;
+                --base0A: #eab700;
+                --base09: #f5871f;
+                --base08: #c82829;
+                --base07: #1d1f21;
+                --base06: #282a2e;
+                --base05: #4d4d4c;
+                --base04: #969896;
+                --base03: #8e908c;
+                --base02: #d6d6d6;
+                --base01: #eeeeee;
+                --base00: #ffffff;
+                --accent7: #a3685a;
+                --accent6: #8959a8;
+                --accent5: #2a9ddf;
+                --accent4: #3e999f;
+                --accent3: #84b819;
+                --accent2: #eab700;
+                --accent1: #f5871f;
+                --accent0: #c82829;
+            }
+      :root.dark {
+                --shade7: #ffffff;
+                --shade6: #e0e0e0;
+                --shade5: #c5c8c6;
+                --shade4: #b4b7b4;
+                --shade3: #969896;
+                --shade2: #373b41;
+                --shade1: #282a2e;
+                --shade0: #1d1f21;
+                --contrast: 40%;
+                --base0F: #a3685a;
+                --base0E: #b294bb;
+                --base0D: #81a2be;
+                --base0C: #8abeb7;
+                --base0B: #7da72a;
+                --base0A: #f0c674;
+                --base09: #de935f;
+                --base08: #cc6666;
+                --base07: #ffffff;
+                --base06: #e0e0e0;
+                --base05: #c5c8c6;
+                --base04: #b4b7b4;
+                --base03: #969896;
+                --base02: #373b41;
+                --base01: #282a2e;
+                --base00: #1d1f21;
+                --accent7: #a3685a;
+                --accent6: #b294bb;
+                --accent5: #81a2be;
+                --accent4: #8abeb7;
+                --accent3: #7da72a;
+                --accent2: #f0c674;
+                --accent1: #de935f;
+                --accent0: #cc6666;
+            }
+      :root {
+            }
+    </style>
+
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reset.css">
+    <link rel="stylesheet" href="support/vendor/reveal/dist/reveal.css">
+    <link rel="stylesheet" href="support/components/components.css">
+    <link rel="stylesheet" href="support/plugins/decker/ui-anchors.css">
+    <link rel="stylesheet" href="support/plugins/whiteboard/whiteboard.css">
+    <link rel="stylesheet" href="support/plugins/menu/menu.css">
+    <link rel="stylesheet" href="support/plugins/feedback/feedback.css">
+    <link rel="stylesheet" href="support/vendor/videojs/video-js.min.css">
+    <link rel="stylesheet" href="support/plugins/explain/explain.css">
+      <link rel="stylesheet" href="support/plugins/quiz-wue/quiz-wue.css">
+    <link rel="stylesheet" href="support/plugins/quizzer/quizzer.css">
+    <link rel="stylesheet" href="support/css/deck.css">
+    <link rel="stylesheet" href="support/css/tudo-deck.css">
+      <link rel="stylesheet" href="support/fonts/lato.css">
+      <link rel="stylesheet" href="support/plugins/handout/handout.css">
+        <link rel="stylesheet" href="styles/mafi-deck.css">
+    
+</head>
+
+<body >
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title-slide">
+  <div class="decker">
+    <div class="alignment">
+      <header class="background-on-accent">
+        <h1 class="title">
+        <span class="title-title">Deep Reinforcement Learning</span>
+        </h1>
+        <h2 class="subtitle">
+        <span class="title-subtitle">Exam preparation</span>
+        </h2>
+      </header>
+
+      
+            
+            <div class="author">
+                
+              <p>
+                Prof. Dr. Sebastian Peitz
+              </p>
+              </div>
+      
+            <div class="affiliation">
+              <p>
+                Chair of Safe Autonomous Systems, TU Dortmund
+              </p>
+              </div>
+      
+              <div class="date">Summer term 2026</div>
+      
+      
+      <div class="logos">
+                <div class="logo">
+          <img src="./support/assets/tu-logo-light.svg" alt="Logo der TU Dortmund">
+        </div>
+                                    <div class="logo">
+            <img class="title-image" src="assets/inf-logo.svg" alt="Logo">
+
+          </div>
+                          </div>
+            <a class="decker-link" href="https://github.com/decker-edu/decker/">🚀 by Decker</a>
+          </div>
+  </div>
+</section>            
+<section id="timing-and-grading" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Timing and grading</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
+<div class="platzhalter">
+<div id="duration-25-minutes" class="definition">
+<h3>Duration: 25 minutes</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">20 minutes for Lecture and Exercises.
+<ul class="incremental">
+<li class="fragment">Divided roughly 50-50.</li>
+<li class="fragment">Slightly larger weight on the lecture than on the exercises.</li>
+</ul></li>
+<li class="fragment">5 minutes related to your programming exercises.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<div id="timing-will-be-strictly-enforced" class="definition">
+<h3>Timing will be strictly enforced</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">We start with questions right away.</li>
+<li class="fragment">The number of questions may vary slightly,
+<ul class="incremental">
+<li class="fragment">Goal: 8-12 questions during the first 20 minutes,</li>
+<li class="fragment">plus <strong>at least</strong> 2 questions regarding the programming tasks.</li>
+</ul></li>
+<li class="fragment">We stop after exactly 25 minutes.</li>
+<li class="fragment">5 minutes of internal discussion and grading.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="what-can-i-bring-to-the-exam" class="definition">
+<h3>What can I bring to the exam?</h3>
+<p><span style="color: red;"><strong>No</strong> additional material allowed!</span></p>
+</div>
+</div>
+<div class="fragment">
+<div id="grading-criteria" class="definition">
+<h3>Grading criteria</h3>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">The quality of the answers.</li>
+<li class="fragment">How much support was required from our side.</li>
+<li class="fragment">How quickly you were able to answer.
+<ul class="incremental">
+<li class="fragment">It’s not a contest for speed,</li>
+<li class="fragment">but if you need to think about a question for several minutes, this reduces the grade.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Questions regarding the programming tasks:</strong></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li class="fragment">Goal: find out whether you understand what you did.</li>
+<li class="fragment">We will ask you for reasons why you solved certain parts in the way you did.</li>
+<li class="fragment">If it is clear that you know the code and know what is going on, everything is great!</li>
+<li class="fragment">If you created the code using an LLM without further thinking about it, you will likely have trouble answering these questions.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-questions-related-to-the-lecture" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Sample questions related to the lecture</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">Name the central quantities of interest in RL. (<span style="color: blue;"><em>General</em></span>)</li>
+<li class="fragment">What are the core ingredients of an MDP? (<span style="color: blue;"><em>MDPs</em></span>)</li>
+<li class="fragment">What is the policy evaluation step/algorithm in DP? (<span style="color: blue;"><em>Dynamic Programming</em></span>)</li>
+<li class="fragment">How does the policy evaluation procedure work for Monte Carlo sampling (in the tabular case)? (<span style="color: blue;"><em>Monte Carlo methods</em></span>)</li>
+<li class="fragment">Explain the SARSA algorithm. (<span style="color: blue;"><em>TD learning / <span class="math inline">\(Q\)</span>-learning</em></span>)</li>
+<li class="fragment">When using bootstrapping / TD learning in value function approximation, where does the notion of semi-gradients come from? (<span style="color: blue;"><em>Value function approximation &amp; deep <span class="math inline">\(Q\)</span>-learning</em></span>)</li>
+<li class="fragment">What’s the additional term that shows up in the expectation when we compute the policy gradient? (<span style="color: blue;"><em>Policy gradients</em></span>)</li>
+<li class="fragment">How can you interpret the policy gradient with the advantage function as baseline? What do the two terms <span class="math inline">\(\nabla \log \pi(a|s)\)</span> and <span class="math inline">\(A(s,a)\)</span> represent? (<span style="color: blue;"><em>Policy gradients</em></span>)</li>
+<li class="fragment">What are the challenges in TRPO and how does PPO solve them? (<span style="color: blue;"><em>Adv. algorithms</em></span>)</li>
+<li class="fragment">Which methods to enhance exploration do you know? Can you explain the core mechanics? (<span style="color: blue;"><em>Exploration</em></span>)</li>
+<li class="fragment">How does model predictive control (MPC) work? What is its relation to RL? (<span style="color: blue;"><em>Model-based control</em></span>)</li>
+<li class="fragment">Explain the core ideas of Monte Carlo Tree Search (MCTS). (<span style="color: blue;"><em>Model-based control</em></span>)</li>
+<li class="fragment">What is the general working principle behind conservative <span class="math inline">\(Q\)</span>-learning? (<span style="color: blue;"><em>Offline RL</em></span>)</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-question-related-to-the-exercises" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Sample question related to the exercises</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<div class="media">
+<figure class="image" style="height:auto;width:400px;">
+<img src="images/90-exam/Ex31.png" style="height:auto;width:100%;" alt="images/90-exam/Ex31.png" />
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-questions-related-to-the-programming-tasks" class="slide level1">
+<div class="decker">
+<div class="alignment">
+<h1>Sample questions related to the programming tasks</h1>
+<div class="layout">
+<div class="area">
+<div class="box block">
+<div class="small">
+<p>The following are rather generic, but you can expect questions related to your submissions along these lines:</p>
+<div class="incremental">
+<ol class="incremental" style="list-style-type: decimal">
+<li class="fragment">How did you select the hyperparameters of your implementation?</li>
+<li class="fragment">In terms of computations, what is the bottleneck in the code?</li>
+</ol>
+</div>
+<p><br />
+</p>
+<div class="fragment">
+<div id="can-i-bring-my-code-do-i-have-to-know-my-code" class="definition">
+<h3>Can I bring my code / do I have to know my code?</h3>
+<ul>
+<li>You are not allowed to bring anything to the exam!</li>
+<li>You do not have to know your code. We will have a laptop to present it to you during the exam, if required.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<code class="sourceCode markdown" style="display:none;"></code>
+
+    </div>
+  </div>
+  
+  <script src="support/vendor/videojs/video.min.js"></script>
+  <script src="support/vendor/chartjs/chart.umd.js"></script>
+  <script src="support/plugins/quizzer/wordcloud2.js"></script>
+  <script src="support/plugins/quizzer/d3-sankey.min.js"></script>
+  <script type="module" src="support/components/custom-dialog.js"></script>
+  <script type="module" src="./support/js/color-scheme.js"></script>
+
+<script type="module">
+  // import Reveal and all plugins
+  import Reveal from './support/vendor/reveal/dist/reveal.esm.js';
+  import deckerPlugin from './support/plugins/decker/decker.js';
+  import uiAnchorsPlugin from './support/plugins/decker/ui-anchors.js'
+  import mathPlugin from './support/plugins/math/math.js';
+  import whiteboardPlugin from './support/plugins/whiteboard/whiteboard.js';
+  import sagePlugin from './support/plugins/sage/sage.js';
+  import searchPlugin from './support/plugins/search/search.js';
+  import zoomPlugin from './support/plugins/zoom/zoom.js';
+  import printPlugin from './support/plugins/print/print.js';
+  import jinglesPlugin from './support/plugins/jingles/jingles.js';
+  import quizPlugin from './support/plugins/quiz/quiz.js';
+  import quizWuePlugin from './support/plugins/quiz-wue/quiz-wue.js';
+  import quizzerPlugin from './support/plugins/quizzer/quizzer.js'
+  import explainPlugin from './support/plugins/explain/explain.js';
+  import chartsPlugin from './support/plugins/charts/charts.js';
+  import menuPlugin from './support/plugins/menu/menu.js';
+  import feedbackPlugin from './support/plugins/feedback/feedback.js';
+  import notesPlugin from './support/vendor/reveal/plugin/notes/notes.esm.js';
+      import a11yPlugin from './support/plugins/a11y/a11y.js';
+  import handoutPlugin from './support/plugins/handout/handout.js';
+  import chattyPlugin from './support/plugins/chatty/chatty.js';
+
+  let revealConfig = { 
+    // reveal configuration (see https://revealjs.com/config/)
+    ...Decker.meta.reveal,
+
+    // plugin configuration
+    math: { mathjax: String.raw`support/vendor/mathjax/`, ...Decker.meta.math },
+    chart: Decker.meta.chart,
+    menu: Decker.meta.menu,
+    explain: Decker.meta.explain,
+    feedback: Decker.meta.feedback || Decker.meta["decker-engine"],
+    jingles: Decker.meta.jingles,
+    whiteboard: Decker.meta.whiteboard,
+    
+    // list of plugins
+    plugins: [
+      deckerPlugin,
+      uiAnchorsPlugin,
+      sagePlugin,
+      mathPlugin,
+      chartsPlugin,
+      whiteboardPlugin,
+      searchPlugin,
+      zoomPlugin,
+      printPlugin,
+      jinglesPlugin,
+      quizPlugin,
+      quizWuePlugin,
+      quizzerPlugin,
+      explainPlugin,
+      menuPlugin,
+      chattyPlugin,
+      feedbackPlugin,
+      notesPlugin,
+              a11yPlugin,
+      handoutPlugin
+    ]
+  };
+
+  Reveal.initialize(revealConfig);
+</script>
+  
+
+</body>
+</html>

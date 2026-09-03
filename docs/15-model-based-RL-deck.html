@@ -1647,7 +1647,7 @@ Making use of symmetries, we can replace a single large agent by many identical,
 <li class="fragment">Do we have to use some standard algorithm such as PPO or SAC with a learned world model?</li>
 <li class="fragment">Such models are usually end-to-end differentiable via backpropagation.<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Differentiable Predictive Control (DPC)!</span></li>
-<li class="fragment">That’s the concept of Google’s <strong>Dreamer</strong> architectures <span class="citation">(<a href="#ref-Hafner2020dreamer">Hafner et al. 2020</a>; <a href="#ref-Hafner2021dreamer2">Hafner et al. 2021</a>; <a href="#ref-Hafner2025dreamer3">Hafner et al. 2025</a>)</span>:
+<li class="fragment">That’s the concept of the <strong>Dreamer</strong> architectures <span class="citation">(<a href="#ref-Hafner2020dreamer">Hafner et al. 2020</a>; <a href="#ref-Hafner2021dreamer2">Hafner et al. 2021</a>; <a href="#ref-Hafner2025dreamer3">Hafner et al. 2025</a>)</span>:
 <ul class="incremental">
 <li class="fragment">Learn a world model.</li>
 <li class="fragment">Model rollout over a small number of steps (e.g., <span class="math inline">\(p=15\)</span>) following the current policy <span class="math inline">\(\pi_\phi\)</span>.</li>
