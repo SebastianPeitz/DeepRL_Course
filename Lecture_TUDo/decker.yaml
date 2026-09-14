@@ -1,0 +1,184 @@
+
+title:        Deep Reinforcement Learning
+author:       Prof. Dr. Sebastian Peitz
+affiliation:  Chair of Safe Autonomous Systems, TU Dortmund
+date:         Summer term 2026
+logos:        [ assets/inf-logo.svg ]
+
+resource-pack: "exe:tudo"
+
+colorscheme: light
+
+template:
+  deck:
+    css:
+      - 'styles/mafi-deck.css'
+  page:
+    css:
+      - 'styles/mafi-menu.css'
+      - 'styles/mafi-page.css'
+    js-module:
+      - 'scripts/mafi-page.js'
+      - 'scripts/mafi-menu.js'
+
+# pandoc:
+#   filters:
+#     after:
+#       - theorem-numbering.lua
+
+live-captions: false
+lang: en
+
+reveal:
+  width: 1280
+  height: 720
+  checkOverflow: false
+  center: true
+
+explain:
+  recWidth: 1920
+  recHeight: 1080
+  camWidth: 1280
+  camHeight: 720
+  useGreenScreen: true
+
+whiteboard:
+  autotoggle: true
+
+zoom:
+  trigger: "tripleClick"
+
+# feedback:
+#   base-url: https://decker.cs.tu-dortmund.de/feedback
+
+# polling:
+#   server: wss://decker.cs.tu-dortmund.de/quizzer/quiz
+#   selection: "Random"
+
+# quizzer:
+#   url: https://quiz.jetzt/
+#   audio:
+#     start: 'default'
+#     loop: 'default'
+#     end: 'default'
+#     volume: 0.25
+
+#publish:
+#  rsync:
+#    destination: #botsch@zelos.cs.tu-dortmund.de:/srv/www/downloads/teaching/mafi2/slides/
+
+#whisper:
+#  model: /opt/whisper/ggml-large-v3.bin
+#  lang: en
+
+bibliography: bibliography.bib
+csl: chicago-author-date.csl
+link-citations: true
+
+static-resources:
+  - assets
+#  - demos
+  - papers
+  - styles
+
+exclude-directories:
+  - Beispiele
+
+math:
+  # font: tex
+  macros:
+    E: '{\mathbb{E}}'
+    R: '{\mathbb{R}}'
+    N: '{\mathbb{N}}'
+    Z: '{\mathbb{Z}}'
+    Q: '{\mathbb{Q}}'
+    C: '{\mathbb{C}}'
+    Ac: '{\mathcal{A}}'
+    Bc: '{\mathcal{B}}'
+    Dc: '{\mathcal{D}}'
+    Hc: '{\mathcal{H}}'
+    Lc: '{\mathcal{L}}'
+    Nc: '{\mathcal{N}}'
+    Sc: '{\mathcal{S}}'
+    Oc: '{\mathcal{O}}'
+    Qc: '{\mathcal{Q}}'
+    Rc: '{\mathcal{R}}'
+    Xc: '{\mathcal{X}}'
+    Yc: '{\mathcal{Y}}'
+    nablaa: '{\nabla_{\mkern-6mu a\mkern+2mu}}'
+    nablatheta: '{\nabla_{\mkern-6mu \theta\mkern+2mu}}'
+    nablaphi: '{\nabla_{\mkern-6mu \phi\mkern+2mu}}'
+    nablaphiprime: '{\nabla_{\mkern-6mu \phi\prime \mkern+2mu}}'
+    aprime: '{a^{\prime}}'
+    sprime: '{s^{\prime}}'
+    piprime: '{\pi^{\prime}}'
+    agivenb: ['{\left( #1  \middle| #2 \right)}', 2]
+    pias: '{\pi\left( a  \middle| s \right)}'
+    psprimesa: '{p\left( s^{\prime} \middle| s, a \right)}'
+    pstplusstat: '{p\left( s_{t+1} \middle| s_t, a_t \right)}'
+    pC: ['{p\left( #1  \middle| #2 \right)}', 2]
+    policy: ['{\pi\left( #1  \middle| #2 \right)}', 2]
+    subold: ['{{#1}_{\mathsf{old}}}', 1]
+    subnew: ['{{#1}_{\mathsf{new}}}', 1]
+    Exp: ['{\mathbb{E}\left[ #1 \right]}', 1]
+    Exphat: ['{\hat{\mathbb{E}}_t\left[ #1 \right]}', 1]
+    Expsub: ['{\mathbb{E}_{#2}\left[ #1 \right]}', 2]
+    Expsubbig: ['{\mathbb{E}_{#2}\Big[ #1 \Big]}', 2]
+    ExpC: ['{\mathbb{E}\left[ #1 \middle| #2 \right]}', 2]
+    ExpCsub: ['{\mathbb{E}_{#3}\left[ #1 \middle|#2 \right]}', 3]
+    Var: ['{\mathsf{var}\left[ #1 \right]}', 1]
+    Normal: ['{\Nc\left({#1},{#2}\right)}', 2]
+    th: ['{{#1}^{\mathsf{th}}}', 1]
+    Dtrain: '{\mathcal{D}_{\mathsf{train}}}'
+    Dtest: '{\mathcal{D}_{\mathsf{test}}}'
+    iterate: ['{{#1}^{(#2)}}', 2]
+    iteratesub: ['{{#1}^{(#2)}_{#3}}', 3]
+
+    st: ['{s_t}']
+    stp: ['{s_{t+1}}']
+    at: ['{a_t}']
+    atp: ['{a_{t+1}}']
+    rt: ['{r_t}']
+
+    STOP: ['{\mathsf{STOP}}']
+    break: ['{\mathsf{break}}']
+    terminal: ['{\mathsf{terminal}}']
+    target: ['{\mathsf{target}}']
+
+    Vpi: '{V^\pi}'
+    Qpi: '{Q^\pi}'
+    Vstar: '{V^*}'
+    Qstar: '{Q^*}'
+    Vpiphi: '{V^{\pi_\phi}}'
+    Qpiphi: '{Q^{\pi_\phi}}'
+    piphi: '{\pi_\phi}'
+
+    dint: ['\,\mathrm{d}{#1}', 1]
+    dx: '{\,\mathrm{d}x}'
+    ds: '{\,\mathrm{d}s}'
+    dt: '{\,\mathrm{d}t}'
+    dtau: '{\,\mathrm{d}\tau}'
+
+    abs: ['\left\vert #1 \right\vert', 1]
+    norm: ['\left\Vert #1 \right\Vert', 1]
+
+    KLdiv: ['D_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
+    KLdivmax: ['D_{\mathsf{KL}}^{\mathsf{max}}\left( #1 \middle \| #2 \right)', 2]
+    KLdivavg: ['\bar{D}_{\mathsf{KL}}\left( #1 \middle \| #2 \right)', 2]
+
+    pluspoint: ['\textcolor{green}{\mathbf{+}}']
+    minuspoint: ['\textcolor{red}{\mathbf{-}}']
+
+    set: ['{\left\{ #1 \right\}}', 1]
+    cbracket: ['{\left( #1 \right)}', 1]
+    rbracket: ['{\left[ #1 \right]}', 1]
+    rcancel: ['{\textcolor{red}{\cancel{#1}}}', 1]
+
+    diff: ['{\frac{\mathrm{d} #1}{\mathrm{d} #2}}', 2]
+    ndiff: ['{\frac{\mathrm{d}^{#3} #1}{\mathrm{d} {#2}^{#3}}}', 3]
+    pdiff: ['{\frac{\partial #1}{\partial #2}}', 2]
+    Re: ['{\mathrm{Re}\!\left( #1 \right)}', 1]
+    Im: ['{\mathrm{Im}\!\left( #1 \right)}', 1]
+    inRed: ['{\textcolor{red}{\text{#1}}}', 1]
+    submin: ['{{#1}_{\mathsf{min}}}', 1]
+    submax: ['{{#1}_{\mathsf{max}}}', 1]

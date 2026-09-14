@@ -1,0 +1,6 @@
+cd /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/Lecture
+decker-latest
+decker-latest pdf
+# rm -rf /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/docs
+cp -rr /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/Lecture/public/* /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/docs/
+# rsync -ru /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/Lecture/public /Users/msebpeit/sciebo/Lehre/Vorlesungen/DeepRL/Git/docs

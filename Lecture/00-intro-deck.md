@@ -1,5 +1,6 @@
 ---
 subtitle:    Introduction
+chapter:     0
 feedback:
   deck-id:  'deeprl-intro'
 ...

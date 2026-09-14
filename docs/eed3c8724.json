@@ -1,9 +1,9 @@
 {
-    "affiliation": "Chair of Safe Autonomous Systems, TU Dortmund",
+    "affiliation": "Scientific Machine Learning group, Paderborn University",
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "19.08.2026 06:16"
+        "14.09.2026 09:27"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "6",
@@ -249,7 +249,7 @@
         "camWidth": 1280.0,
         "recHeight": 1080.0,
         "recWidth": 1920.0,
-        "useGreenScreen": true
+        "useGreenScreen": false
     },
     "external-tools": {
         "chrome": {
@@ -533,7 +533,7 @@
     "feedback": {
         "deck-id": "deeprl-deep-learning"
     },
-    "includeTULogo": true,
+    "includeTULogo": false,
     "index": {
         "links": [
             "a11y",
@@ -550,9 +550,10 @@
     "link-citations": true,
     "live-captions": false,
     "logos": [
-        "assets/inf-logo.svg"
+        "images/UPB-logo.jpg"
     ],
     "math": {
+        "font": "tex",
         "macros": {
             "Ac": "{\\mathcal{A}}",
             "Bc": "{\\mathcal{B}}",
@@ -822,7 +823,7 @@
     "resource-pack": "exe:tudo",
     "reveal": {
         "backgroundTransition": "none",
-        "center": true,
+        "center": false,
         "checkOverflow": false,
         "controls": true,
         "fragmentInURL": true,
@@ -858,30 +859,20 @@
         "rpv-test.leaf-no-path",
         "rpv-test.branch"
     ],
-    "showDeckerLink": true,
+    "showDeckerLink": false,
     "speech-recognition-language": "de-DE",
-    "static-resources": [
-        "./assets",
-        "./papers",
-        "./styles"
-    ],
     "subtitle": "Brief Introduction to Deep Learning",
     "supportPath": "support",
     "template": {
         "deck": {
             "css": [
-                "styles/mafi-deck.css"
-            ]
-        },
-        "page": {
-            "css": [
-                "styles/mafi-menu.css",
-                "styles/mafi-page.css"
+                "style.css",
+                "watermark.css"
             ],
-            "js-module": [
-                "scripts/mafi-page.js",
-                "scripts/mafi-menu.js"
-            ]
+            "js-module": "scripts.js"
+        },
+        "index": {
+            "css": "style.css"
         }
     },
     "templates": {

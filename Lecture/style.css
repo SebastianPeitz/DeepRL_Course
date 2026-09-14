@@ -1,0 +1,266 @@
+:root {
+    --primary-color: var(--accent3);
+    --hover-color: var(--accent3);
+    --icon-active-color: var(--accent3);
+
+    /* DEFAULT_PALETTE — reusable categorical color palette (e.g. for charts/diagrams) */
+    --palette-0: #0A75C4;
+    --palette-1: #0025aa;
+    --palette-2: #C138A0;
+    --palette-3: #23A9C9;
+    --palette-4: #7E3FA8;
+    --palette-5: #50D1D1;
+    --palette-6: #000000;
+    --palette-7: #181C62;
+
+    /* Deck accent: replace the theme's green with the first palette color.
+       All --accent3* variants (-fg/-bg/-bbg/-ffg) are color-mix-derived from
+       --accent3, so they recompute automatically from this single knob. */
+    --brand-color: var(--palette-0);
+    --accent3: var(--brand-color) !important;
+    --accent2: var(--palette-2) !important;
+    --accent1: var(--palette-6) !important;
+    --accent0: var(--palette-6) !important;
+}
+
+button.fa-button {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+/* rgb(240, 240, 240); */
+/* mjx-container {
+    background-color: var(--shade1);
+    padding: 0.1em 0.3em 0.1em 0.3em;
+    border-radius: 5px;
+} */
+
+.center {
+  text-align: center;
+}
+
+.graytext {
+    color: gray;
+    font-size: smaller;
+  }
+
+.reveal figure figcaption,
+.reveal span.figcaption {
+    color: gray;
+    font-size: 0.5em;
+}
+
+/* spacing around math environments */
+.reveal section mjx-container[display="true"] {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+  }
+
+.reveal :is(ul, ol, dl) li {
+    line-height: 1.2; /* Adjust this value as needed */
+    margin-bottom: 0.5em; /* You can also control the margin between list items */
+    margin-top: 0.1em;
+  }
+
+
+/* for the handout-mode-button to appear blue as well until Hauer repairs this */
+#menu-handout-button:hover div {
+    background-color: var(--accent3);
+}
+
+.background-on-accent {
+    background-color: var(--accent3);
+}
+
+.reveal section.section h1, .reveal section h1:only-child {
+    background-color: var(--accent3);
+}
+
+.reveal h1 {
+    color: var(--accent3-fg);
+    margin: 0.5em 0em 0.0em 0em;
+}
+
+.reveal h2 {
+    color: var(--accent0-fg);
+}
+
+.reveal h3 {
+    color: var(--accent5-fg);
+}
+
+strong {
+    color: var(--accent3-fg);
+}
+
+em {
+    color: var(--palette-6-fg)
+}
+
+.watermark {
+    position: fixed;
+    left: 5rem;
+    bottom: 1.5rem;
+    opacity: 0.5;
+    z-index: -1;
+    font-size: 100%;
+    font-weight: normal;
+}
+
+body.index {
+    font-family: "Lato";
+}
+
+/* do not decrease font-size in nested lists */
+/* second level */
+.reveal :is(ul, ol) :is(ul, ol) {
+    font-size: 1.0em;
+  }
+
+/* Custom CSS for Q.E.D. symbol */
+.qed {
+    float: right;
+    font-size: 1.2em; /* Adjust the size as needed */
+    color: #000; /* Adjust the color as desired */
+    margin-left: 10px; /* Space between text and Q.E.D. symbol */
+    /* Optional: additional styling */
+  }
+  
+  .qed::after {
+    content: "∎"; /* Unicode character for Q.E.D. symbol */
+  }
+
+  .reveal div:is(.small) {
+    font-size: 0.7em;
+    line-height: 0.7em;
+    margin-top: -0.5em;
+    margin-bottom: -0.5em;
+  }
+
+/*********************************************
+ * colored boxes
+ *********************************************/
+
+.reveal div:is(.definition, .theorem, .rules, .lemma, .corollary, .algorithm, .demotheorem, .axiom) {
+    padding: 0.5em 1em;
+    margin: auto;
+    border: none;
+    border-left: 5px solid var(--foreground-color);
+    margin-left: -5px;
+    margin-bottom: 0.5em;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.reveal div.definition {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+.reveal div.rules {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+.reveal div.theorem {
+    border-color: var(--accent5);
+    background-color: var(--accent5-bbg);
+}
+
+.reveal div.lemma {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+.reveal div.corollary {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+.reveal div.algorithm {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+.reveal div.demotheorem {
+    border-color: var(--accent2);
+    background-color: var(--accent2-bbg);
+}
+
+.reveal div.axiom {
+    border-color: var(--accent3);
+    background-color: var(--accent3-bbg);
+}
+
+:is(.definition, .theorem, .lemma, .corollary, .rules, .axiom) ol>li {
+    padding-left: 0.5em;
+}
+
+:is(.definition, .theorem, .rules) ol>li::marker {
+    font-weight: bold;
+}
+
+.reveal .media .code pre {
+    max-height: 100%;
+}
+
+pre > code.sourceCode {
+    font-size: 1.5em;
+}
+
+
+/* for nice video with picture in picture */
+.reveal-viewport:has(.camera-panel.fullscreen) .reveal {
+    position: absolute;
+    bottom: 0rem;
+    right: 0rem;
+    transform: scale(40%); /* Diesen Wert für Größe anpassen */
+    transform-origin: bottom right;
+    z-index: 42;
+    background: var(--background-color);
+    border: 0px solid var(--accent3); /* Falls gewollt, sollte der Rahmen mindestens 1px / scale groß sein, damit er nicht "wegskaliert" wird */
+    border-radius: 0rem;
+}
+
+.camera-panel[data-uistate="RECORDER_READY"].visible, .camera-panel[data-uistate="RECORDER_PAUSED"].visible, .camera-panel[data-uistate="RECORDING"].visible
+{
+    bottom: 0rem;
+    right: 0rem;
+    border-radius: 0rem;
+    border: 0px solid var(--accent3);    
+}
+
+/* for nice video with picture in picture */
+.reveal-viewport:has(.camera-panel.almost-fullscreen) .reveal {
+    position: absolute;
+    transform: scale(75%); /* Diesen Wert für Größe anpassen */
+    transform-origin: right;
+    z-index: 42;
+    background: var(--background-color);
+    border: 0px solid var(--accent3); /* Falls gewollt, sollte der Rahmen mindestens 1px / scale groß sein, damit er nicht "wegskaliert" wird */
+    border-radius: 0rem;
+}
+
+.almost-cover {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 75%;
+    height: 100%;
+    background: var(--background-color);
+    z-index: 41;
+}
+
+.camera-panel[data-uistate="RECORDER_READY"].almost-fullscreen,
+.camera-panel[data-uistate="RECORDER_PAUSED"].almost-fullscreen,
+.camera-panel[data-uistate="RECORDING"].almost-fullscreen {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    border: none;
+}

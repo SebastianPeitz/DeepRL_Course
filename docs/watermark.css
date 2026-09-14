@@ -1,0 +1,58 @@
+/* ============================================================
+   Title slide: white background, black font, and the Lamarr +
+   TU Dortmund logos in the upper-right corner at equal heights.
+   ============================================================ */
+
+:root {
+  /* shared height for both title-slide logos */
+  --title-logo-height: 70px;
+  /* TU logo rendered width at that height (aspect ≈ 3.32:1) plus a gap,
+     used to place the Lamarr logo to its left */
+  --title-logo-gap: 260px;
+}
+
+/* white background for the first/title slide */
+.reveal .slides > section:first-child,
+.reveal section#title-slide {
+  background-color: #ffffff;
+}
+
+.reveal .backgrounds .slide-background:first-child {
+  background-color: #ffffff !important;
+}
+
+/* black font on the title slide */
+.reveal section#title-slide,
+.reveal section#title-slide :is(h1, h2, h3, h4, p, a, span, div, .author, .affiliation, .date) {
+  color: #000000 !important;
+}
+
+/* title box: use the second palette color instead of the theme green */
+.reveal section#title-slide h1,
+.reveal .slides > section:first-child h1 {
+  background-color: transparent !important;
+}
+
+.reveal section#title-slide header.background-on-accent,
+.reveal .slides > section:first-child header.background-on-accent {
+  background-color: var(--palette-0) !important;
+}
+
+/* white title text inside the colored box */
+.reveal section#title-slide header.background-on-accent :is(h1, span),
+.reveal .slides > section:first-child header.background-on-accent :is(h1, span) {
+  color: #ffffff !important;
+}
+
+@media print {
+  .reveal .slides > section:first-child,
+  .reveal section#title-slide {
+    position: relative !important;
+    background-color: #ffffff !important;
+  }
+}
+
+.reveal .slides section.top-slide {
+  top: 0 !important;
+  transform: none !important;
+}

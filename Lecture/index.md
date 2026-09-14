@@ -1,6 +1,6 @@
 ---
 author:      Prof. Dr. Sebastian Peitz
-affiliation: Chair of Safe Autonomous Systems, TU Dortmund
+affiliation: Scientific Machine Learning, Paderborn University
 index:
   manual: true
   search: true
@@ -11,10 +11,10 @@ templates:
     <span class="icons">
     <a title="Open in presentation mode" href=":(url)-deck.html"></a>
     </span>
-  code: |
-    <span class="icons">
-    <a title="Download code" class="fas fa-file-code" href="https://cg.cs.tu-dortmund.de/downloads/teaching/graphics/exercises/:(url).zip"></a>
-    </span>
+#  code: |
+#    <span class="icons">
+#    <a title="Download code" class="fas fa-file-code" href="https://cg.cs.tu-dortmund.de/downloads/teaching/graphics/exercises/:(url).zip"></a>
+#    </span>
 ...
 
 

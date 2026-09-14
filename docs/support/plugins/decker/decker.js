@@ -1,60 +1,120 @@
+let Reveal;
+
 // store href *before* reveal modifies it (adds hash of title slide)
 const deckPathname = location.pathname;
 
 // is the user generating a PDF?
 const printMode = /print-pdf/gi.test(window.location.search);
+const presenterStartup = /presenter/gi.test(window.location.search);
+
+// view menu button
+let pluginButton = undefined;
+
+// number of slides for computing percentage of progress
+let totalSlides;
 
 // Fix some decker-specific things when slides are loaded
-function onStart(deck) {
+function onStart() {
   fixAutoplayWithStart();
   fixLinks();
   currentDate();
   prepareTaskLists();
-  prepareFullscreenIframes();
+  prepareCodeHighlighting();
 
-  deck.addEventListener("ready", () => {
-    if (!printMode) {
-      totalSlides = deck.getTotalSlides();
-      setTimeout(() => continueWhereYouLeftOff(deck), 500);
-    }
-
+  Reveal.addEventListener("ready", () => {
     prepareFullscreenIframes();
-    prepareFlashPanel(deck);
-    preparePresenterMode(deck);
+    prepareFlashPanel();
+    preparePresenterMode();
+    prepareImageCompare();
 
-    Decker.addPresenterModeListener(onPresenterMode);
+    if (!printMode) {
+      /* update deck progress on slide change (and now!)*/
+      totalSlides = Reveal.getTotalSlides(); // has to be done here!
+      Reveal.addEventListener("slidechanged", (event) =>
+        updateProgress(event.currentSlide)
+      );
+      updateProgress();
+
+      continueWhereYouLeftOff();
+
+      // add presenter mode button to menu
+      if (Reveal.hasPlugin("decker-menu")) {
+        const menuPlugin = Reveal.getPlugin("decker-menu");
+        if (!!menuPlugin.addPluginButton) {
+          pluginButton = menuPlugin.addPluginButton(
+            "decker-menu-presenter-button",
+            "fas fa-chalkboard-teacher",
+            localization.activate_presenter_mode,
+            togglePresenterMode
+          );
+          pluginButton.setAttribute("aria-pressed", "false");
+        }
+      }
+
+      // more presenter mode...
+      Decker.addPresenterModeListener(onPresenterMode);
+      if (presenterStartup) {
+        togglePresenterMode();
+      }
+
+      /* stop video before exiting presentation, which 
+        triggers slide change, which triggers progress update */
+      if (Reveal.hasPlugin("explain")) {
+        window.addEventListener("beforeunload", () => {
+          const explainPlugin = Reveal.getPlugin("explain");
+          if (explainPlugin.isVideoPlaying()) {
+            explainPlugin.stopVideo();
+          }
+        });
+      }
+    }
   });
 }
 
+// Use Wake Lock API to prevent display from going to sleep, which would cause video recording to break.
+// Make sure to re-request WakeLock when it get's accidentially released
 let wakeLock = null;
+async function requestWakeLock() {
+  if ("wakeLock" in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request("screen");
+      if (wakeLock) {
+        wakeLock.addEventListener("release", wakeLockReleased);
+        document.addEventListener("visibilitychange", visibilityChanged);
+        console.log("Enabled WakeLock, display will not go to sleep");
+      }
+    } catch (err) {
+      console.error("Failed to request WakeLock, display may go to sleep");
+    }
+  }
+}
+async function releaseWakeLock() {
+  if (wakeLock) {
+    wakeLock.removeEventListener("release", wakeLockReleased);
+    document.removeEventListener("visibilitychange", visibilityChanged);
+    await wakeLock.release();
+    wakeLock = null;
+    console.log("Disabled WakeLock, display may go to sleep again");
+  }
+}
+function wakeLockReleased() {
+  console.log("WakeLock was released, re-request it");
+  requestWakeLock();
+}
+function visibilityChanged() {
+  if (wakeLock && document.visibilityState === "visible") {
+    console.log("Document became visible again, re-request WakeLock");
+    requestWakeLock();
+  }
+}
+
 async function onPresenterMode(isActive) {
   if (isActive) {
-    // show info message
-    Decker.flash.message(
-      `<span>Presenter Mode: <strong style="color:var(--accent3);">ON</strong></span>`
-    );
-
     // request wake lock: display cannot go to sleep
-    if ("wakeLock" in navigator) {
-      try {
-        wakeLock = await navigator.wakeLock.request("screen");
-        console.log("inject coffee, display will not go to sleep");
-      } catch (err) {
-        console.error("could not inject coffee, display may go to sleep");
-      }
-    }
+    requestWakeLock();
   } else {
-    // show info message
-    Decker.flash.message(
-      `<span>Presenter Mode: <strong style="color:var(--accent1);">OFF</strong></span>`
-    );
-
     // release wake lock, display may go to sleep again
-    if (wakeLock) {
-      await wakeLock.release();
-      wakeLock = null;
-      console.log("removed coffee from system, display may go to sleep again");
-    }
+    releaseWakeLock();
   }
 }
 
@@ -117,9 +177,9 @@ function currentDate() {
 
 function prepareTaskLists() {
   for (let cb of document.querySelectorAll(
-    '.reveal ul>li>input[type="checkbox"][disabled]'
+    '.reveal ul>li>label>input[type="checkbox"]'
   )) {
-    const li = cb.parentElement;
+    const li = cb.parentElement.parentElement;
     li.classList.add(cb.checked ? "task-yes" : "task-no");
     const ul = li.parentElement;
     ul.classList.add("task-list");
@@ -159,27 +219,57 @@ function prepareFullscreenIframes() {
 
     // add fullscreen button
     var btn = document.createElement("button");
+    btn.title =
+      navigator.language === "de"
+        ? "Einbettung in Vollbild anzeigen"
+        : "Display embedding in fullscreen";
+    btn.ariaLabel =
+      navigator.language === "de"
+        ? "Einbettung in Vollbild anzeigen"
+        : "Display embedding in fullscreen";
     btn.classList.add("fs-button");
     btn.innerHTML =
-      '<i class="fas fa-expand-arrows-alt" style="font-size:20px"></i>';
+      '<i class="fas fa-up-right-and-down-left-from-center" style="font-size:20px"></i>';
     div.btn = btn;
-    div.appendChild(btn);
+    div.prepend(btn);
 
     // handle button click: enter/exit fullscreen
     btn.onclick = function () {
       var doc = window.document;
       var container = this.parentElement;
-      if (doc.fullscreenElement == container) doc.exitFullscreen();
-      else container.requestFullscreen();
+      if (doc.fullscreenElement == container) {
+        doc.exitFullscreen();
+      } else {
+        container.requestFullscreen();
+      }
     };
 
     // handle fullscreen change: adjust button icon
     div.onfullscreenchange = function () {
       var doc = window.document;
-      this.btn.innerHTML =
-        doc.fullscreenElement == this
-          ? '<i class="fas fa-compress-arrows-alt"></i>'
-          : '<i class="fas fa-expand-arrows-alt"></i>';
+      if (doc.fullscreenElement === this) {
+        this.btn.innerHTML =
+          '<i class="fas fa-down-left-and-up-right-to-center"></i>';
+        this.btn.title =
+          navigator.language === "de"
+            ? "Vollbild verlassen"
+            : "Leave fullscreen";
+        this.btn.ariaLabel =
+          navigator.language === "de"
+            ? "Vollbild verlassen"
+            : "Leave fullscreen";
+      } else {
+        this.btn.innerHTML =
+          '<i class="fas fa-up-right-and-down-left-from-center"></i>';
+        this.btn.title =
+          navigator.language === "de"
+            ? "Einbettung in Vollbild anzeigen"
+            : "Display embedding in fullscreen";
+        this.btn.ariaLabel =
+          navigator.language === "de"
+            ? "Einbettung in Vollbild anzeigen"
+            : "Display embedding in fullscreen";
+      }
     };
   }
 }
@@ -191,7 +281,7 @@ function createElement({
   css,
   text,
   parent,
-  onclick = null,
+  onclick = null
 }) {
   let e = document.createElement(type);
   if (id) e.id = id;
@@ -203,130 +293,147 @@ function createElement({
   return e;
 }
 
-let totalSlides;
-
-function updateProgress(deck, event) {
-  let slide;
-  if (event && event.currentSlide) {
-    slide = event.currentSlide;
-  }
+function updateProgress(slide) {
   // store current slide index in localStorage
-  const slideIndex = deck.getIndices(slide);
-  if (slideIndex && slideIndex.h != 0) {
-    // store current slide index (h- and v-index and fragment)
-    updateLastVisitedSlide(slideIndex);
-    updatePercentage(slideIndex.h);
-  }
-}
+  if (!slide) slide = Reveal.getCurrentSlide();
+  const slideIndex = Reveal.getIndices(slide);
+  if (slideIndex) {
+    // store current slide index (when not on first page)
+    if (slideIndex.h > 0)
+      localStorage.setItem(deckPathname, JSON.stringify(slideIndex));
 
-function updateLastVisitedSlide(slideIndex) {
-  localStorage.setItem(deckPathname, JSON.stringify(slideIndex));
-}
+    // compute percentage of slides visited
+    const idx = slideIndex.h + 1; // starts at 0
+    const percent = Math.round((100.0 * idx) / totalSlides);
+    const key = deckPathname + "-percentage";
 
-function updatePercentage(horizontalIndex) {
-  // store percentage of slides visited
-  const idx = horizontalIndex + 1; // starts at 0
-  const percent = Math.round((100.0 * idx) / totalSlides);
-  const key = deckPathname + "-percentage";
-  const percentBefore = localStorage.getItem(key);
-  if (percent > percentBefore) {
-    localStorage.setItem(key, percent);
-  }
-}
-
-function continueWhereYouLeftOff(deck) {
-  // if *-deck.html was opened on the title slide,
-  // and if user has visited this slide decks before,
-  // then ask user whether to jump to slide where he/she left off
-
-  if (localStorage) {
-    deck.addEventListener("slidechanged", (event) =>
-      updateProgress(deck, event)
-    );
-    window.addEventListener("beforeunload", () => {
-      if (deck.hasPlugin("explain")) {
-        const explainPlugin = deck.getPlugin("explain");
-        // if explain video is playing, stop it to switch to current slide
-        if (explainPlugin.isVideoPlaying()) {
-          explainPlugin.stopVideo();
-        }
-      }
-    });
-    // if we are on the first slide
-    const slideIndex = deck.getIndices();
-    if (slideIndex && slideIndex.h == 0 && slideIndex.v == 0) {
-      // ...and previous slide index is stored (and not title slide)
-      const storedIndex = JSON.parse(localStorage.getItem(deckPathname));
-      if (storedIndex && storedIndex.h != 0) {
-        // ...ask to jump to that slide
-
-        const slideNumber = storedIndex.h + 1;
-
-        // German or non-German?
-        const lang = document.documentElement.lang;
-        const german = lang == "de";
-
-        let reveal = document.querySelector(".reveal");
-
-        let dialog = createElement({
-          type: "div",
-          id: "continue-dialog",
-          parent: reveal,
-          text: german
-            ? "Bei Folie " + slideNumber + " weitermachen?"
-            : "Continue on slide " + slideNumber + "?",
-        });
-
-        let hideDialog = () => {
-          dialog.style.display = "none";
-        };
-
-        let yes = createElement({
-          type: "button",
-          id: "continue-yes",
-          parent: dialog,
-          css: "font:inherit;",
-          text: german ? "Ja" : "Yes",
-          onclick: () => {
-            deck.slide(storedIndex.h, storedIndex.v);
-            hideDialog();
-          },
-        });
-
-        let no = createElement({
-          type: "button",
-          id: "continue-no",
-          parent: dialog,
-          css: "font:inherit;",
-          text: german ? "Nein" : "No",
-          onclick: hideDialog,
-        });
-
-        // hide dialog after 5sec or on slide change
-        setTimeout(hideDialog, 5000);
-        deck.addEventListener("slidechanged", hideDialog);
-      }
+    // store percentage
+    const percentBefore = localStorage.getItem(key) || 0.0;
+    if (percent > percentBefore) {
+      localStorage.setItem(key, percent);
+      // console.log("progress:", percent);
     }
   }
 }
 
-function prepareFlashPanel(deck) {
+function continueWhereYouLeftOff() {
+  // if *-deck.html was opened on the title slide,
+  // and if user has visited this slide decks before,
+  // then ask user whether to jump to slide where he/she left off
+
+  if (!localStorage) return;
+
+  // if we are on the first slide
+  const slideIndex = Reveal.getIndices();
+  if (slideIndex && slideIndex.h == 0 && slideIndex.v == 0) {
+    // ...and previous slide index is stored (and not title slide)
+    const storedIndex = JSON.parse(localStorage.getItem(deckPathname));
+    if (storedIndex && storedIndex.h != 0) {
+      // ...ask to jump to that slide
+
+      const slideNumber = storedIndex.h + 1;
+
+      // German or non-German?
+      const lang = document.documentElement.lang;
+      const german = lang == "de";
+
+      let reveal = document.querySelector(".reveal");
+
+      let dialog = createElement({
+        type: "div",
+        id: "continue-dialog",
+        parent: document.body
+      });
+      //        dialog.setAttribute("aria-hidden", "true");
+
+      let hideDialog = () => {
+        dialog.style.display = "none";
+      };
+
+      createElement({
+        type: "span",
+        id: "continue-label",
+        parent: dialog,
+        text: german
+          ? "Bei Folie " + slideNumber + " weitermachen?"
+          : "Continue on slide " + slideNumber + "?"
+      });
+
+      let yes = createElement({
+        type: "button",
+        id: "continue-yes",
+        parent: dialog,
+        css: "font:inherit;",
+        text: german ? "Ja" : "Yes",
+        onclick: () => {
+          Reveal.slide(storedIndex.h, storedIndex.v);
+          hideDialog();
+        }
+      });
+
+      let no = createElement({
+        type: "button",
+        id: "continue-no",
+        parent: dialog,
+        css: "font:inherit;",
+        text: german ? "Nein" : "No",
+        onclick: hideDialog
+      });
+
+      yes.setAttribute("aria-describedby", "continue-label");
+      no.setAttribute("aria-describedby", "continue-label");
+
+      yes.addEventListener("keydown", (event) => {
+        if (event.code === "Tab") {
+          event.preventDefault();
+          event.stopPropagation();
+          no.focus();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          hideDialog();
+        }
+      });
+
+      no.addEventListener("keydown", (event) => {
+        if (event.code === "Tab") {
+          event.preventDefault();
+          event.stopPropagation();
+          yes.focus();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          event.stopPropagation();
+          hideDialog();
+        }
+      });
+
+      // dialog.addEventListener("focusout", (event) => {
+      //   if (!dialog.contains(event.relatedTarget)) {
+      //     hideDialog();
+      //   }
+      // });
+
+      yes.focus();
+      Reveal.addEventListener("slidechanged", hideDialog);
+    }
+  }
+}
+
+function prepareFlashPanel() {
   let pending = [];
   let interval = null;
 
   // This is why this needs to run after Reveal is ready.
-  let revealElement = deck.getRevealElement();
+  let revealElement = Reveal.getRevealElement();
   let viewport = revealElement.parentElement;
   if (viewport) {
-    let panelHtml = `
-  <div class="decker-flash-panel">
-    <div class="content"> </div>
-  </div>
-  `;
+    const panelHtml = `<div id="decker-flash-panel" popover>
+      <div class="content" role="alert" aria-live="assertive"></div>
+    </div>`;
     viewport.insertAdjacentHTML("beforeend", panelHtml);
 
-    let panel = viewport.querySelector("div.decker-flash-panel");
-    let content = viewport.querySelector("div.decker-flash-panel div.content");
+    let panel = viewport.querySelector("#decker-flash-panel");
+    let content = viewport.querySelector("#decker-flash-panel div.content");
 
     let update = (msg) => {
       if (msg) {
@@ -336,7 +443,7 @@ function prepareFlashPanel(deck) {
         } else {
           interval = setInterval(update, 1000);
           content.innerHTML = msg;
-          panel.classList.add("flashing");
+          panel.showPopover();
         }
       } else {
         // Called by interval timer. No new message.
@@ -345,38 +452,60 @@ function prepareFlashPanel(deck) {
         } else {
           clearInterval(interval);
           interval = null;
-          content.innerHTML = "";
-          panel.classList.remove("flashing");
+          panel.hidePopover();
         }
       }
     };
 
-    Decker.flash = {
-      message: update,
-    };
+    Decker.flashMessage = update;
   } else {
     console.error(
       "Element is missing: getRevealElement (This is seriously wrong)"
     );
-    Decker.flash = {
-      message: console.log,
-    };
+    Decker.flashMessage = console.log;
+  }
+}
+
+let presenterMode = false;
+let listeners = [];
+let viewportElement = undefined;
+
+function togglePresenterMode(state) {
+  presenterMode = typeof state === "boolean" ? state : !presenterMode;
+
+  if (presenterMode) {
+    /* make sure handout mode is turned off */
+    if (Reveal.hasPlugin("handout")) {
+      const handoutPlugin = Reveal.getPlugin("handout");
+      if (handoutPlugin.isActive()) {
+        handoutPlugin.toggle();
+      }
+    }
+
+    viewportElement.classList.add("presenter-mode");
+    pluginButton.ariaPressed = true;
+    pluginButton.setLabel(localization.deactivate_presenter_mode);
+  } else {
+    viewportElement.classList.remove("presenter-mode");
+    pluginButton.ariaPressed = false;
+    pluginButton.setLabel(localization.activate_presenter_mode);
+  }
+
+  for (let callback of listeners) {
+    callback(presenterMode);
   }
 }
 
 // Setup the presenter mode toggle key binding and notification machinery.
-function preparePresenterMode(deck) {
-  let presenterMode = false;
-  let listeners = [];
-
+function preparePresenterMode() {
   if (!Decker)
     throw "Global Decker object is missing. This is seriously wrong.";
 
   // This is why this needs to run after Reveal is ready.
-  let revealElement = deck.getRevealElement();
+  viewportElement = Reveal.getViewportElement();
+  let revealElement = Reveal.getRevealElement();
   if (!revealElement)
     throw "Reveal slide element is missing. This is seriously wrong.";
-  let viewportElement = deck.getViewportElement();
 
   Decker.addPresenterModeListener = (callback) => {
     listeners.push(callback);
@@ -390,48 +519,122 @@ function preparePresenterMode(deck) {
     return presenterMode;
   };
 
+  Decker.togglePresenterMode = (b) => {
+    togglePresenterMode(b);
+  };
+
   /* prevent reload when in presenter mode */
   Decker.addReloadInhibitor(() => !Decker.isPresenterMode());
 
-  deck.addKeyBinding(
+  Reveal.addKeyBinding(
     {
       keyCode: 80,
       key: "P",
-      description: "Toggle Decker Presenter Mode (Triple Click)",
+      description: "Toggle Decker Presenter Mode (Triple Click)"
     },
 
     Decker.tripleClick(() => {
-      if (deck.hasPlugin("handout")) {
-        const handoutPlugin = deck.getPlugin("handout");
-        if (handoutPlugin.isActive()) {
-          return;
-        }
-      }
-      presenterMode = !presenterMode;
-
-      if (presenterMode) {
-        viewportElement.classList.add("presenter-mode");
-      } else {
-        viewportElement.classList.remove("presenter-mode");
-      }
-
-      for (let callback of listeners) {
-        callback(presenterMode);
-      }
+      togglePresenterMode();
+      Decker.flashMessage(
+        Decker.isPresenterMode()
+          ? localization.presenter_mode_on
+          : localization.presenter_mode_off
+      );
     })
   );
 }
 
+const localization = {
+  activate_presenter_mode: "Activate Presenter Mode (P,P,P)",
+  deactivate_presenter_mode: "Deactivate Presenter Mode (P,P,P)",
+  presenter_mode_on: `<span>Presenter Mode: <strong style="color:var(--accent3);">ON</strong></span>`,
+  presenter_mode_off: `<span>Presenter Mode: <strong style="color:var(--accent1);">OFF</strong></span>`
+};
+
+if (navigator.language === "de") {
+  localization.activate_presenter_mode =
+    "Präsentationsmodus anschalten (P,P,P)";
+  localization.deactivate_presenter_mode =
+    "Präsentationsmodus abschalten (P,P,P)";
+  localization.presenter_mode_on = `<span>Präsentationsmodus: <strong style="color:var(--accent3);">AN</strong></span>`;
+  localization.presenter_mode_off = `<span>Präsentationsmodus: <strong style="color:var(--accent1);">AUS</strong></span>`;
+}
+
 const Plugin = {
   id: "decker",
-  init: (deck) => {
+  init: (reveal) => {
+    Reveal = reveal;
+    if (Decker) {
+      Decker.Reveal = reveal;
+    }
     return new Promise((resolve) => {
-      onStart(deck);
+      onStart();
       resolve();
     });
   },
-  updatePercentage: updatePercentage,
-  updateLastVisitedSlide: updateLastVisitedSlide,
+  updateProgress: updateProgress
 };
+
+function prepareImageCompare() {
+  function adjustWidth(evt) {
+    // get container and its width
+    const container = this;
+    const containerWidth = container.offsetWidth;
+
+    // get relative pointer position
+    const mouseX = evt.offsetX;
+    const newWidth = (mouseX * 100) / containerWidth;
+
+    // adjust width of left image
+    const leftImage = container.querySelector(".media:first-child");
+    if (leftImage && mouseX > 15 && mouseX < containerWidth - 20) {
+      leftImage.style.width = newWidth + "%";
+    }
+
+    // prevent triggering slide change through finger swipe
+    evt.preventDefault();
+    evt.stopPropagation();
+    return false;
+  }
+
+  document.querySelectorAll(".image-compare").forEach((container) => {
+    container.addEventListener("pointerdown", adjustWidth, true);
+    container.addEventListener("pointermove", adjustWidth, true);
+  });
+}
+
+function prepareCodeHighlighting() {
+  for (let code of document.querySelectorAll("pre>code")) {
+    var pre = code.parentElement;
+
+    // if line numbers to be highlighted are specified...
+    if (pre.hasAttribute("data-line-numbers")) {
+      // ...copy them from <pre> to <code>
+      code.setAttribute(
+        "data-line-numbers",
+        pre.getAttribute("data-line-numbers")
+      );
+    }
+    // otherwise, if we specified .line-numbers...
+    else if (pre.classList.contains("line-numbers")) {
+      // ...set empty attribute data-line-numbers,
+      // so reveal adds line numbers w/o highlighting
+      code.setAttribute("data-line-numbers", "");
+    }
+
+    // construct caption
+    if (pre.hasAttribute("data-caption")) {
+      var parent = pre.parentElement;
+      var figure = document.createElement("figure");
+      var caption = document.createElement("figcaption");
+      var content = pre.getAttribute("data-caption");
+
+      parent.insertBefore(figure, pre);
+      figure.appendChild(pre);
+      figure.appendChild(caption);
+      caption.innerHTML = content.trim();
+    }
+  }
+}
 
 export default Plugin;

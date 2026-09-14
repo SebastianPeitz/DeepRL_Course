@@ -1,9 +1,9 @@
 
 title:        Deep Reinforcement Learning
 author:       Prof. Dr. Sebastian Peitz
-affiliation:  Chair of Safe Autonomous Systems, TU Dortmund
+affiliation:  Scientific Machine Learning group, Paderborn University
 date:         Summer term 2026
-logos:        [ assets/inf-logo.svg ]
+logos:        [ images/UPB-logo.jpg ]
 
 resource-pack: "exe:tudo"
 
@@ -11,15 +11,14 @@ colorscheme: light
 
 template:
   deck:
-    css:
-      - 'styles/mafi-deck.css'
-  page:
-    css:
-      - 'styles/mafi-menu.css'
-      - 'styles/mafi-page.css'
-    js-module:
-      - 'scripts/mafi-page.js'
-      - 'scripts/mafi-menu.js'
+    css: 
+      - style.css
+      - watermark.css
+    js-module: scripts.js
+  index:
+    css: style.css
+
+lang: en
 
 # pandoc:
 #   filters:
@@ -29,18 +28,24 @@ template:
 live-captions: false
 lang: en
 
-reveal:
-  width: 1280
-  height: 720
-  checkOverflow: false
-  center: true
+includeTULogo: false
+showDeckerLink: false
+#explain:
+#  useGreenScreen: true
+#  greenScreenBackground: 'data/background.jpg'
 
-explain:
-  recWidth: 1920
-  recHeight: 1080
-  camWidth: 1280
-  camHeight: 720
-  useGreenScreen: true
+#reveal:
+#  width: 1280
+#  height: 720
+#  checkOverflow: false
+#  center: true
+
+#explain:
+#  recWidth: 1920
+#  recHeight: 1080
+#  camWidth: 1280
+#  camHeight: 720
+#  useGreenScreen: true
 
 whiteboard:
   autotoggle: true
@@ -75,17 +80,18 @@ bibliography: bibliography.bib
 csl: chicago-author-date.csl
 link-citations: true
 
-static-resources:
-  - assets
+#static-resources:
+#  - assets
 #  - demos
-  - papers
-  - styles
+#  - papers
+#  - styles
 
 exclude-directories:
   - Beispiele
 
 math:
-  # font: tex
+  font: tex
+  scale: 1.0
   macros:
     E: '{\mathbb{E}}'
     R: '{\mathbb{R}}'
