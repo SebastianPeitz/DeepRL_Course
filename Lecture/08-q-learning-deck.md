@@ -31,7 +31,7 @@ feedback:
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
 |   7  | Value function approximation                              |    Value estimation with function approximation    | 
-|   [8]{style="color: red;"}  | [Deep $Q$-learning]{style="color: red;"}   |   [$Q$-learning with neural networks]{style="color: red;"}     | 
+|   [8]{style="color: #C138A0;"}  | [Deep $Q$-learning]{style="color: #C138A0;"}   |   [$Q$-learning with neural networks]{style="color: #C138A0;"}     | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
 |  11  | Advanced algorithms (Part I): From policy gradient to PPO |  | 
@@ -55,7 +55,7 @@ Table: Lecture contents
 ::: columns-5-5
 
 ::: {.definition}
-### Algorithm: SARSA ([On-policy]{style="color: blue;"}).
+### Algorithm: SARSA ([On-policy]{style="color: #0A75C4;"}).
 
 **initialize**
 
@@ -67,15 +67,15 @@ Table: Lecture contents
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
 $\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
-$\quad\quad$ [Select $a_{t+1} \sim \pi(s_{t+1})$]{style="color: blue;"}\
+$\quad\quad$ [Select $a_{t+1} \sim \pi(s_{t+1})$]{style="color: #0A75C4;"}\
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
-$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]$$
+$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathBlue{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]$$
 $\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$\
 $\quad\quad$ $t \gets t+1$
 :::
 
 ::: {.definition}
-### Algorithm: $Q$-learning ([Off-policy]{style="color: red;"}).
+### Algorithm: $Q$-learning ([Off-policy]{style="color: #C138A0;"}).
 
 **initialize**
 
@@ -89,7 +89,7 @@ $\quad$ **while** $s_t$ is not terminal:\
 $\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
 $\quad\quad$ ~~Select $\cancel{a_{t+1} \sim \pi(s_{t+1})}$~~\
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
-$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
+$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
 $\quad\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$\
 $\quad\quad$ $t \gets t+1$
 :::
@@ -183,19 +183,19 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{Q^\pi(s,a) - Q_\theta(
 ::: small
 ::: columns-7-3
 ::: definition
-### Algorithm: Gradient Monte Carlo algorithm for estimating [$Q^\pi$]{style="color: red;"} / [$Q^*$]{style="color: blue;"}
+### Algorithm: Gradient Monte Carlo algorithm for estimating [$Q^\pi$]{style="color: #C138A0;"} / [$Q^*$]{style="color: #0A75C4;"}
 
 *Input*: 
 
 - a differentiable, parameter-dependent function $Q_\theta: \Sc \times \Ac \to \R$
 - learning rate $\alpha$
-- [**Prediction case**: a policy $\pi$]{style="color: red;"}
-- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: blue;"}
+- [**Prediction case**: a policy $\pi$]{style="color: #C138A0;"}
+- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: #0A75C4;"}
 
 *Initialize*: Value function weights $\theta\in\R^d$ arbitrarily\
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
-$\quad$ Generate a sequence following [$\pi$]{style="color: red;"} (or [$\epsilon$-greedy$(Q_\theta)$]{style="color: blue;"}):
+$\quad$ Generate a sequence following [$\pi$]{style="color: #C138A0;"} (or [$\epsilon$-greedy$(Q_\theta)$]{style="color: #0A75C4;"}):
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ Calculate the every-visit returns $g_t$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
@@ -214,26 +214,26 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \na
 
 ::: small
 ::: definition
-### Algorithm: Semi-gradient SARSA for estimating $\textcolor{red}{Q^\pi}$ / $\textcolor{blue}{Q^*}$
+### Algorithm: Semi-gradient SARSA for estimating $\mathRed{Q^\pi}$ / $\mathBlue{Q^*}$
 
 *Input*: 
 
 - a differentiable, parameter-dependent function $Q_\theta: \Sc \times \Ac \to \R$
 - learning rate $\alpha$
-- [**Prediction case**: a policy $\pi$]{style="color: red;"}
-- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: blue;"}
+- [**Prediction case**: a policy $\pi$]{style="color: #C138A0;"}
+- [**Improvement case**: $\epsilon$ defining the $\epsilon$-greedy policy update based on $Q_\theta$]{style="color: #0A75C4;"}
 
 *Initialize*: Value function weights $\theta\in\R^d$ arbitrarily\
 
 **for** $k = 1, 2, \ldots, K$ episodes:\
 $\quad$ Initialize $s_0$\
 $\quad$ **for** $t = 0,1,\ldots,T-1$:\
-$\quad\quad$ Obtain $\textcolor{red}{a_t \sim \policy{\cdot}{s_t}}$ (or [$a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$]{style="color: blue;"})\
+$\quad\quad$ Obtain $\mathRed{a_t \sim \policy{\cdot}{s_t}}$ (or [$a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$]{style="color: #0A75C4;"})\
 $\quad\quad$ Observe $r_t$ and $s_{t+1}$\
 $\quad\quad$ **if** $s_{t+1}$ is $\terminal$ **then**\
 $\quad\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$\
 $\quad\quad\quad$ Go to next episode $k+1$\
-$\quad\quad$ Choose [$a_{t+1} \sim \policy{\cdot}{s_{t+1}}$]{style="color: red;"} (or [$a_{t+1} \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: blue;"})\
+$\quad\quad$ Choose [$a_{t+1} \sim \policy{\cdot}{s_{t+1}}$]{style="color: #C138A0;"} (or [$a_{t+1} \sim \epsilon$-greedy$(Q_\theta(s_{t+1},\cdot))$]{style="color: #0A75C4;"})\
 $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a_{t+1}) - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)$
 :::
 :::
@@ -525,9 +525,9 @@ Remember the *maximization bias* and double $Q$-learning?\
 [**Double deep $Q$-learning**: ]{.fragment}
 
 ::: incremental
-- Just use the [current network]{style="color: blue;"} ($\theta$) to evaluate the action.
-- Still use the [target network]{style="color: red;"} ($\bar{\theta}$) to evaluate the value.
-$$y = r + \gamma \textcolor{red}{Q_{\bar{\theta}}}(s',\arg\max_{a\in\Ac} \textcolor{blue}{Q_\theta}(s',a))$$
+- Just use the [current network]{style="color: #0A75C4;"} ($\theta$) to evaluate the action.
+- Still use the [target network]{style="color: #C138A0;"} ($\bar{\theta}$) to evaluate the value.
+$$y = r + \gamma \mathRed{Q_{\bar{\theta}}}(s',\arg\max_{a\in\Ac} \mathBlue{Q_\theta}(s',a))$$
 :::
 :::
 
@@ -537,7 +537,7 @@ $$y = r + \gamma \textcolor{red}{Q_{\bar{\theta}}}(s',\arg\max_{a\in\Ac} \textco
 - Take $a_t$ ($\epsilon$-greedy on $Q_1 + Q_2$), observe $(r_t,s_{t+1})$
 - **if** $\mathsf{rand()} > 0.5$ **then**
 $$\begin{align*} 
-&y = r_t + \gamma \textcolor{red}{Q_2}(s_{t+1},\arg\max_{a\in\Ac} \textcolor{red}{Q_1}(s_{t+1},a))\\
+&y = r_t + \gamma \mathRed{Q_2}(s_{t+1},\arg\max_{a\in\Ac} \mathRed{Q_1}(s_{t+1},a))\\
 &Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[y - Q_1(s_t,a_t)\right] 
 \end{align*}$$
 - **else**: ...
@@ -593,7 +593,7 @@ The concept of TD($n$) can be extended to deep $Q$-learning in a straightforward
 
 [$\textcolor{green}{\mathbf{+}\text{ typically faster learning, especially early on}}$]{.fragment}
 
-[$\textcolor{red}{\mathbf{-}\text{ only actually correct when learning on policy}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ only actually correct when learning on policy}}$]{.fragment}
 
 # Some remarks on continuous actions
 
@@ -601,8 +601,8 @@ The concept of TD($n$) can be extended to deep $Q$-learning in a straightforward
 What's the problem with continuous actions in DQN?
 
 ::: incremental
-1. The action selection: $\pias = \begin{cases} 1, & a = \arg\textcolor{red}{\max}_{a'\in\Ac} Q_\theta(s,a') \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
-2. The target calculation: $y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\bar{\theta}}(s_i',a)$.
+1. The action selection: $\pias = \begin{cases} 1, & a = \arg\mathRed{\max}_{a'\in\Ac} Q_\theta(s,a') \\ 0, & \text{otherwise} \end{cases}$ (or some $\epsilon$-greedy alternative).
+2. The target calculation: $y_i = r_i + \mathRed{\max}_{a\in\Ac}Q_{\bar{\theta}}(s_i',a)$.
 :::
 
 [$\Rightarrow$ if $\Ac$ is continuous (i.e., $a\in\R^m$), then the maximization becomes a **challenging optimization** probelm in itself!]{.fragment}
@@ -610,13 +610,13 @@ What's the problem with continuous actions in DQN?
 [**What can we do?**]{.fragment}
 
 ::: incremental
-1. Gradient based optimization (e.g., SGD) [$\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ This can be too slow!}}$]{.fragment}
+1. Gradient based optimization (e.g., SGD) [$\quad\Rightarrow\quad\mathRed{\mathbf{-}\text{ This can be too slow!}}$]{.fragment}
 2. Simple sampling: $$\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac).$$
   [$\Rightarrow$ $\quad\textcolor{green}{\mathbf{+}\text{ Very efficient.}}\quad$
   $\textcolor{green}{\mathbf{+}\text{ Easily parallelized.}}\quad$
-  $\textcolor{red}{\mathbf{-}\text{ Not very accurate.}}$]{.fragment}
+  $\mathRed{\mathbf{-}\text{ Not very accurate.}}$]{.fragment}
 3. Other stochastic optimization techniqes 
-[$~\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}$]{.fragment}
+[$~\quad\Rightarrow\quad\mathRed{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}$]{.fragment}
 4. Train second network $\pi_\phi: \Sc \to \Ac$ whose output maximizes $Q_\theta(s,a)$: $$Q(s,\pi_\phi(s)) \approx \max_{a\in\Ac} Q_\theta(s,a)\fragment{ \qquad\Rightarrow\quad \text{Actor-critic methods (in two lectures)!}\qquad\qquad~~ }$$
 :::
 
@@ -777,9 +777,9 @@ Credit: [Mnih et al. 2013](https://arxiv.org/pdf/1312.5602)
 
 # Recall: Online Q-Learning with VFA
 
-1. Take action $a_t$ and observe $(s_t, a_t, r_t, s_{t_1})$ [-> correlated! breaks i.i.d assumption of NNs]{style="color: red;"}
+1. Take action $a_t$ and observe $(s_t, a_t, r_t, s_{t_1})$ [-> correlated! breaks i.i.d assumption of NNs]{style="color: #C138A0;"}
 2. Update Q-Network:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(r_t + \gamma \max_a \hat Q(s_{t+1},a;\boldsymbol{\theta}) - \textcolor{red}{\underbrace{\hat Q(s,a;\boldsymbol{\theta})}_{\text{non-stationary!}}}\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
+$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(r_t + \gamma \max_a \hat Q(s_{t+1},a;\boldsymbol{\theta}) - \mathRed{\underbrace{\hat Q(s,a;\boldsymbol{\theta})}_{\text{non-stationary!}}}\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
 
 # Deep Q-Network (DQN)
 

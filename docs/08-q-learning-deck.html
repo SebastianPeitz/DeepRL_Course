@@ -245,9 +245,9 @@
 <td align="left">Value estimation with function approximation</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">8</span></td>
-<td align="left"><span style="color: red;">Deep <span class="math inline">\(Q\)</span>-learning</span></td>
-<td align="left"><span style="color: red;"><span class="math inline">\(Q\)</span>-learning with neural networks</span></td>
+<td align="center"><span style="color: #C138A0;">8</span></td>
+<td align="left"><span style="color: #C138A0;">Deep <span class="math inline">\(Q\)</span>-learning</span></td>
+<td align="left"><span style="color: #C138A0;"><span class="math inline">\(Q\)</span>-learning with neural networks</span></td>
 </tr>
 <tr>
 <td align="center">9</td>
@@ -310,7 +310,7 @@
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div id="algorithm-sarsa-on-policy." class="definition">
-<h3>Algorithm: SARSA (<span style="color: blue;">On-policy</span>).</h3>
+<h3>Algorithm: SARSA (<span style="color: #0A75C4;">On-policy</span>).</h3>
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
@@ -321,12 +321,12 @@
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_t \gets s_0\)</span>, <span class="math inline">\(t \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
 <span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span style="color: blue;">Select <span class="math inline">\(a_{t+1} \sim \pi(s_{t+1})\)</span></span><br />
-<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy: <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span style="color: #0A75C4;">Select <span class="math inline">\(a_{t+1} \sim \pi(s_{t+1})\)</span></span><br />
+<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathBlue{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy: <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span></p>
 </div>
 <div id="algorithm-q-learning-off-policy." class="definition">
-<h3>Algorithm: <span class="math inline">\(Q\)</span>-learning (<span style="color: red;">Off-policy</span>).</h3>
+<h3>Algorithm: <span class="math inline">\(Q\)</span>-learning (<span style="color: #C138A0;">Off-policy</span>).</h3>
 <p><strong>initialize</strong></p>
 <ul>
 <li><span class="math inline">\(Q(s,a)\)</span> arbitrarily for <span class="math inline">\(s \in \Sc, a \in \Ac\)</span></li>
@@ -338,7 +338,7 @@
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
 <span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <del>Select <span class="math inline">\(\cancel{a_{t+1} \sim \pi(s_{t+1})}\)</span></del><br />
-<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span></p>
 </div>
 </div>
@@ -2000,18 +2000,18 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 7fr 3fr;">
 <div id="algorithm-gradient-monte-carlo-algorithm-for-estimating-qpi-q" class="definition">
-<h3>Algorithm: Gradient Monte Carlo algorithm for estimating <span style="color: red;"><span class="math inline">\(Q^\pi\)</span></span> / <span style="color: blue;"><span class="math inline">\(Q^*\)</span></span></h3>
+<h3>Algorithm: Gradient Monte Carlo algorithm for estimating <span style="color: #C138A0;"><span class="math inline">\(Q^\pi\)</span></span> / <span style="color: #0A75C4;"><span class="math inline">\(Q^*\)</span></span></h3>
 <p><em>Input</em>:</p>
 <ul>
 <li>a differentiable, parameter-dependent function <span class="math inline">\(Q_\theta: \Sc \times \Ac \to \R\)</span></li>
 <li>learning rate <span class="math inline">\(\alpha\)</span></li>
-<li><span style="color: red;"><strong>Prediction case</strong>: a policy <span class="math inline">\(\pi\)</span></span></li>
-<li><span style="color: blue;"><strong>Improvement case</strong>: <span class="math inline">\(\epsilon\)</span> defining the <span class="math inline">\(\epsilon\)</span>-greedy policy update based on <span class="math inline">\(Q_\theta\)</span></span></li>
+<li><span style="color: #C138A0;"><strong>Prediction case</strong>: a policy <span class="math inline">\(\pi\)</span></span></li>
+<li><span style="color: #0A75C4;"><strong>Improvement case</strong>: <span class="math inline">\(\epsilon\)</span> defining the <span class="math inline">\(\epsilon\)</span>-greedy policy update based on <span class="math inline">\(Q_\theta\)</span></span></li>
 </ul>
 <p><em>Initialize</em>: Value function weights <span class="math inline">\(\theta\in\R^d\)</span> arbitrarily<br />
 </p>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
-<span class="math inline">\(\quad\)</span> Generate a sequence following <span style="color: red;"><span class="math inline">\(\pi\)</span></span> (or <span style="color: blue;"><span class="math inline">\(\epsilon\)</span>-greedy<span class="math inline">\((Q_\theta)\)</span></span>): <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> Calculate the every-visit returns <span class="math inline">\(g_t\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate a sequence following <span style="color: #C138A0;"><span class="math inline">\(\pi\)</span></span> (or <span style="color: #0A75C4;"><span class="math inline">\(\epsilon\)</span>-greedy<span class="math inline">\((Q_\theta)\)</span></span>): <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> Calculate the every-visit returns <span class="math inline">\(g_t\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{g_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)\)</span></p>
 </div>
@@ -2038,26 +2038,26 @@ Types of architectures <span class="citation">(<a href="#ref-Abdelwanis2026">Abd
 <div class="area">
 <div class="box block">
 <div class="small">
-<div id="algorithm-semi-gradient-sarsa-for-estimating-textcolorredqpi-textcolorblueq" class="definition">
-<h3>Algorithm: Semi-gradient SARSA for estimating <span class="math inline">\(\textcolor{red}{Q^\pi}\)</span> / <span class="math inline">\(\textcolor{blue}{Q^*}\)</span></h3>
+<div id="algorithm-semi-gradient-sarsa-for-estimating-mathredqpi-mathblueq" class="definition">
+<h3>Algorithm: Semi-gradient SARSA for estimating <span class="math inline">\(\mathRed{Q^\pi}\)</span> / <span class="math inline">\(\mathBlue{Q^*}\)</span></h3>
 <p><em>Input</em>:</p>
 <ul>
 <li>a differentiable, parameter-dependent function <span class="math inline">\(Q_\theta: \Sc \times \Ac \to \R\)</span></li>
 <li>learning rate <span class="math inline">\(\alpha\)</span></li>
-<li><span style="color: red;"><strong>Prediction case</strong>: a policy <span class="math inline">\(\pi\)</span></span></li>
-<li><span style="color: blue;"><strong>Improvement case</strong>: <span class="math inline">\(\epsilon\)</span> defining the <span class="math inline">\(\epsilon\)</span>-greedy policy update based on <span class="math inline">\(Q_\theta\)</span></span></li>
+<li><span style="color: #C138A0;"><strong>Prediction case</strong>: a policy <span class="math inline">\(\pi\)</span></span></li>
+<li><span style="color: #0A75C4;"><strong>Improvement case</strong>: <span class="math inline">\(\epsilon\)</span> defining the <span class="math inline">\(\epsilon\)</span>-greedy policy update based on <span class="math inline">\(Q_\theta\)</span></span></li>
 </ul>
 <p><em>Initialize</em>: Value function weights <span class="math inline">\(\theta\in\R^d\)</span> arbitrarily<br />
 </p>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes:<br />
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = 0,1,\ldots,T-1\)</span>:<br />
-<span class="math inline">\(\quad\quad\)</span> Obtain <span class="math inline">\(\textcolor{red}{a_t \sim \policy{\cdot}{s_t}}\)</span> (or <span style="color: blue;"><span class="math inline">\(a_t \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_t,\cdot))\)</span></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Obtain <span class="math inline">\(\mathRed{a_t \sim \policy{\cdot}{s_t}}\)</span> (or <span style="color: #0A75C4;"><span class="math inline">\(a_t \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_t,\cdot))\)</span></span>)<br />
 <span class="math inline">\(\quad\quad\)</span> Observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_{t+1}\)</span> is <span class="math inline">\(\terminal\)</span> <strong>then</strong><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> Go to next episode <span class="math inline">\(k+1\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> Choose <span style="color: red;"><span class="math inline">\(a_{t+1} \sim \policy{\cdot}{s_{t+1}}\)</span></span> (or <span style="color: blue;"><span class="math inline">\(a_{t+1} \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_{t+1},\cdot))\)</span></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Choose <span style="color: #C138A0;"><span class="math inline">\(a_{t+1} \sim \policy{\cdot}{s_{t+1}}\)</span></span> (or <span style="color: #0A75C4;"><span class="math inline">\(a_{t+1} \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_{t+1},\cdot))\)</span></span>)<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\theta \gets \theta + \alpha\rbracket{r_t + \gamma Q_\theta(s_{t+1},a_{t+1}) - Q_\theta(s_t,a_t)} \nablatheta Q_\theta(s_t,a_t)\)</span></p>
 </div>
 </div>
@@ -8408,8 +8408,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p><span class="fragment"><strong>Double deep <span class="math inline">\(Q\)</span>-learning</strong>:</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Just use the <span style="color: blue;">current network</span> (<span class="math inline">\(\theta\)</span>) to evaluate the action.</li>
-<li class="fragment">Still use the <span style="color: red;">target network</span> (<span class="math inline">\(\bar{\theta}\)</span>) to evaluate the value. <span class="math display">\[y = r + \gamma \textcolor{red}{Q_{\bar{\theta}}}(s&#39;,\arg\max_{a\in\Ac} \textcolor{blue}{Q_\theta}(s&#39;,a))\]</span></li>
+<li class="fragment">Just use the <span style="color: #0A75C4;">current network</span> (<span class="math inline">\(\theta\)</span>) to evaluate the action.</li>
+<li class="fragment">Still use the <span style="color: #C138A0;">target network</span> (<span class="math inline">\(\bar{\theta}\)</span>) to evaluate the value. <span class="math display">\[y = r + \gamma \mathRed{Q_{\bar{\theta}}}(s&#39;,\arg\max_{a\in\Ac} \mathBlue{Q_\theta}(s&#39;,a))\]</span></li>
 </ul>
 </div>
 </div>
@@ -8418,7 +8418,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <ul>
 <li>Take <span class="math inline">\(a_t\)</span> (<span class="math inline">\(\epsilon\)</span>-greedy on <span class="math inline">\(Q_1 + Q_2\)</span>), observe <span class="math inline">\((r_t,s_{t+1})\)</span></li>
 <li><strong>if</strong> <span class="math inline">\(\mathsf{rand()} &gt; 0.5\)</span> <strong>then</strong> <span class="math display">\[\begin{align*} 
-&amp;y = r_t + \gamma \textcolor{red}{Q_2}(s_{t+1},\arg\max_{a\in\Ac} \textcolor{red}{Q_1}(s_{t+1},a))\\
+&amp;y = r_t + \gamma \mathRed{Q_2}(s_{t+1},\arg\max_{a\in\Ac} \mathRed{Q_1}(s_{t+1},a))\\
 &amp;Q_1(s_t,a_t) \gets Q_1(s_t,a_t) + \alpha \left[y - Q_1(s_t,a_t)\right] 
 \end{align*}\]</span></li>
 <li><strong>else</strong>: …</li>
@@ -8494,7 +8494,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p>The concept of TD(<span class="math inline">\(n\)</span>) can be extended to deep <span class="math inline">\(Q\)</span>-learning in a straightforward fashion: <span class="fragment"><span class="math display">\[ y_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \gamma^{n} \max_{a\in\Ac} Q_{\theta}(s_{t+n},a). \]</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ less biased target values when estimates using }Q_\theta\text{ are inaccurate}}\)</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ typically faster learning, especially early on}}\)</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ only actually correct when learning on policy}}\)</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ only actually correct when learning on policy}}\)</span></span></p>
 </div>
 </div>
 </div>
@@ -8512,17 +8512,17 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <p>What’s the problem with continuous actions in DQN?</p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">The action selection: <span class="math inline">\(\pias = \begin{cases} 1, &amp; a = \arg\textcolor{red}{\max}_{a&#39;\in\Ac} Q_\theta(s,a&#39;) \\ 0, &amp; \text{otherwise} \end{cases}\)</span> (or some <span class="math inline">\(\epsilon\)</span>-greedy alternative).</li>
-<li class="fragment">The target calculation: <span class="math inline">\(y_i = r_i + \textcolor{red}{\max}_{a\in\Ac}Q_{\bar{\theta}}(s_i&#39;,a)\)</span>.</li>
+<li class="fragment">The action selection: <span class="math inline">\(\pias = \begin{cases} 1, &amp; a = \arg\mathRed{\max}_{a&#39;\in\Ac} Q_\theta(s,a&#39;) \\ 0, &amp; \text{otherwise} \end{cases}\)</span> (or some <span class="math inline">\(\epsilon\)</span>-greedy alternative).</li>
+<li class="fragment">The target calculation: <span class="math inline">\(y_i = r_i + \mathRed{\max}_{a\in\Ac}Q_{\bar{\theta}}(s_i&#39;,a)\)</span>.</li>
 </ol>
 </div>
 <p><span class="fragment"><span class="math inline">\(\Rightarrow\)</span> if <span class="math inline">\(\Ac\)</span> is continuous (i.e., <span class="math inline">\(a\in\R^m\)</span>), then the maximization becomes a <strong>challenging optimization</strong> probelm in itself!</span></p>
 <p><span class="fragment"><strong>What can we do?</strong></span></p>
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">Gradient based optimization (e.g., SGD) <span class="fragment"><span class="math inline">\(\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ This can be too slow!}}\)</span></span></li>
-<li class="fragment">Simple sampling: <span class="math display">\[\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac).\]</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\quad\textcolor{green}{\mathbf{+}\text{ Very efficient.}}\quad\)</span> <span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Easily parallelized.}}\quad\)</span> <span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Not very accurate.}}\)</span></span></li>
-<li class="fragment">Other stochastic optimization techniqes <span class="fragment"><span class="math inline">\(~\quad\Rightarrow\quad\textcolor{red}{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}\)</span></span></li>
+<li class="fragment">Gradient based optimization (e.g., SGD) <span class="fragment"><span class="math inline">\(\quad\Rightarrow\quad\mathRed{\mathbf{-}\text{ This can be too slow!}}\)</span></span></li>
+<li class="fragment">Simple sampling: <span class="math display">\[\max_{a\in\Ac} Q(s,a) \approx \max\set{Q(s,a_1),\ldots,Q(s,a_p)}, \qquad \text{with}~\set{a_1,\ldots,a_p}\sim U(\Ac).\]</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\quad\textcolor{green}{\mathbf{+}\text{ Very efficient.}}\quad\)</span> <span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Easily parallelized.}}\quad\)</span> <span class="math inline">\(\mathRed{\mathbf{-}\text{ Not very accurate.}}\)</span></span></li>
+<li class="fragment">Other stochastic optimization techniqes <span class="fragment"><span class="math inline">\(~\quad\Rightarrow\quad\mathRed{\mathbf{-}\text{ Usually also quite slow, or scale poorly.}}\)</span></span></li>
 <li class="fragment">Train second network <span class="math inline">\(\pi_\phi: \Sc \to \Ac\)</span> whose output maximizes <span class="math inline">\(Q_\theta(s,a)\)</span>: <span class="math display">\[Q(s,\pi_\phi(s)) \approx \max_{a\in\Ac} Q_\theta(s,a)\fragment{ \qquad\Rightarrow\quad \text{Actor-critic methods (in two lectures)!}\qquad\qquad~~ }\]</span></li>
 </ol>
 </div>
@@ -8754,9 +8754,9 @@ Credit: [Mnih et al. 2013](https://arxiv.org/pdf/1312.5602)
 
 # Recall: Online Q-Learning with VFA
 
-1. Take action $a_t$ and observe $(s_t, a_t, r_t, s_{t_1})$ [-> correlated! breaks i.i.d assumption of NNs]{style="color: red;"}
+1. Take action $a_t$ and observe $(s_t, a_t, r_t, s_{t_1})$ [-> correlated! breaks i.i.d assumption of NNs]{style="color: #C138A0;"}
 2. Update Q-Network:
-$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(r_t + \gamma \max_a \hat Q(s_{t+1},a;\boldsymbol{\theta}) - \textcolor{red}{\underbrace{\hat Q(s,a;\boldsymbol{\theta})}_{\text{non-stationary!}}}\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
+$$ \begin{align*} \Delta \boldsymbol{\theta} =  -\alpha \left(r_t + \gamma \max_a \hat Q(s_{t+1},a;\boldsymbol{\theta}) - \mathRed{\underbrace{\hat Q(s,a;\boldsymbol{\theta})}_{\text{non-stationary!}}}\right) \nabla_\boldsymbol{\theta} \hat Q(s,a;\boldsymbol{\theta}) \end{align*}$$
 
 # Deep Q-Network (DQN)
 

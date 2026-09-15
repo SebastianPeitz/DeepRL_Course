@@ -257,9 +257,9 @@ I)</title>
 <td align="left">Improved policy gradients via value functions</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">11</span></td>
-<td align="left"><span style="color: red;">Advanced algorithms (Part I): From policy gradient to PPO</span></td>
-<td align="left"><span style="color: red;">The evolution of modern RL algorithms</span></td>
+<td align="center"><span style="color: #C138A0;">11</span></td>
+<td align="left"><span style="color: #C138A0;">Advanced algorithms (Part I): From policy gradient to PPO</span></td>
+<td align="left"><span style="color: #C138A0;">The evolution of modern RL algorithms</span></td>
 </tr>
 <tr>
 <td align="center">12</td>
@@ -335,39 +335,39 @@ I)</title>
 </div>
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="fragment">
-<h3 id="shortcomings"><span style="color: red;">Shortcomings</span></h3>
+<h3 id="shortcomings"><span style="color: #C138A0;">Shortcomings</span></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span style="color: red;">High variance gradients.</span></li>
-<li class="fragment"><span style="color: red;">Unstable policy updates.</span></li>
-<li class="fragment"><span style="color: red;">Catastrophic performance collapse.</span></li>
+<li class="fragment"><span style="color: #C138A0;">High variance gradients.</span></li>
+<li class="fragment"><span style="color: #C138A0;">Unstable policy updates.</span></li>
+<li class="fragment"><span style="color: #C138A0;">Catastrophic performance collapse.</span></li>
 </ul>
 </div>
 </div>
 <div class="fragment">
-<h3 id="shortcomings-1"><span style="color: red;">Shortcomings</span></h3>
+<h3 id="shortcomings-1"><span style="color: #C138A0;">Shortcomings</span></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span style="color: red;">Instability from bootstrapping.</span></li>
-<li class="fragment"><span style="color: red;">Overestimation bias.</span></li>
-<li class="fragment"><span style="color: red;">Maximization over actions / continuous action spaces.</span></li>
+<li class="fragment"><span style="color: #C138A0;">Instability from bootstrapping.</span></li>
+<li class="fragment"><span style="color: #C138A0;">Overestimation bias.</span></li>
+<li class="fragment"><span style="color: #C138A0;">Maximization over actions / continuous action spaces.</span></li>
 </ul>
 </div>
 </div>
 </div>
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="fragment">
-<h3 id="improvement-strategy"><span style="color: blue;">Improvement strategy</span></h3>
+<h3 id="improvement-strategy"><span style="color: #0A75C4;">Improvement strategy</span></h3>
 <ul>
-<li><span style="color: blue;">How to safely update policies.</span></li>
+<li><span style="color: #0A75C4;">How to safely update policies.</span></li>
 </ul>
 </div>
 <div class="fragment">
-<h3 id="improvement-strategy-1"><span style="color: blue;">Improvement strategy</span></h3>
+<h3 id="improvement-strategy-1"><span style="color: #0A75C4;">Improvement strategy</span></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment"><span style="color: blue;">Stabilizing <span class="math inline">\(Q\)</span>-learning with function approximation.</span></li>
-<li class="fragment"><span style="color: blue;">Solving the continuous argmax problem.</span></li>
+<li class="fragment"><span style="color: #0A75C4;">Stabilizing <span class="math inline">\(Q\)</span>-learning with function approximation.</span></li>
+<li class="fragment"><span style="color: #0A75C4;">Solving the continuous argmax problem.</span></li>
 </ul>
 </div>
 </div>
@@ -1079,7 +1079,7 @@ A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Take the sum: <span class="math-incremental"><span class="math display">\[\begin{align*} 
-\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &amp;= \underbrace{r_0 \textcolor{blue}{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \textcolor{blue}{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \textcolor{red}{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \textcolor{red}{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
+\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &amp;= \underbrace{r_0 \mathBlue{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \mathBlue{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \mathRed{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \mathRed{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
 &amp;= r_0 + r_1 + \ldots + r_{T-2} + r_{T-1} - V^{\subold{\pi}}(s_{0}) \fragment{ = \cbracket{\sum_{t=0}^{T-1} r_t} - V^{\subold{\pi}}(s_{0}) .}
 \end{align*}\]</span></span></li>
 <li class="fragment">Shift around and take the expectation with respect to the new policy <span class="fragment">(in the case of <span class="math inline">\(V^{\subold{\pi}}\)</span>, this reduces to <span class="math inline">\(s_0 \sim p_0\)</span>):</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
@@ -1160,7 +1160,7 @@ A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(
 <div id="upside-and-downside-of-this-identity" class="definition">
 <h3>Upside and downside of this identity</h3>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Proof that if you can find a new policy with a positive expected advantage under the old policy, your policy will get better.}}\)</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ To compute the exact value, we must sample states from the new policy (}s \sim p_{\subnew{\pi}}\text{), which we do not yet know!}}\)</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ To compute the exact value, we must sample states from the new policy (}s \sim p_{\subnew{\pi}}\text{), which we do not yet know!}}\)</span></span></p>
 <p><span class="fragment"><strong>Solution approach in TRPO</strong>: “If <span class="math inline">\(\subnew{\pi}\)</span> is very close to <span class="math inline">\(\subold{\pi}\)</span> (enforced by a KL-constraint), we can swap the state distribution <span class="math inline">\(p_{\subnew{\pi}}\)</span> for <span class="math inline">\(p_{\subnew{\pi}}\)</span> and safely optimize an approximation (i.e., a <em>surrogate objective</em>).”</span></p>
 </div>
 </div>
@@ -1229,7 +1229,7 @@ A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(
 <h2>A surrogate loss function</h2>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Simple trick: just sample the state <span class="math inline">\(s\)</span> under the <em>old</em> policy! <span class="math display">\[\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\textcolor{red}{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}\]</span></li>
+<li class="fragment">Simple trick: just sample the state <span class="math inline">\(s\)</span> under the <em>old</em> policy! <span class="math display">\[\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\mathRed{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}\]</span></li>
 <li class="fragment">Under the assumption that <span class="math inline">\(\subold{\pi}\)</span> and <span class="math inline">\(\subnew{\pi}\)</span> do not differ too much, this is a reasonable assumption.</li>
 <li class="fragment">In the limit case <span class="math inline">\(\subold{\pi} = \subnew{\pi}\)</span>, we have equality of <span class="math inline">\(\eqref{eq:Adv_performance_measures}\)</span> and <span class="math inline">\(\eqref{eq:Adv_surrogate_loss}\)</span>, as well as their gradients <span class="citation">(<a href="#ref-Schulman2015trpo">Schulman et al. 2015</a>, Eq. (4))</span>.</li>
 </ul>
@@ -1325,7 +1325,7 @@ A_{\subold{\pi}}(s_{T-1},a_{T-1}) &amp;= r_{T-1} + \underbrace{V^{\subold{\pi}}(
 <div id="the-policy-gradient-for-the-trpo-surrogate-loss" class="definition">
 <h3>The Policy gradient for the TRPO surrogate loss</h3>
 <p><span class="math-incremental"><span class="math display">\[\begin{equation} \begin{aligned}
-g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=\subold{\phi}}} } \fragment{ =\Expsub{\frac{\nablaphi \pi_{\phi}\agivenb{a}{s}\big|_{\phi=\subold{\phi}}}{\pi_\subold{\phi}\agivenb{a}{s}}A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} } \\
+g &amp;= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\mathRed{\phi=\subold{\phi}}} } \fragment{ =\Expsub{\frac{\nablaphi \pi_{\phi}\agivenb{a}{s}\big|_{\phi=\subold{\phi}}}{\pi_\subold{\phi}\agivenb{a}{s}}A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} } \\
 &amp;=\Expsub{\nablaphi \log \pi_\phi\agivenb{a}{s}\big|_{\phi=\subold{\phi}} A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} \quad\textcolor{grey}{\text{\textit{(Log-identity trick)}}} \end{aligned}
 \label{eq:Adv_TRPO_gradient}\end{equation}\]</span></span> <span class="fragment">is the standard policy gradient with value baseline!</span></p>
 </div>
@@ -1882,7 +1882,7 @@ L_\mathsf{CLIP}(\phi) = \Exphat{\min\left( \kappa_t(\phi)A_t, \, \mathsf{clip}(\
 <div class="fragment">
 <h3 id="the-one-small-exception-near-policy-multiple-epochs">The one small exception: “Near-policy” (multiple epochs)</h3>
 <p>If changes are small, then we can try to use data in multiple consecutive iterations. Tradeoff:</p>
-<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad\)</span></span> <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ More data }\Rightarrow\text{ lower variance.}}\)</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad\)</span></span> <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ More data }\Rightarrow\text{ lower variance.}}\)</span></span></p>
 </div>
 </div>
 </div>

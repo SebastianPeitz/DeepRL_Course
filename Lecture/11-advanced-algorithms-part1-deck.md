@@ -34,7 +34,7 @@ feedback:
 |   8  | Deep Q-learning                                           |   Q-learning with neural networks     | 
 | 9    | Policy gradients                                          | Direct optimization of the policy      | 
 |  10  | Actor-critic algorithms| Improved policy gradients via value functions | 
-|  [11]{style="color: red;"}  | [Advanced algorithms (Part I): From policy gradient to PPO]{style="color: red;"} | [The evolution of modern RL algorithms]{style="color: red;"} | 
+|  [11]{style="color: #C138A0;"}  | [Advanced algorithms (Part I): From policy gradient to PPO]{style="color: #C138A0;"} | [The evolution of modern RL algorithms]{style="color: #C138A0;"} | 
 |  12  | Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic |  | 
 |  13  | Exploration                                  |        |
 |      | **Model-Based Control**                                   |        |
@@ -88,22 +88,22 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 ::: columns-5-5
 
 ::: fragment
-### [Shortcomings]{style="color: red;"}
+### [Shortcomings]{style="color: #C138A0;"}
 
 ::: incremental
-- [High variance gradients.]{style="color: red;"}
-- [Unstable policy updates.]{style="color: red;"}
-- [Catastrophic performance collapse.]{style="color: red;"}
+- [High variance gradients.]{style="color: #C138A0;"}
+- [Unstable policy updates.]{style="color: #C138A0;"}
+- [Catastrophic performance collapse.]{style="color: #C138A0;"}
 :::
 :::
 
 ::: fragment
-### [Shortcomings]{style="color: red;"}
+### [Shortcomings]{style="color: #C138A0;"}
 
 ::: incremental
-- [Instability from bootstrapping.]{style="color: red;"}
-- [Overestimation bias.]{style="color: red;"}
-- [Maximization over actions / continuous action spaces.]{style="color: red;"}
+- [Instability from bootstrapping.]{style="color: #C138A0;"}
+- [Overestimation bias.]{style="color: #C138A0;"}
+- [Maximization over actions / continuous action spaces.]{style="color: #C138A0;"}
 :::
 :::
 :::
@@ -111,17 +111,17 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 
 ::: columns-5-5
 ::: fragment
-### [Improvement strategy]{style="color: blue;"}
+### [Improvement strategy]{style="color: #0A75C4;"}
 
-- [How to safely update policies.]{style="color: blue;"}
+- [How to safely update policies.]{style="color: #0A75C4;"}
 :::
 
 ::: fragment
-### [Improvement strategy]{style="color: blue;"}
+### [Improvement strategy]{style="color: #0A75C4;"}
 
 ::: incremental
-- [Stabilizing $Q$-learning with function approximation.]{style="color: blue;"}
-- [Solving the continuous argmax problem.]{style="color: blue;"}
+- [Stabilizing $Q$-learning with function approximation.]{style="color: #0A75C4;"}
+- [Solving the continuous argmax problem.]{style="color: #0A75C4;"}
 :::
 :::
 :::
@@ -446,7 +446,7 @@ A_{\subold{\pi}}(s_{T-1},a_{T-1}) &= r_{T-1} + \underbrace{V^{\subold{\pi}}(s_{T
 ::: incremental
 - Take the sum:
 [$$\begin{align*} 
-\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &= \underbrace{r_0 \textcolor{blue}{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \textcolor{blue}{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \textcolor{red}{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \textcolor{red}{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
+\sum_{t=0}^{T-1} A_{\subold{\pi}}(s_t,a_t) &= \underbrace{r_0 \mathBlue{+ {V^{\subold{\pi}}(s_{1})}} - V^{\subold{\pi}}(s_{0})}_{=A_{\subold{\pi}}(s_0,a_0)} + \underbrace{r_1 + {V^{\subold{\pi}}(s_{2})} \mathBlue{- {V^{\subold{\pi}}(s_{1})}}}_{=A_{\subold{\pi}}(s_1,a_1)} + \ldots + \underbrace{r_{T-2} \mathRed{+ {V^{\subold{\pi}}(s_{T-1})}} - {V^{\subold{\pi}}(s_{T-2})}}_{=A_{\subold{\pi}}(s_{T-2},a_{T-2})} + \underbrace{r_{T-1} \mathRed{- {V^{\subold{\pi}}(s_{T-1})}}}_{=A_{\subold{\pi}}(s_{T-1},a_{T-1})} \\
 &= r_0 + r_1 + \ldots + r_{T-2} + r_{T-1} - V^{\subold{\pi}}(s_{0}) \fragment{ = \cbracket{\sum_{t=0}^{T-1} r_t} - V^{\subold{\pi}}(s_{0}) .}
 \end{align*}$$]{.math-incremental}
 - Shift around and take the expectation with respect to the new policy [(in the case of $V^{\subold{\pi}}$, this reduces to $s_0 \sim p_0$):]{.fragment}
@@ -512,7 +512,7 @@ $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{
 
 [$\textcolor{green}{\mathbf{+}\text{ Proof that if you can find a new policy with a positive expected advantage under the old policy, your policy will get better.}}$]{.fragment}
 
-[$\textcolor{red}{\mathbf{-}\text{ To compute the exact value, we must sample states from the new policy (}s \sim p_{\subnew{\pi}}\text{), which we do not yet know!}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ To compute the exact value, we must sample states from the new policy (}s \sim p_{\subnew{\pi}}\text{), which we do not yet know!}}$]{.fragment}
 
 [**Solution approach in TRPO**: "If $\subnew{\pi}$ is very close to $\subold{\pi}$ (enforced by a KL-constraint), we can swap the state distribution $p_{\subnew{\pi}}$ for $p_{\subnew{\pi}}$ and safely optimize an approximation (i.e., a *surrogate objective*)."]{.fragment}
 :::
@@ -566,7 +566,7 @@ $$\begin{equation} \eta(\subnew{\pi}) = \eta(\subold{\pi}) + \Expsub{A_{\subold{
 
 ::: incremental
 - Simple trick: just sample the state $s$ under the *old* policy!
-$$\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\textcolor{red}{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}$$
+$$\begin{equation} L_\subold{\pi}(\pi) = \eta(\subold{\pi}) + \Expsub{A_{\subold{\pi}}(s,a)}{\mathRed{s\sim \rho_{\subold{\pi}}}, a\sim\pi}. \label{eq:Adv_surrogate_loss} \end{equation}$$
 - Under the assumption that $\subold{\pi}$ and $\subnew{\pi}$ do not differ too much, this is a reasonable assumption.
 - In the limit case $\subold{\pi} = \subnew{\pi}$, we have equality of \eqref{eq:Adv_performance_measures} and \eqref{eq:Adv_surrogate_loss}, as well as their gradients [@Schulman2015trpo{}, Eq. (4)].
 :::
@@ -649,7 +649,7 @@ $$]{.fragment}
 ### The Policy gradient for the TRPO surrogate loss
 
 [$$\begin{equation} \begin{aligned}
-g &= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\textcolor{red}{\phi=\subold{\phi}}} } \fragment{ =\Expsub{\frac{\nablaphi \pi_{\phi}\agivenb{a}{s}\big|_{\phi=\subold{\phi}}}{\pi_\subold{\phi}\agivenb{a}{s}}A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} } \\
+g &= \nablaphi L_\mathsf{TRPO}(\phi) \fragment{ \Big|_{\mathRed{\phi=\subold{\phi}}} } \fragment{ =\Expsub{\frac{\nablaphi \pi_{\phi}\agivenb{a}{s}\big|_{\phi=\subold{\phi}}}{\pi_\subold{\phi}\agivenb{a}{s}}A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} } \\
 &=\Expsub{\nablaphi \log \pi_\phi\agivenb{a}{s}\big|_{\phi=\subold{\phi}} A_{\pi_\subold{\phi}}(s,a)}{s\sim \rho_{\pi_\subold{\phi}}, a\sim\pi_\subold{\phi}} \quad\textcolor{grey}{\text{\textit{(Log-identity trick)}}} \end{aligned}
 \label{eq:Adv_TRPO_gradient}\end{equation}$$]{.math-incremental}
 [is the standard policy gradient with value baseline!]{.fragment}
@@ -1095,7 +1095,7 @@ $$\kappa_t(\phi) = \frac{\pi_\phi\agivenb{a_t}{s_t}}{\pi_{\subold{\phi}}\agivenb
 
 If changes are small, then we can try to use data in multiple consecutive iterations. Tradeoff:
 
-[$\textcolor{red}{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Data is not entirely on-policy.}}\qquad$]{.fragment}
 [$\textcolor{green}{\mathbf{+}\text{ More data }\Rightarrow\text{ lower variance.}}$]{.fragment}
 :::
 

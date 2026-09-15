@@ -376,12 +376,12 @@ Possible **samples** for the given Markov chain example starting at $s=1$ (small
 # Finite Markov reward processes
 
 ::: {.definition}
-A **finite Markov reward process** (**MRP**) is a tuple $(\Sc, p, \textcolor{red}{r}, \textcolor{red}{\gamma})$, where
+A **finite Markov reward process** (**MRP**) is a tuple $(\Sc, p, \mathRed{r}, \mathRed{\gamma})$, where
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
 - $\pC{s'}{s}$ is the state **transition probability**,
-- [$r$ is a **reward function** (a random variable with realization $r_{t} \sim \pC{r}{s_t}$),]{style="color: red;"}
-- [$\gamma\in[0,1]$ is a **discount factor**.]{style="color: red;"}
+- [$r$ is a **reward function** (a random variable with realization $r_{t} \sim \pC{r}{s_t}$),]{style="color: #C138A0;"}
+- [$\gamma\in[0,1]$ is a **discount factor**.]{style="color: #C138A0;"}
 
 :::
 
@@ -559,12 +559,12 @@ $$]{ .math-incremental }
 
 # Finite Markov decision processes
 ::: {.definition}
-A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \textcolor{red}{\Ac}, p, r, \gamma)$, where
+A **finite Markov decision process** (**MDP**) is a tuple $(\Sc, \mathRed{\Ac}, p, r, \gamma)$, where
 
 - $\Sc$ is a finite set of discrete-time **states** $s_t\in\Sc$,
-- [$\Ac$ is a finite set of discrete-time **actions** $a_t\in\Ac$]{style="color: red;"},
-- $\textcolor{red}{\psprimesa}$ is the **state transition probability**,
-- $r$ is a **reward function** (a random variable with realization $\textcolor{red}{r_{t} \sim \pC{r}{s_t,a_t}}$),
+- [$\Ac$ is a finite set of discrete-time **actions** $a_t\in\Ac$]{style="color: #C138A0;"},
+- $\mathRed{\psprimesa}$ is the **state transition probability**,
+- $r$ is a **reward function** (a random variable with realization $\mathRed{r_{t} \sim \pC{r}{s_t,a_t}}$),
 - $\gamma\in[0,1]$ is a **discount factor**.
 
 :::

@@ -44,7 +44,7 @@ feedback:
 |         | **Model-Based Control**                                      |                                          |
 |  14-15  | Optimal \& feedback control, MPC, planning, model-based RL   | Planning \& control when we know the model | 
 |         | **Advanced Topics**                                          |                                          |
-|   [16]{style="color: red;"}    | [Offline reinforcement learning]{style="color: red;"}                       | [RL with a static, given dataset]{style="color: red;"} |
+|   [16]{style="color: #C138A0;"}    | [Offline reinforcement learning]{style="color: #C138A0;"}                       | [RL with a static, given dataset]{style="color: #C138A0;"} |
 
 Table: Lecture contents
 :::
@@ -97,9 +97,9 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 [$\pluspoint$ [Very fast.]{style="color: green;"}]{.fragment}
 
-[$\minuspoint$ [Compounding errors / covariate shift: A small error at step one puts the agent in a state it has never seen before, causing increasingly poor decisions.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Compounding errors / covariate shift: A small error at step one puts the agent in a state it has never seen before, causing increasingly poor decisions.]{style="color: #C138A0;"}]{.fragment}
 
-[$\minuspoint$ [Assumes i.i.d. data distribution, which is false in sequential environments.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Assumes i.i.d. data distribution, which is false in sequential environments.]{style="color: #C138A0;"}]{.fragment}
 
 :::
 :::
@@ -117,9 +117,9 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 [$\pluspoint$ [Reward function can transfer well even if the environment changes slightly.]{style="color: green;"}]{.fragment}
 
-[$\minuspoint$ [Expensive inner-loop problem: RL training in each iteration.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Expensive inner-loop problem: RL training in each iteration.]{style="color: #C138A0;"}]{.fragment}
 
-[$\minuspoint$ [Mathematically underdetermined (many different reward functions can explain the same expert behavior).]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Mathematically underdetermined (many different reward functions can explain the same expert behavior).]{style="color: #C138A0;"}]{.fragment}
 
 :::
 :::
@@ -146,9 +146,9 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 [$\pluspoint$ [Forces the agent to learn how to recover from its own mistakes.]{style="color: green;"}]{.fragment}
 
-[$\minuspoint$ [Requires an expert to be constantly available and online during training to label data.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Requires an expert to be constantly available and online during training to label data.]{style="color: #C138A0;"}]{.fragment}
 
-[$\minuspoint$ [Exhausting for humans and frequently impossible for complex setups.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Exhausting for humans and frequently impossible for complex setups.]{style="color: #C138A0;"}]{.fragment}
 
 :::
 :::
@@ -182,9 +182,9 @@ $\Rightarrow$ "Let's just show the agent how it's done?": learn from an expert!
 
 [$\pluspoint$ [Does not require an interactive expert like DAgger.]{style="color: green;"}]{.fragment}
 
-[$\minuspoint$ [Inherits GAN instabilities (mode collapse, highly sensitive hyperparameters).]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Inherits GAN instabilities (mode collapse, highly sensitive hyperparameters).]{style="color: #C138A0;"}]{.fragment}
 
-[$\minuspoint$ [Very data hungry.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Very data hungry.]{style="color: #C138A0;"}]{.fragment}
 
 :::
 :::
@@ -245,13 +245,13 @@ Table: The key ideas in imitation learning
 ::: incremental
 - Data-driven AI is about learning from large datasets.\
 [$\textcolor{green}{\mathbf{+}\text{ Learns about the real world from data.}}$]{.fragment}\
-[$\textcolor{red}{\mathbf{-}\text{ Doesn’t try to do better than the data.}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Doesn’t try to do better than the data.}}$]{.fragment}
 :::
 
 ::: incremental
 - Reinforcement learning is about optimization.\
 [$\textcolor{green}{\mathbf{+}\text{ Optimizes a goal with emergent behavior.}}$]{.fragment}\
-[$\textcolor{red}{\mathbf{-}\text{ Doesn’t make use of real-world data.}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Doesn’t make use of real-world data.}}$]{.fragment}
 :::
 
 :::
@@ -480,12 +480,12 @@ $$\theta = \arg\min_{\hat\theta} \Expsub{\cbracket{f_{\hat{\theta}}(x) - y}^2}{x
 ### $Q$-learning and $Q$-function actor-critic
 
 [$$\begin{align*} 
-\phi &= \arg\min_{\hat{\theta}} \Expsub{\norm{Q_\theta(s,a)-y}^2}{s\sim\rho_\beta,a\sim \textcolor{red}{\pi_\beta\agivenb{\cdot}{s}}}, \\
-y_i &= r_i + \gamma \Expsub{Q_\theta(s'_i,a')}{s'_i\sim\rho_\beta,a'\sim \textcolor{blue}{\piphi\agivenb{\cdot}{s'_i}}}
+\phi &= \arg\min_{\hat{\theta}} \Expsub{\norm{Q_\theta(s,a)-y}^2}{s\sim\rho_\beta,a\sim \mathRed{\pi_\beta\agivenb{\cdot}{s}}}, \\
+y_i &= r_i + \gamma \Expsub{Q_\theta(s'_i,a')}{s'_i\sim\rho_\beta,a'\sim \mathBlue{\piphi\agivenb{\cdot}{s'_i}}}
 \end{align*}$$]{.math-incremental}
 
 ::: incremental
-- Trying to find the best policy: **we want** $\textcolor{blue}{\piphi\agivenb{a}{s}} \neq \textcolor{red}{\pi_\beta\agivenb{a}{s}}$! 
+- Trying to find the best policy: **we want** $\mathBlue{\piphi\agivenb{a}{s}} \neq \mathRed{\pi_\beta\agivenb{a}{s}}$! 
 - But we only have $s'_i$ for $s_i, a_i$ from our offline dataset.
 - **Even worse**: We're actually picking an *adversarial example*, $$\phi = \arg\max_{\hat{\phi}} \Expsub{Q_\theta(s,a)}{a\sim \pi_{\hat\phi}\agivenb{\cdot}{s}}.$$
 :::
@@ -520,11 +520,11 @@ y_i &= r_i + \gamma \Expsub{Q_\theta(s'_i,a')}{s'_i\sim\rho_\beta,a'\sim \textco
 :::
 
 ::: fragment
-$$f = \arg\min_{\hat f} \Expsub{\norm{f(s,a)-s'}_2^2}{s\sim\rho_\beta,a\sim\textcolor{red}{\pi_\beta\agivenb{\cdot}{s}}, s'\sim \psprimesa} $$
+$$f = \arg\min_{\hat f} \Expsub{\norm{f(s,a)-s'}_2^2}{s\sim\rho_\beta,a\sim\mathRed{\pi_\beta\agivenb{\cdot}{s}}, s'\sim \psprimesa} $$
 :::
 
 ::: incremental
-- Probably large: $\Expsub{\norm{f(s,a)-s'}_2^2}{s\sim\rho_\beta,a\sim\textcolor{blue}{\pi_\phi\agivenb{\cdot}{s}}, s'\sim \psprimesa}.$
+- Probably large: $\Expsub{\norm{f(s,a)-s'}_2^2}{s\sim\rho_\beta,a\sim\mathBlue{\pi_\phi\agivenb{\cdot}{s}}, s'\sim \psprimesa}.$
 - **Even worse**: Pick $\piphi$ to *maximize the reward* under $f$!
 :::
 :::
@@ -574,7 +574,7 @@ $$ \KLdiv{\piphi\agivenb{\cdot}{s}}{\pi_\beta\agivenb{\cdot}{s}}\leq \epsilon. $
 ::: incremental
 - Simplest approach to avoid overestimation: constrain the distance between behavior policy $\pi_\beta$ and the learned policy $\piphi$.
 - Remember the KL divergence?
-$$ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \textcolor{blue}{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } $$
+$$ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \mathBlue{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } $$
 - Constraining the distance yields a constrained optimization problem:
 $$\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\agivenb{\cdot}{s}} \qquad\text{s.t.}\qquad \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}\leq \epsilon. \label{eq:OFF_constrained_policy} \end{equation}$$
   - Where have we seen this before? [$\Rightarrow$ Natural policy gradient!]{.fragment}
@@ -585,7 +585,7 @@ $$\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\ag
 ::: incremental
 - Via [Lagrange multipliers](https://en.wikipedia.org/wiki/Lagrange_multiplier): additional term in the actor loss function:
 $$\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}$$
-[$$\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \textcolor{blue}{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}$$]{.fragment}
+[$$\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \mathBlue{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}$$]{.fragment}
   - To solve \eqref{eq:OFF_constrained_policy}, we need to solve for both $\phi$ **and** the Lagrange multiplier $\lambda$.
   - Alternative: treat $\lambda$ as a hyperparameter.
 :::
@@ -736,9 +736,9 @@ $\circ$ Generative modeling\
 :::
 
 ::: platzhalter
-[$\minuspoint$ [Asymmetry (forward KL vs. reverse KL).]{style="color: red;"}]{.fragment}\
-[$\minuspoint$ [Overly conservative in unseen regions.]{style="color: red;"}]{.fragment}\
-[$\minuspoint$ [Sensitive to behavior policy estimation.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Asymmetry (forward KL vs. reverse KL).]{style="color: #C138A0;"}]{.fragment}\
+[$\minuspoint$ [Overly conservative in unseen regions.]{style="color: #C138A0;"}]{.fragment}\
+[$\minuspoint$ [Sensitive to behavior policy estimation.]{style="color: #C138A0;"}]{.fragment}
 :::
 
 :::
@@ -767,9 +767,9 @@ $$MMD^2(\pi, \beta) = \Exp{k(a_\pi, a_\pi')} - 2\Exp{k(a_\pi, a_\beta)} + \Exp{k
 :::
 
 ::: platzhalter
-[$\minuspoint$ [Computationally expensive.]{style="color: red;"}]{.fragment}\
-[$\minuspoint$ [High sample variance / hard to tune the kernel bandwidth.]{style="color: red;"}]{.fragment}\
-[$\minuspoint$ [Curse of dimensionality.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Computationally expensive.]{style="color: #C138A0;"}]{.fragment}\
+[$\minuspoint$ [High sample variance / hard to tune the kernel bandwidth.]{style="color: #C138A0;"}]{.fragment}\
+[$\minuspoint$ [Curse of dimensionality.]{style="color: #C138A0;"}]{.fragment}
 :::
 
 :::
@@ -1029,7 +1029,7 @@ $$ \eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^\pi, a\sim\pias} = \Expsub{
   - where $g\sum_{t=0}^\infty \gamma^t r_t$ is the return from a trajectory following $\pi$,
   - and the value $V^{\pi_\beta}(s)$ is the same return, only following the behavior policy $\pi_\beta$.
 - We cannot sample from the state distribution $\rho^\pi$ $\Rightarrow$ sample from the dataset $\Dc$ and optimize a *surrogate objective* $\hat\eta(\pi)$:
-$$ \hat\eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^{\pi_\beta}, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\textcolor{red}{\Dc}, a\sim\pias}.$$ 
+$$ \hat\eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^{\pi_\beta}, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\mathRed{\Dc}, a\sim\pias}.$$ 
 - Similar to TRPO:
 $$\begin{equation} \pi^* = \arg\max_\pi \hat\eta(\pi) \qquad \text{s.t.}\qquad \KLdivavg{\pi}{\pi_\beta} \leq \epsilon. \label{eq:OFF_expected_advantage} \end{equation}$$
 :::
@@ -1068,9 +1068,9 @@ $$\begin{equation} L_\pi(\phi) = -\Expsub{\exp\left( \frac{1}{\alpha} A^{\pi_\be
 
 [$\pluspoint$ [Simple to implement.]{style="color: green;"}]{.fragment}
 
-[$\minuspoint$ [Single-step policy improvement.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Single-step policy improvement.]{style="color: #C138A0;"}]{.fragment}
 
-[$\minuspoint$ [Because AWR relies on static dataset returns $g$ rather than propagating future values via Bellman backups ($Q(s,a) = r + \gamma \max V(s')$), it cannot stitch trajectories.]{style="color: red;"}]{.fragment}
+[$\minuspoint$ [Because AWR relies on static dataset returns $g$ rather than propagating future values via Bellman backups ($Q(s,a) = r + \gamma \max V(s')$), it cannot stitch trajectories.]{style="color: #C138A0;"}]{.fragment}
 :::
 :::
 

@@ -236,9 +236,9 @@ approximation</title>
 <td align="left">The basics for what comes next</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">7</span></td>
-<td align="left"><span style="color: red;">Value function approximation</span></td>
-<td align="left"><span style="color: red;">Value estimation with function approximation</span></td>
+<td align="center"><span style="color: #C138A0;">7</span></td>
+<td align="left"><span style="color: #C138A0;">Value function approximation</span></td>
+<td align="left"><span style="color: #C138A0;">Value estimation with function approximation</span></td>
 </tr>
 <tr>
 <td align="center">8</td>
@@ -650,7 +650,7 @@ Ant [<a href="https://gymnasium.farama.org/environments/mujoco/ant/">Source</a>]
 <ul class="incremental">
 <li class="fragment">For example, in the TD(<span class="math inline">\(0\)</span>) case, we get for <span class="math inline">\(\eqref{eq:VAL_L}\)</span>: <span class="math display">\[L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.\]</span></li>
 <li class="fragment">Taking the gradient of the single-sample version for <span class="math inline">\(L(\theta)\)</span> yields: <span class="math-incremental"><span class="math display">\[\begin{align*} \theta ~\gets~ &amp;\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
-&amp;= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
+&amp;= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \mathRed{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
 &amp;\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
 \end{align*}\]</span></span></li>
 <li class="fragment">Application of Eq. <span class="math inline">\(\eqref{eq:VAL_SGD-update}\)</span> is still very common.</li>

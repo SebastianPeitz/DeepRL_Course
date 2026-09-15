@@ -255,9 +255,9 @@
 <td align="left"><span class="math inline">\(Q\)</span>-learning with neural networks</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">9</span></td>
-<td align="left"><span style="color: red;">Policy gradients</span></td>
-<td align="left"><span style="color: red;">Direct optimization of the policy</span></td>
+<td align="center"><span style="color: #C138A0;">9</span></td>
+<td align="left"><span style="color: #C138A0;">Policy gradients</span></td>
+<td align="left"><span style="color: #C138A0;">Direct optimization of the policy</span></td>
 </tr>
 <tr>
 <td align="center">10</td>
@@ -3785,7 +3785,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">R. S. Sutton and Barto 199
 <p><span class="math-incremental"><span class="math display">\[ \begin{align*} \phi^* &amp;= \arg\max_{\phi}\underbrace{\Expsub{\sum_{t=0}^{T-1}r_t}{\tau\sim p_\phi(\tau)}}_{L_\pi(\phi)}\\ 
 L_\pi(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^{T-1}r_t}] = \int p_\phi(\tau) r(\tau) \dtau\\
 \nablaphi L_\pi(\phi) &amp;= \nablaphi \rbracket{\int p_\phi(\tau) r(\tau) \dtau}\\
-&amp;= \int \textcolor{red}{\nablaphi p_\phi(\tau)} r(\tau) \dtau
+&amp;= \int \mathRed{\nablaphi p_\phi(\tau)} r(\tau) \dtau
 \end{align*}\]</span></span></p>
 </div>
 <div class="fragment">
@@ -3797,14 +3797,14 @@ L_\pi(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^
 <h3>A convenient identity</h3>
 <p><span class="math display">\[
 \begin{equation}
-\textcolor{red}{\nablaphi p_\phi(\tau)} \fragment{ = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} } \fragment{ = \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} } \label{eq:PG_log_identity}
+\mathRed{\nablaphi p_\phi(\tau)} \fragment{ = p_\phi(\tau) \frac{\nablaphi p_\phi(\tau)}{p_\phi(\tau)} } \fragment{ = \mathBlue{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} } \label{eq:PG_log_identity}
 \end{equation}
 \]</span></p>
 </div>
 </div>
 </div>
 <p><span class="math-incremental"><span class="math display">\[\begin{align*}
-\quad~= \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau) \dtau
+\quad~= \int \mathBlue{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} r(\tau) \dtau
 \end{align*} \]</span></span> <span class="fragment"><span class="math display">\[\begin{align}
 \quad = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \label{eq:PG_policy_gradient}
 \end{align} \]</span></span></p>
@@ -3832,7 +3832,7 @@ L_\pi(\phi) &amp;= \E_{\tau\sim p_\phi(\tau)}[\underbrace{r(\tau)}_{=\sum_{t=0}^
 <br />
 <span class="math display">\[ \begin{align*} \phi^* &amp;= \arg\max_{\phi}L_\pi(\phi)\\ 
 L_\pi(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau\\
-\nablaphi L_\pi(\phi) &amp;= \Expsub{\textcolor{blue}{\nablaphi \log p_\phi(\tau)} r(\tau)}{\tau\sim p_\phi(\tau)} 
+\nablaphi L_\pi(\phi) &amp;= \Expsub{\mathBlue{\nablaphi \log p_\phi(\tau)} r(\tau)}{\tau\sim p_\phi(\tau)} 
 \end{align*}\]</span></p>
 </div>
 <div class="fragment">
@@ -3847,9 +3847,9 @@ L_\pi(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r
 </div>
 <div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
-\textcolor{blue}{\nablaphi \log p_\phi(\tau)} &amp;= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}}\\
+\mathBlue{\nablaphi \log p_\phi(\tau)} &amp;= \nablaphi \rbracket{\log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\log\pi_\phi\agivenb{a_t}{s_t} + \log \pC{s_{t+1}}{s_t,a_t}}}\\
  &amp;= \nablaphi \log p(s_0) + \sum_{t=0}^{T-1} \rbracket{\nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \nablaphi \log \pC{s_{t+1}}{s_t,a_t}}\\
-&amp;= \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \textcolor{red}{\underbrace{\cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}}}_{=0}}
+&amp;= \mathRed{\underbrace{\cancel{\nablaphi \log\, p(s_0)}}_{=0}} + \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t} + \mathRed{\underbrace{\cancel{\nablaphi \log\, \pC{s_{t+1}}{s_t,a_t}}}_{=0}}
 \end{align*}\]</span></span></p>
 <div class="fragment">
 <div id="policy-gradient-theorem-simplified" class="definition">
@@ -3892,7 +3892,7 @@ L_\pi(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r
 <div class="incremental">
 <ol class="incremental" start="2" style="list-style-type: decimal">
 <li class="fragment"><strong>Neural network approximator</strong> <span class="math inline">\(\pi_\phi\)</span> <span class="math inline">\(\Rightarrow\)</span> maximization w.r.t. the policy parameters: <span class="math display">\[\max_{\phi}\Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \max_{\phi}L_\pi(\phi).\]</span></li>
-<li class="fragment"><strong>Challenging objective function</strong>: Integration over <span class="math inline">\(\tau\)</span> (i.e., the space of trajectories) is infeasible! <!-- [$\Rightarrow$ Approximation via [Monte Carlo sampling]{style="color: blue;"} becomes possible]{.fragment} --> <span class="math display">\[L_\pi(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau. \]</span> <!-- \fragment{ \textcolor{blue}{\approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t}}. }$$ --></li>
+<li class="fragment"><strong>Challenging objective function</strong>: Integration over <span class="math inline">\(\tau\)</span> (i.e., the space of trajectories) is infeasible! <!-- [$\Rightarrow$ Approximation via [Monte Carlo sampling]{style="color: #0A75C4;"} becomes possible]{.fragment} --> <span class="math display">\[L_\pi(\phi) = \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r(\tau) \dtau. \]</span> <!-- \fragment{ \mathBlue{\approx \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1}r_{i,t}}. }$$ --></li>
 <li class="fragment">Use <span class="math inline">\(\log\)</span> identity to derive a formulation of the gradient that we can <em>approximate using sampling</em>: <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)}.\]</span></li>
 </ol>
 </div>
@@ -3911,7 +3911,7 @@ L_\pi(\phi) &amp;= \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)} = \int p_\phi(\tau) r
 <div class="area">
 <div class="box block">
 <div class="small">
-<p>We now have a formulation of the policy gradient that we can <strong>approximate using <span style="color: blue;">Monte Carlo sampling</span></strong>: <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N} \underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\textcolor{blue}{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }\]</span></p>
+<p>We now have a formulation of the policy gradient that we can <strong>approximate using <span style="color: #0A75C4;">Monte Carlo sampling</span></strong>: <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_t}{s_t}}\cbracket{\sum_{t=0}^{T-1}r_t}}{\tau\sim p_\phi(\tau)} \fragment{ \approx \mathBlue{\frac{1}{N} \sum_{i=1}^N} \underbrace{\mathBlue{\cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}}}_{\fragment{ \text{(I)} }}\underbrace{\mathBlue{\cbracket{\sum_{t=0}^{T-1}r_{i,t}}}}_{\fragment{ \text{(II)} }}. }\]</span></p>
 <div class="grid-layout" style="grid-template-columns: 5fr 5fr;">
 <div class="platzhalter">
 <p><span class="fragment">(I) This term is simpliy the derivative of the policy network w.r.t. the weights <span class="math inline">\(\Rightarrow\)</span> backpropagation!<br />
@@ -7208,8 +7208,8 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 <div class="fragment">
 <p><strong>Proof</strong>: Start with the exact formulation of the policy gradient following <span class="math inline">\(\eqref{eq:PG_policy_gradient}\)</span>, <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) \cbracket{r(\tau) - b} }{\tau\sim p_\phi(\tau)}. \]</span> <span class="fragment">Unbiased in expectation <span class="math inline">\(\Rightarrow\)</span> baseline term is zero in expectation:</span> <span class="math-incremental"><span class="math display">\[\begin{align*}
-&amp;\Expsub{\nablaphi \log p_\phi(\tau) b }{\tau\sim p_\phi(\tau)} \fragment{ = \int \textcolor{blue}{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} b \dtau } \\
-&amp;\stackrel{\eqref{eq:PG_log_identity}}{=} \int \textcolor{red}{\nablaphi p_\phi(\tau)} b \dtau \fragment{ = b \nablaphi \int p_\phi(\tau) \dtau } \fragment{ = \cbracket{\nablaphi 1} b } \fragment{ = 0. \qquad \square }
+&amp;\Expsub{\nablaphi \log p_\phi(\tau) b }{\tau\sim p_\phi(\tau)} \fragment{ = \int \mathBlue{p_\phi(\tau) \nablaphi \log p_\phi(\tau)} b \dtau } \\
+&amp;\stackrel{\eqref{eq:PG_log_identity}}{=} \int \mathRed{\nablaphi p_\phi(\tau)} b \dtau \fragment{ = b \nablaphi \int p_\phi(\tau) \dtau } \fragment{ = \cbracket{\nablaphi 1} b } \fragment{ = 0. \qquad \square }
 \end{align*}\]</span></span></p>
 </div>
 </div>
@@ -7243,7 +7243,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 </div>
 </div>
-<p><span class="math-incremental"><span class="math display">\[\begin{align*} \mathsf{var} &amp;= \E_{\tau\sim p_\phi(\tau)}\big[(\underbrace{\nablaphi \log\, p_\phi(\tau)}_{=g(\tau)} \cbracket{r(\tau) - b})^2\big] - \cbracket{\Expsub{\nablaphi \log\, p_\phi(\tau) \cbracket{r(\tau) - \rcancel{b}} }{\tau\sim p_\phi(\tau)}}^2 \quad\text{(\textcolor{red}{unbiased baseline})} \\
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} \mathsf{var} &amp;= \E_{\tau\sim p_\phi(\tau)}\big[(\underbrace{\nablaphi \log\, p_\phi(\tau)}_{=g(\tau)} \cbracket{r(\tau) - b})^2\big] - \cbracket{\Expsub{\nablaphi \log\, p_\phi(\tau) \cbracket{r(\tau) - \rcancel{b}} }{\tau\sim p_\phi(\tau)}}^2 \quad\text{(\mathRed{unbiased baseline})} \\
 \diff{\mathsf{var}}{b} &amp;=\diff{\mathsf{}}{b} \Expsub{g(\tau)^2 \cbracket{r(\tau) - b}^2}{\tau\sim p_\phi(\tau)} \fragment{ = \diff{\mathsf{}}{b} \cbracket{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)} - 2\Expsub{g(\tau)^2 r(\tau)b}{\tau\sim p_\phi(\tau)} + \Expsub{g(\tau)^2 b^2}{\tau\sim p_\phi(\tau)} } } \\
 &amp;= \diff{\mathsf{}}{b} \cbracket{\cancel{\Expsub{g(\tau)^2 r(\tau)^2}{\tau\sim p_\phi(\tau)}} - 2b\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} + b^2 \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} }\\
 &amp;= - 2\Expsub{g(\tau)^2 r(\tau)}{\tau\sim p_\phi(\tau)} +2 b \Expsub{g(\tau)^2 }{\tau\sim p_\phi(\tau)} \fragment{\stackrel{!}{=}0.}
@@ -8988,7 +8988,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </li>
 <li class="fragment">In expectation, these factors have to cancel out (and one can prove this). <span class="fragment"><strong>But</strong>: for finite sample sizes, they do not and instead increase the variance.</span></li>
 </ul></li>
-<li class="fragment"><strong>Simple fix</strong>: “<em>reward to go</em>” <span class="math inline">\(\hat{Q}_{i,t} = \sum_{\textcolor{red}{t&#39;=t}}^{T-1}r_{i,t&#39;}\)</span> (the only change is <span class="math inline">\(0 \to t\)</span>), <span class="math display">\[ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. \]</span></li>
+<li class="fragment"><strong>Simple fix</strong>: “<em>reward to go</em>” <span class="math inline">\(\hat{Q}_{i,t} = \sum_{\mathRed{t&#39;=t}}^{T-1}r_{i,t&#39;}\)</span> (the only change is <span class="math inline">\(0 \to t\)</span>), <span class="math display">\[ \nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}\hat{Q}_{i,t}. \]</span></li>
 </ul>
 </div>
 </div>
@@ -9031,7 +9031,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <ul class="incremental">
 <li class="fragment">Recall the policy gradient optimization problem: <span class="math display">\[ \phi^* = \arg\max_\phi L_\pi(\phi) = \arg\max_\phi \Expsub{r(\tau)}{\tau\sim p_\phi(\tau)}. \]</span> <!-- = \arg\max_\phi \int p_\phi(\tau) r(\tau) \dtau. $$ --></li>
 <li class="fragment">The corresponding policy gradient (for simplicity, without baseline) is <span class="math display">\[ \nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. \]</span></li>
-<li class="fragment">The problem: <span class="math inline">\(\Expsub{r(\tau)}{\textcolor{red}{\tau\sim p_\phi(\tau)}}\)</span> requires on-policy sampling!</li>
+<li class="fragment">The problem: <span class="math inline">\(\Expsub{r(\tau)}{\mathRed{\tau\sim p_\phi(\tau)}}\)</span> requires on-policy sampling!</li>
 <li class="fragment">We cannot skip step 1 of the REINFORCE algorithm.</li>
 </ul>
 </div>
@@ -9039,7 +9039,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div id="the-reinforce-algorithm-2" class="definition">
 <h3>The REINFORCE algorithm</h3>
 <ol style="list-style-type: decimal">
-<li><span style="color: red;">Sample <span class="math inline">\(\set{\tau_i}_{i=1}^N\)</span> using <span class="math inline">\(\pi_\phi\agivenb{a}{s}\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N\)</span>.</span></li>
+<li><span style="color: #C138A0;">Sample <span class="math inline">\(\set{\tau_i}_{i=1}^N\)</span> using <span class="math inline">\(\pi_\phi\agivenb{a}{s}\)</span> <span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(\set{((s_{i,0},a_{i,0},r_{i,0}),\ldots,(s_{i,T-1},a_{i,T-1},r_{i,T-1}))}_{i=1}^N\)</span>.</span></li>
 <li><span class="math inline">\(\nablaphi L_\pi(\phi) \approx \frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\pi_\phi\agivenb{a_{i,t}}{s_{i,t}}}\cbracket{\sum_{t=0}^{T-1}r_{i,t}}\)</span>.</li>
 <li>Gradient ascent: <span class="math inline">\(\phi \gets \phi + \alpha \nablaphi L_\pi(\phi)\)</span>.</li>
 </ol>
@@ -9095,7 +9095,7 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <ul class="incremental">
 <li class="fragment">Examples are previous policies, expert demonstrations, combinations thereof, …</li>
 </ul></li>
-<li class="fragment">Simply transfer of the importance sampling formula: <span class="math display">\[ L_\pi(\phi) = \Expsub{\textcolor{blue}{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. \]</span></li>
+<li class="fragment">Simply transfer of the importance sampling formula: <span class="math display">\[ L_\pi(\phi) = \Expsub{\mathBlue{\frac{p_\phi(\tau)}{\overline{p}(\tau)}}r(\tau)}{\tau\sim \overline{p}(\tau)}. \]</span></li>
 <li class="fragment">Insert definition of trajectory probabilities: <span class="math-incremental"><span class="math display">\[\begin{align} 
 p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t+1}}{s_t,a_t}, \notag \\ 
 \frac{p_\phi(\tau)}{\overline{p}(\tau)} &amp;= \frac{\cancel{p(s_0)} \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}}{\cancel{p(s_0)} \prod_{t=0}^{T-1} \overline{\pi}\agivenb{a_t}{s_t} \cancel{\pC{s_{t+1}}{s_t,a_t}}} \fragment{ = \prod_{t=0}^{T-1} \frac{\pi_\phi\agivenb{a_t}{s_t}}{\overline{\pi}\agivenb{a_t}{s_t}}. \label{eq:PG_importance_sampling} }
@@ -9134,7 +9134,7 @@ p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Note that only <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> actually depends on the new parameter vector <span class="math inline">\(\phi&#39;\)</span>: <span class="math display">\[ \fragment{ \nablaphiprime L_\pi(\phi&#39;) = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} } \fragment{ = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)}} \fragment{ = \Expsub{\textcolor{blue}{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}} \nablaphiprime \log p_{\phi&#39;}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. } \]</span></li>
+<li class="fragment">Note that only <span class="math inline">\(p_{\phi&#39;}(\tau)\)</span> actually depends on the new parameter vector <span class="math inline">\(\phi&#39;\)</span>: <span class="math display">\[ \fragment{ \nablaphiprime L_\pi(\phi&#39;) = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)} } \fragment{ = \Expsub{\frac{\nablaphiprime p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}r(\tau)}{\tau\sim p_\phi(\tau)}} \fragment{ = \Expsub{\mathBlue{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)}} \nablaphiprime \log p_{\phi&#39;}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}. } \]</span></li>
 <li class="fragment">It’s the policy gradient formula we know, modified by the importance sampling weights!
 <ul class="incremental">
 <li class="fragment">In fact, that’s an alternative way to derive it: introduce importance sampling in the policy gradient formula <span class="math inline">\(\nablaphi L_\pi(\phi) = \Expsub{\nablaphi \log p_\phi(\tau) r(\tau)}{\tau\sim p_\phi(\tau)}\)</span>.</li>
@@ -9170,10 +9170,10 @@ p_\phi(\tau) &amp;= p(s_0) \prod_{t=0}^{T-1} \pi_\phi\agivenb{a_t}{s_t} \pC{s_{t
 <li class="fragment">Now that we have the formula, let’s reformulate and introduce causality again: <span class="math-incremental"><span class="math display">\[\begin{align*} 
 \nablaphiprime L_\pi(\phi&#39;) &amp;= \Expsub{\frac{p_{\phi&#39;}(\tau)}{p_{\phi}(\tau)} \nablaphiprime \log \pi_{\phi&#39;}(\tau) r(\tau)}{\tau\sim p_\phi(\tau)} \\
 &amp;= \E_{\tau\sim p_\phi(\tau)} \Big[\underbrace{\cbracket{\prod_{t=0}^{T-1} \frac{\pi_{\phi&#39;}\agivenb{a_t}{s_t}}{\pi_{\phi}\agivenb{a_t}{s_t}}}}_{\text{Eq. }\eqref{eq:PG_importance_sampling}} \cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi&#39;}\agivenb{a_t}{s_t}} \cbracket{\sum_{t=0}^{T-1} r_t}\Big] \\
-\text{\small (Causality:}~&amp;\text{\small Future actions don&#39;t affect (1) the \textcolor{blue}{current weights} and (2) \textcolor{red}{past rewards}. $\Rightarrow$ Distribute weights!)}\\
-&amp;= \Expsub{\cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi&#39;}\agivenb{a_t}{s_t} \cbracket{\textcolor{blue}{\prod_{t&#39;=0}^{t} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;}}{s_{t&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;}}{s_{t&#39;}}}}}} \cbracket{\sum_{t=0}^{T-1} r_t \cbracket{\textcolor{red}{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}}{\tau\sim p_\phi(\tau)}
+\text{\small (Causality:}~&amp;\text{\small Future actions don&#39;t affect (1) the \mathBlue{current weights} and (2) \mathRed{past rewards}. $\Rightarrow$ Distribute weights!)}\\
+&amp;= \Expsub{\cbracket{\sum_{t=0}^{T-1}\nablaphiprime \log \pi_{\phi&#39;}\agivenb{a_t}{s_t} \cbracket{\mathBlue{\prod_{t&#39;=0}^{t} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;}}{s_{t&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;}}{s_{t&#39;}}}}}} \cbracket{\sum_{t=0}^{T-1} r_t \cbracket{\mathRed{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}}{\tau\sim p_\phi(\tau)}
 \end{align*}\]</span></span></li>
-<li class="fragment">Ignoring the last term yields some form of policy iteration algorithm (more on this later): <span class="math display">\[ \cbracket{\textcolor{red}{\cancel{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}. \]</span></li>
+<li class="fragment">Ignoring the last term yields some form of policy iteration algorithm (more on this later): <span class="math display">\[ \cbracket{\mathRed{\cancel{\prod_{t&#39;&#39;=t}^{t&#39;} \frac{\pi_{\phi&#39;}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}{\pi_{\phi}\agivenb{a_{t&#39;&#39;}}{s_{t&#39;&#39;}}}}}}. \]</span></li>
 </ul>
 </div>
 </div>

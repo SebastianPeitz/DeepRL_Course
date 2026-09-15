@@ -38,12 +38,14 @@ feedback:
 Table: Lecture contents
 :::
 
-# Example: Route planning (OH16 to Hansaplatz by car)
+<!-- # Example: Route planning (OH16 to Hansaplatz by car) -->
+# Example: Route planning (HNI to main campus by car)
 
 ::: platzhalter
 
 ::: columns-7-3
-![Google Maps (go [here](https://maps.app.goo.gl/ixKDSXT6bwzfa6Y9A) for the live version; do you get the same numbers?)](images/01-multi-armed-bandits/MapsDortmund.png){ width=900px }
+<!-- ![Google Maps (go [here](https://maps.app.goo.gl/ixKDSXT6bwzfa6Y9A) for the live version; do you get the same numbers?)](images/01-multi-armed-bandits/MapsDortmund.png){ width=900px } -->
+![Google Maps (go [here](https://maps.app.goo.gl/HfmtJBwiv9Hwobzq8) for the live version; do you get the same numbers?)](images/01-multi-armed-bandits/MapsPaderborn.png){ width=900px }
 
 ::: small
 ::: incremental

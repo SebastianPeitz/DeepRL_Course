@@ -34,7 +34,7 @@ feedback:
 |   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
 |   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
 |   4  | Monte Carlo methods                                       |   *Data-driven learning* from entire episodes |
-|   [5]{style="color: red;"}  | [Temporal difference learning \& $Q$-learning]{style="color: red;"}                |   [*Data-driven learning* from individual transitions]{style="color: red;"}     |
+|   $\inRed{5}$  | [Temporal difference learning \& $Q$-learning]{style="color: #C138A0;"}               | [*Data-driven learning* from individual transitions]{style="color: #C138A0;"}     |
 |      | **Deep-learning-based methods**                           |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
@@ -58,8 +58,8 @@ The main aspects of our previous two categories of methods:
 ::: incremental
 1. Monte Carlo (MC): **learning from experience**, possibly without knowledge of a model, e.g., *MC prediction* with exploring starts:
 $$Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g_t - Q(s_t,a_t)\right].$$
-2. Dynamic programming (DP): **bootstrapping** $\Rightarrow$ updating [estimates]{style="color: red;"} based on [estimates]{style="color: red;"}, e.g., *iterative policy evaluation*:
-$$ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
+2. Dynamic programming (DP): **bootstrapping** $\Rightarrow$ updating [estimates]{style="color: #C138A0;"} based on [estimates]{style="color: #C138A0;"}, e.g., *iterative policy evaluation*:
+$$ \mathRed{V(s)} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \mathRed{V(s')} \right]. $$
 :::
 
 [The **concept of temporal difference (TD) learning** is to combine both:]{.fragment}
@@ -113,12 +113,12 @@ $$]{.fragment}
 
 $$
 \begin{equation}
-V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(s_t)\right]. \label{eq:TD_TD0-update}
+V(s_t) \gets V(s_t) + \alpha \left[\mathRed{r_t + \gamma V(s_{t+1})} - V(s_t)\right]. \label{eq:TD_TD0-update}
 \end{equation}
 $$
 
 ::: incremental
-- Here, the **TD target** is $\textcolor{red}{y_t = r_t + \gamma V(s_{t+1})}$.
+- Here, the **TD target** is $\mathRed{y_t = r_t + \gamma V(s_{t+1})}$.
 - TD is *bootstrapping*: estimate $V(s_t)$ based on $V(s_{t+1})$.
 - *Delay time of one* time step; no need to wait until the end of the episode.
 :::
@@ -475,7 +475,7 @@ $\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$ $\qquad
 $\quad\quad$ Select $a_{t+1} \sim \pi(s_{t+1})$\
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1},a_{t+1})$:
 $\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]$$
-$\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$ $\qquad$ ([This is on-policy!]{style="color: red;"})\
+$\quad\quad$ Update policy: $\pi = \epsilon$-greedy$(Q)$ $\qquad$ ([This is on-policy!]{style="color: #C138A0;"})\
 $\quad\quad$ $t \gets t+1$\
 :::
 :::
@@ -522,9 +522,9 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 $\quad$ Initialize $s_t \gets s_0$, $t \gets 0$\
 $\quad$ **while** $s_t$ is not terminal:\
 $\quad\quad$ Take action $a_t \sim \pi(s_t)$ and observe $(r_t,s_{t+1})$\
-$\quad\quad$ ~~Select $\cancel{a_{t+1} \sim \pi(s_{t+1})}$~~$\qquad\qquad\qquad\qquad$ ([Not needed in off-policy]{style="color: red;"}) \
+$\quad\quad$ ~~Select $\cancel{a_{t+1} \sim \pi(s_{t+1})}$~~$\qquad\qquad\qquad\qquad$ ([Not needed in off-policy]{style="color: #C138A0;"}) \
 $\quad\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
-$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
+$\quad$ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]$$
 $\quad\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$\
 $\quad\quad$ $t \gets t+1$\
 :::
@@ -599,13 +599,13 @@ The example is taken from [@Sutton1998{}, Ex.\ 6.6]
 ::: columns-5-4
 ::: platzhalter
 What can we do to reduce the large variance in the SARSA update 
-$$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]?$$
+$$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]?$$
 
 ::: fragment
 Let's take the expectation of Q $\rightarrow$ **expected SARSA**:
 $$
 \begin{align*}
-Q(s_t,a_t) &\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
+Q(s_t,a_t) &\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathBlue{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
 &= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \policy{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
 \end{align*}
 $$
@@ -851,7 +851,7 @@ $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[\underbrace{r_t + \gamma Q(s_{t+1},
 Analog to $n$-step TD, the state-action value target (with $a_{t+n}\sim\policy{\cdot}{s_{t+n}}$) is rewritten as:
 $$ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \mathRed{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 $$
 :::
@@ -865,7 +865,7 @@ $$
 For $n$-step expected SARSA, the update is similar but we're considering the expected value at $t+n$:
 $$ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \mathRed{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 $$
 :::
@@ -1026,7 +1026,7 @@ General idea:
 - Implement this in a recursive fashion to save memory \
 [$\Rightarrow$ Introduce an **eligibility trace** $z_t$ denoting the importance of past events to the current state update:
 $$z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 & \text{if}~s_t \neq s \\ 1 & \text{if}~s_t = s \end{cases}.$$]{.fragment}
-- We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}$. [For example,
+- We additionally scale the update term by $z(s)$, i.e., $\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\mathRed{\cdot z(s)}$. [For example,
 $$ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). $$]{.fragment}
 - Instead of updating only one state-action pair $(s_t,a_t)$ we update along the entire *trace* we have left.
 :::

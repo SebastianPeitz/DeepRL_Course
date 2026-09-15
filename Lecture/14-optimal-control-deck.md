@@ -34,7 +34,7 @@ feedback:
 |         | **Deep-learning-based methods**                              |                                          |
 | 6-13    | DQN, policy gradients, actor-critic, PPO/SAC, exploration    | Deep RL from basics to modern algorithms |
 |         | **Model-Based Control**                                      |                                          |
-|  [14]{style="color: red;"}  | [ Optimal control \& feedback control ]{style="color: red;"} | [How to do control when we know the model]{style="color: red;"} | 
+|  [14]{style="color: #C138A0;"}  | [ Optimal control \& feedback control]{style="color: #C138A0;"} | [How to do control when we know the model]{style="color: #C138A0;"} | 
 |         | Model-based reinforcement learning                           |                                          | 
 |         | **Advanced Topics**                                          |                                          |
 
@@ -48,7 +48,7 @@ Table: Lecture contents
 ::: incremental
 - Until now, knowledge of a model only in the simplest RL approaches.
   - Dynamic Programming for tabular RL, e.g., policy or value iteration.
-  - We need to know $\textcolor{red}{\psprimesa}$ to update our value estimate!
+  - We need to know $\mathRed{\psprimesa}$ to update our value estimate!
 - All the advanced algorithms: **model-free RL**.
   - Collect experience by following the current policy $\pi$, 
   - then update our estimate of $V$, $Q$, $A$ or $\pi$ only from the data.
@@ -62,7 +62,7 @@ Table: Lecture contents
 $\quad$ $\Delta \gets 0$\
 $\quad$ **for** $s \in \Sc$:\
 $\quad\quad$ $V_{\mathsf{old}}(s) \gets V(s)$\
-$\quad\quad$ $V(s) \gets \max_{a\in\Ac} \sum_{s'\in\Sc} \textcolor{red}{\psprimesa} \left[ r + \gamma V(s') \right]$\
+$\quad\quad$ $V(s) \gets \max_{a\in\Ac} \sum_{s'\in\Sc} \mathRed{\psprimesa} \left[ r + \gamma V(s') \right]$\
 $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$
 :::
 :::
@@ -80,8 +80,8 @@ $\quad\quad$ $\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})$
 
 ::: platzhalter
 [$\textcolor{green}{\mathbf{+}\text{ Easier to implement.}}$]{.fragment}\
-[$\textcolor{red}{\mathbf{-}\text{ Data-hungry! Can be very sample-inefficient.}}$]{.fragment}
-[$\textcolor{red}{\mathbf{-}\text{ Ignorant of prior knowledge.}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Data-hungry! Can be very sample-inefficient.}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Ignorant of prior knowledge.}}$]{.fragment}
 :::
 :::
 \
@@ -233,15 +233,15 @@ $$ \pC{s_0,\ldots,s_T}{a_0,\ldots,a_{T-1}} = p(s_0)\prod_{t=0}^{T-1}\pC{s_{t+1}}
 - Certainty Equivalence (CE)
   - Simply replace all stochastic quantities by their expectations/mean values.\
   [$\textcolor{green}{\mathbf{+}\text{ Computationally cheap.}}$]{.fragment}\
-  [$\textcolor{red}{\mathbf{-}\text{ Completely ignores variance.}}$]{.fragment}
+  [$\mathRed{\mathbf{-}\text{ Completely ignores variance.}}$]{.fragment}
 - Mean-variance / risk-sensitive optimization
   - define loss function composed of mean and variance: $$\min_a \Exp{L} + \gamma\, \Var{L}.$$
   [$\textcolor{green}{\mathbf{+}\text{ Accounts for variance.}}$]{.fragment}\
-  [$\textcolor{red}{\mathbf{-}\text{ Need additional compute to estimate $\Var{L}$.}}$]{.fragment}
+  [$\mathRed{\mathbf{-}\text{ Need additional compute to estimate $\Var{L}$.}}$]{.fragment}
 - Sample-path optimization
   - Monte-Carlo estimate of expected loss by multiple simulations with different noise realizations $\omega_i$: $$ \min_a \frac{1}{N} \sum_{i=1}^N L(a,\omega_i).$$
   [$\textcolor{green}{\mathbf{+}\text{ Can estimate arbitrary distributions (beyond Guassian).}}$]{.fragment}\
-  [$\textcolor{red}{\mathbf{-}\text{ Compute grows with }N.}$]{.fragment}
+  [$\mathRed{\mathbf{-}\text{ Compute grows with }N.}$]{.fragment}
 :::
 :::
 :::
@@ -432,9 +432,9 @@ $$\begin{equation} \begin{aligned} \min_{s,a} &\cbracket{\sum_{t=0}^{T-1} s_t^\t
 ::: small
 Let's explicitly calculate $s_1,s_2,\ldots$:
 [$$\begin{align*}
-&s_1 = \textcolor{blue}{A s_0 + B a_0} \\
-&s_2 = A s_1 + B a_1 \fragment{ = A (\textcolor{blue}{A s_0 + B a_0}) + B a_1 } \fragment{ = \textcolor{red}{A^2 s_0 + AB a_0 + B a_1} } \\
-&s_3 = A s_2 + B a_2 \fragment{ = A (\textcolor{red}{A^2 s_0 + AB a_0 + B a_1}) + B a_2  }\fragment{ = A^3 s_0 + A^2B a_0 + ABa_1 + Ba_2 } \\
+&s_1 = \mathBlue{A s_0 + B a_0} \\
+&s_2 = A s_1 + B a_1 \fragment{ = A (\mathBlue{A s_0 + B a_0}) + B a_1 } \fragment{ = \mathRed{A^2 s_0 + AB a_0 + B a_1} } \\
+&s_3 = A s_2 + B a_2 \fragment{ = A (\mathRed{A^2 s_0 + AB a_0 + B a_1}) + B a_2  }\fragment{ = A^3 s_0 + A^2B a_0 + ABa_1 + Ba_2 } \\
 &\text{General rule:} \quad s_t = A^t s_0 + \sum_{i=0}^t A^{t-i-1}B a_i\\
 &\text{Explicitly:} \quad \underbrace{\begin{bmatrix} s_0 \\ s_1 \\ s_2 \\ s_3 \\ \vdots \\ s_T \end{bmatrix}}_{\hat{s}\in\R^{(T+1)n}} = \underbrace{\begin{bmatrix} 0 & 0 & 0 & \ldots & B \\ 0 & 0 & 0 & \ldots & 0 \\ AB & B & 0 & \ldots & 0 \\ A^2B & AB & B & \ddots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ A^{T-1}B & A^{T-2}B & A^{T-3}B & \ldots & B \\ \end{bmatrix}}_{G\in\R^{(T+1)n\times Tm}} \underbrace{\begin{bmatrix} a_0 \\ a_1 \\ a_2 \\ a_3 \\ \vdots \\ a_{T-1} \end{bmatrix}}_{\hat{a}\in\R^{Tm}} + \underbrace{\begin{bmatrix} I \\ A \\ A^2 \\ A^3 \\ \vdots \\ A^T \end{bmatrix}}_{H\in\R^{(T+1)n}} s_0 \\
 &\text{In short:}\quad \hat{s}=G\hat{a}+Hs_0
@@ -464,10 +464,10 @@ $$\begin{equation} \boxed{\min_{\hat{a}} \cbracket{G\hat{a} + Hs_0}^\top \hat{Q}
 ::: columns-8-3
 ::: platzhalter
 [$$\begin{align*} 
-&\min_{\textcolor{red}{\hat{a}}} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}}^\top \hat{Q} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&\min_{\textcolor{red}{\hat{a}}} \cbracket{\textcolor{red}{\hat{a}}^\top G^\top + \textcolor{blue}{s_0}^\top H^\top} \hat{Q} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&\min_{\textcolor{red}{\hat{a}}} \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} G \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&\min_{\textcolor{red}{\hat{a}}} \textcolor{red}{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0}
+&\min_{\mathRed{\hat{a}}} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}}^\top \hat{Q} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&\min_{\mathRed{\hat{a}}} \cbracket{\mathRed{\hat{a}}^\top G^\top + \mathBlue{s_0}^\top H^\top} \hat{Q} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&\min_{\mathRed{\hat{a}}} \mathRed{\hat{a}}^\top G^\top \hat{Q} G \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&\min_{\mathRed{\hat{a}}} \mathRed{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0}
 \end{align*}$$]{.math-incremental}
 :::
 
@@ -482,12 +482,12 @@ $$\begin{align*} (G\hat{a})^\top &= \hat{a}^\top G^\top\\ s_0^\top H^\top \hat{Q
 
 
 ::: incremental
-- This is a quadratic polynomial in $\textcolor{red}{\hat{a}}$!
+- This is a quadratic polynomial in $\mathRed{\hat{a}}$!
 - Since $Q$ and $R$ (and thus, $\hat{Q}$ and $\hat{R}$) are positive (semi-)definite, the loss function is strictly convex $\Rightarrow$ unique minimizer.
-- Take the drivative with respect to $\textcolor{red}{\hat{a}}$:
-$$ \diff{}{\textcolor{red}{\hat{a}}} \cbracket{\textcolor{red}{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0}} =  2\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 G^\top \hat{Q} H \textcolor{blue}{s_0}.$$
-- Setting the gradient to zero yields a linear system (depending on the initial condition $\textcolor{blue}{s_0}$):
-$$ \begin{equation} \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} = - G^\top \hat{Q} H \textcolor{blue}{s_0}.} \label{eq:OC_ocp_linear_solution} \end{equation}$$
+- Take the drivative with respect to $\mathRed{\hat{a}}$:
+$$ \diff{}{\mathRed{\hat{a}}} \cbracket{\mathRed{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0}} =  2\cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 G^\top \hat{Q} H \mathBlue{s_0}.$$
+- Setting the gradient to zero yields a linear system (depending on the initial condition $\mathBlue{s_0}$):
+$$ \begin{equation} \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} = - G^\top \hat{Q} H \mathBlue{s_0}.} \label{eq:OC_ocp_linear_solution} \end{equation}$$
 :::
 
 :::
@@ -633,8 +633,8 @@ $$\begin{equation}\text{OCP:}\quad\min_{a_0,\ldots,a_{T-1}} \sum_{t=0}^T \ell(s_
 [$\textcolor{green}{\mathbf{+}\text{ Lots of theory.}}$ (e.g., [@GP17])]{.fragment}\
 :::
 ::: platzhalter
-[$\textcolor{red}{\mathbf{-}\text{ Real-time capability (in particular for nonlinear models).}}$]{.fragment}
-[$\textcolor{red}{\mathbf{-}\text{ Control performance depends on model quality.}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Real-time capability (in particular for nonlinear models).}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ Control performance depends on model quality.}}$]{.fragment}
 :::
 :::
 :::
@@ -761,8 +761,8 @@ $\qquad$ around $\overline{s}_t,\overline{a}_t$ $\Rightarrow$ \eqref{eq:OC_MPC_l
 - MPC's main challenge: **large online cost**! 
 - Can we avoid this? [$\Rightarrow$ Let's revisit the OCP formulation \eqref{eq:OC_ocp} in the MPC setting:
 $$\begin{equation} \begin{aligned} &\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
-\text{s.t.}\quad &\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}$$]{.fragment}
-- This OCP is parameterized by the initial condition $\textcolor{blue}{s_0}$!
+\text{s.t.}\quad &\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\mathBlue{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}$$]{.fragment}
+- This OCP is parameterized by the initial condition $\mathBlue{s_0}$!
 - If we solve it for every $s_0\in\Sc$ and explicitly store $a^*(s_0)$ in a library, we can quickly retrieve it in the online phase.
 - But there are infinitely many $s_0$! :scream:
 - Options:

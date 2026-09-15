@@ -249,9 +249,9 @@ Control</title>
 <td align="left"></td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">14</span></td>
-<td align="left"><span style="color: red;">Optimal control &amp; feedback control</span></td>
-<td align="left"><span style="color: red;">How to do control when we know the model</span></td>
+<td align="center"><span style="color: #C138A0;">14</span></td>
+<td align="left"><span style="color: #C138A0;">Optimal control &amp; feedback control</span></td>
+<td align="left"><span style="color: #C138A0;">How to do control when we know the model</span></td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -286,7 +286,7 @@ Control</title>
 <li class="fragment">Until now, knowledge of a model only in the simplest RL approaches.
 <ul class="incremental">
 <li class="fragment">Dynamic Programming for tabular RL, e.g., policy or value iteration.</li>
-<li class="fragment">We need to know <span class="math inline">\(\textcolor{red}{\psprimesa}\)</span> to update our value estimate!</li>
+<li class="fragment">We need to know <span class="math inline">\(\mathRed{\psprimesa}\)</span> to update our value estimate!</li>
 </ul></li>
 <li class="fragment">All the advanced algorithms: <strong>model-free RL</strong>.
 <ul class="incremental">
@@ -302,7 +302,7 @@ Control</title>
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(\Delta \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(s \in \Sc\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V_{\mathsf{old}}(s) \gets V(s)\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) \gets \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \textcolor{red}{\psprimesa} \left[ r + \gamma V(s&#39;) \right]\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(V(s) \gets \max_{a\in\Ac} \sum_{s&#39;\in\Sc} \mathRed{\psprimesa} \left[ r + \gamma V(s&#39;) \right]\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(\Delta \gets \max(\Delta, \abs{V_{\mathsf{old}}(s)-V(s)})\)</span></p>
 </div>
 </div>
@@ -318,7 +318,7 @@ Control</title>
 </div>
 <div class="platzhalter">
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Easier to implement.}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Data-hungry! Can be very sample-inefficient.}}\)</span></span> <span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Ignorant of prior knowledge.}}\)</span></span></p>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Data-hungry! Can be very sample-inefficient.}}\)</span></span> <span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Ignorant of prior knowledge.}}\)</span></span></p>
 </div>
 </div>
 <p><br />
@@ -3881,17 +3881,17 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <ul class="incremental">
 <li class="fragment">Simply replace all stochastic quantities by their expectations/mean values.<br />
 <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Computationally cheap.}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Completely ignores variance.}}\)</span></span></li>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Completely ignores variance.}}\)</span></span></li>
 </ul></li>
 <li class="fragment">Mean-variance / risk-sensitive optimization
 <ul class="incremental">
 <li class="fragment">define loss function composed of mean and variance: <span class="math display">\[\min_a \Exp{L} + \gamma\, \Var{L}.\]</span> <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Accounts for variance.}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Need additional compute to estimate $\Var{L}$.}}\)</span></span></li>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Need additional compute to estimate $\Var{L}$.}}\)</span></span></li>
 </ul></li>
 <li class="fragment">Sample-path optimization
 <ul class="incremental">
 <li class="fragment">Monte-Carlo estimate of expected loss by multiple simulations with different noise realizations <span class="math inline">\(\omega_i\)</span>: <span class="math display">\[ \min_a \frac{1}{N} \sum_{i=1}^N L(a,\omega_i).\]</span> <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Can estimate arbitrary distributions (beyond Guassian).}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Compute grows with }N.}\)</span></span></li>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Compute grows with }N.}\)</span></span></li>
 </ul></li>
 </ul>
 </div>
@@ -4170,9 +4170,9 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="box block">
 <div class="small">
 <p>Let’s explicitly calculate <span class="math inline">\(s_1,s_2,\ldots\)</span>: <span class="math-incremental"><span class="math display">\[\begin{align*}
-&amp;s_1 = \textcolor{blue}{A s_0 + B a_0} \\
-&amp;s_2 = A s_1 + B a_1 \fragment{ = A (\textcolor{blue}{A s_0 + B a_0}) + B a_1 } \fragment{ = \textcolor{red}{A^2 s_0 + AB a_0 + B a_1} } \\
-&amp;s_3 = A s_2 + B a_2 \fragment{ = A (\textcolor{red}{A^2 s_0 + AB a_0 + B a_1}) + B a_2  }\fragment{ = A^3 s_0 + A^2B a_0 + ABa_1 + Ba_2 } \\
+&amp;s_1 = \mathBlue{A s_0 + B a_0} \\
+&amp;s_2 = A s_1 + B a_1 \fragment{ = A (\mathBlue{A s_0 + B a_0}) + B a_1 } \fragment{ = \mathRed{A^2 s_0 + AB a_0 + B a_1} } \\
+&amp;s_3 = A s_2 + B a_2 \fragment{ = A (\mathRed{A^2 s_0 + AB a_0 + B a_1}) + B a_2  }\fragment{ = A^3 s_0 + A^2B a_0 + ABa_1 + Ba_2 } \\
 &amp;\text{General rule:} \quad s_t = A^t s_0 + \sum_{i=0}^t A^{t-i-1}B a_i\\
 &amp;\text{Explicitly:} \quad \underbrace{\begin{bmatrix} s_0 \\ s_1 \\ s_2 \\ s_3 \\ \vdots \\ s_T \end{bmatrix}}_{\hat{s}\in\R^{(T+1)n}} = \underbrace{\begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; \ldots &amp; B \\ 0 &amp; 0 &amp; 0 &amp; \ldots &amp; 0 \\ AB &amp; B &amp; 0 &amp; \ldots &amp; 0 \\ A^2B &amp; AB &amp; B &amp; \ddots &amp; 0 \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ A^{T-1}B &amp; A^{T-2}B &amp; A^{T-3}B &amp; \ldots &amp; B \\ \end{bmatrix}}_{G\in\R^{(T+1)n\times Tm}} \underbrace{\begin{bmatrix} a_0 \\ a_1 \\ a_2 \\ a_3 \\ \vdots \\ a_{T-1} \end{bmatrix}}_{\hat{a}\in\R^{Tm}} + \underbrace{\begin{bmatrix} I \\ A \\ A^2 \\ A^3 \\ \vdots \\ A^T \end{bmatrix}}_{H\in\R^{(T+1)n}} s_0 \\
 &amp;\text{In short:}\quad \hat{s}=G\hat{a}+Hs_0
@@ -4221,10 +4221,10 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 <div class="grid-layout" style="grid-template-columns: 8fr 3fr;">
 <div class="platzhalter">
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
-&amp;\min_{\textcolor{red}{\hat{a}}} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}}^\top \hat{Q} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&amp;\min_{\textcolor{red}{\hat{a}}} \cbracket{\textcolor{red}{\hat{a}}^\top G^\top + \textcolor{blue}{s_0}^\top H^\top} \hat{Q} \cbracket{G\textcolor{red}{\hat{a}} + H\textcolor{blue}{s_0}} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&amp;\min_{\textcolor{red}{\hat{a}}} \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} G \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{red}{\hat{a}}^\top \hat{R} \textcolor{red}{\hat{a}} \\
-=&amp;\min_{\textcolor{red}{\hat{a}}} \textcolor{red}{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0}
+&amp;\min_{\mathRed{\hat{a}}} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}}^\top \hat{Q} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&amp;\min_{\mathRed{\hat{a}}} \cbracket{\mathRed{\hat{a}}^\top G^\top + \mathBlue{s_0}^\top H^\top} \hat{Q} \cbracket{G\mathRed{\hat{a}} + H\mathBlue{s_0}} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&amp;\min_{\mathRed{\hat{a}}} \mathRed{\hat{a}}^\top G^\top \hat{Q} G \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0} + \mathRed{\hat{a}}^\top \hat{R} \mathRed{\hat{a}} \\
+=&amp;\min_{\mathRed{\hat{a}}} \mathRed{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0}
 \end{align*}\]</span></span></p>
 </div>
 <div class="platzhalter">
@@ -4236,10 +4236,10 @@ Inspired by Sergey Levine’s <a href="https://rail.eecs.berkeley.edu/deeprlcour
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">This is a quadratic polynomial in <span class="math inline">\(\textcolor{red}{\hat{a}}\)</span>!</li>
+<li class="fragment">This is a quadratic polynomial in <span class="math inline">\(\mathRed{\hat{a}}\)</span>!</li>
 <li class="fragment">Since <span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> (and thus, <span class="math inline">\(\hat{Q}\)</span> and <span class="math inline">\(\hat{R}\)</span>) are positive (semi-)definite, the loss function is strictly convex <span class="math inline">\(\Rightarrow\)</span> unique minimizer.</li>
-<li class="fragment">Take the drivative with respect to <span class="math inline">\(\textcolor{red}{\hat{a}}\)</span>: <span class="math display">\[ \diff{}{\textcolor{red}{\hat{a}}} \cbracket{\textcolor{red}{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 \textcolor{red}{\hat{a}}^\top G^\top \hat{Q} H \textcolor{blue}{s_0} + \textcolor{blue}{s_0}^\top H^\top \hat{Q} H \textcolor{blue}{s_0}} =  2\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} + 2 G^\top \hat{Q} H \textcolor{blue}{s_0}.\]</span></li>
-<li class="fragment">Setting the gradient to zero yields a linear system (depending on the initial condition <span class="math inline">\(\textcolor{blue}{s_0}\)</span>): <span class="math display">\[ \begin{equation} \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \textcolor{red}{\hat{a}} = - G^\top \hat{Q} H \textcolor{blue}{s_0}.} \label{eq:OC_ocp_linear_solution} \end{equation}\]</span></li>
+<li class="fragment">Take the drivative with respect to <span class="math inline">\(\mathRed{\hat{a}}\)</span>: <span class="math display">\[ \diff{}{\mathRed{\hat{a}}} \cbracket{\mathRed{\hat{a}}^\top \cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 \mathRed{\hat{a}}^\top G^\top \hat{Q} H \mathBlue{s_0} + \mathBlue{s_0}^\top H^\top \hat{Q} H \mathBlue{s_0}} =  2\cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} + 2 G^\top \hat{Q} H \mathBlue{s_0}.\]</span></li>
+<li class="fragment">Setting the gradient to zero yields a linear system (depending on the initial condition <span class="math inline">\(\mathBlue{s_0}\)</span>): <span class="math display">\[ \begin{equation} \boxed{\cbracket{G^\top \hat{Q} G + \hat{R}} \mathRed{\hat{a}} = - G^\top \hat{Q} H \mathBlue{s_0}.} \label{eq:OC_ocp_linear_solution} \end{equation}\]</span></li>
 </ul>
 </div>
 </div>
@@ -7285,7 +7285,7 @@ Source: <a href="https://de.wikipedia.org/wiki/Model_Predictive_Control">Wikiped
 </p>
 </div>
 <div class="platzhalter">
-<p><span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Real-time capability (in particular for nonlinear models).}}\)</span></span> <span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Control performance depends on model quality.}}\)</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Real-time capability (in particular for nonlinear models).}}\)</span></span> <span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Control performance depends on model quality.}}\)</span></span></p>
 </div>
 </div>
 </div>
@@ -10627,8 +10627,8 @@ s&amp;=\begin{bmatrix} x \\ y \\ \theta \\ v \end{bmatrix},~ a=\begin{bmatrix} \
 <ul class="incremental">
 <li class="fragment">MPC’s main challenge: <strong>large online cost</strong>!</li>
 <li class="fragment">Can we avoid this? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Let’s revisit the OCP formulation <span class="math inline">\(\eqref{eq:OC_ocp}\)</span> in the MPC setting: <span class="math display">\[\begin{equation} \begin{aligned} &amp;\min_{\tilde{a}} \sum_{\tau=0}^p \ell(\tilde{s}_\tau,\tilde{a}_\tau) \\
-\text{s.t.}\quad &amp;\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\textcolor{blue}{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}\]</span></span></li>
-<li class="fragment">This OCP is parameterized by the initial condition <span class="math inline">\(\textcolor{blue}{s_0}\)</span>!</li>
+\text{s.t.}\quad &amp;\tilde{s}_{\tau+1}=f(\tilde{s}_\tau,\tilde{a}_\tau),~\tilde{s}_0=\mathBlue{s_t}. \end{aligned} \label{eq:OC_mpc} \end{equation}\]</span></span></li>
+<li class="fragment">This OCP is parameterized by the initial condition <span class="math inline">\(\mathBlue{s_0}\)</span>!</li>
 <li class="fragment">If we solve it for every <span class="math inline">\(s_0\in\Sc\)</span> and explicitly store <span class="math inline">\(a^*(s_0)\)</span> in a library, we can quickly retrieve it in the online phase.</li>
 <li class="fragment">But there are infinitely many <span class="math inline">\(s_0\)</span>! <span class="emoji" data-emoji="scream">😱</span></li>
 <li class="fragment">Options:

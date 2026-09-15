@@ -251,9 +251,9 @@
 <td align="left"><em>Data-driven learning</em> from entire episodes</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">5</span></td>
-<td align="left"><span style="color: red;">Temporal difference learning &amp; <span class="math inline">\(Q\)</span>-learning</span></td>
-<td align="left"><span style="color: red;"><em>Data-driven learning</em> from individual transitions</span></td>
+<td align="center"><span class="math inline">\(\inRed{5}\)</span></td>
+<td align="left"><span style="color: #C138A0;">Temporal difference learning &amp; <span class="math inline">\(Q\)</span>-learning</span></td>
+<td align="left"><span style="color: #C138A0;"><em>Data-driven learning</em> from individual transitions</span></td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -300,7 +300,7 @@
 <div class="incremental">
 <ol class="incremental" style="list-style-type: decimal">
 <li class="fragment">Monte Carlo (MC): <strong>learning from experience</strong>, possibly without knowledge of a model, e.g., <em>MC prediction</em> with exploring starts: <span class="math display">\[Q(s_t,a_t) = Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g_t - Q(s_t,a_t)\right].\]</span></li>
-<li class="fragment">Dynamic programming (DP): <strong>bootstrapping</strong> <span class="math inline">\(\Rightarrow\)</span> updating <span style="color: red;">estimates</span> based on <span style="color: red;">estimates</span>, e.g., <em>iterative policy evaluation</em>: <span class="math display">\[ \textcolor{red}{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></li>
+<li class="fragment">Dynamic programming (DP): <strong>bootstrapping</strong> <span class="math inline">\(\Rightarrow\)</span> updating <span style="color: #C138A0;">estimates</span> based on <span style="color: #C138A0;">estimates</span>, e.g., <em>iterative policy evaluation</em>: <span class="math display">\[ \mathRed{V(s)} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \mathRed{V(s&#39;)} \right]. \]</span></li>
 </ol>
 </div>
 <p><span class="fragment">The <strong>concept of temporal difference (TD) learning</strong> is to combine both:</span></p>
@@ -369,12 +369,12 @@ V(s_t) \gets V(s_t) + \alpha \left[g_t - V(s_t)\right]. \label{eq:TD_MC-update}
 <h3>One-step TD / TD(<span class="math inline">\(0\)</span>) update</h3>
 <p><span class="math display">\[
 \begin{equation}
-V(s_t) \gets V(s_t) + \alpha \left[\textcolor{red}{r_t + \gamma V(s_{t+1})} - V(s_t)\right]. \label{eq:TD_TD0-update}
+V(s_t) \gets V(s_t) + \alpha \left[\mathRed{r_t + \gamma V(s_{t+1})} - V(s_t)\right]. \label{eq:TD_TD0-update}
 \end{equation}
 \]</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Here, the <strong>TD target</strong> is <span class="math inline">\(\textcolor{red}{y_t = r_t + \gamma V(s_{t+1})}\)</span>.</li>
+<li class="fragment">Here, the <strong>TD target</strong> is <span class="math inline">\(\mathRed{y_t = r_t + \gamma V(s_{t+1})}\)</span>.</li>
 <li class="fragment">TD is <em>bootstrapping</em>: estimate <span class="math inline">\(V(s_t)\)</span> based on <span class="math inline">\(V(s_{t+1})\)</span>.</li>
 <li class="fragment"><em>Delay time of one</em> time step; no need to wait until the end of the episode.</li>
 </ul>
@@ -1061,7 +1061,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
 <span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span> <span class="math inline">\(\qquad\qquad\qquad~\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Select <span class="math inline">\(a_{t+1} \sim \pi(s_{t+1})\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy: <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span> <span class="math inline">\(\qquad\)</span> (<span style="color: red;">This is on-policy!</span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1},a_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma Q(s_{t+1},a_{t+1})- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy: <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span> <span class="math inline">\(\qquad\)</span> (<span style="color: #C138A0;">This is on-policy!</span>)<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span><br />
 </p>
 </div>
@@ -1117,8 +1117,8 @@ For example, $\alpha_t = \frac{1}{t}$ satisfies the above condition. -->
 <span class="math inline">\(\quad\)</span> Initialize <span class="math inline">\(s_t \gets s_0\)</span>, <span class="math inline">\(t \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>while</strong> <span class="math inline">\(s_t\)</span> is not terminal:<br />
 <span class="math inline">\(\quad\quad\)</span> Take action <span class="math inline">\(a_t \sim \pi(s_t)\)</span> and observe <span class="math inline">\((r_t,s_{t+1})\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <del>Select <span class="math inline">\(\cancel{a_{t+1} \sim \pi(s_{t+1})}\)</span></del><span class="math inline">\(\qquad\qquad\qquad\qquad\)</span> (<span style="color: red;">Not needed in off-policy</span>)<br />
-<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> <del>Select <span class="math inline">\(\cancel{a_{t+1} \sim \pi(s_{t+1})}\)</span></del><span class="math inline">\(\qquad\qquad\qquad\qquad\)</span> (<span style="color: #C138A0;">Not needed in off-policy</span>)<br />
+<span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math inline">\(\quad\)</span> <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{\max_a Q(s_{t+1},a)}- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(t \gets t+1\)</span><br />
 </p>
 </div>
@@ -1303,11 +1303,11 @@ Off-policy: Q-learning
 <div class="small">
 <div class="grid-layout" style="grid-template-columns: 5fr 4fr;">
 <div class="platzhalter">
-<p>What can we do to reduce the large variance in the SARSA update <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{red}{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]?\]</span></p>
+<p>What can we do to reduce the large variance in the SARSA update <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathRed{Q(s_{t+1},a_{t+1})}- Q(s_t,a_t)\right]?\]</span></p>
 <div class="fragment">
 <p>Let’s take the expectation of Q <span class="math inline">\(\rightarrow\)</span> <strong>expected SARSA</strong>: <span class="math display">\[
 \begin{align*}
-Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \textcolor{blue}{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
+Q(s_t,a_t) &amp;\gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \mathBlue{\ExpCsub{Q(s_{t+1},a)}{s_t}{\pi}}- Q(s_t,a_t)\right] \\
 &amp;= Q(s_t,a_t) + \alpha \left[r_t + \gamma \left(\sum_{a\in\Ac} \policy{a}{s_{t+1}}Q(s_{t+1},a)\right)- Q(s_t,a_t)\right].
 \end{align*}
 \]</span></p>
@@ -3350,7 +3350,7 @@ Comparison of <span class="math inline">\(Q\)</span>-learning and Double <span c
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>Analog to <span class="math inline">\(n\)</span>-step TD, the state-action value target (with <span class="math inline">\(a_{t+n}\sim\policy{\cdot}{s_{t+n}}\)</span>) is rewritten as: <span class="math display">\[ 
 \begin{equation} 
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \mathRed{\gamma^{n} Q_{t+n-1}(s_{t+n},a_{t+n})}. \label{eq:TD_nstep-onpolicy-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -3360,7 +3360,7 @@ g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t
 <h3>Definition: <span class="math inline">\(n\)</span>-step state-action value prediction target.</h3>
 <p>For <span class="math inline">\(n\)</span>-step expected SARSA, the update is similar but we’re considering the expected value at <span class="math inline">\(t+n\)</span>: <span class="math display">\[ 
 \begin{equation}
-g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \textcolor{red}{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
+g_{t:t+n} = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \ldots + \gamma^{n-1} r_{t+n-1} + \mathRed{\gamma^{n} \sum_{a\in\Ac} \policy{a}{s_{t+1}} Q_{t+n-1}(s_{t+n},a)}. \label{eq:TD_nstep-expected-return}
 \end{equation}
 \]</span></p>
 </div>
@@ -5871,7 +5871,7 @@ The forward view. We decide how to update each state by looking forward to futur
 <li class="fragment">Use <span class="math inline">\(λ\)</span>-weighted returns looking into the past.</li>
 <li class="fragment">Implement this in a recursive fashion to save memory<br />
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Introduce an <strong>eligibility trace</strong> <span class="math inline">\(z_t\)</span> denoting the importance of past events to the current state update: <span class="math display">\[z_0(s) = 0 \qquad \text{and}\qquad z_t(s) = \gamma\lambda z_{t-1}(s) + \begin{cases} 0 &amp; \text{if}~s_t \neq s \\ 1 &amp; \text{if}~s_t = s \end{cases}.\]</span></span></li>
-<li class="fragment">We additionally scale the update term by <span class="math inline">\(z(s)\)</span>, i.e., <span class="math inline">\(\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\textcolor{red}{\cdot z(s)}\)</span>. <span class="fragment">For example, <span class="math display">\[ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). \]</span></span></li>
+<li class="fragment">We additionally scale the update term by <span class="math inline">\(z(s)\)</span>, i.e., <span class="math inline">\(\alpha\cdot[ \target(s) - \mathsf{OldEstimate}(s) ]\mathRed{\cdot z(s)}\)</span>. <span class="fragment">For example, <span class="math display">\[ Q(s_t, a_t) \gets Q(s_t, a_t) + \alpha\cdot[ r_t + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) ]\cdot z(s_t, a_t). \]</span></span></li>
 <li class="fragment">Instead of updating only one state-action pair <span class="math inline">\((s_t,a_t)\)</span> we update along the entire <em>trace</em> we have left.</li>
 </ul>
 </div>

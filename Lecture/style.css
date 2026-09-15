@@ -1,13 +1,13 @@
 :root {
-    --primary-color: var(--accent3);
-    --hover-color: var(--accent3);
-    --icon-active-color: var(--accent3);
+    --primary-color: var(--palette-2);
+    --hover-color: var(--accent2);
+    --icon-active-color: var(--accent2);
 
     /* DEFAULT_PALETTE — reusable categorical color palette (e.g. for charts/diagrams) */
     --palette-0: #0A75C4;
     --palette-1: #0025aa;
     --palette-2: #C138A0;
-    --palette-3: #23A9C9;
+    --palette-3: #C138A0; /*#23A9C9;*/
     --palette-4: #7E3FA8;
     --palette-5: #50D1D1;
     --palette-6: #000000;
@@ -84,11 +84,11 @@ button.fa-button {
 }
 
 .reveal h2 {
-    color: var(--accent0-fg);
+    color: var(--accent3-fg);
 }
 
 .reveal h3 {
-    color: var(--accent5-fg);
+    color: var(--accent3-fg);
 }
 
 strong {

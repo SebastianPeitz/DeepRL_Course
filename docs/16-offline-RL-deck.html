@@ -266,9 +266,9 @@ Learning</title>
 <td align="left"></td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">16</span></td>
-<td align="left"><span style="color: red;">Offline reinforcement learning</span></td>
-<td align="left"><span style="color: red;">RL with a static, given dataset</span></td>
+<td align="center"><span style="color: #C138A0;">16</span></td>
+<td align="left"><span style="color: #C138A0;">Offline reinforcement learning</span></td>
+<td align="left"><span style="color: #C138A0;">RL with a static, given dataset</span></td>
 </tr>
 </tbody>
 </table>
@@ -341,8 +341,8 @@ Learning</title>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Simple to implement.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">No environment interaction during training.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Very fast.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Compounding errors / covariate shift: A small error at step one puts the agent in a state it has never seen before, causing increasingly poor decisions.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Assumes i.i.d. data distribution, which is false in sequential environments.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Compounding errors / covariate shift: A small error at step one puts the agent in a state it has never seen before, causing increasingly poor decisions.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Assumes i.i.d. data distribution, which is false in sequential environments.</span></span></p>
 </div>
 </div>
 <div class="fragment">
@@ -356,8 +356,8 @@ Learning</title>
 </div>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Robust to compounding errors.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Reward function can transfer well even if the environment changes slightly.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Expensive inner-loop problem: RL training in each iteration.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Mathematically underdetermined (many different reward functions can explain the same expert behavior).</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Expensive inner-loop problem: RL training in each iteration.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Mathematically underdetermined (many different reward functions can explain the same expert behavior).</span></span></p>
 </div>
 </div>
 </div>
@@ -392,8 +392,8 @@ Learning</title>
 </div>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Directly fixes covariate shift.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Forces the agent to learn how to recover from its own mistakes.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Requires an expert to be constantly available and online during training to label data.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Exhausting for humans and frequently impossible for complex setups.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Requires an expert to be constantly available and online during training to label data.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Exhausting for humans and frequently impossible for complex setups.</span></span></p>
 </div>
 </div>
 <div class="fragment">
@@ -428,8 +428,8 @@ Inspired by Generative Adversarial Networks (GANs).
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Mimicks entire trajectories, not just single transitions as BC.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">No expensive inner loop as in IRL.</span></span></p>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Does not require an interactive expert like DAgger.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Inherits GAN instabilities (mode collapse, highly sensitive hyperparameters).</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Very data hungry.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Inherits GAN instabilities (mode collapse, highly sensitive hyperparameters).</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Very data hungry.</span></span></p>
 </div>
 </div>
 </div>
@@ -9094,14 +9094,14 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <ul class="incremental">
 <li class="fragment">Data-driven AI is about learning from large datasets.<br />
 <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Learns about the real world from data.}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Doesn’t try to do better than the data.}}\)</span></span></li>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Doesn’t try to do better than the data.}}\)</span></span></li>
 </ul>
 </div>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Reinforcement learning is about optimization.<br />
 <span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ Optimizes a goal with emergent behavior.}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ Doesn’t make use of real-world data.}}\)</span></span></li>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ Doesn’t make use of real-world data.}}\)</span></span></li>
 </ul>
 </div>
 </div>
@@ -11932,12 +11932,12 @@ Adversarial example <span class="citation">(<a href="#ref-Goodfellow2015adversar
 <div id="q-learning-and-q-function-actor-critic" class="platzhalter">
 <h3><span class="math inline">\(Q\)</span>-learning and <span class="math inline">\(Q\)</span>-function actor-critic</h3>
 <p><span class="math-incremental"><span class="math display">\[\begin{align*} 
-\phi &amp;= \arg\min_{\hat{\theta}} \Expsub{\norm{Q_\theta(s,a)-y}^2}{s\sim\rho_\beta,a\sim \textcolor{red}{\pi_\beta\agivenb{\cdot}{s}}}, \\
-y_i &amp;= r_i + \gamma \Expsub{Q_\theta(s&#39;_i,a&#39;)}{s&#39;_i\sim\rho_\beta,a&#39;\sim \textcolor{blue}{\piphi\agivenb{\cdot}{s&#39;_i}}}
+\phi &amp;= \arg\min_{\hat{\theta}} \Expsub{\norm{Q_\theta(s,a)-y}^2}{s\sim\rho_\beta,a\sim \mathRed{\pi_\beta\agivenb{\cdot}{s}}}, \\
+y_i &amp;= r_i + \gamma \Expsub{Q_\theta(s&#39;_i,a&#39;)}{s&#39;_i\sim\rho_\beta,a&#39;\sim \mathBlue{\piphi\agivenb{\cdot}{s&#39;_i}}}
 \end{align*}\]</span></span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Trying to find the best policy: <strong>we want</strong> <span class="math inline">\(\textcolor{blue}{\piphi\agivenb{a}{s}} \neq \textcolor{red}{\pi_\beta\agivenb{a}{s}}\)</span>!</li>
+<li class="fragment">Trying to find the best policy: <strong>we want</strong> <span class="math inline">\(\mathBlue{\piphi\agivenb{a}{s}} \neq \mathRed{\pi_\beta\agivenb{a}{s}}\)</span>!</li>
 <li class="fragment">But we only have <span class="math inline">\(s&#39;_i\)</span> for <span class="math inline">\(s_i, a_i\)</span> from our offline dataset.</li>
 <li class="fragment"><strong>Even worse</strong>: We’re actually picking an <em>adversarial example</em>, <span class="math display">\[\phi = \arg\max_{\hat{\phi}} \Expsub{Q_\theta(s,a)}{a\sim \pi_{\hat\phi}\agivenb{\cdot}{s}}.\]</span></li>
 </ul>
@@ -11977,11 +11977,11 @@ How well it <em>thinks</em> it does.
 <h3 id="model-based-rl">Model-based RL</h3>
 </div>
 <div class="fragment">
-<p><span class="math display">\[f = \arg\min_{\hat f} \Expsub{\norm{f(s,a)-s&#39;}_2^2}{s\sim\rho_\beta,a\sim\textcolor{red}{\pi_\beta\agivenb{\cdot}{s}}, s&#39;\sim \psprimesa} \]</span></p>
+<p><span class="math display">\[f = \arg\min_{\hat f} \Expsub{\norm{f(s,a)-s&#39;}_2^2}{s\sim\rho_\beta,a\sim\mathRed{\pi_\beta\agivenb{\cdot}{s}}, s&#39;\sim \psprimesa} \]</span></p>
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Probably large: <span class="math inline">\(\Expsub{\norm{f(s,a)-s&#39;}_2^2}{s\sim\rho_\beta,a\sim\textcolor{blue}{\pi_\phi\agivenb{\cdot}{s}}, s&#39;\sim \psprimesa}.\)</span></li>
+<li class="fragment">Probably large: <span class="math inline">\(\Expsub{\norm{f(s,a)-s&#39;}_2^2}{s\sim\rho_\beta,a\sim\mathBlue{\pi_\phi\agivenb{\cdot}{s}}, s&#39;\sim \psprimesa}.\)</span></li>
 <li class="fragment"><strong>Even worse</strong>: Pick <span class="math inline">\(\piphi\)</span> to <em>maximize the reward</em> under <span class="math inline">\(f\)</span>!</li>
 </ul>
 </div>
@@ -12064,7 +12064,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Simplest approach to avoid overestimation: constrain the distance between behavior policy <span class="math inline">\(\pi_\beta\)</span> and the learned policy <span class="math inline">\(\piphi\)</span>.</li>
-<li class="fragment">Remember the KL divergence? <span class="math display">\[ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \textcolor{blue}{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } \]</span></li>
+<li class="fragment">Remember the KL divergence? <span class="math display">\[ \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}} = \Expsub{\log\frac{\pi_\beta\agivenb{a}{s}}{\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}} \fragment{ = \Expsub{\log\pi_\beta\agivenb{a}{s} - \mathBlue{\log\pi_\phi\agivenb{a}{s}}}{a\sim\pi_\beta\agivenb{\cdot}{s}.} } \]</span></li>
 <li class="fragment">Constraining the distance yields a constrained optimization problem: <span class="math display">\[\begin{equation} \phi \gets \arg\max_\phi \Expsub{Q(s,a)}{s\sim\Dc,a\sim\pi\agivenb{\cdot}{s}} \qquad\text{s.t.}\qquad \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}\leq \epsilon. \label{eq:OFF_constrained_policy} \end{equation}\]</span>
 <ul class="incremental">
 <li class="fragment">Where have we seen this before? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Natural policy gradient!</span></li>
@@ -12074,7 +12074,7 @@ Inspired by <span class="citation">(<a href="#ref-Levine2020offlinerltutorial">L
 <div class="grid-layout" style="grid-template-columns: 6fr 5fr;">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Via <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>: additional term in the actor loss function: <span class="math display">\[\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}\]</span> <span class="fragment"><span class="math display">\[\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \textcolor{blue}{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}\]</span></span>
+<li class="fragment">Via <a href="https://en.wikipedia.org/wiki/Lagrange_multiplier">Lagrange multipliers</a>: additional term in the actor loss function: <span class="math display">\[\phi \gets \arg\max_\phi \Expsub{\Expsub{Q(s,a)}{a\sim\pi_\beta\agivenb{\cdot}{s}} - \lambda \KLdiv{\pi_\beta\agivenb{\cdot}{s}}{\pi_\phi\agivenb{\cdot}{s}}}{s\sim\Dc}\]</span> <span class="fragment"><span class="math display">\[\begin{equation} \Rightarrow\quad \phi \gets \arg\max_\phi \Expsub{Q(s,a) + \lambda \mathBlue{\log\piphi\agivenb{a}{s}} + \mathsf{const}}{s\sim\Dc,a\sim\pi_\beta\agivenb{\cdot}{s}}. \label{eq:OFF_ACBC} \end{equation}\]</span></span>
 <ul class="incremental">
 <li class="fragment">To solve <span class="math inline">\(\eqref{eq:OFF_constrained_policy}\)</span>, we need to solve for both <span class="math inline">\(\phi\)</span> <strong>and</strong> the Lagrange multiplier <span class="math inline">\(\lambda\)</span>.</li>
 <li class="fragment">Alternative: treat <span class="math inline">\(\lambda\)</span> as a hyperparameter.</li>
@@ -13099,9 +13099,9 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 </p>
 </div>
 <div class="platzhalter">
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Asymmetry (forward KL vs. reverse KL).</span></span><br />
-<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Overly conservative in unseen regions.</span></span><br />
-<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Sensitive to behavior policy estimation.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Asymmetry (forward KL vs. reverse KL).</span></span><br />
+<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Overly conservative in unseen regions.</span></span><br />
+<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Sensitive to behavior policy estimation.</span></span></p>
 </div>
 </div>
 <div class="incremental">
@@ -13128,9 +13128,9 @@ as the term <span class="math inline">\(\log\piphi\agivenb{a}{s}\)</span> is typ
 </p>
 </div>
 <div class="platzhalter">
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Computationally expensive.</span></span><br />
-<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">High sample variance / hard to tune the kernel bandwidth.</span></span><br />
-<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Curse of dimensionality.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Computationally expensive.</span></span><br />
+<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">High sample variance / hard to tune the kernel bandwidth.</span></span><br />
+<span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Curse of dimensionality.</span></span></p>
 </div>
 </div>
 </div>
@@ -13496,7 +13496,7 @@ Chess board [<a href="https://commons.wikimedia.org/wiki/File:Through_the_Lookin
 <li class="fragment">where <span class="math inline">\(g\sum_{t=0}^\infty \gamma^t r_t\)</span> is the return from a trajectory following <span class="math inline">\(\pi\)</span>,</li>
 <li class="fragment">and the value <span class="math inline">\(V^{\pi_\beta}(s)\)</span> is the same return, only following the behavior policy <span class="math inline">\(\pi_\beta\)</span>.</li>
 </ul></li>
-<li class="fragment">We cannot sample from the state distribution <span class="math inline">\(\rho^\pi\)</span> <span class="math inline">\(\Rightarrow\)</span> sample from the dataset <span class="math inline">\(\Dc\)</span> and optimize a <em>surrogate objective</em> <span class="math inline">\(\hat\eta(\pi)\)</span>: <span class="math display">\[ \hat\eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^{\pi_\beta}, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\textcolor{red}{\Dc}, a\sim\pias}.\]</span></li>
+<li class="fragment">We cannot sample from the state distribution <span class="math inline">\(\rho^\pi\)</span> <span class="math inline">\(\Rightarrow\)</span> sample from the dataset <span class="math inline">\(\Dc\)</span> and optimize a <em>surrogate objective</em> <span class="math inline">\(\hat\eta(\pi)\)</span>: <span class="math display">\[ \hat\eta(\pi) = \Expsub{A^{\pi_\beta}(s,a)}{s\sim\rho^{\pi_\beta}, a\sim\pias} = \Expsub{g - V^{\pi_\beta}(s)}{s\sim\mathRed{\Dc}, a\sim\pias}.\]</span></li>
 <li class="fragment">Similar to TRPO: <span class="math display">\[\begin{equation} \pi^* = \arg\max_\pi \hat\eta(\pi) \qquad \text{s.t.}\qquad \KLdivavg{\pi}{\pi_\beta} \leq \epsilon. \label{eq:OFF_expected_advantage} \end{equation}\]</span></li>
 </ul>
 </div>
@@ -13543,8 +13543,8 @@ Chess board [<a href="https://commons.wikimedia.org/wiki/File:Through_the_Lookin
 </div>
 </div>
 <p><span class="fragment"><span class="math inline">\(\pluspoint\)</span> <span style="color: green;">Simple to implement.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Single-step policy improvement.</span></span></p>
-<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: red;">Because AWR relies on static dataset returns <span class="math inline">\(g\)</span> rather than propagating future values via Bellman backups (<span class="math inline">\(Q(s,a) = r + \gamma \max V(s&#39;)\)</span>), it cannot stitch trajectories.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Single-step policy improvement.</span></span></p>
+<p><span class="fragment"><span class="math inline">\(\minuspoint\)</span> <span style="color: #C138A0;">Because AWR relies on static dataset returns <span class="math inline">\(g\)</span> rather than propagating future values via Bellman backups (<span class="math inline">\(Q(s,a) = r + \gamma \max V(s&#39;)\)</span>), it cannot stitch trajectories.</span></span></p>
 </div>
 </div>
 </div>

@@ -31,7 +31,7 @@ feedback:
 |   1  | Multi-armed bandits                                       |   Exploration-exploitation dilemma |
 |   2  | Markov decision processes                                 |                  Dynamics, rewards, policies |
 |   3  | Dynamic programming                                       |   Optimal decision making with *full knowledge* |
-|   [4]{style="color: red;"}  | [Monte Carlo methods]{style="color: red;"}                                    |   [*Data-driven learning* from entire episodes]{style="color: red;"} |
+|   $\inRed{4}$  | $\inRed{Monte Carlo methods}$                   | [*Data-driven learning* from entire episodes]{style="color: #C138A0;"} |
 |   5  | Temporal difference learning \& $Q$-learning                |        |
 |      | **Deep-learning-based methods**                           |        |
 |      | **Model-Based Control**                                   |        |
@@ -121,7 +121,7 @@ $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
-$\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$ **then** $\qquad$ ([*that's the first-visit condition*]{style="color: red;"})\
+$\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$ **then** $\qquad$ ([*that's the first-visit condition*]{style="color: #C138A0;"})\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 :::
@@ -150,7 +150,7 @@ $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
-$\quad\quad$  $\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}$ $\qquad$ ([*only difference to first-visit*]{style="color: red;"})\
+$\quad\quad$  $\cancel{\textbf{if}~ s_t \notin \{s_0,\ldots,s_{t-1}\}:}$ $\qquad$ ([*only difference to first-visit*]{style="color: #C138A0;"})\
 $\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 :::
@@ -308,7 +308,7 @@ $$]{.math-incremental}
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
 - $\ell(s,a)$: an empty list of returns for all $s \in \Sc$, $a\in\Ac$
 
-**for** $k = 1, 2, \ldots, K$ episodes *[(or until $\pi$ converges)]{style="color: red;"}*:\
+**for** $k = 1, 2, \ldots, K$ episodes *[(or until $\pi$ converges)]{style="color: #C138A0;"}*:\
 $\quad$ $g \gets 0$\
 $\quad$ Choose $s_0\in\Sc$ and $a_0\in\Ac$ randomly such that all pairs have probability $>0$\
 $\quad$ Generate a sequence starting at $(s_0, a_0)$ and following $\pi$:
@@ -362,7 +362,7 @@ $Q(s_t,a_t) = Q(s_t,a_t) + \alpha \left[g - Q(s_t,a_t)\right]$.
 
 - $\pi(s)$ arbitrarily for $s \in \Sc$
 - $Q(s,a)$ arbitrarily for $s \in \Sc$, $a\in\Ac$
-- [$n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits]{style="color: red;"} $\qquad$(~~an empty list of returns $\ell$~~)
+- [$n(s,a)=0 ~ \forall ~ s \in \Sc$, $a\in\Ac$: a list of state-action visits]{style="color: #C138A0;"} $\qquad$(~~an empty list of returns $\ell$~~)
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g \gets 0$\
@@ -372,8 +372,8 @@ $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$ **then**\
-$\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: red;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
-$\quad\quad\quad$ [$Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: red;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
+$\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: #C138A0;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
+$\quad\quad\quad$ [$Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: #C138A0;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
 $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
 :::
@@ -509,8 +509,8 @@ $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$ **then**\
 $\quad\quad\quad$ $n(s_t,a_t) \gets n(s_t,a_t) + 1$\
 $\quad\quad\quad$ $Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$\
-$\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: red;"}\
-$\quad\quad\quad$ [$\policy{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: red;"}
+$\quad\quad\quad$ [$\tilde a = \arg\max_{a\in\Ac}Q(s_t, a)$]{style="color: #C138A0;"}\
+$\quad\quad\quad$ [$\policy{a}{s_t} = \begin{cases} 1-\epsilon+\epsilon/\abs{\Ac}, & a = \tilde{a} \\ \epsilon/\abs{\Ac}, & a \neq \tilde{a} \end{cases}$]{style="color: #C138A0;"}
 :::
 :::
 

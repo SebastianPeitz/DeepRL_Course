@@ -36,7 +36,7 @@ deck-id:     'deeprl-advanced-algorithms-ii'
 | 9    | Policy gradients                                          | Direct optimization of the policy      | 
 |  10  | Actor-critic algorithms| Improved policy gradients via value functions | 
 |  11  | Advanced algorithms (Part I): From policy gradient to PPO | The PG route to modern RL algorithms | 
-|  [12]{style="color: red;"}  | [Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic]{style="color: red;"} | [The AC route to modern RL algorithms]{style="color: red;"} | 
+|  [12]{style="color: #C138A0;"}  | [Advanced algorithms (Part II): From $Q$-learning to Soft Actor-Critic]{style="color: #C138A0;"} | [The AC route to modern RL algorithms]{style="color: #C138A0;"} | 
 |  13  | Exploration                                  |        |
 |      | **Model-Based Control**                                   |        |
 |      | **Advanced Topics**                                       |        |
@@ -89,22 +89,22 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 ::: columns-5-5
 
 ::: fragment
-### [Shortcomings]{style="color: red;"}
+### [Shortcomings]{style="color: #C138A0;"}
 
 ::: incremental
-- [High variance gradients.]{style="color: red;"}
-- [Unstable policy updates.]{style="color: red;"}
-- [Catastrophic performance collapse.]{style="color: red;"}
+- [High variance gradients.]{style="color: #C138A0;"}
+- [Unstable policy updates.]{style="color: #C138A0;"}
+- [Catastrophic performance collapse.]{style="color: #C138A0;"}
 :::
 :::
 
 ::: fragment
-### [Shortcomings]{style="color: red;"}
+### [Shortcomings]{style="color: #C138A0;"}
 
 ::: incremental
-- [Instability from bootstrapping.]{style="color: red;"}
-- [Overestimation bias.]{style="color: red;"}
-- [Maximization over actions / continuous action spaces.]{style="color: red;"}
+- [Instability from bootstrapping.]{style="color: #C138A0;"}
+- [Overestimation bias.]{style="color: #C138A0;"}
+- [Maximization over actions / continuous action spaces.]{style="color: #C138A0;"}
 :::
 :::
 :::
@@ -112,17 +112,17 @@ $$Q^*(s,a) = r + \max_{a'\in\Ac}Q^*(s',a').$$
 
 ::: columns-5-5
 ::: fragment
-### [Improvement strategy]{style="color: blue;"}
+### [Improvement strategy]{style="color: #0A75C4;"}
 
-- [How to safely update policies.]{style="color: blue;"}
+- [How to safely update policies.]{style="color: #0A75C4;"}
 :::
 
 ::: fragment
-### [Improvement strategy]{style="color: blue;"}
+### [Improvement strategy]{style="color: #0A75C4;"}
 
 ::: incremental
-- [Stabilizing $Q$-learning with function approximation.]{style="color: blue;"}
-- [Solving the continuous argmax problem.]{style="color: blue;"}
+- [Stabilizing $Q$-learning with function approximation.]{style="color: #0A75C4;"}
+- [Solving the continuous argmax problem.]{style="color: #0A75C4;"}
 :::
 :::
 :::
@@ -180,14 +180,14 @@ Instead of maximizing over $Q$, we introduce a function $a = \mu_\phi(s)$ such t
 
 ::: small
 ::: definition
-### Policy gradient theorem -- formulation via reward trajectories ([sampling version in blue]{style="color: blue;"})
-$$ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. $$
+### Policy gradient theorem -- formulation via reward trajectories ([sampling version in blue]{style="color: #0A75C4;"})
+$$ \nablaphi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log\piphi\agivenb{a_t}{s_t}\cbracket{\sum_{t'=t}^{T-1}r_{t'}}}{\tau\sim p_\phi(\tau)} \approx \mathBlue{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t'=t}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}}\cbracket{\sum_{t'=t}^{T-1} r_{i,t'} }}}. $$
 :::
 
 ::: definition
 ### Policy gradient theorem -- formulation using the $Q$-function and the Actor-Critic architecture
-<!-- $$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
-$$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \textcolor{blue}{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. $$
+<!-- $$ \nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} \Qpiphi(s_t, a_t)}{\tau\sim p_\phi(\tau)} \fragment{ \approx\mathBlue{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} \Qpiphi(s_{i,t},a_{i,t})} }. } $$ -->
+$$\nabla_\phi L_\pi(\phi) = \Expsub{\sum_{t=0}^{T-1} \nablaphi \log \piphi\agivenb{a_t}{s_t} A_\theta(s_t, a_t)}{\tau\sim p_\phi(\tau)} \approx \mathBlue{\frac{1}{N} \sum_{i=1}^N \cbracket{\sum_{t=0}^{T-1} \nablaphi \log\,\piphi\agivenb{a_{i,t}}{s_{i,t}} A_\theta(s_{i,t},a_{i,t})} }. $$
 :::
 
 ### Main drawbacks
@@ -232,7 +232,7 @@ $$ \nablaphi\Vpiphi \approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \nablaph
 ::: incremental
 - To make this off-policy w.r.t. the actions as well, we introduce *importance sampling* for $\beta$:
 [$$\begin{align*}
-\nablaphi\Vpiphi &\approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \textcolor{red}{\beta\agivenb{a}{s}} \underbrace{\frac{\textcolor{blue}{\piphi\agivenb{a}{s}}}{\textcolor{red}{\beta\agivenb{a}{s}}}}_{=\kappa_\phi(s,a)} \frac{\nablaphi\piphi\agivenb{a}{s}}{\textcolor{blue}{\piphi\agivenb{a}{s}}} \Qpiphi(s,a) \fragment{ = \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \beta\agivenb{a}{s} \kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a) } \\
+\nablaphi\Vpiphi &\approx \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \mathRed{\beta\agivenb{a}{s}} \underbrace{\frac{\mathBlue{\piphi\agivenb{a}{s}}}{\mathRed{\beta\agivenb{a}{s}}}}_{=\kappa_\phi(s,a)} \frac{\nablaphi\piphi\agivenb{a}{s}}{\mathBlue{\piphi\agivenb{a}{s}}} \Qpiphi(s,a) \fragment{ = \sum_{s\in\Ac} \rho_\beta(s) \sum_{a\in\Ac} \beta\agivenb{a}{s} \kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a) } \\
 &= \Expsub{\kappa_\phi(s,a) \nablaphi\log\,\piphi\agivenb{a}{s} \Qpiphi(s,a)}{s\sim\rho_\beta,a\sim \beta\agivenb{\cdot}{s}}.
 \end{align*}$$]{.math-incremental}
 - The starting point in [@Silver2014dpg] was very similar, but using continuous state and action spaces:
@@ -483,9 +483,9 @@ $$\tilde{a} = \mu_{\bar{\phi}}(s) + \epsilon, \quad \epsilon \sim \mathsf{clip}(
 ::: incremental
 1. **Interact**: Sample $\set{s_t,a_t,r_t,s_{t+1}}$ using $a_t=\mu_\phi(s_t) + \epsilon$ ($\epsilon\sim\Normal{0}{\sigma^2}$) and store in the replay buffer $\Dc$.  
 1. **Sample**: Draw random mini-batch of $N$ transitions: $\Bc\subset\Dc$.
-1. **Update critic**: Calculate targets $y_i$ by [minimizing over two target networks]{style="color: red;"} (:bulb: the **Twin**):
-$$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \textcolor{red}{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
-[The [two critics]{style="color: red;"} are updated by minimizing the Bellman errors:
+1. **Update critic**: Calculate targets $y_i$ by [minimizing over two target networks]{style="color: #C138A0;"} (:bulb: the **Twin**):
+$$y_i = r_i + \gamma \min_{j\in\set{1,2}} Q_{\bar{\theta}_j}(s_{i+1}, \tilde{a}_{i+1}), \qquad\text{with \mathRed{noisy action} }\tilde{a}_{i+1}=\mu_{\bar{\phi}}(s_{i+1}) + \epsilon, \quad\epsilon \sim \mathsf{clip}(\mathcal{N}(0, \tilde{\sigma}^2), -c, c).$$
+[The [two critics]{style="color: #C138A0;"} are updated by minimizing the Bellman errors:
 $$L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2, \qquad \theta_j \gets \theta_j + \alpha_\theta \frac{2}{N} \sum_{i=1}^N \cbracket{y_i - Q_{\theta_j}(s_i, a_i)} \nablatheta Q_{\theta_j}(s_i,a_i).$$]{.fragment}
 :::
 
@@ -495,14 +495,14 @@ $$L_Q(\theta_j) = \frac{1}{N}\sum_{i} \cbracket{y_i - Q_{\theta_j}(s_i, a_i)}^2,
 :::
 
 ::: platzhalter
-[[Perform next steps only every $n_\mathsf{up}$ steps:]{style="color: red;"} (:bulb: the **Delayed**):]{.fragment}
+[[Perform next steps only every $n_\mathsf{up}$ steps:]{style="color: #C138A0;"} (:bulb: the **Delayed**):]{.fragment}
 
 ::: incremental
 4. **Update actor**: 
 <!-- The *online actor* is updated using the sampled deterministic policy gradient (Eq. \eqref{eq:Adv2_dpg}):  -->
-$$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\textcolor{red}{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
+$$\phi \gets \phi + \alpha \frac{1}{N} \sum_{i=1}^N \nablaa Q_{\mathRed{\theta_1}}(s_i,a)\Big|_{a=\mu_\phi(s_i)} \nablaphi \mu_\phi(s_i).$$
 <!-- $$\nablaphi L_\pi(\phi) \approx \frac{1}{N}\sum_{i} \nabla_a Q_\phi(s_i, a) \Big|_{a=\mu_\phi(s_i)} \cdot \nabla_\theta \mu_\phi(s_i)$$ -->
-5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\textcolor{red}{\bar{\theta}_1}$ / $\textcolor{red}{\bar{\theta}_2}$). 
+5. **Soft updates**: Incremental target updates ($\bar{\phi}$ / $\mathRed{\bar{\theta}_1}$ / $\mathRed{\bar{\theta}_2}$). 
 :::
 :::
 

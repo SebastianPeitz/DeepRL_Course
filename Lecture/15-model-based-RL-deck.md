@@ -35,7 +35,7 @@ feedback:
 | 6-13    | DQN, policy gradients, actor-critic, PPO/SAC, exploration    | Deep RL from basics to modern algorithms |
 |         | **Model-Based Control**                                      |                                          |
 |      14 | Optimal control \& feedback control                          | How to do control when we know the model | 
-| [15]{style="color: red;"}  | [Model-based reinforcement learning]{style="color: red;"} | [RL with known and learned models]{style="color: red;"} |
+| [15]{style="color: #C138A0;"}  | [Model-based reinforcement learning]{style="color: #C138A0;"} | [RL with known and learned models]{style="color: #C138A0;"} |
 |         | **Advanced Topics**                                          |                                          |
 
 Table: Lecture contents
@@ -67,7 +67,7 @@ Table: Lecture contents
 
 **for** $t=0,1,2,\ldots$\
 $\quad$ Sample action $a_t \sim \pi(s_t)$\
-$\quad$ Observe $(r_t,s_{t+1})$ [from **environment**]{style="color: red;"}\
+$\quad$ Observe $(r_t,s_{t+1})$ [from **environment**]{style="color: #C138A0;"}\
 $\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
 $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \max_a Q(s_{t+1},a)- Q(s_t,a_t)\right]$$
 $\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$
@@ -80,7 +80,7 @@ $\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$
 
 **for** $t=0,1,2,\ldots$\
 $\quad$ Sample action $a_t \sim \pi(s_t)$\
-$\quad$ [Use **model**]{style="color: red;"} to create sample $(r_t,s_{t+1})$\
+$\quad$ [Use **model**]{style="color: #C138A0;"} to create sample $(r_t,s_{t+1})$\
 $\quad$ Update $Q$ given $(s_t,a_t,r_t,s_{t+1})$:
 $$Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \max_a Q(s_{t+1},a)- Q(s_t,a_t)\right]$$
 $\quad$ Update policy $\pi = \epsilon$-greedy$(Q)$
@@ -185,7 +185,7 @@ In the previous maze example, the environment was perfect and the transitions de
 :::
 
 [$\textcolor{green}{\mathbf{+}\text{ If the old model is optimistic, there is a good chance!}}$]{.fragment}\
-[$\textcolor{red}{\mathbf{-}\text{ If the old model is pessimistic, it is very hard to find new opportunities!}}$]{.fragment}
+[$\mathRed{\mathbf{-}\text{ If the old model is pessimistic, it is very hard to find new opportunities!}}$]{.fragment}
 
 ::: incremental
 - even with $\epsilon$-greedy, it is very unlikely to randomly sample a sequence that ends up finding the better solution.
@@ -211,14 +211,14 @@ Two changes can help our simple Dyna-$Q$ algorithm to foster exploration.
 :::
 
 ::: fragment
-### 2. In the [planning phase]{style="color: blue;"}, we are allowed to try out new actions, even if we have not used them before.
+### 2. In the [planning phase]{style="color: #0A75C4;"}, we are allowed to try out new actions, even if we have not used them before.
 :::
 
 ::: incremental
 - Since we cannot know the next state $s'$ or the reward $r$ in such a case, the initial setting is $s' = s$ and $r=0$.
 - Nevertheless, not trying out new actions results in them getting large $\tau$ and thus, large augmented rewards!
 [$\Rightarrow$ Update towards higher $Q$ estimate.]{.fragment}
-- Eventually, the [learning phase]{style="color: red;"} will actually explore the new action.
+- Eventually, the [learning phase]{style="color: #C138A0;"} will actually explore the new action.
   - If it truly is better: $\tau\gets 0$, but confirmation by large $r$.
   - If it was optimistic: $\tau\gets 0$, and rejection due to small $r$.
 :::
@@ -229,12 +229,12 @@ Two changes can help our simple Dyna-$Q$ algorithm to foster exploration.
 ### Algorithm: Dyna-$Q$ (Tabular RL)
 
 **loop forever**:\
-$\quad\qquad$ ([*Learning* / *Experience*]{style="color: red;"})\
+$\quad\qquad$ ([*Learning* / *Experience*]{style="color: #C138A0;"})\
 $\quad$ Sample action $a$ $\epsilon$-greedily\
 $\quad$ Take action $a$, observe $r$ and $s'$\
 $\quad$ $Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s',\hat a)- Q(s,a)\right]$\
 $\quad$ Add transition to our $\mathsf{model}$\
-$\quad\qquad\qquad$ ([*Planning*]{style="color: blue;"})\
+$\quad\qquad\qquad$ ([*Planning*]{style="color: #0A75C4;"})\
 $\quad$ **for** $i=1,\ldots,n$:\
 $\quad\quad$ $s \gets$ random previous state\
 $\quad\quad$ $a \gets$ random previous action\

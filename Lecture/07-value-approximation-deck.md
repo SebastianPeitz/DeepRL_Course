@@ -29,7 +29,7 @@ feedback:
 |   1-5  | Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning |   RL basics in finite dimensions  |
 |      | **Deep-learning-based methods**                           |        |
 |   6  | Brief introduction to deep learning                       |    The basics for what comes next    |
-|   [7]{style="color: red;"}  | [Value function approximation]{style="color: red;"}  | [Value estimation with function approximation]{style="color: red;"} | 
+|   [7]{style="color: #C138A0;"}  | [Value function approximation]{style="color: #C138A0;"}  | [Value estimation with function approximation]{style="color: #C138A0;"} | 
 |   8  | Deep $Q$-learning                                           |        | 
 |   9  | Policy gradients                                          |        | 
 |  10  | Actor-critic algorithms                                   |        | 
@@ -321,7 +321,7 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablat
   $$L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
   - Taking the gradient of the single-sample version for $L(\theta)$ yields:
   [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
-  &= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \textcolor{red}{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
+  &= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \mathRed{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\
   &\neq\theta + \alpha\rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)} \qquad\qquad \nablatheta V_\theta(s_t) \qquad\qquad\text{(Eq. \eqref{eq:VAL_SGD-update})}.
   \end{align*}$$]{.math-incremental}
   - Application of Eq. \eqref{eq:VAL_SGD-update} is still very common.

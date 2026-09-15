@@ -52,7 +52,7 @@ feedback:
 |      | **Basics \& tabular methods**                             |                                     |
 |   1-5  | Bandits, MDPs, Dynamic Programming, Monte Carlo, TD Learning |   RL basics in finite dimensions  |
 |      | **Deep-learning-based methods**                           |        |
-|   [6]{style="color: red;"}  | [Brief introduction to deep learning]{style="color: red;"}                       |    [The basics for what comes next]{style="color: red;"}    |
+|   [6]{style="color: #C138A0;"}  | [Brief introduction to deep learning]{style="color: #C138A0;"}                       |    [The basics for what comes next]{style="color: #C138A0;"}    |
 |   7  | Value function approximation                              |        | 
 |   8  | Deep $Q$-learning                                           |        | 
 |   9  | Policy gradients                                          |        | 
@@ -371,13 +371,13 @@ $\quad$**In mathematical terms**
 
 ::: columns-3-4-5
 [$1.$ Gradient w.r.t. $\theta_3$:
-$$ \pdiff{L}{\theta_3} = \textcolor{red}{\underbrace{\pdiff{L}{\hat{y}}}_{=2(\hat{y}-y)}}\pdiff{\hat{y}}{\theta_3}. $$]{.fragment}
+$$ \pdiff{L}{\theta_3} = \mathRed{\underbrace{\pdiff{L}{\hat{y}}}_{=2(\hat{y}-y)}}\pdiff{\hat{y}}{\theta_3}. $$]{.fragment}
 
 [$2.$ Gradient w.r.t. $\theta_2$:
-$$ \pdiff{L}{\theta_2} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\pdiff{\iterate{z}{2}}{\theta_2}. $$]{.fragment}
+$$ \pdiff{L}{\theta_2} = \mathRed{\pdiff{L}{\hat{y}}}\mathBlue{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\pdiff{\iterate{z}{2}}{\theta_2}. $$]{.fragment}
 
 [$3.$ Gradient w.r.t. $\theta_1$:
-$$ \pdiff{L}{\theta_1} = \textcolor{red}{\pdiff{L}{\hat{y}}}\textcolor{blue}{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma'}}\pdiff{\iterate{z}{1}}{\theta_1}. $$]{.fragment}
+$$ \pdiff{L}{\theta_1} = \mathRed{\pdiff{L}{\hat{y}}}\mathBlue{\pdiff{\hat{y}}{\iterate{x}{2}}\underbrace{\pdiff{\iterate{x}{2}}{\iterate{z}{2}}}_{=\sigma'}}\textcolor{green}{\pdiff{\iterate{z}{2}}{\iterate{x}{1}}\underbrace{\pdiff{\iterate{x}{1}}{\iterate{z}{1}}}_{=\sigma'}}\pdiff{\iterate{z}{1}}{\theta_1}. $$]{.fragment}
 :::
 
 ::: fragment

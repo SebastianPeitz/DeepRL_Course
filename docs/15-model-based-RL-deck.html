@@ -257,9 +257,9 @@ learning</title>
 <td align="left">How to do control when we know the model</td>
 </tr>
 <tr>
-<td align="center"><span style="color: red;">15</span></td>
-<td align="left"><span style="color: red;">Model-based reinforcement learning</span></td>
-<td align="left"><span style="color: red;">RL with known and learned models</span></td>
+<td align="center"><span style="color: #C138A0;">15</span></td>
+<td align="left"><span style="color: #C138A0;">Model-based reinforcement learning</span></td>
+<td align="left"><span style="color: #C138A0;">RL with known and learned models</span></td>
 </tr>
 <tr>
 <td align="center"></td>
@@ -307,7 +307,7 @@ learning</title>
 <h3>Algorithm: <span class="math inline">\(Q\)</span>-learning</h3>
 <p><strong>for</strong> <span class="math inline">\(t=0,1,2,\ldots\)</span><br />
 <span class="math inline">\(\quad\)</span> Sample action <span class="math inline">\(a_t \sim \pi(s_t)\)</span><br />
-<span class="math inline">\(\quad\)</span> Observe <span class="math inline">\((r_t,s_{t+1})\)</span> <span style="color: red;">from <strong>environment</strong></span><br />
+<span class="math inline">\(\quad\)</span> Observe <span class="math inline">\((r_t,s_{t+1})\)</span> <span style="color: #C138A0;">from <strong>environment</strong></span><br />
 <span class="math inline">\(\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \max_a Q(s_{t+1},a)- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span></p>
 </div>
 </div>
@@ -316,7 +316,7 @@ learning</title>
 <h3>Algorithm: <span class="math inline">\(Q\)</span>-planning</h3>
 <p><strong>for</strong> <span class="math inline">\(t=0,1,2,\ldots\)</span><br />
 <span class="math inline">\(\quad\)</span> Sample action <span class="math inline">\(a_t \sim \pi(s_t)\)</span><br />
-<span class="math inline">\(\quad\)</span> <span style="color: red;">Use <strong>model</strong></span> to create sample <span class="math inline">\((r_t,s_{t+1})\)</span><br />
+<span class="math inline">\(\quad\)</span> <span style="color: #C138A0;">Use <strong>model</strong></span> to create sample <span class="math inline">\((r_t,s_{t+1})\)</span><br />
 <span class="math inline">\(\quad\)</span> Update <span class="math inline">\(Q\)</span> given <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span>: <span class="math display">\[Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \left[r_t + \gamma \max_a Q(s_{t+1},a)- Q(s_t,a_t)\right]\]</span> <span class="math inline">\(\quad\)</span> Update policy <span class="math inline">\(\pi = \epsilon\)</span>-greedy<span class="math inline">\((Q)\)</span></p>
 </div>
 </div>
@@ -508,7 +508,7 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 <h3 id="can-we-recover-from-imperfect-memories-and-adapt">Can we recover from imperfect memories and adapt?</h3>
 </div>
 <p><span class="fragment"><span class="math inline">\(\textcolor{green}{\mathbf{+}\text{ If the old model is optimistic, there is a good chance!}}\)</span></span><br />
-<span class="fragment"><span class="math inline">\(\textcolor{red}{\mathbf{-}\text{ If the old model is pessimistic, it is very hard to find new opportunities!}}\)</span></span></p>
+<span class="fragment"><span class="math inline">\(\mathRed{\mathbf{-}\text{ If the old model is pessimistic, it is very hard to find new opportunities!}}\)</span></span></p>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">even with <span class="math inline">\(\epsilon\)</span>-greedy, it is very unlikely to randomly sample a sequence that ends up finding the better solution.</li>
@@ -542,13 +542,13 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 </ul>
 </div>
 <div class="fragment">
-<h3 id="in-the-planning-phase-we-are-allowed-to-try-out-new-actions-even-if-we-have-not-used-them-before.">2. In the <span style="color: blue;">planning phase</span>, we are allowed to try out new actions, even if we have not used them before.</h3>
+<h3 id="in-the-planning-phase-we-are-allowed-to-try-out-new-actions-even-if-we-have-not-used-them-before.">2. In the <span style="color: #0A75C4;">planning phase</span>, we are allowed to try out new actions, even if we have not used them before.</h3>
 </div>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">Since we cannot know the next state <span class="math inline">\(s&#39;\)</span> or the reward <span class="math inline">\(r\)</span> in such a case, the initial setting is <span class="math inline">\(s&#39; = s\)</span> and <span class="math inline">\(r=0\)</span>.</li>
 <li class="fragment">Nevertheless, not trying out new actions results in them getting large <span class="math inline">\(\tau\)</span> and thus, large augmented rewards! <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Update towards higher <span class="math inline">\(Q\)</span> estimate.</span></li>
-<li class="fragment">Eventually, the <span style="color: red;">learning phase</span> will actually explore the new action.
+<li class="fragment">Eventually, the <span style="color: #C138A0;">learning phase</span> will actually explore the new action.
 <ul class="incremental">
 <li class="fragment">If it truly is better: <span class="math inline">\(\tau\gets 0\)</span>, but confirmation by large <span class="math inline">\(r\)</span>.</li>
 <li class="fragment">If it was optimistic: <span class="math inline">\(\tau\gets 0\)</span>, and rejection due to small <span class="math inline">\(r\)</span>.</li>
@@ -560,12 +560,12 @@ Policies found by planning and nonplanning Dyna-Q agents halfway through the sec
 <div id="algorithm-dyna-q-tabular-rl-1" class="definition">
 <h3>Algorithm: Dyna-<span class="math inline">\(Q\)</span> (Tabular RL)</h3>
 <p><strong>loop forever</strong>:<br />
-<span class="math inline">\(\quad\qquad\)</span> (<span style="color: red;"><em>Learning</em> / <em>Experience</em></span>)<br />
+<span class="math inline">\(\quad\qquad\)</span> (<span style="color: #C138A0;"><em>Learning</em> / <em>Experience</em></span>)<br />
 <span class="math inline">\(\quad\)</span> Sample action <span class="math inline">\(a\)</span> <span class="math inline">\(\epsilon\)</span>-greedily<br />
 <span class="math inline">\(\quad\)</span> Take action <span class="math inline">\(a\)</span>, observe <span class="math inline">\(r\)</span> and <span class="math inline">\(s&#39;\)</span><br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(Q(s,a) \gets Q(s,a) + \alpha \left[r + \gamma \max_{\hat a} Q(s&#39;,\hat a)- Q(s,a)\right]\)</span><br />
 <span class="math inline">\(\quad\)</span> Add transition to our <span class="math inline">\(\mathsf{model}\)</span><br />
-<span class="math inline">\(\quad\qquad\qquad\)</span> (<span style="color: blue;"><em>Planning</em></span>)<br />
+<span class="math inline">\(\quad\qquad\qquad\)</span> (<span style="color: #0A75C4;"><em>Planning</em></span>)<br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(i=1,\ldots,n\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(s \gets\)</span> random previous state<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(a \gets\)</span> random previous action<br />

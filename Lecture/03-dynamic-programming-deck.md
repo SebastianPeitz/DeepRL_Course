@@ -31,7 +31,7 @@ feedback:
 |      | **Basics \& tabular methods**                             |                                     |
 |   1  | Multi-armed bandits                                       | Exploration-exploitation dilemma |
 |   2  | Markov decision processes                                 | Dynamics, rewards, policies |
-|   $\inRed{3}$  | $\inRed{Dynamic programming}$                   | [Optimal decision making with *full knowledge*]{style="color: red;"} |
+|   $\inRed{3}$  | $\inRed{Dynamic programming}$                   | [Optimal decision making with *full knowledge*]{style="color: #C138A0;"} |
 |   4  | Monte Carlo methods                                       |    |
 |   5  | Temporal difference learning \& Q-learning                |        |
 |      | **Deep-learning-based methods**                           |        |
@@ -240,7 +240,7 @@ termination is guaranteed from all states under the policy $\pi$.
 
 Use the Bellman equation \eqref{eq:DP_BellmanV2} as an update rule:
 $$\begin{equation}
-V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s') \right] \label{eq:DP_IterativePolicyEvaluation}
+V_{\mathRed{k+1}}(s) = \ExpCsub{r+\gamma V_{\mathRed{k}}(s')}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{\mathRed{k}}(s') \right] \label{eq:DP_IterativePolicyEvaluation}
 \end{equation}$$
 
 ::: incremental
@@ -300,9 +300,9 @@ $$ (\tilde{x}_{j,1}, \tilde{y}_{j,1}), (\tilde{x}_{j,2}, \tilde{y}_{j,2}), \ldot
 ### Bootstrapping in *reinforcement learning*
 
 ::: incremental
-- In order to update an estimate of a function of interest (say, $\textcolor{red}{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
+- In order to update an estimate of a function of interest (say, $\mathRed{V(s)}$ or $Q(s,a)$), *we rely on yet another estimate*.
 - We have seen this just a minute ago! [In the (iterative) policy evaluation algorithm, we have
-$$ \textcolor{red}{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s')} \right]. $$
+$$ \mathRed{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma \mathRed{V(s')} \right]. $$
 ]{.fragment}
 :::
 :::
@@ -561,13 +561,13 @@ $\quad$ **if** $\pi(s) \neq \pi_{\mathsf{old}}(s)$ **then** $\mathsf{flag}_{\mat
 Let's look at our earlier derivation of the policy evaluation procedure:
 
 $$\begin{equation}
-V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s')}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
+V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s')}{s}{\mathBlue{\pi}} = \mathBlue{\sum_{a\in\Ac} \pias} \sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
 \end{equation}$$
 
 ::: fragment
 Now, we change this to directly update the value function using the maximizing action (policy improvement step):
 $$\begin{equation}
-V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s')}{s,a} = \textcolor{red}{\max_{a\in\Ac}}\sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right]
+V_{k+1}(s) = \mathRed{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s')}{s,a} = \mathRed{\max_{a\in\Ac}}\sum_{s'\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s') \right]
 \end{equation}$$
 :::
 

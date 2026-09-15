@@ -40,7 +40,7 @@ feedback:
 ::: definition
 ### What can I bring to the exam?
 
-[**No** additional material allowed!]{style="color: red;"}
+[**No** additional material allowed!]{style="color: #C138A0;"}
 :::
 
 :::
@@ -79,20 +79,20 @@ feedback:
 
 ::: small
 ::: incremental
-1. Name the central quantities of interest in RL. ([*General*]{style="color: blue;"})
-1. What are the core ingredients of an MDP? ([*MDPs*]{style="color: blue;"})
-1. What is the policy evaluation step/algorithm in DP? ([*Dynamic Programming*]{style="color: blue;"})
-1. How does the policy evaluation procedure work for Monte Carlo sampling (in the tabular case)? ([*Monte Carlo methods*]{style="color: blue;"})
-1. Explain the SARSA algorithm. ([*TD learning / $Q$-learning*]{style="color: blue;"})
-1. When using bootstrapping / TD learning in value function approximation, where does the notion of semi-gradients come from? ([*Value function approximation \& deep $Q$-learning*]{style="color: blue;"})
+1. Name the central quantities of interest in RL. ([*General*]{style="color: #0A75C4;"})
+1. What are the core ingredients of an MDP? ([*MDPs*]{style="color: #0A75C4;"})
+1. What is the policy evaluation step/algorithm in DP? ([*Dynamic Programming*]{style="color: #0A75C4;"})
+1. How does the policy evaluation procedure work for Monte Carlo sampling (in the tabular case)? ([*Monte Carlo methods*]{style="color: #0A75C4;"})
+1. Explain the SARSA algorithm. ([*TD learning / $Q$-learning*]{style="color: #0A75C4;"})
+1. When using bootstrapping / TD learning in value function approximation, where does the notion of semi-gradients come from? ([*Value function approximation \& deep $Q$-learning*]{style="color: #0A75C4;"})
 1. What’s the additional term that shows up in the expectation when we
-compute the policy gradient? ([*Policy gradients*]{style="color: blue;"})
-1. How can you interpret the policy gradient with the advantage function as baseline? What do the two terms $\nabla \log \pi(a|s)$ and $A(s,a)$ represent? ([*Policy gradients*]{style="color: blue;"})
-1. What are the challenges in TRPO and how does PPO solve them? ([*Adv. algorithms*]{style="color: blue;"})
-1. Which methods to enhance exploration do you know? Can you explain the core mechanics? ([*Exploration*]{style="color: blue;"})
-1. How does model predictive control (MPC) work? What is its relation to RL? ([*Model-based control*]{style="color: blue;"})
-1. Explain the core ideas of Monte Carlo Tree Search (MCTS). ([*Model-based control*]{style="color: blue;"})
-1. What is the general working principle behind conservative $Q$-learning? ([*Offline RL*]{style="color: blue;"})
+compute the policy gradient? ([*Policy gradients*]{style="color: #0A75C4;"})
+1. How can you interpret the policy gradient with the advantage function as baseline? What do the two terms $\nabla \log \pi(a|s)$ and $A(s,a)$ represent? ([*Policy gradients*]{style="color: #0A75C4;"})
+1. What are the challenges in TRPO and how does PPO solve them? ([*Adv. algorithms*]{style="color: #0A75C4;"})
+1. Which methods to enhance exploration do you know? Can you explain the core mechanics? ([*Exploration*]{style="color: #0A75C4;"})
+1. How does model predictive control (MPC) work? What is its relation to RL? ([*Model-based control*]{style="color: #0A75C4;"})
+1. Explain the core ideas of Monte Carlo Tree Search (MCTS). ([*Model-based control*]{style="color: #0A75C4;"})
+1. What is the general working principle behind conservative $Q$-learning? ([*Offline RL*]{style="color: #0A75C4;"})
 :::
 :::
 

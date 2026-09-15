@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "14.09.2026 09:29"
+        "15.09.2026 13:00"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "9",
@@ -675,8 +675,12 @@
             "dt": "{\\,\\mathrm{d}t}",
             "dtau": "{\\,\\mathrm{d}\\tau}",
             "dx": "{\\,\\mathrm{d}x}",
+            "inBlue": [
+                "{\\textcolor[RGB]{10,117,196}{\\text{#1}}}",
+                1.0
+            ],
             "inRed": [
-                "{\\textcolor{red}{\\text{#1}}}",
+                "{\\textcolor[RGB]{196,56,160}{\\text{#1}}}",
                 1.0
             ],
             "iterate": [
@@ -686,6 +690,14 @@
             "iteratesub": [
                 "{{#1}^{(#2)}_{#3}}",
                 3.0
+            ],
+            "mathBlue": [
+                "{\\color[RGB]{10,117,196}{#1}}",
+                1.0
+            ],
+            "mathRed": [
+                "{\\color[RGB]{196,56,160}{#1}}",
+                1.0
             ],
             "minuspoint": [
                 "\\textcolor{red}{\\mathbf{-}}"

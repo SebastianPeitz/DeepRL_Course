@@ -1,0 +1,1279 @@
+{
+    "affiliation": "Scientific Machine Learning group, Paderborn University",
+    "author": "Prof. Dr. Sebastian Peitz",
+    "bibliography": "./bibliography.bib",
+    "build-time": [
+        "15.09.2026 11:50"
+    ],
+    "caption-server": "https://decker.cs.tu-dortmund.de/captions",
+    "chapter": "20",
+    "chart": {
+        "colors": [
+            "#f5871f",
+            "#84B819",
+            "#2a9ddf",
+            "#c82829",
+            "#3e999f",
+            "#a3685a",
+            "#eab700",
+            "#8959a8"
+        ],
+        "defaults": {
+            "font": {
+                "family": "Lato",
+                "size": 20.0
+            },
+            "plugins": {
+                "colors": {
+                    "enabled": false
+                },
+                "colorschemes": {
+                    "scheme": "tableau.Classic10"
+                },
+                "legend": {
+                    "position": "bottom"
+                },
+                "title": {
+                    "font": {
+                        "size": 30.0,
+                        "weight": "normal"
+                    }
+                }
+            }
+        }
+    },
+    "colorscheme": "light",
+    "csl": "./chicago-author-date.csl",
+    "css-dark-color-declarations": [
+        "--shade7: #ffffff;",
+        "--shade6: #e0e0e0;",
+        "--shade5: #c5c8c6;",
+        "--shade4: #b4b7b4;",
+        "--shade3: #969896;",
+        "--shade2: #373b41;",
+        "--shade1: #282a2e;",
+        "--shade0: #1d1f21;",
+        "--contrast: 40%;",
+        "--base0F: #a3685a;",
+        "--base0E: #b294bb;",
+        "--base0D: #81a2be;",
+        "--base0C: #8abeb7;",
+        "--base0B: #7da72a;",
+        "--base0A: #f0c674;",
+        "--base09: #de935f;",
+        "--base08: #cc6666;",
+        "--base07: #ffffff;",
+        "--base06: #e0e0e0;",
+        "--base05: #c5c8c6;",
+        "--base04: #b4b7b4;",
+        "--base03: #969896;",
+        "--base02: #373b41;",
+        "--base01: #282a2e;",
+        "--base00: #1d1f21;",
+        "--accent7: #a3685a;",
+        "--accent6: #b294bb;",
+        "--accent5: #81a2be;",
+        "--accent4: #8abeb7;",
+        "--accent3: #7da72a;",
+        "--accent2: #f0c674;",
+        "--accent1: #de935f;",
+        "--accent0: #cc6666;"
+    ],
+    "css-dark-colors": {
+        "accent0": "#cc6666",
+        "accent1": "#de935f",
+        "accent2": "#f0c674",
+        "accent3": "#7da72a",
+        "accent4": "#8abeb7",
+        "accent5": "#81a2be",
+        "accent6": "#b294bb",
+        "accent7": "#a3685a",
+        "base00": "#1d1f21",
+        "base01": "#282a2e",
+        "base02": "#373b41",
+        "base03": "#969896",
+        "base04": "#b4b7b4",
+        "base05": "#c5c8c6",
+        "base06": "#e0e0e0",
+        "base07": "#ffffff",
+        "base08": "#cc6666",
+        "base09": "#de935f",
+        "base0A": "#f0c674",
+        "base0B": "#7da72a",
+        "base0C": "#8abeb7",
+        "base0D": "#81a2be",
+        "base0E": "#b294bb",
+        "base0F": "#a3685a",
+        "contrast": "40%",
+        "shade0": "#1d1f21",
+        "shade1": "#282a2e",
+        "shade2": "#373b41",
+        "shade3": "#969896",
+        "shade4": "#b4b7b4",
+        "shade5": "#c5c8c6",
+        "shade6": "#e0e0e0",
+        "shade7": "#ffffff"
+    },
+    "css-declarations": [],
+    "css-light-color-declarations": [
+        "--shade7: #1d1f21;",
+        "--shade6: #282a2e;",
+        "--shade5: #4d4d4c;",
+        "--shade4: #969896;",
+        "--shade3: #8e908c;",
+        "--shade2: #d6d6d6;",
+        "--shade1: #eeeeee;",
+        "--shade0: #ffffff;",
+        "--contrast: 40%;",
+        "--base0F: #a3685a;",
+        "--base0E: #8959a8;",
+        "--base0D: #2a9ddf;",
+        "--base0C: #3e999f;",
+        "--base0B: #84b819;",
+        "--base0A: #eab700;",
+        "--base09: #f5871f;",
+        "--base08: #c82829;",
+        "--base07: #1d1f21;",
+        "--base06: #282a2e;",
+        "--base05: #4d4d4c;",
+        "--base04: #969896;",
+        "--base03: #8e908c;",
+        "--base02: #d6d6d6;",
+        "--base01: #eeeeee;",
+        "--base00: #ffffff;",
+        "--accent7: #a3685a;",
+        "--accent6: #8959a8;",
+        "--accent5: #2a9ddf;",
+        "--accent4: #3e999f;",
+        "--accent3: #84b819;",
+        "--accent2: #eab700;",
+        "--accent1: #f5871f;",
+        "--accent0: #c82829;"
+    ],
+    "css-light-colors": {
+        "accent0": "#c82829",
+        "accent1": "#f5871f",
+        "accent2": "#eab700",
+        "accent3": "#84b819",
+        "accent4": "#3e999f",
+        "accent5": "#2a9ddf",
+        "accent6": "#8959a8",
+        "accent7": "#a3685a",
+        "base00": "#ffffff",
+        "base01": "#eeeeee",
+        "base02": "#d6d6d6",
+        "base03": "#8e908c",
+        "base04": "#969896",
+        "base05": "#4d4d4c",
+        "base06": "#282a2e",
+        "base07": "#1d1f21",
+        "base08": "#c82829",
+        "base09": "#f5871f",
+        "base0A": "#eab700",
+        "base0B": "#84b819",
+        "base0C": "#3e999f",
+        "base0D": "#2a9ddf",
+        "base0E": "#8959a8",
+        "base0F": "#a3685a",
+        "contrast": "40%",
+        "shade0": "#ffffff",
+        "shade1": "#eeeeee",
+        "shade2": "#d6d6d6",
+        "shade3": "#8e908c",
+        "shade4": "#969896",
+        "shade5": "#4d4d4c",
+        "shade6": "#282a2e",
+        "shade7": "#1d1f21"
+    },
+    "date": "Summer term 2026",
+    "decker-meta-url": "9b16c23b9.json",
+    "dictionary": {
+        "de": {
+            "exam": {
+                "Easy": "Leicht",
+                "Hard": "Schwer",
+                "Medium": "Mittelschwer",
+                "again-button": "Nochmal",
+                "placeholder": "Antwort eingeben",
+                "points": "Punkte",
+                "poll-button": "Poll",
+                "qrcode-button": "QRCode",
+                "reset-button": "Zurücksetzen",
+                "solution": "Lösung",
+                "solve-button": "Lösen",
+                "stop-button": "Stopp"
+            },
+            "quiz": {
+                "ic-placeholder": "Option auswählen…",
+                "input-placeholder": "Eingeben und 'Enter'",
+                "qmi-drag-hint": "Objekte per Drag&Drop ziehen…",
+                "qmi-drop-hint": "…und hier in die richtige Kategorie einsortieren.",
+                "reset-button": "Zurücksetzen",
+                "solution": "Lösung zeigen"
+            }
+        },
+        "en": {
+            "exam": {
+                "Easy": "Easy",
+                "Hard": "Hard",
+                "Medium": "Medium",
+                "again-button": "Again",
+                "placeholder": "Type in answer",
+                "points": "Points",
+                "poll-button": "Poll",
+                "qrcode-button": "QRCode",
+                "reset-button": "Reset",
+                "solution": "Solution",
+                "solve-button": "Solve",
+                "stop-button": "Stop"
+            },
+            "quiz": {
+                "ic-placeholder": "Select option…",
+                "input-placeholder": "Type and press 'Enter'",
+                "qmi-drag-hint": "Drag items from here…",
+                "qmi-drop-hint": "…and put them here into the correct category.",
+                "reset-button": "Reset",
+                "solution": "Show Solution"
+            }
+        }
+    },
+    "documentPath": "backup",
+    "editor": {
+        "link-prefix": "zed://file"
+    },
+    "exclude-directories": [
+        "Beispiele"
+    ],
+    "experiments": {
+        "fragment-templates": false
+    },
+    "explain": {
+        "camHeight": 720.0,
+        "camWidth": 1280.0,
+        "recHeight": 1080.0,
+        "recWidth": 1920.0,
+        "useGreenScreen": false
+    },
+    "external-tools": {
+        "chrome": {
+            "linux": {
+                "arguments": [
+                    "--headless",
+                    "--disable-gpu",
+                    "--virtual-time-budget=10000",
+                    "--no-pdf-header-footer",
+                    "--run-all-compositor-stages-before-draw",
+                    "--virtual-time-budget=1000000",
+                    "--incognito",
+                    "--print-to-pdf=${output}",
+                    "${input}?print-pdf#/"
+                ],
+                "command": "chrome",
+                "help": ""
+            },
+            "macos": {
+                "arguments": [
+                    "--headless",
+                    "--disable-gpu",
+                    "--virtual-time-budget=10000",
+                    "--no-pdf-header-footer",
+                    "--run-all-compositor-stages-before-draw",
+                    "--virtual-time-budget=1000000",
+                    "--incognito",
+                    "--print-to-pdf=${output}",
+                    "${input}?print-pdf#/"
+                ],
+                "command": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "help": ""
+            }
+        },
+        "chromeheadless": {
+            "linux": {
+                "arguments": [
+                    "--headless",
+                    "--remote-debugging-port=${input}"
+                ],
+                "command": "chrome",
+                "help": ""
+            },
+            "macos": {
+                "arguments": [
+                    "--headless",
+                    "--log-level=3",
+                    "--disable-gpu",
+                    "--remote-debugging-port=${input}"
+                ],
+                "command": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "help": ""
+            },
+            "windows": {
+                "arguments": [
+                    "--headless",
+                    "--remote-debugging-port=${input}"
+                ],
+                "command": "C:\\PROGRA~2\\Microsoft\\Edge\\Application\\msedge.exe",
+                "help": "MS edge must be on the path! Please add `C:\\Program Files (x86)\\Microsoft\\Edge\\Application` to your path!"
+            }
+        },
+        "d2": {
+            "arguments": [
+                "--pad",
+                10,
+                "--sketch",
+                "--theme",
+                7,
+                "--dark-theme",
+                200,
+                "${input}",
+                "${output}"
+            ],
+            "command": "d2",
+            "help": "https://d2lang.com/"
+        },
+        "dot": {
+            "arguments": [
+                "-Tsvg",
+                "-o${output}",
+                "${input}"
+            ],
+            "command": "dot",
+            "help": "https://graphviz.org/"
+        },
+        "gnuplot": {
+            "arguments": [
+                "-d",
+                "-e",
+                "set terminal svg",
+                "-e",
+                "set output '${output}'",
+                "${input}"
+            ],
+            "command": "gnuplot",
+            "help": ""
+        },
+        "mermaid": {
+            "linux": {
+                "arguments": [
+                    "-i",
+                    "${input}",
+                    "-o",
+                    "${output}"
+                ],
+                "command": "mmdc",
+                "help": "https://github.com/mermaid-js/mermaid-cli"
+            },
+            "macos": {
+                "arguments": [
+                    "-i",
+                    "${input}",
+                    "-o",
+                    "${output}"
+                ],
+                "command": "mmdc",
+                "help": "https://github.com/mermaid-js/mermaid-cli"
+            },
+            "windows": {
+                "arguments": [
+                    "-i",
+                    "${input}",
+                    "-o",
+                    "${output}"
+                ],
+                "command": "mmdc",
+                "help": "https://github.com/mermaid-js/mermaid-cli"
+            }
+        },
+        "mp4towav": {
+            "arguments": [
+                "-y",
+                "-i",
+                "${input}",
+                "-acodec",
+                "pcm_s16le",
+                "-ac",
+                1,
+                "-ar",
+                16000,
+                "-af",
+                "speechnorm",
+                "${output}"
+            ],
+            "command": "ffmpeg",
+            "help": ""
+        },
+        "pdf2svg": {
+            "arguments": [
+                "${input}",
+                "${output}"
+            ],
+            "command": "pdf2svg",
+            "help": "https://github.com/dawbarton/pdf2svg"
+        },
+        "pdflatex": {
+            "arguments": [
+                "-halt-on-error",
+                "-interaction=batchmode",
+                "-no-shell-escape",
+                "-output-directory",
+                "${output}",
+                "${input}"
+            ],
+            "command": "pdflatex",
+            "help": "https://en.wikipedia.org/wiki/PdfTeX"
+        },
+        "plantuml": {
+            "arguments": [
+                "-tsvg",
+                "-pipe"
+            ],
+            "command": "plantuml",
+            "help": "",
+            "pipe": true
+        },
+        "rsync": {
+            "arguments": [
+                "--recursive",
+                "--copy-links",
+                "--delete",
+                "--no-group",
+                "--perms",
+                "--chmod=a+r,go-w",
+                "--no-owner",
+                "--copy-links",
+                "${input}",
+                "${output}"
+            ],
+            "command": "rsync",
+            "help": ""
+        },
+        "tomp4-concat": {
+            "arguments": [
+                "-nostdin",
+                "-v",
+                "fatal",
+                "-y",
+                "-f",
+                "concat",
+                "-safe",
+                0,
+                "-i",
+                "${input}",
+                "-vcodec",
+                "copy",
+                "-acodec",
+                "aac",
+                "${output}"
+            ],
+            "command": "ffmpeg",
+            "help": ""
+        },
+        "tomp4-copy": {
+            "arguments": [
+                "-nostdin",
+                "-v",
+                "fatal",
+                "-y",
+                "-i",
+                "${input}",
+                "-vcodec",
+                "copy",
+                "-acodec",
+                "aac",
+                "${output}"
+            ],
+            "command": "ffmpeg",
+            "help": ""
+        },
+        "tomp4-transcode": {
+            "arguments": [
+                "-nostdin",
+                "-v",
+                "fatal",
+                "-y",
+                "-i",
+                "${input}",
+                "-pix_fmt",
+                "yuv420p",
+                "-crf",
+                27,
+                "-preset",
+                "slow",
+                "-tune",
+                "stillimage",
+                "-ac",
+                1,
+                "-movflags",
+                "+faststart",
+                "-vcodec",
+                "libx264",
+                "-af",
+                "speechnorm",
+                "-r",
+                30,
+                "-metadata",
+                "comment=decker-crunched",
+                "${output}"
+            ],
+            "command": "ffmpeg",
+            "help": ""
+        },
+        "whisper": {
+            "arguments": [
+                "--file",
+                "${input}",
+                "-bs",
+                5,
+                "-mc",
+                0,
+                "--output-vtt",
+                "--output-file",
+                "${output}"
+            ],
+            "command": "whisper-cli",
+            "help": ""
+        }
+    },
+    "feedback": {
+        "deck-id": "deeprl-scientific-standards"
+    },
+    "includeTULogo": false,
+    "index": {
+        "links": [
+            "a11y",
+            "handout",
+            "pdf"
+        ],
+        "listShowsDeckSubtitle": true,
+        "listShowsDeckTitle": true,
+        "manual": true,
+        "progress": true,
+        "search": true,
+        "searchShowsDeckSubtitle": true,
+        "searchShowsDeckTitle": true
+    },
+    "lang": "en",
+    "link-citations": true,
+    "live-captions": false,
+    "logos": [
+        "../images/UPB-logo.jpg"
+    ],
+    "math": {
+        "font": "tex",
+        "macros": {
+            "Ac": "{\\mathcal{A}}",
+            "Bc": "{\\mathcal{B}}",
+            "C": "{\\mathbb{C}}",
+            "Dc": "{\\mathcal{D}}",
+            "Dtest": "{\\mathcal{D}_{\\mathsf{test}}}",
+            "Dtrain": "{\\mathcal{D}_{\\mathsf{train}}}",
+            "E": "{\\mathbb{E}}",
+            "Exp": [
+                "{\\mathbb{E}\\left[ #1 \\right]}",
+                1.0
+            ],
+            "ExpC": [
+                "{\\mathbb{E}\\left[ #1 \\middle| #2 \\right]}",
+                2.0
+            ],
+            "ExpCsub": [
+                "{\\mathbb{E}_{#3}\\left[ #1 \\middle|#2 \\right]}",
+                3.0
+            ],
+            "Exphat": [
+                "{\\hat{\\mathbb{E}}_t\\left[ #1 \\right]}",
+                1.0
+            ],
+            "Expsub": [
+                "{\\mathbb{E}_{#2}\\left[ #1 \\right]}",
+                2.0
+            ],
+            "Expsubbig": [
+                "{\\mathbb{E}_{#2}\\Big[ #1 \\Big]}",
+                2.0
+            ],
+            "Hc": "{\\mathcal{H}}",
+            "Im": [
+                "{\\mathrm{Im}\\!\\left( #1 \\right)}",
+                1.0
+            ],
+            "KLdiv": [
+                "D_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivavg": [
+                "\\bar{D}_{\\mathsf{KL}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "KLdivmax": [
+                "D_{\\mathsf{KL}}^{\\mathsf{max}}\\left( #1 \\middle \\| #2 \\right)",
+                2.0
+            ],
+            "Lc": "{\\mathcal{L}}",
+            "N": "{\\mathbb{N}}",
+            "Nc": "{\\mathcal{N}}",
+            "Normal": [
+                "{\\Nc\\left({#1},{#2}\\right)}",
+                2.0
+            ],
+            "Oc": "{\\mathcal{O}}",
+            "Q": "{\\mathbb{Q}}",
+            "Qc": "{\\mathcal{Q}}",
+            "Qpi": "{Q^\\pi}",
+            "Qpiphi": "{Q^{\\pi_\\phi}}",
+            "Qstar": "{Q^*}",
+            "R": "{\\mathbb{R}}",
+            "Rc": "{\\mathcal{R}}",
+            "Re": [
+                "{\\mathrm{Re}\\!\\left( #1 \\right)}",
+                1.0
+            ],
+            "STOP": [
+                "{\\mathsf{STOP}}"
+            ],
+            "Sc": "{\\mathcal{S}}",
+            "Var": [
+                "{\\mathsf{var}\\left[ #1 \\right]}",
+                1.0
+            ],
+            "Vpi": "{V^\\pi}",
+            "Vpiphi": "{V^{\\pi_\\phi}}",
+            "Vstar": "{V^*}",
+            "Xc": "{\\mathcal{X}}",
+            "Yc": "{\\mathcal{Y}}",
+            "Z": "{\\mathbb{Z}}",
+            "abs": [
+                "\\left\\vert #1 \\right\\vert",
+                1.0
+            ],
+            "agivenb": [
+                "{\\left( #1  \\middle| #2 \\right)}",
+                2.0
+            ],
+            "aprime": "{a^{\\prime}}",
+            "at": [
+                "{a_t}"
+            ],
+            "atp": [
+                "{a_{t+1}}"
+            ],
+            "break": [
+                "{\\mathsf{break}}"
+            ],
+            "cbracket": [
+                "{\\left( #1 \\right)}",
+                1.0
+            ],
+            "diff": [
+                "{\\frac{\\mathrm{d} #1}{\\mathrm{d} #2}}",
+                2.0
+            ],
+            "dint": [
+                "\\,\\mathrm{d}{#1}",
+                1.0
+            ],
+            "ds": "{\\,\\mathrm{d}s}",
+            "dt": "{\\,\\mathrm{d}t}",
+            "dtau": "{\\,\\mathrm{d}\\tau}",
+            "dx": "{\\,\\mathrm{d}x}",
+            "inBlue": [
+                "{\\textcolor[RGB]{10,117,196}{\\text{#1}}}",
+                1.0
+            ],
+            "inRed": [
+                "{\\textcolor[RGB]{196,56,160}{\\text{#1}}}",
+                1.0
+            ],
+            "iterate": [
+                "{{#1}^{(#2)}}",
+                2.0
+            ],
+            "iteratesub": [
+                "{{#1}^{(#2)}_{#3}}",
+                3.0
+            ],
+            "mathBlue": [
+                "{\\color[RGB]{10,117,196}{#1}}",
+                1.0
+            ],
+            "mathRed": [
+                "{\\color[RGB]{196,56,160}{#1}}",
+                1.0
+            ],
+            "minuspoint": [
+                "\\textcolor{red}{\\mathbf{-}}"
+            ],
+            "nablaa": "{\\nabla_{\\mkern-6mu a\\mkern+2mu}}",
+            "nablaphi": "{\\nabla_{\\mkern-6mu \\phi\\mkern+2mu}}",
+            "nablaphiprime": "{\\nabla_{\\mkern-6mu \\phi\\prime \\mkern+2mu}}",
+            "nablatheta": "{\\nabla_{\\mkern-6mu \\theta\\mkern+2mu}}",
+            "ndiff": [
+                "{\\frac{\\mathrm{d}^{#3} #1}{\\mathrm{d} {#2}^{#3}}}",
+                3.0
+            ],
+            "norm": [
+                "\\left\\Vert #1 \\right\\Vert",
+                1.0
+            ],
+            "pC": [
+                "{p\\left( #1  \\middle| #2 \\right)}",
+                2.0
+            ],
+            "pdiff": [
+                "{\\frac{\\partial #1}{\\partial #2}}",
+                2.0
+            ],
+            "pias": "{\\pi\\left( a  \\middle| s \\right)}",
+            "piphi": "{\\pi_\\phi}",
+            "piprime": "{\\pi^{\\prime}}",
+            "pluspoint": [
+                "\\textcolor{green}{\\mathbf{+}}"
+            ],
+            "policy": [
+                "{\\pi\\left( #1  \\middle| #2 \\right)}",
+                2.0
+            ],
+            "psprimesa": "{p\\left( s^{\\prime} \\middle| s, a \\right)}",
+            "pstplusstat": "{p\\left( s_{t+1} \\middle| s_t, a_t \\right)}",
+            "rbracket": [
+                "{\\left[ #1 \\right]}",
+                1.0
+            ],
+            "rcancel": [
+                "{\\textcolor{red}{\\cancel{#1}}}",
+                1.0
+            ],
+            "rt": [
+                "{r_t}"
+            ],
+            "set": [
+                "{\\left\\{ #1 \\right\\}}",
+                1.0
+            ],
+            "sprime": "{s^{\\prime}}",
+            "st": [
+                "{s_t}"
+            ],
+            "stp": [
+                "{s_{t+1}}"
+            ],
+            "submax": [
+                "{{#1}_{\\mathsf{max}}}",
+                1.0
+            ],
+            "submin": [
+                "{{#1}_{\\mathsf{min}}}",
+                1.0
+            ],
+            "subnew": [
+                "{{#1}_{\\mathsf{new}}}",
+                1.0
+            ],
+            "subold": [
+                "{{#1}_{\\mathsf{old}}}",
+                1.0
+            ],
+            "target": [
+                "{\\mathsf{target}}"
+            ],
+            "terminal": [
+                "{\\mathsf{terminal}}"
+            ],
+            "th": [
+                "{{#1}^{\\mathsf{th}}}",
+                1.0
+            ]
+        },
+        "scale": 1.0
+    },
+    "palette": {
+        "colors": {
+            "dark": [
+                "#1d1f21",
+                "#282a2e",
+                "#373b41",
+                "#969896",
+                "#b4b7b4",
+                "#c5c8c6",
+                "#e0e0e0",
+                "#ffffff",
+                "#cc6666",
+                "#de935f",
+                "#f0c674",
+                "#7da72a",
+                "#8abeb7",
+                "#81a2be",
+                "#b294bb",
+                "#a3685a"
+            ],
+            "light": [
+                "#ffffff",
+                "#eeeeee",
+                "#d6d6d6",
+                "#8e908c",
+                "#969896",
+                "#4d4d4c",
+                "#282a2e",
+                "#1d1f21",
+                "#c82829",
+                "#f5871f",
+                "#eab700",
+                "#84B819",
+                "#3e999f",
+                "#2a9ddf",
+                "#8959a8",
+                "#a3685a"
+            ]
+        },
+        "contrast": 0.4
+    },
+    "progress": true,
+    "projectPath": "../",
+    "quizzer": {
+        "audio": {
+            "end": "default",
+            "loop": "default",
+            "start": "default",
+            "volume": 0.2
+        },
+        "url": "https://quiz.jetzt/"
+    },
+    "resource-pack": "exe:tudo",
+    "reveal": {
+        "backgroundTransition": "none",
+        "center": false,
+        "checkOverflow": false,
+        "controls": true,
+        "fragmentInURL": true,
+        "fragments": true,
+        "hash": true,
+        "height": 720.0,
+        "help": true,
+        "hideCursorTime": 2000.0,
+        "hideInactiveCursor": true,
+        "history": false,
+        "keyboard": true,
+        "margin": 5.0e-2,
+        "overview": false,
+        "pdfMaxPagesPerSlide": 10.0,
+        "pdfSeparateFragments": false,
+        "progress": true,
+        "scrollActivationWidth": [],
+        "slideNumber": true,
+        "touch": true,
+        "transition": "none",
+        "vertical-slides": true,
+        "viewDistance": 2.0,
+        "width": 1280.0
+    },
+    "runtime-path-variables": [
+        "logos",
+        "affiliation",
+        "author",
+        "authors",
+        "teaser",
+        "template",
+        "rpv-test.leaf-path",
+        "rpv-test.leaf-no-path",
+        "rpv-test.branch"
+    ],
+    "showDeckerLink": false,
+    "speech-recognition-language": "de-DE",
+    "subtitle": "Scientific Standards in RL",
+    "supportPath": "../support",
+    "targets": {
+        "decks": {
+            "public/00-intro-deck.html": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-deck.html": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-deck.html": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-deck.html": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-deck.html": "04-monte-carlo-deck.md",
+            "public/05-td-learning-deck.html": "05-td-learning-deck.md",
+            "public/06-deep-learning-deck.html": "06-deep-learning-deck.md",
+            "public/07-value-approximation-deck.html": "07-value-approximation-deck.md",
+            "public/08-q-learning-deck.html": "08-q-learning-deck.md",
+            "public/09-policy-gradients-deck.html": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-deck.html": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-deck.html": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-deck.html": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-deck.html": "13-exploration-deck.md",
+            "public/14-optimal-control-deck.html": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-deck.html": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-deck.html": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-deck.html": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-deck.html": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-deck.html": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-deck.html": "20-scientific-standards-deck.md",
+            "public/90-exam-deck.html": "90-exam-deck.md",
+            "public/99-notation-deck.html": "99-notation-deck.md",
+            "public/backup/00-intro-deck.html": "backup/00-intro-deck.md",
+            "public/backup/01-multi-armed-bandits-deck.html": "backup/01-multi-armed-bandits-deck.md",
+            "public/backup/02-MDPs-deck.html": "backup/02-MDPs-deck.md",
+            "public/backup/03-dynamic-programming-deck.html": "backup/03-dynamic-programming-deck.md",
+            "public/backup/04-monte-carlo-deck.html": "backup/04-monte-carlo-deck.md",
+            "public/backup/05-td-learning-deck.html": "backup/05-td-learning-deck.md",
+            "public/backup/06-deep-learning-deck.html": "backup/06-deep-learning-deck.md",
+            "public/backup/07-value-approximation-deck.html": "backup/07-value-approximation-deck.md",
+            "public/backup/08-q-learning-deck.html": "backup/08-q-learning-deck.md",
+            "public/backup/09-policy-gradients-deck.html": "backup/09-policy-gradients-deck.md",
+            "public/backup/10-actor-critic-deck.html": "backup/10-actor-critic-deck.md",
+            "public/backup/11-advanced-algorithms-part1-deck.html": "backup/11-advanced-algorithms-part1-deck.md",
+            "public/backup/12-advanced-algorithms-part2-deck.html": "backup/12-advanced-algorithms-part2-deck.md",
+            "public/backup/13-exploration-deck.html": "backup/13-exploration-deck.md",
+            "public/backup/14-optimal-control-deck.html": "backup/14-optimal-control-deck.md",
+            "public/backup/15-model-based-RL-deck.html": "backup/15-model-based-RL-deck.md",
+            "public/backup/16-offline-RL-deck.html": "backup/16-offline-RL-deck.md",
+            "public/backup/17-imitation-learning-deck.html": "backup/17-imitation-learning-deck.md",
+            "public/backup/18-transfer-learning-deck.html": "backup/18-transfer-learning-deck.md",
+            "public/backup/19-multi-agent-RL-deck.html": "backup/19-multi-agent-RL-deck.md",
+            "public/backup/20-scientific-standards-deck.html": "backup/20-scientific-standards-deck.md",
+            "public/backup/90-exam-deck.html": "backup/90-exam-deck.md",
+            "public/backup/99-notation-deck.html": "backup/99-notation-deck.md",
+            "public/md-files/00-intro-deck.html": "md-files/00-intro-deck.md",
+            "public/md-files/01-multi-armed-bandits-deck.html": "md-files/01-multi-armed-bandits-deck.md",
+            "public/md-files/02-MDPs-deck.html": "md-files/02-MDPs-deck.md",
+            "public/md-files/03-dynamic-programming-deck.html": "md-files/03-dynamic-programming-deck.md",
+            "public/md-files/04-monte-carlo-deck.html": "md-files/04-monte-carlo-deck.md",
+            "public/md-files/05-td-learning-deck.html": "md-files/05-td-learning-deck.md",
+            "public/md-files/06-deep-learning-deck.html": "md-files/06-deep-learning-deck.md",
+            "public/md-files/07-value-approximation-deck.html": "md-files/07-value-approximation-deck.md",
+            "public/md-files/08-q-learning-deck.html": "md-files/08-q-learning-deck.md",
+            "public/md-files/09-policy-gradients-deck.html": "md-files/09-policy-gradients-deck.md",
+            "public/md-files/10-actor-critic-deck.html": "md-files/10-actor-critic-deck.md",
+            "public/md-files/11-advanced-algorithms-part1-deck.html": "md-files/11-advanced-algorithms-part1-deck.md",
+            "public/md-files/12-advanced-algorithms-part2-deck.html": "md-files/12-advanced-algorithms-part2-deck.md",
+            "public/md-files/13-exploration-deck.html": "md-files/13-exploration-deck.md",
+            "public/md-files/14-optimal-control-deck.html": "md-files/14-optimal-control-deck.md",
+            "public/md-files/15-model-based-RL-deck.html": "md-files/15-model-based-RL-deck.md",
+            "public/md-files/16-offline-RL-deck.html": "md-files/16-offline-RL-deck.md",
+            "public/md-files/17-imitation-learning-deck.html": "md-files/17-imitation-learning-deck.md",
+            "public/md-files/18-transfer-learning-deck.html": "md-files/18-transfer-learning-deck.md",
+            "public/md-files/19-multi-agent-RL-deck.html": "md-files/19-multi-agent-RL-deck.md",
+            "public/md-files/20-scientific-standards-deck.html": "md-files/20-scientific-standards-deck.md",
+            "public/md-files/90-exam-deck.html": "md-files/90-exam-deck.md",
+            "public/md-files/99-notation-deck.html": "md-files/99-notation-deck.md"
+        },
+        "decksPdf": {
+            "public/00-intro-deck.pdf": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-deck.pdf": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-deck.pdf": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-deck.pdf": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-deck.pdf": "04-monte-carlo-deck.md",
+            "public/05-td-learning-deck.pdf": "05-td-learning-deck.md",
+            "public/06-deep-learning-deck.pdf": "06-deep-learning-deck.md",
+            "public/07-value-approximation-deck.pdf": "07-value-approximation-deck.md",
+            "public/08-q-learning-deck.pdf": "08-q-learning-deck.md",
+            "public/09-policy-gradients-deck.pdf": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-deck.pdf": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-deck.pdf": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-deck.pdf": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-deck.pdf": "13-exploration-deck.md",
+            "public/14-optimal-control-deck.pdf": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-deck.pdf": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-deck.pdf": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-deck.pdf": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-deck.pdf": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-deck.pdf": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-deck.pdf": "20-scientific-standards-deck.md",
+            "public/90-exam-deck.pdf": "90-exam-deck.md",
+            "public/99-notation-deck.pdf": "99-notation-deck.md",
+            "public/backup/00-intro-deck.pdf": "backup/00-intro-deck.md",
+            "public/backup/01-multi-armed-bandits-deck.pdf": "backup/01-multi-armed-bandits-deck.md",
+            "public/backup/02-MDPs-deck.pdf": "backup/02-MDPs-deck.md",
+            "public/backup/03-dynamic-programming-deck.pdf": "backup/03-dynamic-programming-deck.md",
+            "public/backup/04-monte-carlo-deck.pdf": "backup/04-monte-carlo-deck.md",
+            "public/backup/05-td-learning-deck.pdf": "backup/05-td-learning-deck.md",
+            "public/backup/06-deep-learning-deck.pdf": "backup/06-deep-learning-deck.md",
+            "public/backup/07-value-approximation-deck.pdf": "backup/07-value-approximation-deck.md",
+            "public/backup/08-q-learning-deck.pdf": "backup/08-q-learning-deck.md",
+            "public/backup/09-policy-gradients-deck.pdf": "backup/09-policy-gradients-deck.md",
+            "public/backup/10-actor-critic-deck.pdf": "backup/10-actor-critic-deck.md",
+            "public/backup/11-advanced-algorithms-part1-deck.pdf": "backup/11-advanced-algorithms-part1-deck.md",
+            "public/backup/12-advanced-algorithms-part2-deck.pdf": "backup/12-advanced-algorithms-part2-deck.md",
+            "public/backup/13-exploration-deck.pdf": "backup/13-exploration-deck.md",
+            "public/backup/14-optimal-control-deck.pdf": "backup/14-optimal-control-deck.md",
+            "public/backup/15-model-based-RL-deck.pdf": "backup/15-model-based-RL-deck.md",
+            "public/backup/16-offline-RL-deck.pdf": "backup/16-offline-RL-deck.md",
+            "public/backup/17-imitation-learning-deck.pdf": "backup/17-imitation-learning-deck.md",
+            "public/backup/18-transfer-learning-deck.pdf": "backup/18-transfer-learning-deck.md",
+            "public/backup/19-multi-agent-RL-deck.pdf": "backup/19-multi-agent-RL-deck.md",
+            "public/backup/20-scientific-standards-deck.pdf": "backup/20-scientific-standards-deck.md",
+            "public/backup/90-exam-deck.pdf": "backup/90-exam-deck.md",
+            "public/backup/99-notation-deck.pdf": "backup/99-notation-deck.md",
+            "public/md-files/00-intro-deck.pdf": "md-files/00-intro-deck.md",
+            "public/md-files/01-multi-armed-bandits-deck.pdf": "md-files/01-multi-armed-bandits-deck.md",
+            "public/md-files/02-MDPs-deck.pdf": "md-files/02-MDPs-deck.md",
+            "public/md-files/03-dynamic-programming-deck.pdf": "md-files/03-dynamic-programming-deck.md",
+            "public/md-files/04-monte-carlo-deck.pdf": "md-files/04-monte-carlo-deck.md",
+            "public/md-files/05-td-learning-deck.pdf": "md-files/05-td-learning-deck.md",
+            "public/md-files/06-deep-learning-deck.pdf": "md-files/06-deep-learning-deck.md",
+            "public/md-files/07-value-approximation-deck.pdf": "md-files/07-value-approximation-deck.md",
+            "public/md-files/08-q-learning-deck.pdf": "md-files/08-q-learning-deck.md",
+            "public/md-files/09-policy-gradients-deck.pdf": "md-files/09-policy-gradients-deck.md",
+            "public/md-files/10-actor-critic-deck.pdf": "md-files/10-actor-critic-deck.md",
+            "public/md-files/11-advanced-algorithms-part1-deck.pdf": "md-files/11-advanced-algorithms-part1-deck.md",
+            "public/md-files/12-advanced-algorithms-part2-deck.pdf": "md-files/12-advanced-algorithms-part2-deck.md",
+            "public/md-files/13-exploration-deck.pdf": "md-files/13-exploration-deck.md",
+            "public/md-files/14-optimal-control-deck.pdf": "md-files/14-optimal-control-deck.md",
+            "public/md-files/15-model-based-RL-deck.pdf": "md-files/15-model-based-RL-deck.md",
+            "public/md-files/16-offline-RL-deck.pdf": "md-files/16-offline-RL-deck.md",
+            "public/md-files/17-imitation-learning-deck.pdf": "md-files/17-imitation-learning-deck.md",
+            "public/md-files/18-transfer-learning-deck.pdf": "md-files/18-transfer-learning-deck.md",
+            "public/md-files/19-multi-agent-RL-deck.pdf": "md-files/19-multi-agent-RL-deck.md",
+            "public/md-files/20-scientific-standards-deck.pdf": "md-files/20-scientific-standards-deck.md",
+            "public/md-files/90-exam-deck.pdf": "md-files/90-exam-deck.md",
+            "public/md-files/99-notation-deck.pdf": "md-files/99-notation-deck.md"
+        },
+        "handouts": {
+            "public/00-intro-handout.html": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-handout.html": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-handout.html": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-handout.html": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-handout.html": "04-monte-carlo-deck.md",
+            "public/05-td-learning-handout.html": "05-td-learning-deck.md",
+            "public/06-deep-learning-handout.html": "06-deep-learning-deck.md",
+            "public/07-value-approximation-handout.html": "07-value-approximation-deck.md",
+            "public/08-q-learning-handout.html": "08-q-learning-deck.md",
+            "public/09-policy-gradients-handout.html": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-handout.html": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-handout.html": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-handout.html": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-handout.html": "13-exploration-deck.md",
+            "public/14-optimal-control-handout.html": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-handout.html": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-handout.html": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-handout.html": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-handout.html": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-handout.html": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-handout.html": "20-scientific-standards-deck.md",
+            "public/90-exam-handout.html": "90-exam-deck.md",
+            "public/99-notation-handout.html": "99-notation-deck.md",
+            "public/backup/00-intro-handout.html": "backup/00-intro-deck.md",
+            "public/backup/01-multi-armed-bandits-handout.html": "backup/01-multi-armed-bandits-deck.md",
+            "public/backup/02-MDPs-handout.html": "backup/02-MDPs-deck.md",
+            "public/backup/03-dynamic-programming-handout.html": "backup/03-dynamic-programming-deck.md",
+            "public/backup/04-monte-carlo-handout.html": "backup/04-monte-carlo-deck.md",
+            "public/backup/05-td-learning-handout.html": "backup/05-td-learning-deck.md",
+            "public/backup/06-deep-learning-handout.html": "backup/06-deep-learning-deck.md",
+            "public/backup/07-value-approximation-handout.html": "backup/07-value-approximation-deck.md",
+            "public/backup/08-q-learning-handout.html": "backup/08-q-learning-deck.md",
+            "public/backup/09-policy-gradients-handout.html": "backup/09-policy-gradients-deck.md",
+            "public/backup/10-actor-critic-handout.html": "backup/10-actor-critic-deck.md",
+            "public/backup/11-advanced-algorithms-part1-handout.html": "backup/11-advanced-algorithms-part1-deck.md",
+            "public/backup/12-advanced-algorithms-part2-handout.html": "backup/12-advanced-algorithms-part2-deck.md",
+            "public/backup/13-exploration-handout.html": "backup/13-exploration-deck.md",
+            "public/backup/14-optimal-control-handout.html": "backup/14-optimal-control-deck.md",
+            "public/backup/15-model-based-RL-handout.html": "backup/15-model-based-RL-deck.md",
+            "public/backup/16-offline-RL-handout.html": "backup/16-offline-RL-deck.md",
+            "public/backup/17-imitation-learning-handout.html": "backup/17-imitation-learning-deck.md",
+            "public/backup/18-transfer-learning-handout.html": "backup/18-transfer-learning-deck.md",
+            "public/backup/19-multi-agent-RL-handout.html": "backup/19-multi-agent-RL-deck.md",
+            "public/backup/20-scientific-standards-handout.html": "backup/20-scientific-standards-deck.md",
+            "public/backup/90-exam-handout.html": "backup/90-exam-deck.md",
+            "public/backup/99-notation-handout.html": "backup/99-notation-deck.md",
+            "public/md-files/00-intro-handout.html": "md-files/00-intro-deck.md",
+            "public/md-files/01-multi-armed-bandits-handout.html": "md-files/01-multi-armed-bandits-deck.md",
+            "public/md-files/02-MDPs-handout.html": "md-files/02-MDPs-deck.md",
+            "public/md-files/03-dynamic-programming-handout.html": "md-files/03-dynamic-programming-deck.md",
+            "public/md-files/04-monte-carlo-handout.html": "md-files/04-monte-carlo-deck.md",
+            "public/md-files/05-td-learning-handout.html": "md-files/05-td-learning-deck.md",
+            "public/md-files/06-deep-learning-handout.html": "md-files/06-deep-learning-deck.md",
+            "public/md-files/07-value-approximation-handout.html": "md-files/07-value-approximation-deck.md",
+            "public/md-files/08-q-learning-handout.html": "md-files/08-q-learning-deck.md",
+            "public/md-files/09-policy-gradients-handout.html": "md-files/09-policy-gradients-deck.md",
+            "public/md-files/10-actor-critic-handout.html": "md-files/10-actor-critic-deck.md",
+            "public/md-files/11-advanced-algorithms-part1-handout.html": "md-files/11-advanced-algorithms-part1-deck.md",
+            "public/md-files/12-advanced-algorithms-part2-handout.html": "md-files/12-advanced-algorithms-part2-deck.md",
+            "public/md-files/13-exploration-handout.html": "md-files/13-exploration-deck.md",
+            "public/md-files/14-optimal-control-handout.html": "md-files/14-optimal-control-deck.md",
+            "public/md-files/15-model-based-RL-handout.html": "md-files/15-model-based-RL-deck.md",
+            "public/md-files/16-offline-RL-handout.html": "md-files/16-offline-RL-deck.md",
+            "public/md-files/17-imitation-learning-handout.html": "md-files/17-imitation-learning-deck.md",
+            "public/md-files/18-transfer-learning-handout.html": "md-files/18-transfer-learning-deck.md",
+            "public/md-files/19-multi-agent-RL-handout.html": "md-files/19-multi-agent-RL-deck.md",
+            "public/md-files/20-scientific-standards-handout.html": "md-files/20-scientific-standards-deck.md",
+            "public/md-files/90-exam-handout.html": "md-files/90-exam-deck.md",
+            "public/md-files/99-notation-handout.html": "md-files/99-notation-deck.md"
+        },
+        "handoutsPdf": {
+            "public/00-intro-handout.pdf": "00-intro-deck.md",
+            "public/01-multi-armed-bandits-handout.pdf": "01-multi-armed-bandits-deck.md",
+            "public/02-MDPs-handout.pdf": "02-MDPs-deck.md",
+            "public/03-dynamic-programming-handout.pdf": "03-dynamic-programming-deck.md",
+            "public/04-monte-carlo-handout.pdf": "04-monte-carlo-deck.md",
+            "public/05-td-learning-handout.pdf": "05-td-learning-deck.md",
+            "public/06-deep-learning-handout.pdf": "06-deep-learning-deck.md",
+            "public/07-value-approximation-handout.pdf": "07-value-approximation-deck.md",
+            "public/08-q-learning-handout.pdf": "08-q-learning-deck.md",
+            "public/09-policy-gradients-handout.pdf": "09-policy-gradients-deck.md",
+            "public/10-actor-critic-handout.pdf": "10-actor-critic-deck.md",
+            "public/11-advanced-algorithms-part1-handout.pdf": "11-advanced-algorithms-part1-deck.md",
+            "public/12-advanced-algorithms-part2-handout.pdf": "12-advanced-algorithms-part2-deck.md",
+            "public/13-exploration-handout.pdf": "13-exploration-deck.md",
+            "public/14-optimal-control-handout.pdf": "14-optimal-control-deck.md",
+            "public/15-model-based-RL-handout.pdf": "15-model-based-RL-deck.md",
+            "public/16-offline-RL-handout.pdf": "16-offline-RL-deck.md",
+            "public/17-imitation-learning-handout.pdf": "17-imitation-learning-deck.md",
+            "public/18-transfer-learning-handout.pdf": "18-transfer-learning-deck.md",
+            "public/19-multi-agent-RL-handout.pdf": "19-multi-agent-RL-deck.md",
+            "public/20-scientific-standards-handout.pdf": "20-scientific-standards-deck.md",
+            "public/90-exam-handout.pdf": "90-exam-deck.md",
+            "public/99-notation-handout.pdf": "99-notation-deck.md",
+            "public/backup/00-intro-handout.pdf": "backup/00-intro-deck.md",
+            "public/backup/01-multi-armed-bandits-handout.pdf": "backup/01-multi-armed-bandits-deck.md",
+            "public/backup/02-MDPs-handout.pdf": "backup/02-MDPs-deck.md",
+            "public/backup/03-dynamic-programming-handout.pdf": "backup/03-dynamic-programming-deck.md",
+            "public/backup/04-monte-carlo-handout.pdf": "backup/04-monte-carlo-deck.md",
+            "public/backup/05-td-learning-handout.pdf": "backup/05-td-learning-deck.md",
+            "public/backup/06-deep-learning-handout.pdf": "backup/06-deep-learning-deck.md",
+            "public/backup/07-value-approximation-handout.pdf": "backup/07-value-approximation-deck.md",
+            "public/backup/08-q-learning-handout.pdf": "backup/08-q-learning-deck.md",
+            "public/backup/09-policy-gradients-handout.pdf": "backup/09-policy-gradients-deck.md",
+            "public/backup/10-actor-critic-handout.pdf": "backup/10-actor-critic-deck.md",
+            "public/backup/11-advanced-algorithms-part1-handout.pdf": "backup/11-advanced-algorithms-part1-deck.md",
+            "public/backup/12-advanced-algorithms-part2-handout.pdf": "backup/12-advanced-algorithms-part2-deck.md",
+            "public/backup/13-exploration-handout.pdf": "backup/13-exploration-deck.md",
+            "public/backup/14-optimal-control-handout.pdf": "backup/14-optimal-control-deck.md",
+            "public/backup/15-model-based-RL-handout.pdf": "backup/15-model-based-RL-deck.md",
+            "public/backup/16-offline-RL-handout.pdf": "backup/16-offline-RL-deck.md",
+            "public/backup/17-imitation-learning-handout.pdf": "backup/17-imitation-learning-deck.md",
+            "public/backup/18-transfer-learning-handout.pdf": "backup/18-transfer-learning-deck.md",
+            "public/backup/19-multi-agent-RL-handout.pdf": "backup/19-multi-agent-RL-deck.md",
+            "public/backup/20-scientific-standards-handout.pdf": "backup/20-scientific-standards-deck.md",
+            "public/backup/90-exam-handout.pdf": "backup/90-exam-deck.md",
+            "public/backup/99-notation-handout.pdf": "backup/99-notation-deck.md",
+            "public/md-files/00-intro-handout.pdf": "md-files/00-intro-deck.md",
+            "public/md-files/01-multi-armed-bandits-handout.pdf": "md-files/01-multi-armed-bandits-deck.md",
+            "public/md-files/02-MDPs-handout.pdf": "md-files/02-MDPs-deck.md",
+            "public/md-files/03-dynamic-programming-handout.pdf": "md-files/03-dynamic-programming-deck.md",
+            "public/md-files/04-monte-carlo-handout.pdf": "md-files/04-monte-carlo-deck.md",
+            "public/md-files/05-td-learning-handout.pdf": "md-files/05-td-learning-deck.md",
+            "public/md-files/06-deep-learning-handout.pdf": "md-files/06-deep-learning-deck.md",
+            "public/md-files/07-value-approximation-handout.pdf": "md-files/07-value-approximation-deck.md",
+            "public/md-files/08-q-learning-handout.pdf": "md-files/08-q-learning-deck.md",
+            "public/md-files/09-policy-gradients-handout.pdf": "md-files/09-policy-gradients-deck.md",
+            "public/md-files/10-actor-critic-handout.pdf": "md-files/10-actor-critic-deck.md",
+            "public/md-files/11-advanced-algorithms-part1-handout.pdf": "md-files/11-advanced-algorithms-part1-deck.md",
+            "public/md-files/12-advanced-algorithms-part2-handout.pdf": "md-files/12-advanced-algorithms-part2-deck.md",
+            "public/md-files/13-exploration-handout.pdf": "md-files/13-exploration-deck.md",
+            "public/md-files/14-optimal-control-handout.pdf": "md-files/14-optimal-control-deck.md",
+            "public/md-files/15-model-based-RL-handout.pdf": "md-files/15-model-based-RL-deck.md",
+            "public/md-files/16-offline-RL-handout.pdf": "md-files/16-offline-RL-deck.md",
+            "public/md-files/17-imitation-learning-handout.pdf": "md-files/17-imitation-learning-deck.md",
+            "public/md-files/18-transfer-learning-handout.pdf": "md-files/18-transfer-learning-deck.md",
+            "public/md-files/19-multi-agent-RL-handout.pdf": "md-files/19-multi-agent-RL-deck.md",
+            "public/md-files/20-scientific-standards-handout.pdf": "md-files/20-scientific-standards-deck.md",
+            "public/md-files/90-exam-handout.pdf": "md-files/90-exam-deck.md",
+            "public/md-files/99-notation-handout.pdf": "md-files/99-notation-deck.md"
+        },
+        "pages": {},
+        "pagesPdf": {},
+        "questions": {},
+        "sources": [
+            "00-intro-deck.md",
+            "01-multi-armed-bandits-deck.md",
+            "02-MDPs-deck.md",
+            "03-dynamic-programming-deck.md",
+            "04-monte-carlo-deck.md",
+            "05-td-learning-deck.md",
+            "06-deep-learning-deck.md",
+            "07-value-approximation-deck.md",
+            "08-q-learning-deck.md",
+            "09-policy-gradients-deck.md",
+            "10-actor-critic-deck.md",
+            "11-advanced-algorithms-part1-deck.md",
+            "12-advanced-algorithms-part2-deck.md",
+            "13-exploration-deck.md",
+            "14-optimal-control-deck.md",
+            "15-model-based-RL-deck.md",
+            "16-offline-RL-deck.md",
+            "17-imitation-learning-deck.md",
+            "18-transfer-learning-deck.md",
+            "19-multi-agent-RL-deck.md",
+            "20-scientific-standards-deck.md",
+            "90-exam-deck.md",
+            "99-notation-deck.md",
+            "backup/00-intro-deck.md",
+            "backup/01-multi-armed-bandits-deck.md",
+            "backup/02-MDPs-deck.md",
+            "backup/03-dynamic-programming-deck.md",
+            "backup/04-monte-carlo-deck.md",
+            "backup/05-td-learning-deck.md",
+            "backup/06-deep-learning-deck.md",
+            "backup/07-value-approximation-deck.md",
+            "backup/08-q-learning-deck.md",
+            "backup/09-policy-gradients-deck.md",
+            "backup/10-actor-critic-deck.md",
+            "backup/11-advanced-algorithms-part1-deck.md",
+            "backup/12-advanced-algorithms-part2-deck.md",
+            "backup/13-exploration-deck.md",
+            "backup/14-optimal-control-deck.md",
+            "backup/15-model-based-RL-deck.md",
+            "backup/16-offline-RL-deck.md",
+            "backup/17-imitation-learning-deck.md",
+            "backup/18-transfer-learning-deck.md",
+            "backup/19-multi-agent-RL-deck.md",
+            "backup/20-scientific-standards-deck.md",
+            "backup/90-exam-deck.md",
+            "backup/99-notation-deck.md",
+            "md-files/00-intro-deck.md",
+            "md-files/01-multi-armed-bandits-deck.md",
+            "md-files/02-MDPs-deck.md",
+            "md-files/03-dynamic-programming-deck.md",
+            "md-files/04-monte-carlo-deck.md",
+            "md-files/05-td-learning-deck.md",
+            "md-files/06-deep-learning-deck.md",
+            "md-files/07-value-approximation-deck.md",
+            "md-files/08-q-learning-deck.md",
+            "md-files/09-policy-gradients-deck.md",
+            "md-files/10-actor-critic-deck.md",
+            "md-files/11-advanced-algorithms-part1-deck.md",
+            "md-files/12-advanced-algorithms-part2-deck.md",
+            "md-files/13-exploration-deck.md",
+            "md-files/14-optimal-control-deck.md",
+            "md-files/15-model-based-RL-deck.md",
+            "md-files/16-offline-RL-deck.md",
+            "md-files/17-imitation-learning-deck.md",
+            "md-files/18-transfer-learning-deck.md",
+            "md-files/19-multi-agent-RL-deck.md",
+            "md-files/20-scientific-standards-deck.md",
+            "md-files/90-exam-deck.md",
+            "md-files/99-notation-deck.md"
+        ],
+        "static": {}
+    },
+    "template": {
+        "deck": {
+            "css": [
+                "../style.css",
+                "../watermark.css"
+            ],
+            "js-module": "scripts.js"
+        },
+        "index": {
+            "css": "../style.css"
+        }
+    },
+    "templates": {
+        "deck": "<span class=\"icons\">\n<a title=\"Open HTML slides\" href=\":(url)-deck.html\"><i class=\"fa-brands fa-html5\"></i></a>\n<a title=\"Open PDF slides\" href=\":(url)-deck.pdf\"><i class=\"fas fa-file-pdf\"></i></a>\n</span>\n"
+    },
+    "test": {
+        "default-decker": "From default.yaml",
+        "default-decker-deck": "From default.yaml",
+        "merge-list": [
+            "This line is from default.yaml"
+        ],
+        "only-default": "From default.yaml",
+        "some-value": "This line is from default.yaml"
+    },
+    "title": "Deep Reinforcement Learning",
+    "whisper": {
+        "lang": "de",
+        "model": "/opt/whisper/ggml-large-v3.bin"
+    },
+    "whiteboard": {
+        "autotoggle": true
+    },
+    "zoom": {
+        "trigger": "tripleClick"
+    }
+}

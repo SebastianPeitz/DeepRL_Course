@@ -234,7 +234,7 @@
 <tr>
 <td align="center"><span class="math inline">\(\inRed{3}\)</span></td>
 <td align="left"><span class="math inline">\(\inRed{Dynamic programming}\)</span></td>
-<td align="left"><span style="color: red;">Optimal decision making with <em>full knowledge</em></span></td>
+<td align="left"><span style="color: #C138A0;">Optimal decision making with <em>full knowledge</em></span></td>
 </tr>
 <tr>
 <td align="center">4</td>
@@ -853,7 +853,7 @@ V^\pi(s) = \ExpCsub{r+\gamma V^\pi(s&#39;)}{s}{\pi} \fragment{= \sum_{a\in\Ac} \
 <div class="area">
 <div class="box block">
 <p>Use the Bellman equation <span class="math inline">\(\eqref{eq:DP_BellmanV2}\)</span> as an update rule: <span class="math display">\[\begin{equation}
-V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{\textcolor{red}{k}}(s&#39;) \right] \label{eq:DP_IterativePolicyEvaluation}
+V_{\mathRed{k+1}}(s) = \ExpCsub{r+\gamma V_{\mathRed{k}}(s&#39;)}{s}{\pi} = \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{\mathRed{k}}(s&#39;) \right] \label{eq:DP_IterativePolicyEvaluation}
 \end{equation}\]</span></p>
 <div class="incremental">
 <ul class="incremental">
@@ -930,8 +930,8 @@ V_{\textcolor{red}{k+1}}(s) = \ExpCsub{r+\gamma V_{\textcolor{red}{k}}(s&#39;)}{
 <h3>Bootstrapping in <em>reinforcement learning</em></h3>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">In order to update an estimate of a function of interest (say, <span class="math inline">\(\textcolor{red}{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
-<li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \textcolor{red}{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \textcolor{red}{V(s&#39;)} \right]. \]</span></span></li>
+<li class="fragment">In order to update an estimate of a function of interest (say, <span class="math inline">\(\mathRed{V(s)}\)</span> or <span class="math inline">\(Q(s,a)\)</span>), <em>we rely on yet another estimate</em>.</li>
+<li class="fragment">We have seen this just a minute ago! <span class="fragment">In the (iterative) policy evaluation algorithm, we have <span class="math display">\[ \mathRed{V(s)} \gets \sum_{a\in\Ac} \pias \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma \mathRed{V(s&#39;)} \right]. \]</span></span></li>
 </ul>
 </div>
 </div>
@@ -4359,11 +4359,11 @@ V^\pi(s_t) \leq \ExpCsub{r_t+\gamma r_{t+1}+\gamma^2 V^\pi(s_{t+2})}{s_t}{\pi&#3
 <div class="small">
 <p>Let’s look at our earlier derivation of the policy evaluation procedure:</p>
 <p><span class="math display">\[\begin{equation}
-V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s&#39;)}{s}{\textcolor{blue}{\pi}} = \textcolor{blue}{\sum_{a\in\Ac} \pias} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
+V_{k+1}(s) = \ExpCsub{r+\gamma V_{k}(s&#39;)}{s}{\mathBlue{\pi}} = \mathBlue{\sum_{a\in\Ac} \pias} \sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right] \tag{\ref{eq:DP_IterativePolicyEvaluation}}
 \end{equation}\]</span></p>
 <div class="fragment">
 <p>Now, we change this to directly update the value function using the maximizing action (policy improvement step): <span class="math display">\[\begin{equation}
-V_{k+1}(s) = \textcolor{red}{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s&#39;)}{s,a} = \textcolor{red}{\max_{a\in\Ac}}\sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right]
+V_{k+1}(s) = \mathRed{\max_{a\in\Ac}}\ExpC{r+\gamma V_{k}(s&#39;)}{s,a} = \mathRed{\max_{a\in\Ac}}\sum_{s&#39;\in\Sc} \psprimesa \left[ r + \gamma V_{k}(s&#39;) \right]
 \end{equation}\]</span></p>
 </div>
 <div class="fragment">
