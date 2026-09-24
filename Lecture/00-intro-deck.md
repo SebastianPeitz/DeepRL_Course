@@ -12,22 +12,22 @@ feedback:
 ![](images/Peitz.jpg){ width=200px  }
 
 - Prof. Dr. Sebastian Peitz
-- Chair of Safe Autonomous Systems
-- JvF25, Room E16
-- <https://sas.cs.tu-dortmund.de/>
+- Scientific Machine Learning\
+Department of Computer Science
+- Office: O4.213 (O-building, main campus)
+- <https://www.uni-paderborn.de/person/47427/>
 :::
 
 
 # The team
 
-- Lecture: [Sebastian Peitz](https://sas.cs.tu-dortmund.de/sebastian-peitz)
-- Exercise: [Konstantin Sonntag](https://sas.cs.tu-dortmund.de/team/)
-- Additional [team](https://sas.cs.tu-dortmund.de/team/) members working on the exercises
+- Lecture: [Sebastian Peitz](https://www.uni-paderborn.de/person/47427/)
+- Exercise: [Konstantin Sonntag](https://www.uni-paderborn.de/person/56399)
+- Additional team members working on the exercises
   - Jannis Becktepe
   - Septimus Boshoff
   - Hans Harder
   - Christian Mugisho Zagabe
-  - Stefan Weigand
 
 ------------------------------------------------------------------------------
 

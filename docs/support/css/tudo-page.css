@@ -553,20 +553,17 @@ details.demo summary:hover {
   color: white;
 }
 
-/* links in text and equations */
+/* links */
+
 a {
   color: var(--accent5-fg);
   text-decoration: none;
-  &:hover {
-    text-shadow: none;
-    text-decoration: underline;
-    border: none;
-  }
 }
-mjx-container[jax="SVG"] > svg a {
-  color: var(--accent5-fg);
-  stroke: var(--accent5-fg) !important;
-  fill: var(--accent5-fg) !important;
+
+a:hover {
+  text-shadow: none;
+  text-decoration: underline;
+  border: none;
 }
 
 .qed {
@@ -1111,10 +1108,6 @@ html.dark
   background-color: white;
   filter: brightness(90%) contrast(90%);
 }
-html.dark .media figure figcaption mjx-container svg {
-  background: none !important;
-  filter: none !important;
-}
 
 @media (prefers-color-scheme: dark) {
   img {
@@ -1135,9 +1128,25 @@ html.dark .media figure figcaption mjx-container svg {
 }
 
 #page-color-button {
+  font-size: var(--icon-size);
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900;
   position: absolute;
-  top: 0.25em;
-  right: 0.25em;
+  top: 0.5em;
+  right: 0.5em;
+  width: 2em;
+  height: 2em;
+  border: none;
+  border-radius: 999px;
+  transition: background-color 0.1s;
+  color: var(--foreground-color);
+  background-color: transparent;
+
+  &:hover,
+  &:focus {
+    color: var(--icon-hover-color);
+    background-color: var(--background-color);
+  }
 }
 
 html.dark #page-color-button::before {

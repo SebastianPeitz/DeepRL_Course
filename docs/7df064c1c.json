@@ -1,9 +1,9 @@
 {
-    "affiliation": "Scientific Machine Learning group, Paderborn University",
+    "affiliation": "Scientific Machine Learning group @ Paderborn University",
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "15.09.2026 13:01"
+        "17.09.2026 15:04"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "11",
@@ -42,7 +42,6 @@
             }
         }
     },
-    "colorscheme": "light",
     "csl": "./chicago-author-date.csl",
     "css-dark-color-declarations": [
         "--shade7: #ffffff;",
@@ -185,7 +184,7 @@
         "shade6": "#282a2e",
         "shade7": "#1d1f21"
     },
-    "date": "Summer term 2026",
+    "date": "Winter term 2026/27",
     "decker-meta-url": "7df064c1c.json",
     "dictionary": {
         "de": {
