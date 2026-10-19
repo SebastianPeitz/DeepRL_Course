@@ -164,6 +164,10 @@
             <img class="title-image" src="images/UPB-logo.jpg" alt="Logo">
 
           </div>
+                    <div class="logo">
+            <img class="title-image" src="images/SciML-logo.png" alt="Logo">
+
+          </div>
                           </div>
           </div>
   </div>
@@ -1140,7 +1144,7 @@ Task: pick up pens and place them upright [<a href="https://news.mit.edu/2024/ne
 <li class="fragment"><strong>Dynamics</strong> <span class="math inline">\(p(s&#39;|s,a)\)</span>: The robot’s new position…
 <ul class="incremental">
 <li class="fragment">…deterministically, if the robot does exactly what the action demands</li>
-<li class="fragment">…stochastically, if there is some noise in the taken action</li>
+<li class="fragment">…stochastically, if there is some noise in the behavior</li>
 </ul></li>
 <li class="fragment"><strong>Reward</strong>: <span class="math display">\[r=\begin{cases} +1 &amp; \text{if you reach the target field (top right)} \\ -1 &amp; \text{if you hit the fire} \\ -0.1 &amp; \text{otherwise} \end{cases}\]</span></li>
 <li class="fragment"><strong>Policy</strong> <span class="math inline">\(\pi\)</span>: The strategy according to which you move</li>
@@ -1327,7 +1331,7 @@ Atari: Demon Attack [<a href="https://ale.farama.org/environments/demon_attack/"
 <div class="grid-layout" style="grid-template-columns: 2fr 2fr;">
 <div class="media">
 <figure class="image" style="height:auto;width:auto;">
-<img src="images/00-introduction/atlas-gymnastics-boston-dynamics.gif" style="height:400px;width:auto;" aria-label="Boston Dynamics “Atlas” [Source]" alt="images/00-introduction/atlas-gymnastics-boston-dynamics.gif" />
+<img src="images/00-introduction/atlas-gymnastics-boston-dynamics.gif" style="height:320px;width:auto;" aria-label="Boston Dynamics “Atlas” [Source]" alt="images/00-introduction/atlas-gymnastics-boston-dynamics.gif" />
 <figcaption>
 Boston Dynamics “Atlas” [<a href="https://techcrunch.com/wp-content/uploads/2019/09/atlas-gymnastics-boston-dynamics.gif">Source</a>]
 </figcaption>
@@ -1335,13 +1339,22 @@ Boston Dynamics “Atlas” [<a href="https://techcrunch.com/wp-content/uploads/
 </div>
 <div class="media">
 <figure class="image" style="height:auto;width:auto;">
-<img src="images/00-introduction/openai-hand.gif" style="height:400px;width:auto;" aria-label="OpenAI Rubik’s Cube [Source]" alt="images/00-introduction/openai-hand.gif" />
+<img src="images/00-introduction/openai-hand.gif" style="height:320px;width:auto;" aria-label="OpenAI Rubik’s Cube [Source]" alt="images/00-introduction/openai-hand.gif" />
 <figcaption>
 OpenAI Rubik’s Cube [<a href="https://www.imgeorgiev.com/2024-03-15-stochastic-rl/">Source</a>]
 </figcaption>
 </figure>
 </div>
 </div>
+<div class="media">
+<figure class="image" style="height:auto;width:auto;">
+<img src="images/00-introduction/tabletennis.gif" style="height:300px;width:auto;" aria-label="Table tennis [Source]" alt="images/00-introduction/tabletennis.gif" />
+<figcaption>
+Table tennis [<a href="https://www.roboticgizmos.com/project-ace/">Source</a>]
+</figcaption>
+</figure>
+</div>
+<!-- [](https://www.youtube.com/watch?v=SXp3PzGrVRE) -->
 </div>
 </div>
 </div>
@@ -1392,7 +1405,8 @@ OpenAI Rubik’s Cube [<a href="https://www.imgeorgiev.com/2024-03-15-stochastic
 <ul>
 <li><strong>Supervised learning</strong>:
 <ul>
-<li>minimize error on a training dataset <span class="math inline">\(\Dc=\{(x_1,y_1),\ldots,(x_K,y_k)\}\)</span>: <span class="math display">\[ \min_\theta \sum_{k=1}^{K} \norm{y_k - f_\theta(x_k)}_2^2 \]</span></li>
+<li>minimize error on a training dataset<br />
+<span class="math inline">\(\Dc=\{(x_1,y_1),\ldots,(x_K,y_K)\}\)</span>: <span class="math display">\[ \min_\theta \sum_{k=1}^{K} \norm{y_k - f_\theta(x_k)}_2^2 \]</span></li>
 <li>data is generally drawn independently and identically distributed (i.i.d.): <span class="math display">\[ (x_k,y_k)\sim p(\Dc). \]</span></li>
 </ul></li>
 </ul>
@@ -1566,14 +1580,13 @@ Reinforcement learning <span class="citation">(<a href="#ref-Sutton1998">Sutton 
 <div class="fragment">
 <p><strong>Lectures</strong></p>
 <ul>
-<li>Tuesdays (10:15 - 11:45, OH16 / 205)</li>
-<li>Wednesdays (08:30 - 10:00, OH12 / E.003)</li>
+<li>Mondays (13:00 - 16:00, P6.2.03)</li>
 </ul>
 </div>
 <div class="fragment">
 <p><strong>Exercises</strong></p>
 <ul>
-<li>Thursdays (10:15 - 11:45, OH16 / 205)</li>
+<li>Thursdays (14:00 - 16:00, P1.7.09.1)</li>
 <li>One exercise sheet per week
 <ul>
 <li>pen-and-paper exercises the cover and extend the theoretical content of the lecture</li>

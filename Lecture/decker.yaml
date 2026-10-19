@@ -3,11 +3,12 @@ title:        Deep Reinforcement Learning
 author:       Prof. Dr. Sebastian Peitz
 affiliation:  Scientific Machine Learning group @ Paderborn University
 date:         Winter term 2026/27
-logos:        [ images/UPB-logo.jpg ]
+logos:        [ images/UPB-logo.jpg, images/SciML-logo.png ]
+#logos:        [ images/UPB-logo.jpg ]
 
 resource-pack: "exe:tudo"
 
-# colorscheme: light
+colorscheme: light
 
 template:
   deck:

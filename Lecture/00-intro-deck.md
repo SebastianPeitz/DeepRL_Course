@@ -110,7 +110,7 @@ find a policy that maximizes the **sum of future rewards**!
 - **Action** $a$: Move left / right / up / down
 - **Dynamics** $p(s'|s,a)$: The robot's new position...
   - ...deterministically, if the robot does exactly what the action demands
-  - ...stochastically, if there is some noise in the taken action
+  - ...stochastically, if there is some noise in the behavior
 - **Reward**: $$r=\begin{cases} +1 & \text{if you reach the target field (top right)} \\ -1 & \text{if you hit the fire} \\ -0.1 & \text{otherwise} \end{cases}$$
 - **Policy** $\pi$: The strategy according to which you move
 :::
@@ -232,10 +232,15 @@ find a policy that maximizes the **sum of future rewards**!
 # Reinforcement learning in robotics
 
 ::: columns-2-2
-![Boston Dynamics "Atlas" [[Source](https://techcrunch.com/wp-content/uploads/2019/09/atlas-gymnastics-boston-dynamics.gif)]](images/00-introduction/atlas-gymnastics-boston-dynamics.gif){ height=400px }
+![Boston Dynamics "Atlas" [[Source](https://techcrunch.com/wp-content/uploads/2019/09/atlas-gymnastics-boston-dynamics.gif)]](images/00-introduction/atlas-gymnastics-boston-dynamics.gif){ height=320px }
 
-![OpenAI Rubik's Cube [[Source](https://www.imgeorgiev.com/2024-03-15-stochastic-rl/)]](images/00-introduction/openai-hand.gif){ height=400px }
+![OpenAI Rubik's Cube [[Source](https://www.imgeorgiev.com/2024-03-15-stochastic-rl/)]](images/00-introduction/openai-hand.gif){ height=320px }
 ::: 
+
+![Table tennis [[Source](https://www.roboticgizmos.com/project-ace/)]](images/00-introduction/tabletennis.gif){ height=300px }
+
+<!-- [](https://www.youtube.com/watch?v=SXp3PzGrVRE) -->
+
 
 # The two central tasks in RL
 
@@ -256,7 +261,8 @@ In all chapters, we will distinguish between **two core learning tasks in reinfo
 ::: columns-3-1
 
 - **Supervised learning**: 
-  - minimize error on a training dataset $\Dc=\{(x_1,y_1),\ldots,(x_K,y_k)\}$:
+  - minimize error on a training dataset\
+  $\Dc=\{(x_1,y_1),\ldots,(x_K,y_K)\}$:
 $$ \min_\theta \sum_{k=1}^{K} \norm{y_k - f_\theta(x_k)}_2^2 $$
   - data is generally drawn independently and identically distributed (i.i.d.):
 $$ (x_k,y_k)\sim p(\Dc). $$
@@ -362,14 +368,14 @@ By the end of the course, we will
 ::: fragment
 **Lectures**
 
-- Tuesdays (10:15 - 11:45, OH16 / 205)
-- Wednesdays (08:30 - 10:00, OH12 / E.003)
+- Mondays (13:00 - 16:00, P6.2.03)
+
 :::
 
 ::: fragment
 **Exercises**
 
-- Thursdays (10:15 - 11:45, OH16 / 205)
+- Thursdays (14:00 - 16:00, P1.7.09.1)
 - One exercise sheet per week
   - pen-and-paper exercises the cover and extend the theoretical content of the lecture
   - programming exercises (in Python) supporting the Studienleistung (next slide)

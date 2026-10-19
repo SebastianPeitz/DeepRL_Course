@@ -164,6 +164,10 @@
             <img class="title-image" src="images/UPB-logo.jpg" alt="Logo">
 
           </div>
+                    <div class="logo">
+            <img class="title-image" src="images/SciML-logo.png" alt="Logo">
+
+          </div>
                           </div>
           </div>
   </div>
@@ -3978,10 +3982,12 @@ Q_{t+1} = Q_t + \alpha [r_t - Q_t] &amp;=&amp;\alpha r_t + (1-\alpha) Q_t \\
 <li class="fragment">All methods up to now are <em>biased</em> in the sense that they depend on the (arbitrarily selected) initial guesses <span class="math inline">\(Q_1(a)\)</span>.</li>
 <li class="fragment">Can we use this to our advantage and increase exploration?</li>
 <li class="fragment">Let us choose overly <strong>optimistic initial values</strong>!</li>
-<li class="fragment">For <span class="math inline">\(q(a) \sim \Normal{1}{0}\)</span>, an initial guess of <span class="math inline">\(Q_1(a)=5\)</span> is certainly unrealistically high.</li>
+<li class="fragment">For <span class="math inline">\(q(a) \sim \Normal{0}{1}\)</span>, an initial guess of <span class="math inline">\(Q_1(a)=5\)</span> is certainly unrealistically high.</li>
 </ul>
 </div>
 </div>
+<p><br />
+</p>
 <div class="fragment">
 <div class="media">
 <figure class="embed svg embedded" style="height:auto;width:800px;">

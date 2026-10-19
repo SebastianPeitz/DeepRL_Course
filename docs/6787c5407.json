@@ -3,7 +3,7 @@
     "author": "Prof. Dr. Sebastian Peitz",
     "bibliography": "./bibliography.bib",
     "build-time": [
-        "17.09.2026 15:04"
+        "19.10.2026 08:50"
     ],
     "caption-server": "https://decker.cs.tu-dortmund.de/captions",
     "chapter": "18",
@@ -42,6 +42,7 @@
             }
         }
     },
+    "colorscheme": "light",
     "csl": "./chicago-author-date.csl",
     "css-dark-color-declarations": [
         "--shade7: #ffffff;",
@@ -554,7 +555,8 @@
     "link-citations": true,
     "live-captions": false,
     "logos": [
-        "images/UPB-logo.jpg"
+        "images/UPB-logo.jpg",
+        "images/SciML-logo.png"
     ],
     "math": {
         "font": "tex",

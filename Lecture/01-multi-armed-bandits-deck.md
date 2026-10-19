@@ -274,9 +274,10 @@ $$]{ .math-incremental }
 - All methods up to now are *biased* in the sense that they depend on the (arbitrarily selected) initial guesses $Q_1(a)$.
 - Can we use this to our advantage and increase exploration?
 - Let us choose overly **optimistic initial values**!
-- For $q(a) \sim \Normal{1}{0}$, an initial guess of $Q_1(a)=5$ is certainly unrealistically high.
+- For $q(a) \sim \Normal{0}{1}$, an initial guess of $Q_1(a)=5$ is certainly unrealistically high.
 :::
 :::
+\
 
 ::: fragment
 ![](images/01-multi-armed-bandits/mab-actions-opt.svg){ .embed width=800px }
