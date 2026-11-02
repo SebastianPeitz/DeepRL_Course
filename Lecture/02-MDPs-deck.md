@@ -100,6 +100,7 @@ $\Rightarrow$ we need to deal with ***random variables***
 
 # Random variables
 
+::: small
 ::: {.definition}
 A **random variable** $X$ is a *measurable function* $X: \Omega \rightarrow E$ from a *sample space* $\Omega$ as a set of possible *outcomes* to a measurable space $E$ (i.e., we can assign a number to each outcome). 
 :::
@@ -132,6 +133,7 @@ The **realization** $x$ is the value of $X(\omega)$ after a single experiment $\
   - $x=X(\omega)=5$ is the realization
 :::
 
+:::
 :::
 
 # Random variables

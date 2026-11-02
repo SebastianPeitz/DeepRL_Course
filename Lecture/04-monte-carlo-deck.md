@@ -121,7 +121,7 @@ $\quad$ Generate a sequence following $\pi$:
 $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
-$\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$ **then** $\qquad$ ([*that's the first-visit condition*]{style="color: #C138A0;"})\
+$\quad\quad$ **if** $s_t \notin \{s_0,\ldots,s_{t-1}\}$ **then** $\quad$ ([*the first-visit condition*]{style="color: #C138A0;"})\
 $\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
 $\quad\quad\quad$ $V(s_t) = \mathsf{average}(\ell(s_t))$
 :::
@@ -316,7 +316,7 @@ $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g+ r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$ **then**\
-$\quad\quad\quad$ Append $g$ to $\ell(s_t)$\
+$\quad\quad\quad$ Append $g$ to $\ell(s_t,a_t)$\
 $\quad\quad\quad$ $Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))$\
 $\quad\quad\quad$ $\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
@@ -372,7 +372,7 @@ $$((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))$$
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ **if** $(s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}$ **then**\
-$\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: #C138A0;"} $\qquad\qquad\qquad\qquad\qquad\qquad\qquad$ (~~appending $g$ to the list of returns~~)\
+$\quad\quad\quad$ [$n(s_t,a_t) \gets n(s_t,a_t) + 1$]{style="color: #C138A0;"} $\qquad\qquad\qquad\qquad\qquad\quad~~$ (~~appending $g$ to the list of returns~~)\
 $\quad\quad\quad$ [$Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]$]{style="color: #C138A0;"}$\qquad\quad$ (~~averaging over the list of returns \ell~~)\
 $\quad\quad\quad$ $\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)$
 :::
@@ -547,7 +547,7 @@ A learning policy $\pi$ is called GLIE if it satisfies the following two propert
 ::: incremental
 - If a state is visited infinitely often, then each action is chosen infinitely often:
 $$ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = 1 \quad \forall~s\in\Sc,a\in\Ac. $$
-- In the limit ($i\rightarrow\infty$) the learning policy is greedy with respect to the learned action value:
+- In the limit ($k\rightarrow\infty$) the learning policy is greedy with respect to the learned action value:
 $$ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = \pi(s) = \arg\max_{a\in\Ac} Q^\pi(s,a)\quad \forall s\in\Sc. $$
 :::
 :::
@@ -618,7 +618,7 @@ All learning control methods face a dilemma:
 
 ::: incremental
 - Use two policies: 
-  - **Behavior policy** $\pi_\beta\agivenb{a}{s}$: exploratory, used to generate behavior.
+  - **Behavior policy** $\pi_\beta\agivenb{a}{s}$: exploratory, used to generate data/experience.
   - **Target policy** $\pias$: learns from that experience to become the optimal policy.
 - Use cases:
   - Learn from observing humans or other agents/controllers.
@@ -669,9 +669,9 @@ $$ \pias > 0 \quad\Rightarrow\quad \pi_\beta\agivenb{a}{s}>0 \qquad \forall s\in
 :::
 :::
 
+::: columns-6-4
 ::: fragment
 **The central concept**: re-weighting
-:::
 
 ::: incremental
 - We want to know the expected value under a target distribution $\pi(s)$, but only have samples from another distribution $\pi_\beta(s)$.
@@ -681,9 +681,27 @@ $$w = \frac{\pi(s)}{\pi_\beta(s)}$$
 - If a sample is rare in $\pi$ but common in $\pi_\beta$, we give it a low weight.
 :::
 
-[**Caveat:** if $w$ is large (distinctly different policies) the estimate’s variance is large (i.e., *uncertain* for small numbers of samples).]{.fragment}
 :::
 
+::: fragment
+::: definition
+### Importance sampling in general ([Wikipedia](https://en.wikipedia.org/wiki/Importance_sampling))
+
+[$$\begin{align*} 
+\Expsub{f(x)}{x\sim p} &= \int p(x) f(x) \dx \\
+&= \int \frac{q(x)}{q(x)} p(x) f(x) \dx \\
+&= \int q(x) \mathBlue{\frac{p(x)}{q(x)}} f(x) \dx \\
+&= \Expsub{~~\mathBlue{w(x)}~ f(x)}{x\sim q}. \\
+\end{align*}$$]{.math-incremental}
+[:bulb: This formula is exact!]{.fragment}
+:::
+:::
+
+:::
+
+[**Caveat:** if $w$ is large (distinctly different policies) the estimate’s variance is large (i.e., *uncertain* for small numbers of samples).]{.fragment}
+
+:::
 
 # Importance sampling (2)
 ::: small
@@ -727,7 +745,7 @@ $$
 ::: definition
 ### OIS: State-value estimation via Monte Carlo ordinary importance sampling
 
-Estimating the state value $V^\pi$ following a behavior policy $b$ using **ordinary importance sampling** (**OIS**) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
+Estimating the state value $V^\pi$ following a behavior policy $\pi_\beta$ using **ordinary importance sampling** (**OIS**) results in scaling and averaging the sampled returns by the importance sampling ratio per episode:
 $$ 
 \begin{equation}
 V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:MC_OIS}
@@ -807,7 +825,7 @@ $$]{.fragment}
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g \gets 0$, $w \gets 1$\
-$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $\pi_\beta$\
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g \gets \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\
@@ -845,7 +863,7 @@ We now have our final algorithm that includes everything we have learned so far
 
 **for** $k = 1, 2, \ldots, K$ episodes *(or until $\pi$ converges)*:\
 $\quad$ $g \gets 0$, $w \gets 1$\
-$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $b$\
+$\quad$ Generate $\set{(s_t,a_t,r_t)}_{t=0}^{T_k}$ following a *soft policy* $\pi_\beta$\
 $\quad$ **for** $t = T_k-1,T_k-2,T_k-3,\ldots,0$:\
 $\quad\quad$ $g = \gamma g + r_t$\
 $\quad\quad$ $c(s_t,a_t) \gets c(s_t,a_t) + w$\

@@ -488,7 +488,7 @@ Monte Carlo Port (<a href="https://commons.wikimedia.org/wiki/File:Monte_Carlo_P
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span><br />
 <span class="math inline">\(\quad\)</span> Generate a sequence following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g+ r_t\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_t \notin \{s_0,\ldots,s_{t-1}\}\)</span> <strong>then</strong> <span class="math inline">\(\qquad\)</span> (<span style="color: #C138A0;"><em>that’s the first-visit condition</em></span>)<br />
+<span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(s_t \notin \{s_0,\ldots,s_{t-1}\}\)</span> <strong>then</strong> <span class="math inline">\(\quad\)</span> (<span style="color: #C138A0;"><em>the first-visit condition</em></span>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(V(s_t) = \mathsf{average}(\ell(s_t))\)</span></p>
 </div>
@@ -786,7 +786,7 @@ GPI <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)
 <span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g+ r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span> <strong>then</strong><br />
-<span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t)\)</span><br />
+<span class="math inline">\(\quad\quad\quad\)</span> Append <span class="math inline">\(g\)</span> to <span class="math inline">\(\ell(s_t,a_t)\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t))\)</span><br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) \gets \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
 </div>
@@ -858,7 +858,7 @@ Q(s_t,a_t) = \mathsf{average}(\ell(s_t,a_t)) \qquad\Rightarrow\qquad Q(s_t,a_t) 
 <span class="math inline">\(\quad\)</span> Generate a sequence starting at <span class="math inline">\((s_0, a_0)\)</span> and following <span class="math inline">\(\pi\)</span>: <span class="math display">\[((s_0,a_0,r_0),(s_1,a_1,r_1),\ldots,(s_{T_k-1},a_{T_k-1},r_{T_k-1}))\]</span> <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\((s_t,a_t) \notin \{(s_0,a_0),\ldots,(s_{t-1},a_{t-1})\}\)</span> <strong>then</strong><br />
-<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: #C138A0;"><span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\qquad\qquad\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
+<span class="math inline">\(\quad\quad\quad\)</span> <span style="color: #C138A0;"><span class="math inline">\(n(s_t,a_t) \gets n(s_t,a_t) + 1\)</span></span> <span class="math inline">\(\qquad\qquad\qquad\qquad\qquad\quad~~\)</span> (<del>appending <span class="math inline">\(g\)</span> to the list of returns</del>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span style="color: #C138A0;"><span class="math inline">\(Q(s_t,a_t) \gets Q(s_t,a_t) + \frac{1}{n(s_t,a_t)} \left[g - Q(s_t,a_t)\right]\)</span></span><span class="math inline">\(\qquad\quad\)</span> (<del>averaging over the list of returns </del>)<br />
 <span class="math inline">\(\quad\quad\quad\)</span> <span class="math inline">\(\pi(s_t) = \arg\max_{a\in\Ac}Q(s_t, a)\)</span></p>
 </div>
@@ -2029,7 +2029,7 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">If a state is visited infinitely often, then each action is chosen infinitely often: <span class="math display">\[ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = 1 \quad \forall~s\in\Sc,a\in\Ac. \]</span></li>
-<li class="fragment">In the limit (<span class="math inline">\(i\rightarrow\infty\)</span>) the learning policy is greedy with respect to the learned action value: <span class="math display">\[ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = \pi(s) = \arg\max_{a\in\Ac} Q^\pi(s,a)\quad \forall s\in\Sc. \]</span></li>
+<li class="fragment">In the limit (<span class="math inline">\(k\rightarrow\infty\)</span>) the learning policy is greedy with respect to the learned action value: <span class="math display">\[ \lim_{k\rightarrow\infty} \pi_k\agivenb{a}{s} = \pi(s) = \arg\max_{a\in\Ac} Q^\pi(s,a)\quad \forall s\in\Sc. \]</span></li>
 </ul>
 </div>
 </div>
@@ -2169,7 +2169,7 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <ul class="incremental">
 <li class="fragment">Use two policies:
 <ul class="incremental">
-<li class="fragment"><strong>Behavior policy</strong> <span class="math inline">\(\pi_\beta\agivenb{a}{s}\)</span>: exploratory, used to generate behavior.</li>
+<li class="fragment"><strong>Behavior policy</strong> <span class="math inline">\(\pi_\beta\agivenb{a}{s}\)</span>: exploratory, used to generate data/experience.</li>
 <li class="fragment"><strong>Target policy</strong> <span class="math inline">\(\pias\)</span>: learns from that experience to become the optimal policy.</li>
 </ul></li>
 <li class="fragment">Use cases:
@@ -2249,9 +2249,9 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 </div>
 </div>
 </div>
+<div class="grid-layout" style="grid-template-columns: 6fr 4fr;">
 <div class="fragment">
 <p><strong>The central concept</strong>: re-weighting</p>
-</div>
 <div class="incremental">
 <ul class="incremental">
 <li class="fragment">We want to know the expected value under a target distribution <span class="math inline">\(\pi(s)\)</span>, but only have samples from another distribution <span class="math inline">\(\pi_\beta(s)\)</span>.</li>
@@ -2259,6 +2259,19 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <li class="fragment">If a sample is common in <span class="math inline">\(\pi\)</span> but rare in <span class="math inline">\(\pi_\beta\)</span>, we give it a high weight (it is <em>important</em>).</li>
 <li class="fragment">If a sample is rare in <span class="math inline">\(\pi\)</span> but common in <span class="math inline">\(\pi_\beta\)</span>, we give it a low weight.</li>
 </ul>
+</div>
+</div>
+<div class="fragment">
+<div id="importance-sampling-in-general-wikipedia" class="definition">
+<h3>Importance sampling in general (<a href="https://en.wikipedia.org/wiki/Importance_sampling">Wikipedia</a>)</h3>
+<p><span class="math-incremental"><span class="math display">\[\begin{align*} 
+\Expsub{f(x)}{x\sim p} &amp;= \int p(x) f(x) \dx \\
+&amp;= \int \frac{q(x)}{q(x)} p(x) f(x) \dx \\
+&amp;= \int q(x) \mathBlue{\frac{p(x)}{q(x)}} f(x) \dx \\
+&amp;= \Expsub{~~\mathBlue{w(x)}~ f(x)}{x\sim q}. \\
+\end{align*}\]</span></span> <span class="fragment"><span class="emoji" data-emoji="bulb">💡</span> This formula is exact!</span></p>
+</div>
+</div>
 </div>
 <p><span class="fragment"><strong>Caveat:</strong> if <span class="math inline">\(w\)</span> is large (distinctly different policies) the estimate’s variance is large (i.e., <em>uncertain</em> for small numbers of samples).</span></p>
 </div>
@@ -2320,7 +2333,7 @@ V^{\pi^\prime}(s)=Q^\pi(s,\pi&#39;(s)) &amp;= \sum_{a\in\Ac} \pi&#39;\agivenb{a}
 <div class="fragment">
 <div id="ois-state-value-estimation-via-monte-carlo-ordinary-importance-sampling" class="definition">
 <h3>OIS: State-value estimation via Monte Carlo ordinary importance sampling</h3>
-<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following a behavior policy <span class="math inline">\(b\)</span> using <strong>ordinary importance sampling</strong> (<strong>OIS</strong>) results in scaling and averaging the sampled returns by the importance sampling ratio per episode: <span class="math display">\[ 
+<p>Estimating the state value <span class="math inline">\(V^\pi\)</span> following a behavior policy <span class="math inline">\(\pi_\beta\)</span> using <strong>ordinary importance sampling</strong> (<strong>OIS</strong>) results in scaling and averaging the sampled returns by the importance sampling ratio per episode: <span class="math display">\[ 
 \begin{equation}
 V^\pi(s) = \frac{\sum_{t\in\mathcal{T}(s)}\rho_{k:T(t)}\, g_t}{\abs{\mathcal{T}(s)}}. \tag{OIS} \label{eq:MC_OIS}
 \end{equation}
@@ -2422,7 +2435,7 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span>, <span class="math inline">\(w \gets 1\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(\pi_\beta\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g \gets \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />
@@ -2467,7 +2480,7 @@ V_{k+1} = V_k + \frac{w_k}{c_k}\left[g_k - V_k\right] \qquad \fragment{\text{and
 </ul>
 <p><strong>for</strong> <span class="math inline">\(k = 1, 2, \ldots, K\)</span> episodes <em>(or until <span class="math inline">\(\pi\)</span> converges)</em>:<br />
 <span class="math inline">\(\quad\)</span> <span class="math inline">\(g \gets 0\)</span>, <span class="math inline">\(w \gets 1\)</span><br />
-<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(b\)</span><br />
+<span class="math inline">\(\quad\)</span> Generate <span class="math inline">\(\set{(s_t,a_t,r_t)}_{t=0}^{T_k}\)</span> following a <em>soft policy</em> <span class="math inline">\(\pi_\beta\)</span><br />
 <span class="math inline">\(\quad\)</span> <strong>for</strong> <span class="math inline">\(t = T_k-1,T_k-2,T_k-3,\ldots,0\)</span>:<br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(g = \gamma g + r_t\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <span class="math inline">\(c(s_t,a_t) \gets c(s_t,a_t) + w\)</span><br />

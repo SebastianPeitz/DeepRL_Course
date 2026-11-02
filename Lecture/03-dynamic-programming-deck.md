@@ -244,7 +244,7 @@ V_{\mathRed{k+1}}(s) = \ExpCsub{r+\gamma V_{\mathRed{k}}(s')}{s}{\pi} = \sum_{a\
 \end{equation}$$
 
 ::: incremental
-- $V_k = V^\pi$ is a fixed point for this update rule: \eqref{eq:DP_IterativePolicyEvaluation} is satisfied for $V^\pi$. 
+- $V_k = V^\pi$ is a *fixed point* for this update rule: \eqref{eq:DP_IterativePolicyEvaluation} is satisfied for $V^\pi$. 
 - The sequence $\set{V_k}$ converges to $V^\pi$ as $k\rightarrow\infty$ (under the same conditions guaranteeing existence of $V^\pi$). 
 - This algorithm is called **iterative policy evaluation**:
   - For each state $s$, replace the old value of $s$ with a new value ...
