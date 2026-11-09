@@ -260,8 +260,10 @@ Table: Sample of $K=8$ trajectories, including the rewards following the states.
 - $B$ occurs eight times, follwed by $r=+1$ in six, and by $r=0$ in two cases.\
 [$\Rightarrow$ $V(B)=\frac{3}{4}$.]{.fragment}
 - What about $V(A)$?
-  1. In our example, the only episode containing $A$ has return $g=0$ [$~\quad\Rightarrow$ $V(A)=0$.]{.fragment}
-  2. On the other hand, $A$ is followed by $r=0$ and then $s=B$ [$\qquad\quad\Rightarrow$ $V(A)=V(B)=\frac{3}{4}$.]{.fragment}
+  1. In our example, the only episode containing $A$ has return $g=0$\
+  [$\Rightarrow$ $V(A)=0$.]{.fragment}
+  2. On the other hand, $A$ is followed by $r=0$ and then $s=B$\
+  [$\Rightarrow$ $V(A)=V(B)=\frac{3}{4}$.]{.fragment}
 :::
 :::
 
@@ -343,7 +345,7 @@ $$]{.math-incremental}
 Where does this difference come from? [$\Rightarrow$ Without going into a detailed derivation:]{.fragment}
 
 ::: incremental
-- MC batch learning converges to the least **squares fit of the sampled returns**:
+- MC batch learning converges to the **least squares fit of the sampled returns**:
 $$ \sum_{k=1}^K\sum_{t=1}^T (g_{t,k} - V(s_{t,k}))^2. $$
 - TD batch learning converges to the **maximum likelihood estimate** such that $(\Sc,\Ac,p,r,\gamma)$ explains the data with highest probability:
 $$ \begin{align*} 
@@ -433,7 +435,7 @@ $$
 :::
 :::
 
-[**The policy**: $\epsilon$-greedy / $\epsilon$-soft$^*$.]{.fragment}
+[**The policy**: $\epsilon$-greedy / $\epsilon$-soft.]{.fragment}
 
 ::: fragment
 **Convergence** [@Sutton1998]
@@ -447,7 +449,7 @@ $$
 :::
 
 ::: footer
-$^*$ $ π \left( a  \middle| s \right)> 0$ for all $s\in\Sc$ and $a\in\Ac$.
+:bulb: $\epsilon$-soft: $ π \left( a  \middle| s \right)> 0$ for all $s\in\Sc$ and $a\in\Ac$.
 :::
 
 

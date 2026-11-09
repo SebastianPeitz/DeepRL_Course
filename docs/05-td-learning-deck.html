@@ -679,8 +679,10 @@ V(s_t) \gets V(s_t) + \alpha \left[\mathRed{r_t + \gamma V(s_{t+1})} - V(s_t)\ri
 <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(V(B)=\frac{3}{4}\)</span>.</span></li>
 <li class="fragment">What about <span class="math inline">\(V(A)\)</span>?
 <ol class="incremental" style="list-style-type: decimal">
-<li class="fragment">In our example, the only episode containing <span class="math inline">\(A\)</span> has return <span class="math inline">\(g=0\)</span> <span class="fragment"><span class="math inline">\(~\quad\Rightarrow\)</span> <span class="math inline">\(V(A)=0\)</span>.</span></li>
-<li class="fragment">On the other hand, <span class="math inline">\(A\)</span> is followed by <span class="math inline">\(r=0\)</span> and then <span class="math inline">\(s=B\)</span> <span class="fragment"><span class="math inline">\(\qquad\quad\Rightarrow\)</span> <span class="math inline">\(V(A)=V(B)=\frac{3}{4}\)</span>.</span></li>
+<li class="fragment">In our example, the only episode containing <span class="math inline">\(A\)</span> has return <span class="math inline">\(g=0\)</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(V(A)=0\)</span>.</span></li>
+<li class="fragment">On the other hand, <span class="math inline">\(A\)</span> is followed by <span class="math inline">\(r=0\)</span> and then <span class="math inline">\(s=B\)</span><br />
+<span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <span class="math inline">\(V(A)=V(B)=\frac{3}{4}\)</span>.</span></li>
 </ol></li>
 </ul>
 </div>
@@ -791,7 +793,7 @@ V(s_t) &amp;\gets V(s_t) + \alpha \left[r_t + \gamma V(s_{t+1}) - V(s_t)\right] 
 <p>Where does this difference come from? <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> Without going into a detailed derivation:</span></p>
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">MC batch learning converges to the least <strong>squares fit of the sampled returns</strong>: <span class="math display">\[ \sum_{k=1}^K\sum_{t=1}^T (g_{t,k} - V(s_{t,k}))^2. \]</span></li>
+<li class="fragment">MC batch learning converges to the <strong>least squares fit of the sampled returns</strong>: <span class="math display">\[ \sum_{k=1}^K\sum_{t=1}^T (g_{t,k} - V(s_{t,k}))^2. \]</span></li>
 <li class="fragment">TD batch learning converges to the <strong>maximum likelihood estimate</strong> such that <span class="math inline">\((\Sc,\Ac,p,r,\gamma)\)</span> explains the data with highest probability: <span class="math display">\[ \begin{align*} 
 \hat{p}\agivenb{s&#39;}{s,a} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}\agivenb{s_{t+1,k} = s&#39;}{s_{t,k}=s,a_{t,k}=a},\\
 \hat{r} &amp;= \frac{1}{n(s,a)}\sum_{k=1}^K\sum_{t=1}^T \mathbb{1}(s_{t,k}=s,a_{t,k}=a)r_{t,k}.
@@ -1022,7 +1024,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 \]</span></p>
 </div>
 </div>
-<p><span class="fragment"><strong>The policy</strong>: <span class="math inline">\(\epsilon\)</span>-greedy / <span class="math inline">\(\epsilon\)</span>-soft<span class="math inline">\(^*\)</span>.</span></p>
+<p><span class="fragment"><strong>The policy</strong>: <span class="math inline">\(\epsilon\)</span>-greedy / <span class="math inline">\(\epsilon\)</span>-soft.</span></p>
 <div class="fragment">
 <p><strong>Convergence</strong> <span class="citation">(<a href="#ref-Sutton1998">Sutton and Barto 1998</a>)</span></p>
 <ul>
@@ -1033,7 +1035,7 @@ Q(s_t,a_t) \gets Q(s_t,a_t) + \alpha \underbrace{\big[\overbrace{r_t + \gamma Q(
 <p><span class="fragment"><strong><em>Key question</em></strong>: how do we select <span class="math inline">\(a_{t+1}\)</span>?</span> <span class="fragment"><span class="math inline">\(\Rightarrow\)</span> <strong>On-policy versus off policy!</strong></span></p>
 </div>
 <div class="footer">
-<p><span class="math inline">\(^*\)</span> $ π ( a | s )&gt; 0$ for all <span class="math inline">\(s\in\Sc\)</span> and <span class="math inline">\(a\in\Ac\)</span>.</p>
+<p><span class="emoji" data-emoji="bulb">💡</span> <span class="math inline">\(\epsilon\)</span>-soft: $ π ( a | s )&gt; 0$ for all <span class="math inline">\(s\in\Sc\)</span> and <span class="math inline">\(a\in\Ac\)</span>.</p>
 </div>
 </div>
 </div>
