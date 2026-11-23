@@ -351,7 +351,7 @@ $$ \begin{equation} \theta \gets \theta + \alpha\rbracket{r + \gamma \max_{a'\in
 
 ::: small
 ::: incremental
-- Take actions u based on $Q_\theta(s,a)$ (e.g., $\epsilon$-greedy).
+- Take actions $a$ based on $Q_\theta(s,a)$ (e.g., $\epsilon$-greedy).
 - Store observed tuples $(s,a,r,s')$ in memory buffer $\Dc$.
 - Sample mini-batches $\Bc$ from $\Dc$.
 - Calculate bootstrapped Q-target with a target network with weights $\bar{\theta}$:
@@ -390,7 +390,7 @@ $\quad\quad$ Obtain $a_t \sim \epsilon$-greedy$(Q_\theta(s_t,\cdot))$ and observ
 $\quad\quad$ Store tuple $(s_t,a_t,r_t,s_{t+1})$ in $\Dc$\
 $\quad\quad$ Sample minibatch $\Bc$ from $\Dc$ (after initial *warm-up*)$\qquad\qquad\qquad$ \
 $\quad\quad$ Compute targets for $(s_i,a_i,r_i,s'_i)\in\Bc$
-$$y_i = r_i + \max_{a\in\Ac}Q_{\bar{\theta}}(s_i',a) \qquad\text{(or}~y_i = r_i~\text{if $s'_{i}$ is terminal)}$$
+$$y_i = r_i + \gamma \max_{a\in\Ac}Q_{\bar{\theta}}(s_i',a) \qquad\text{(or}~y_i = r_i~\text{if $s'_{i}$ is terminal)}$$
 $\quad\quad$ Update $\theta$ via gradient descent on $L(\theta)$ with learning rate $\alpha$\
 $\quad\quad$ **if** $t\mod{N_\theta}=0$ **then** $\bar{\theta}\gets\theta$
 :::
@@ -686,7 +686,7 @@ $$ L(\theta) = \sum_{t=0}^T \big(r_t - \rbracket{\psi^\top_{t} - \gamma \psi^\to
   - we retrieve the flexibility to collect training samples arbitrarily,
   - at the cost of an estimation bias based on the sampling distribution.
 - Possible modifications:
-  - To prevent numeric instability regularization is possible, e.g., ridge regression $\theta^* = (\Psi^\top \Psi + \epsilon I)^{-1} \Psi^\top y$
+  - To prevent numeric instability regularization is possible, e.g., ridge regression $$\theta^* = (\Psi^\top \Psi + \epsilon I)^{-1} \Psi^\top y$$
   - Recursive implementation for online usage is straightforward.
 :::
 

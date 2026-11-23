@@ -318,7 +318,7 @@ $\quad\quad$ $\theta \gets \theta + \alpha\rbracket{g_t - V_\theta(s_t)} \nablat
 - If bootstrapping is applied, the true target $V^\pi(s_t)$ is approximated by a target depending on the estimate $V_\theta(s_t)$.
 - If $V_\theta(s_t)$ does not fit $V^\pi(s_t)$ (which it does not before convergence), then the update target becomes a *biased estimate*.
   - For example, in the TD($0$) case, we get for \eqref{eq:VAL_L}:
-  $$L(\theta) = \sum_{t=1}^T \big(r_t + V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
+  $$L(\theta) = \sum_{t=1}^T \big(r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)\big)^2.$$
   - Taking the gradient of the single-sample version for $L(\theta)$ yields:
   [$$\begin{align*} \theta ~\gets~ &\theta - \frac{1}{2} \alpha\nablatheta \rbracket{\cbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}^2} \\
   &= \theta - \alpha \rbracket{r_t + \gamma V_\theta(s_{t+1}) - V_\theta(s_t)}~ \mathRed{\nablatheta\rbracket{\gamma V_\theta(s_{t+1}) - V_\theta(s_t)}} \\

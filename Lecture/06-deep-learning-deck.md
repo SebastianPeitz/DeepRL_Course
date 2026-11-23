@@ -145,6 +145,7 @@ $\Rightarrow$ Often a matter of model complexity.
 :::
 
 # Bias-variance tradeoff (2)
+
 ::: small
 **Example** (see [Wikipedia](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff)): Fitting a model of serveral radial basis functions to noisy trainig data: 
 $$ f_\theta(x) = \sum_{k=1}^d \theta_k \exp\left(-\frac{1}{2}\frac{x-c_k}{\sigma_k^2}\right). $$
@@ -155,9 +156,6 @@ $$ f_\theta(x) = \sum_{k=1}^d \theta_k \exp\left(-\frac{1}{2}\frac{x-c_k}{\sigma
 
 [$\bullet$ ... but the variance between trials ($\Dc_{\mathsf{train,1}},\Dc_{\mathsf{train,2}},\ldots$) increases.]{ .fragment data-fragment-index=3}
 
-
-:::
-
 ::: columns-1-1-1-1
 ![Function and training data $\Dc_{\mathsf{train,1}}$.](images/06-deep-learning/BV-Test_function_and_noisy_data.png){ .embed width=300px }
 
@@ -166,6 +164,7 @@ $$ f_\theta(x) = \sum_{k=1}^d \theta_k \exp\left(-\frac{1}{2}\frac{x-c_k}{\sigma
 [![Medium spread RBFs.](images/06-deep-learning/BV-Radial_basis_function_fit,_spread=1.png){ .embed width=300px }]{.fragment  data-fragment-index=2 }
 
 [![Small spread RBFs.](images/06-deep-learning/BV-Radial_basis_function_fit,_spread=0.1.png){ .embed width=300px }]{.fragment  data-fragment-index=3 }
+:::
 :::
 
 # Cross-validation

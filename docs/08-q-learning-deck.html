@@ -2259,7 +2259,7 @@ Generalized Policy Iteration (GPI) <span class="citation">(<a href="#ref-Sutton1
 <div class="small">
 <div class="incremental">
 <ul class="incremental">
-<li class="fragment">Take actions u based on <span class="math inline">\(Q_\theta(s,a)\)</span> (e.g., <span class="math inline">\(\epsilon\)</span>-greedy).</li>
+<li class="fragment">Take actions <span class="math inline">\(a\)</span> based on <span class="math inline">\(Q_\theta(s,a)\)</span> (e.g., <span class="math inline">\(\epsilon\)</span>-greedy).</li>
 <li class="fragment">Store observed tuples <span class="math inline">\((s,a,r,s&#39;)\)</span> in memory buffer <span class="math inline">\(\Dc\)</span>.</li>
 <li class="fragment">Sample mini-batches <span class="math inline">\(\Bc\)</span> from <span class="math inline">\(\Dc\)</span>.</li>
 <li class="fragment">Calculate bootstrapped Q-target with a target network with weights <span class="math inline">\(\bar{\theta}\)</span>: <span class="math display">\[ Q^\pi(s,a)\approx r + \max_{a\in\Ac}Q_{\bar{\theta}}(s,a). \]</span></li>
@@ -4399,7 +4399,7 @@ Adapted from <span class="citation">(<a href="#ref-Abdelwanis2026">Abdelwanis et
 <span class="math inline">\(\quad\quad\)</span> Obtain <span class="math inline">\(a_t \sim \epsilon\)</span>-greedy<span class="math inline">\((Q_\theta(s_t,\cdot))\)</span> and observe <span class="math inline">\(r_t\)</span> and <span class="math inline">\(s_{t+1}\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Store tuple <span class="math inline">\((s_t,a_t,r_t,s_{t+1})\)</span> in <span class="math inline">\(\Dc\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> Sample minibatch <span class="math inline">\(\Bc\)</span> from <span class="math inline">\(\Dc\)</span> (after initial <em>warm-up</em>)<span class="math inline">\(\qquad\qquad\qquad\)</span><br />
-<span class="math inline">\(\quad\quad\)</span> Compute targets for <span class="math inline">\((s_i,a_i,r_i,s&#39;_i)\in\Bc\)</span> <span class="math display">\[y_i = r_i + \max_{a\in\Ac}Q_{\bar{\theta}}(s_i&#39;,a) \qquad\text{(or}~y_i = r_i~\text{if $s&#39;_{i}$ is terminal)}\]</span> <span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(\theta\)</span> via gradient descent on <span class="math inline">\(L(\theta)\)</span> with learning rate <span class="math inline">\(\alpha\)</span><br />
+<span class="math inline">\(\quad\quad\)</span> Compute targets for <span class="math inline">\((s_i,a_i,r_i,s&#39;_i)\in\Bc\)</span> <span class="math display">\[y_i = r_i + \gamma \max_{a\in\Ac}Q_{\bar{\theta}}(s_i&#39;,a) \qquad\text{(or}~y_i = r_i~\text{if $s&#39;_{i}$ is terminal)}\]</span> <span class="math inline">\(\quad\quad\)</span> Update <span class="math inline">\(\theta\)</span> via gradient descent on <span class="math inline">\(L(\theta)\)</span> with learning rate <span class="math inline">\(\alpha\)</span><br />
 <span class="math inline">\(\quad\quad\)</span> <strong>if</strong> <span class="math inline">\(t\mod{N_\theta}=0\)</span> <strong>then</strong> <span class="math inline">\(\bar{\theta}\gets\theta\)</span></p>
 </div>
 <div class="fragment">
@@ -8636,7 +8636,7 @@ Q^\pi(s,a) &amp;\approx r + \gamma Q_\theta(s&#39;, a&#39;) \qquad &amp;&amp;\te
 </ul></li>
 <li class="fragment">Possible modifications:
 <ul class="incremental">
-<li class="fragment">To prevent numeric instability regularization is possible, e.g., ridge regression <span class="math inline">\(\theta^* = (\Psi^\top \Psi + \epsilon I)^{-1} \Psi^\top y\)</span></li>
+<li class="fragment">To prevent numeric instability regularization is possible, e.g., ridge regression <span class="math display">\[\theta^* = (\Psi^\top \Psi + \epsilon I)^{-1} \Psi^\top y\]</span></li>
 <li class="fragment">Recursive implementation for online usage is straightforward.</li>
 </ul></li>
 </ul>
